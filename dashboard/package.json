@@ -1,0 +1,32 @@
+{
+  "name": "Podiv Dashboard",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "dgram": "*",
+    "express": "*",
+    "compress": "*",
+    "express-session": "*",
+    "body-parser": "*",
+    "morgan": "*",
+    "errorhandler": "*",
+    "dotenv": "*",
+    "path": "*",
+    "express-validator": "*",
+    "express3-handlebars": "*",
+    "fs": "*",
+    "underscore": "*",
+    "events": "*"
+
+
+   
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
+  },
+  "license": "MIT"
+}
