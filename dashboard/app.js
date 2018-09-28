@@ -7,22 +7,11 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var errorHandler = require('errorhandler');
-var dotenv = require('dotenv');
 
 var path = require('path');
-var expressValidator = require('express-validator');
-var multer = require('multer');
-var upload = multer({ dest: path.join(__dirname, 'uploads') });
 var exphbs = require('express3-handlebars');
 var fs = require('fs');
 var _ = require('underscore');
-
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- *
- * Default path: .env (You can remove the path argument entirely, after renaming `.env.example` to `.env`)
- */
-dotenv.load({ path: '.env' });
 
 
 var http = require('http');
@@ -42,7 +31,6 @@ app.use(compress());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressValidator());
 
 app.use(express.static(path.join(__dirname), { maxAge: 31557600000 }));
 
