@@ -1,78 +1,126 @@
-/**
- * Module dependencies.
- */
-var express = require('express');
-var compress = require('compression');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-var errorHandler = require('errorhandler');
-
+const electron = require('electron');
+const url = require('url');
 var path = require('path');
-var exphbs = require('express3-handlebars');
-var fs = require('fs');
-var _ = require('underscore');
+
+var app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+let win;
 
 
-var http = require('http');
-var express = require('express'),
-   app = module.exports.app = express(),
-   server = http.createServer(app),
-   io = require('socket.io').listen(server);
-server.listen(7000);
 
-/**
- * Express configuration.
- */
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-app.use(express.static("public"));
-app.use(compress());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+function createWindow(){
+  win = new BrowserWindow({width: 1920, height: 1080, webPreferences:{webSecurity: true}});
 
-app.use(express.static(path.join(__dirname), { maxAge: 31557600000 }));
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'proto.html'),
+    protocol: 'file:',
+    slashes: true,
+  }));
+  
+  win.on('closed', () =>{
+    win = null;
+  });
+}
 
-var needsUsername = function(username) {
-  return function(req, res, next) {
-    if (req.user.username === username) {
-      next();
-    } else {
-      res.status(401).send('Unauthorized');
-    }
-  };
-};
+app.on('ready', createWindow);
 
-/**
- * Primary app routes.
- */
-app.get('/', function(req,res){
-  res.render('home');
+app.on('window-all-closed', () => {
+  if(process.platform !== 'darwin'){
+    app.quit();
+  }
 });
 
-app.get('/proto', function(req,res){
-  res.render('proto');
+app.on('activate', () =>{
+  if(win === null){
+    createWindow();
+  }
 })
 
 
 
-/**
- * Error Handler.
- */
-app.use(errorHandler());
-
-/*
-* Socket IO for future use
-*/
-io.on('connection', function (socket) {
 
 
-});
+// var express = require('express');
+// var compress = require('compression');
+// var session = require('express-session');
+// var bodyParser = require('body-parser');
+// var logger = require('morgan');
+// var errorHandler = require('errorhandler');
 
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
-});
 
-module.exports = app;
+
+// var exphbs = require('express3-handlebars');
+// var fs = require('fs');
+// var _ = require('underscore');
+
+
+// var http = require('http');
+// var express = require('express'),
+//    app = module.exports.app = express(),
+//    server = http.createServer(app),
+//    io = require('socket.io').listen(server);
+// server.listen(7000);
+
+// /**
+//  * Express configuration.
+//  */
+// app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+// app.set('view engine', 'handlebars');
+// app.use(express.static("public"));
+// app.use(compress());
+
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.use(express.static(path.join(__dirname), { maxAge: 31557600000 }));
+
+// var needsUsername = function(username) {
+//   return function(req, res, next) {
+//     if (req.user.username === username) {
+//       next();
+//     } else {
+//       res.status(401).send('Unauthorized');
+//     }
+//   };
+// };
+
+
+
+
+
+
+
+// /**
+//  * Primary app routes.
+//  */
+// app.get('/', function(req,res){
+//   res.render('home');
+// });
+
+// app.get('/proto', function(req,res){
+//   res.render('proto');
+// })
+
+
+
+// /**
+//  * Error Handler.
+//  */
+// app.use(errorHandler());
+
+// /*
+// * Socket IO for future use
+// */
+// io.on('connection', function (socket) {
+
+
+// });
+
+
+// app.listen(app.get('port'), function() {
+//   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+// });
+
+// module.exports = app;

@@ -1,37 +1,52 @@
-var d=document,db=document.body;
-var f = false;
-function initGrid(){
-    $grid = $('.grid')
-    $grid.packery({
-   itemSelector: '.grid-sizer',
-   // columnWidth helps with drop positioning
-   columnWidth: $grid.find('.col-sm')[0],
-   percentPosition: true
-   });
-   
-   // make all grid-items draggable
-   $grid.find('.grid-sizer').each( function( i, gridItem ) {
-   var draggie = new Draggabilly( gridItem );
-   // bind drag events to Packery
-   $grid.packery( 'bindDraggabillyEvents', draggie );
-   });
+const comms = require('./public/javascripts/client').recievedEmitter;
+var client = require('./public/javascripts/client'); 
+const di = require('./public/javascripts/DataInterfacing');
+var storedData = require('./database');
+var d = document, db = document.body;
+window.$ = window.jQuery = require('jquery');
+var Packery = require('packery');
+var Draggabilly = require('draggabilly');
+
+
+window.onload = function () {
+  initGrid();
 }
 
- function changeState(id,state){ //DOM ID, boolean
+function initGrid(){
+    var grid = d.querySelector('.grid');
+    var pckry = new Packery(grid, {
+        itemSelector: '.grid-sizer'
+    });
+
+    pckry.getItemElements().forEach(function(itemElem){
+        var draggie = new Draggabilly(itemElem);
+        pckry.bindDraggabillyEvents(draggie);
+    });
+
+}
+
+function changeState(id, state) { //DOM ID, boolean
     t = d.getElementById(id);
-    if(state){
+    if (state) {
         t.setAttribute("class", "alert alert-success");
         t.innerHTML = "Connected"
-    }else{
+    } else {
         t.setAttribute("class", "alert alert-danger");
         t.innerHTML = "Disconnected"
     }
- }
+}
 
+comms.on('heartbeat', function () {
+    changeState("podConnect", true);
+    console.log("Event Recieved");
+});
 
-  module.exports.podConnect = d.getElementById("connectID");
-  module.exports.napConnect = d.getElementById("napConnect");
-  module.exports.bmsConnect = d.getElementById("bmsConnect");
-  module.exports.rmsConnect = d.getElementById("rmsConnect");
-  module.exports.changeState = changeState;
-  
+comms.on('dataIn',function(){
+    console.log("dataIn - Event Recieved")
+    di.updateData(client.inData);
+});
+
+di.updater.on('updateData', () =>{
+
+})
+

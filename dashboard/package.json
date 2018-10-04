@@ -1,32 +1,37 @@
 {
-  "name": "PodivDashboard",
+  "name": "podivdashboard",
   "version": "1.0.0",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": " electron ."
   },
   "dependencies": {
-    "dgram": "*",
-    "express": "*",
-    "compress": "*",
-    "express-session": "*",
     "body-parser": "*",
-    "morgan": "*",
-    "errorhandler": "*",
+    "compress": "*",
+    "dgram": "*",
     "dotenv": "*",
-    "path": "*",
+    "draggabilly": "^2.2.0",
+    "errorhandler": "*",
+    "events": "*",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-session": "*",
     "express-validator": "*",
-    "express3-handlebars": "*",
     "fs": "*",
+    "jquery": "^3.3.1",
+    "jquery-bridget": "^2.0.1",
+    "morgan": "*",
+    "packery": "^2.1.2",
+    "path": "*",
     "underscore": "*",
-    "events": "*"
-
-
-   
+    "url": "^0.11.0"
   },
   "devDependencies": {
+    "@types/packery": "^1.4.31",
     "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "supertest": "^1.2.0"
+    "electron": "^3.0.2",
+    "mocha": "^5.2.0",
+    "supertest": "^3.3.0"
   },
   "license": "MIT"
 }
