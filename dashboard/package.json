@@ -6,7 +6,6 @@
     "start": " electron ."
   },
   "dependencies": {
-    "body-parser": "*",
     "compress": "*",
     "dgram": "*",
     "dotenv": "*",

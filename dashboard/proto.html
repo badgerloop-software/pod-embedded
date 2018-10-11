@@ -12,7 +12,7 @@
   <script src="./public/javascripts/Chart.bundle.js"></script>
   <script>
     
-    </script>
+  </script>
 </head>
 <div class="jumbotron">
   <h1 class="display-4">Connection Status</h1>
@@ -78,19 +78,19 @@
           <tr>
             <td>IMU</td>
             <td>0</td>
-            <td id="imuCurrent">100</td>
+            <td id="imu">100</td>
             <td>255</td>
           </tr>
           <tr>
             <td>Encoder</td>
             <td>0</td>
-            <td id="encoderCurrent">100</td>
+            <td id="encoder">100</td>
             <td>255</td>
           </tr>
           <tr>
             <td>Retro</td>
             <td>0</td>
-            <td id="retroCurrent">100</td>
+            <td id="retro">100</td>
             <td>255</td>
           </tr>
         </tbody>
@@ -111,19 +111,19 @@
           <tr>
             <td>Pressure</td>
             <td>0</td>
-            <td id="pressureCurrent">100</td>
+            <td id="pressure">100</td>
             <td>255</td>
           </tr>
           <tr>
             <td>Air Quality</td>
             <td>0</td>
-            <td id="airQualityCurrent">100</td>
+            <td id="airQuality">100</td>
             <td>255</td>
           </tr>
           <tr>
             <td>Paranormal Activity</td>
             <td>0</td>
-            <td id="paranormalActivityCurrent">100</td>
+            <td id="paranormalActivity">100</td>
             <td>255</td>
           </tr>
         </tbody>
@@ -156,11 +156,29 @@
           <tr>
             <td>Brake Good</td>
             <td>0</td>
-            <td id="goodBrakeCurrent">100</td>
+            <td id="brakeGood">100</td>
             <td>255</td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div id="terminal-container" class="grid-sizer">
+      <h4 class="card-title">Terminal</h4>
+      <div class="card bg-light mb-3" style="border-radius: 25px; padding: 10px">
+          <div class="container-fluid" style="padding-left: 0px" id="terminal-start-embed">
+              <div class="terminal-body" id="terminal-body-embed">
+                <p class="terminal-text" id="terminal-text">
+                      > Type 'help' to see what you can do!
+                    </p>
+              </div>
+              <div class="d-flex flex-row">
+                <div class="border-dark">
+                      <input class="terminal-input" id="terminal-input-embed" type="text" value="help" style="text-indent: 5px">
+                      <button class="btn btn-dark btn-sm text-center font-weight-bold pt-0 pb-0" style="font-size: 20px;" id="submit">&crarr;</button>
+                    </div>
+              </div>
+            </div>
+      </div>
     </div>
   </div>
 </div>
@@ -279,6 +297,7 @@
   </script>
 <script src="./public/javascripts/jquery-1.11.0.js"></script>
 <!-- <script src="./node_modules/packery/dist/packery.pkgd.js"></script>
-<script src="./node_modules/draggabilly/draggabilly.js"></script> -->
-<script src="./public/javascripts/bootstrap.js"></script>
+  <script src="./node_modules/draggabilly/draggabilly.js"></script> -->
+  <script src="./public/javascripts/bootstrap.js"></script>
+  <script src="./public/javascripts/terminal.js"></script>
 </body>

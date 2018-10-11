@@ -11,7 +11,7 @@ module.exports = {
         brakeGood: [255]
     },
     navigation : {
-        IMU: [123],
+        imu: [123],
         encoder: [321],
         retro: [132] 
     },

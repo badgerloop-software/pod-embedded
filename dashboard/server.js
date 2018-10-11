@@ -10,7 +10,7 @@ const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port;
 */
 var randomNumbers = {
      navigation : {
-         IMU: getRandomValue(),
+         imu: getRandomValue(),
          encoder: getRandomValue(),
          retro: getRandomValue() 
      },
