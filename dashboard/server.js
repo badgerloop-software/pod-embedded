@@ -30,6 +30,8 @@ var client = dgram.createSocket('udp4');
 //     if (err) throw err;
 //     console.log('UDP message sent to ' + HOST +':'+ PORT);
 //     client.close();
+// });
+// heartbeat();
 
 function heartbeat(){
     client.send("ping", 0, "ping".length, PORT, IP, function(err,bytes){
@@ -37,10 +39,33 @@ function heartbeat(){
         console.log('ping');
     })
 }
+function sendJSON(object){
+    sendData(JSON.stringify(object));
+}
 
-// });
-// heartbeat();
-sendData(JSON.stringify(randomNumbers));
+function sendTestData(){
+    let rando = {
+        navigation : {
+            imu: getRandomValue(),
+            encoder: getRandomValue(),
+            retro: getRandomValue() 
+        },
+        pressureVessel: {
+            pressure: getRandomValue(),
+            airQuality: getRandomValue(),
+            paranormal: getRandomValue()
+        },
+        braking: {
+            solenoids: getRandomValue(),
+            brakePadTemps: getRandomValue(),
+            brakeGood: getRandomValue()
+        }
+   }
+    sendJSON(rando);
+}
+
+
+setInterval(sendTestData, 1000);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){

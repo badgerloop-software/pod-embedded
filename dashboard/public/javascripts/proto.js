@@ -41,7 +41,7 @@ function changeState(id, state) { //DOM ID, boolean
 function layoutGrid(){
     pckry.layout();
 }
-module.exports.layoutGrid = layoutGrid();
+
 
 comms.on('heartbeat', function () {
     changeState("podConnect", true);
@@ -54,6 +54,8 @@ comms.on('dataIn', function () {
 });
 
 di.updater.on('updateData', () => {
+    var startDate = new Date();
+    var startTime = startDate.getMilliseconds();
     let group = Object.keys(storedData);
     group.forEach((group) => {
         let sensors = Object.keys(storedData[group]);
@@ -63,14 +65,40 @@ di.updater.on('updateData', () => {
             });
         }
     })
+    var endDate = new Date();
+    var endTime = endDate.getMilliseconds();
+    var timeElasped = endTime - startTime;
+    console.log(timeElasped + " milliseconds elasped");
 });
 
-
-
 function updateData(group, sensor) {
+    let t = document.getElementById(String(sensor));
+    let tMin = Number(document.getElementById(String(sensor+"Min")).innerHTML);
+    let tMax = Number(document.getElementById(String(sensor+"Max")).innerHTML);
     let stored = storedData[group][sensor];
     document.getElementById(String(sensor)).innerHTML = String(stored[stored.length - 1]);
-    console.log(document.getElementById(String(sensor)).innerHTML);
+    if(Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax){
+        setSensorGreen(sensor);
+    }else{
+        setSensorRed(sensor);
+    }
+
+}
+
+function setSensorGreen(sensor){
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-danger');
+    t.classList.add('table-success');
+}
+function setSensorRed(sensor){
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-success');
+    t.classList.add('table-danger');
+}
+function setSensorDefault(sensor){
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-success');
+    t.classList.remove('table-danger');
 }
 
 
