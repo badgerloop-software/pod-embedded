@@ -26,6 +26,8 @@ var randomNumbers = {
      }
 }
 var client = dgram.createSocket('udp4');
+
+// From dgram docs
 // client.send(message, 0, message.length, PORT, HOST, function(err, bytes) {
 //     if (err) throw err;
 //     console.log('UDP message sent to ' + HOST +':'+ PORT);
@@ -65,7 +67,7 @@ function sendTestData(){
 }
 
 
-setInterval(sendTestData, 1000);
+setInterval(sendTestData, 10);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){

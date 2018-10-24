@@ -8,6 +8,24 @@ module.exports =  {
     },
     braking: [solenoids, brakepadTemps, brakeGood],
     navigation: [IMU, encoder, retro],
-    pressureVessel: [pressure, airQuality, paranormal]
+    pressureVessel: [pressure, airQuality, paranormal],
+    mins:{
+       off:{},
+       idle:{},
+       readyForPumpdown:{},
+       pumpdown:{},
+       ready:{},
+       postRun:{},
+       crawl:{}
+    },
+    maxs:{
+        off:{},
+        idle:{},
+        readyForPumpdown:{},
+        pumpdown:{},
+        ready:{},
+        postRun:{},
+        crawl:{}
+     },
     
 }

@@ -70,6 +70,7 @@ function submit(){
     terminalText.innerHTML += fullInput + "<br>" + "> ";   //Add input to console
     processText(input, inputArgs);
     terminalInput.value = "";   //clear submit box
+    layoutGrid();
 }
 const solenoidStates = ["_activate", "_deactivate"];
 function processText(input, optionalArgs) {

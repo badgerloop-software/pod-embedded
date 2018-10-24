@@ -14,6 +14,9 @@ window.onload = function () {
     initGrid();
 }
 
+function layoutGrid() {
+    pckry.layout();
+}
 function initGrid() {
     grid = d.querySelector('.grid');
     pckry = new Packery(grid, {
@@ -25,7 +28,26 @@ function initGrid() {
         pckry.bindDraggabillyEvents(draggie);
     });
 
+    layoutGrid();
+
 }
+function setSensorGreen(sensor) {
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-danger');
+    t.classList.add('table-success');
+}
+function setSensorRed(sensor) {
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-success');
+    t.classList.add('table-danger');
+}
+function setSensorDefault(sensor) {
+    let t = document.getElementById(String(sensor));
+    t.classList.remove('table-success');
+    t.classList.remove('table-danger');
+}
+
+
 
 function changeState(id, state) { //DOM ID, boolean
     t = d.getElementById(id);
@@ -38,14 +60,11 @@ function changeState(id, state) { //DOM ID, boolean
     }
 }
 
-function layoutGrid(){
-    pckry.layout();
-}
 
 
 comms.on('heartbeat', function () {
     changeState("podConnect", true);
-    console.log("Event Recieved");
+    console.log("Heartbeat Recieved");
 });
 
 comms.on('dataIn', function () {
@@ -56,15 +75,19 @@ comms.on('dataIn', function () {
 di.updater.on('updateData', () => {
     var startDate = new Date();
     var startTime = startDate.getMilliseconds();
-    let group = Object.keys(storedData);
-    group.forEach((group) => {
+    let groups = Object.keys(storedData);
+    groups.forEach((group) => {
         let sensors = Object.keys(storedData[group]);
-        if (group !== "connections") {
-            sensors.forEach((i) => {
-                updateData(group, i);
-            });
-        }
-    })
+        sensors.forEach((sensor) => {
+            try {
+                updateData(group, sensor);
+
+            } catch{
+                console.log("Unreconized Sensor- " + sensor) +" -Skipping";
+            }
+        });
+    }
+    )
     var endDate = new Date();
     var endTime = endDate.getMilliseconds();
     var timeElasped = endTime - startTime;
@@ -73,32 +96,13 @@ di.updater.on('updateData', () => {
 
 function updateData(group, sensor) {
     let t = document.getElementById(String(sensor));
-    let tMin = Number(document.getElementById(String(sensor+"Min")).innerHTML);
-    let tMax = Number(document.getElementById(String(sensor+"Max")).innerHTML);
+    let tMin = Number(document.getElementById(String(sensor + "Min")).innerHTML);
+    let tMax = Number(document.getElementById(String(sensor + "Max")).innerHTML);
     let stored = storedData[group][sensor];
     document.getElementById(String(sensor)).innerHTML = String(stored[stored.length - 1]);
-    if(Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax){
+    if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
         setSensorGreen(sensor);
-    }else{
+    } else
         setSensorRed(sensor);
-    }
-
 }
-
-function setSensorGreen(sensor){
-    let t = document.getElementById(String(sensor));
-    t.classList.remove('table-danger');
-    t.classList.add('table-success');
-}
-function setSensorRed(sensor){
-    let t = document.getElementById(String(sensor));
-    t.classList.remove('table-success');
-    t.classList.add('table-danger');
-}
-function setSensorDefault(sensor){
-    let t = document.getElementById(String(sensor));
-    t.classList.remove('table-success');
-    t.classList.remove('table-danger');
-}
-
 
