@@ -8,23 +8,27 @@ const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port;
 *
 * Today is not that day 
 */
-var randomNumbers = {
-     navigation : {
-         imu: getRandomValue(),
-         encoder: getRandomValue(),
-         retro: getRandomValue() 
-     },
-     pressureVessel: {
-         pressure: getRandomValue(),
-         airQuality: getRandomValue(),
-         paranormal: getRandomValue()
-     },
-     braking: {
-         solenoids: getRandomValue(),
-         brakePadTemps: getRandomValue(),
-         brakeGood: getRandomValue()
-     }
-}
+
+// var testSocket = {
+//     age: new Date().getUTCMilliseconds(),
+//     data: {
+//      navigation : {
+//          imu: getRandomValue(),
+//          encoder: getRandomValue(),
+//          retro: getRandomValue() 
+//      },
+//      pressureVessel: {
+//          pressure: getRandomValue(),
+//          airQuality: getRandomValue(),
+//          paranormal: getRandomValue()
+//      },
+//      braking: {
+//          solenoids: getRandomValue(),
+//          brakePadTemps: getRandomValue(),
+//          brakeGood: getRandomValue()
+//      }
+//     }
+// }
 var client = dgram.createSocket('udp4');
 
 // From dgram docs
@@ -46,24 +50,28 @@ function sendJSON(object){
 }
 
 function sendTestData(){
-    let rando = {
-        navigation : {
-            imu: getRandomValue(),
-            encoder: getRandomValue(),
-            retro: getRandomValue() 
-        },
-        pressureVessel: {
-            pressure: getRandomValue(),
-            airQuality: getRandomValue(),
-            paranormal: getRandomValue()
-        },
-        braking: {
-            solenoids: getRandomValue(),
-            brakePadTemps: getRandomValue(),
-            brakeGood: getRandomValue()
+    let testSocket = {
+        age: new Date().getUTCMilliseconds(),
+        data:{
+            navigation : {
+                imu: getRandomValue(),
+                encoder: getRandomValue(),
+                retro: getRandomValue() 
+            },
+            pressureVessel: {
+                pressure: getRandomValue(),
+                airQuality: getRandomValue(),
+                paranormal: getRandomValue()
+            },
+            braking: {
+                solenoids: getRandomValue(),
+                brakePadTemps: getRandomValue(),
+                brakeGood: getRandomValue()
+            }
+
         }
    }
-    sendJSON(rando);
+    sendJSON(testSocket);
 }
 
 

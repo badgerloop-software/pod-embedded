@@ -8,7 +8,7 @@ module.exports.updateData = function updateData(dataIn){
         let sensors = Object.keys(dataIn[i]);
         //console.log(i);
         sensors.forEach((sensor) =>{
-            input = dataIn[i][sensor];
+            input = dataIn[data][i][sensor];
             target = storedData[i][sensor];
             target.push(input);
             console.log(target);
