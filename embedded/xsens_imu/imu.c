@@ -4,6 +4,8 @@
 #include "lib/core.h"
 #include "lib/i2c.h"
 
+
+
 int main(int argc, char *argv[]) {
 	
 	uint8_t setConfiguration[] = {0xFA, 0xFF, 0xC0, 0x28, 0x10, 0x20, 0xFF, 0xFF, 0x10, 0x60, 0xFF, 0xFF, 0x20, 0x10, 0x00, 0x64, 0x40, 0x20, 0x01, 0x90, 0x80, 0x20, 0x01, 0x90, 0xC0, 0x20, 0x00, 0x64, 
@@ -47,7 +49,7 @@ int main(int argc, char *argv[]) {
 		int notifSize = res1[0] | res1[1] << 8;
 		int mSize = res1[2] | res1[3] << 8;
 		
-		printf("N Size: %i M Size: %i\n", notifSize, mSize);
+		//printf("N Size: %i M Size: %i\n", notifSize, mSize);
 		
 		write_byte_i2c(i2c, 0x05);
 		unsigned char res2[notifSize];
@@ -63,9 +65,22 @@ int main(int argc, char *argv[]) {
 		read_i2c(i2c, res3, mSize);
 		
 		for(int i = 0; i < mSize; i++){
-			printf("0x%02x ", res3[i]);
+			//printf("0x%02x ", res3[i]);
 			if(res3[i] == 0x40 && res3[i+1] == 0x10){
-				printf("RIGHT HERE SIR");
+				//i+2 is length, which is 12
+				//i+3, i+4, i+5, i+6 is one
+				// i+7, i+8, i+9 i+10 is two
+				// i+11, i+12, i+13, i+14 is three
+				
+				uint32_t tempx = (res3[i+3] << 24) | (res3[i+4] << 16) | (res3[i+5] << 8) | res3[i+6];
+				uint32_t tempy = (res3[i+7] << 24) | (res3[i+8] << 16) | (res3[i+9] << 8) | res3[i+10];
+				uint32_t tempz = (res3[i+11] << 24) | (res3[i+12] << 16) | (res3[i+13] << 8) | res3[i+14];
+				
+				float dVx = *((float*) &tempx);
+				float dVy = *((float*) &tempy);
+				float dVz = *((float*) &tempz);
+				
+				printf("X: %f, Y: %f, Z: %f\n", dVx, dVy, dVz);
 			}
 		}
 		printf("\n");
