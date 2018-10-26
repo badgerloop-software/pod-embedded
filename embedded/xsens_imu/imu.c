@@ -33,18 +33,18 @@ void SetupIMU(){
 	}
 
 	//Set all IMU structure values to zero
-	i2c->dVx = 0;
-	i2c->dVy = 0;
-	i2c->dVz = 0;
+	data->dVx = 0;
+	data->dVy = 0;
+	data->dVz = 0;
 
-	i2c->accelX = 0;
-	i2c->accelY = 0;
-	i2c->accelZ = 0;
+	data->accelX = 0;
+	data->accelY = 0;
+	data->accelZ = 0;
 
-	i2c->q0 = 0;
-	i2c->q1 = 0;
-	i2c->q2 = 0;
-	i2c->q3 = 0;
+	data->q0 = 0;
+	data->q1 = 0;
+	data->q2 = 0;
+	data->q3 = 0;
 }
 
 void IMULoop(void * some_void_ptr){
@@ -82,14 +82,14 @@ void IMULoop(void * some_void_ptr){
 				uint32_t tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
 
 				//Convert into float values
-				i2c->dVx = * ((float *) &tempx);
-				i2c->dVy = * ((float *) &tempy);
-				i2c->dVz = * ((float *) &tempz);
+				data->dVx = * ((float *) &tempx);
+				data->dVy = * ((float *) &tempy);
+				data->dVz = * ((float *) &tempz);
 
 				//Time increment is 10ms, convert deltaV into accel
-				i2c->accelX = i2c->dVx / 0.01;
-				i2c->accelY = i2c->dVy / 0.01;
-				i2c->accelZ = i2c->dVz / 0.01;
+				data->accelX = data->dVx / 0.01;
+				data->accelY = data->dVy / 0.01;
+				data->accelZ = data->dVz / 0.01;
 
 			}
 
@@ -100,10 +100,10 @@ void IMULoop(void * some_void_ptr){
 				uint32_t tempq2 = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
 				uint32_t tempq3 = (dataBuffer[i + 15] << 24) | (dataBuffer[i + 16] << 16) | (dataBuffer[i + 17] << 8) | dataBuffer[i + 18];
 
-				i2c->q0 = * ((float *) &tempq0);
-				i2c->q1 = * ((float *) &tempq1);
-				i2c->q2 = * ((float *) &tempq2);
-				i2c->q3 = * ((float *) &tempq3);
+				data->q0 = * ((float *) &tempq0);
+				data->q1 = * ((float *) &tempq1);
+				data->q2 = * ((float *) &tempq2);
+				data->q3 = * ((float *) &tempq3);
 
 			}
 
@@ -118,41 +118,41 @@ void IMULoop(void * some_void_ptr){
 }
 
 float getDeltaVX(){
-	return i2c->dVx;
+	return data->dVx;
 }
 
 float getDeltaVY(){
-	return i2c->dVy;
+	return data->dVy;
 }
 
 float getDeltaVZ(){
-	return i2c->dVz;
+	return data->dVz;
 }
 
 float getAccelX(){
-	return i2c->accelX;
+	return data->accelX;
 }
 
 float getAccelY(){
-	return i2c->accelY;
+	return data->accelY;
 }
 
 float getAccelZ(){
-	return i2c->accelZ;
+	return data->accelZ;
 }
 
 float getOrientationQ0(){
-	return i2c->q0;
+	return data->q0;
 }
 
 float getOrientationQ1(){
-	return i2c->q1;
+	return data->q1;
 }
 
 float getOrientationQ2(){
-	return i2c->q2;
+	return data->q2;
 }
 
 float getOrientationQ3(){
-	return i2c->q3;
+	return data->q3;
 }
