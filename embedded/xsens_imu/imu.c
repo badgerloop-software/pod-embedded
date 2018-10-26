@@ -51,23 +51,19 @@ void IMULoop(void *some_void_ptr){
 			
 			// Get Data
 			write_byte_i2c(i2c, DATA_REG);
-			unsigned char res3[mSize];
-			read_i2c(i2c, res3, mSize);
+			unsigned char dataBuffer[mSize];
+			read_i2c(i2c, dataBuffer, mSize);
 			
 			for(int i = 0; i < mSize; i++){
-				//printf("0x%02x ", res3[i]);
+				//printf("0x%02x ", dataBuffer[i]);
 				
 				// 0x40 and 0x10 identifiers for deltaV data
-				if(res3[i] == 0x40 && res3[i+1] == 0x10){
-					//i+2 is length, which is 12 (so far, todo is to make it check)
-					//i+3, i+4, i+5, i+6 is one
-					// i+7, i+8, i+9 i+10 is two
-					// i+11, i+12, i+13, i+14 is three
+				if(dataBuffer[i] == 0x40 && dataBuffer[i+1] == 0x10 && dataBuffer[i+2] == 0x0C){
 					
 					//Load data into 32-bit unsigned integers
-					uint32_t tempx = (res3[i+3] << 24) | (res3[i+4] << 16) | (res3[i+5] << 8) | res3[i+6];
-					uint32_t tempy = (res3[i+7] << 24) | (res3[i+8] << 16) | (res3[i+9] << 8) | res3[i+10];
-					uint32_t tempz = (res3[i+11] << 24) | (res3[i+12] << 16) | (res3[i+13] << 8) | res3[i+14];
+					uint32_t tempx = (dataBuffer[i+3] << 24) | (dataBuffer[i+4] << 16) | (dataBuffer[i+5] << 8) | dataBuffer[i+6];
+					uint32_t tempy = (dataBuffer[i+7] << 24) | (dataBuffer[i+8] << 16) | (dataBuffer[i+9] << 8) | dataBuffer[i+10];
+					uint32_t tempz = (dataBuffer[i+11] << 24) | (dataBuffer[i+12] << 16) | (dataBuffer[i+13] << 8) | dataBuffer[i+14];
 					
 					//Convert into float values
 					data->dVx = *((float*) &tempx);
@@ -80,6 +76,9 @@ void IMULoop(void *some_void_ptr){
 					data->accelZ = data->dVz / 0.01;
 					
 				}
+				
+				
+				
 			}
 			
 			//IMU Time Increment (10 ms)
