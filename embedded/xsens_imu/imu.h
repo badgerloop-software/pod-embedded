@@ -34,6 +34,11 @@ float getDeltaVZ();
 float getAccelX();
 float getAccelY();
 float getAccelZ();
+
+float getOrientationQ0();
+float getOrientationQ1();
+float getOrientationQ2();
+float getOrientationQ3();
  
 
 #endif

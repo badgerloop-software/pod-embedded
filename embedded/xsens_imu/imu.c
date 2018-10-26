@@ -137,3 +137,19 @@ float getAccelY(){
 float getAccelZ(){
 	return data->accelZ;
 }
+
+float getOrientationQ0(){
+	return data->q0;
+}
+
+float getOrientationQ1(){
+	return data->q1;
+}
+
+float getOrientationQ2(){
+		return data->q2;
+}
+
+float getOrientationQ3(){
+		return data->q3;
+}
