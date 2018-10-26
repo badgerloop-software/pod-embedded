@@ -6,8 +6,6 @@
 
 #include "i2c.h"
 
-int res, daddress;
-
 int i2c_begin(i2c_settings *i2c) {
 	char filename[20];
 	sprintf(filename, "/dev/i2c-%d", i2c->bus);
@@ -25,8 +23,8 @@ int i2c_begin(i2c_settings *i2c) {
 }
 
 int write_byte_i2c(i2c_settings *i2c, unsigned char reg) {
-	res = i2c_smbus_write_byte(i2c->fd, reg);
-	if (res < 0) {
+	int response = i2c_smbus_write_byte(i2c->fd, reg);
+	if (response < 0) {
 		fprintf(stderr, "I2C write byte error\n");
 		return 1;
 	}
