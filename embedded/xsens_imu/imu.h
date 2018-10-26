@@ -16,6 +16,12 @@ typedef struct {
 	float accelY;
 	float accelZ;
 	
+	//Orientation data (Quaternions) 
+	float q0;
+	float q1;
+	float q2;
+	float q3;
+	
 } IMU_data;
 
 void SetupIMU();

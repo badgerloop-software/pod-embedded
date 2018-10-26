@@ -57,8 +57,8 @@ void IMULoop(void *some_void_ptr){
 			for(int i = 0; i < mSize; i++){
 				//printf("0x%02x ", dataBuffer[i]);
 				
-				// 0x40 and 0x10 identifiers for deltaV data
-				if(dataBuffer[i] == 0x40 && dataBuffer[i+1] == 0x10 && dataBuffer[i+2] == 0x0C){
+				//Check delta velocity
+				if(i + 14 < mSize && dataBuffer[i] == 0x40 && dataBuffer[i+1] == 0x10 && dataBuffer[i+2] == 0x0C){
 					
 					//Load data into 32-bit unsigned integers
 					uint32_t tempx = (dataBuffer[i+3] << 24) | (dataBuffer[i+4] << 16) | (dataBuffer[i+5] << 8) | dataBuffer[i+6];
@@ -77,7 +77,19 @@ void IMULoop(void *some_void_ptr){
 					
 				}
 				
-				
+				//Check orientation
+				if(i + 18 < mSize && dataBuffer[i] == 0x80 && dataBuffer[i+1] == 0x30 && dataBuffer[i+2] == 0x10){
+					uint32_t tempq0 = (dataBuffer[i+3] << 24) | (dataBuffer[i+4] << 16) | (dataBuffer[i+5] << 8) | dataBuffer[i+6];
+					uint32_t tempq1 = (dataBuffer[i+7] << 24) | (dataBuffer[i+8] << 16) | (dataBuffer[i+9] << 8) | dataBuffer[i+10];
+					uint32_t tempq2 = (dataBuffer[i+11] << 24) | (dataBuffer[i+12] << 16) | (dataBuffer[i+13] << 8) | dataBuffer[i+14];
+					uint32_t tempq3 = (dataBuffer[i+15] << 24) | (dataBuffer[i+16] << 16) | (dataBuffer[i+17] << 8) | dataBuffer[i+18];
+					
+					data->q0 = *((float*) &tempq0);
+					data->q1 = *((float*) &tempq1);
+					data->q2 = *((float*) &tempq2);
+					data->q3 = *((float*) &tempq3);
+					
+				}
 				
 			}
 			
