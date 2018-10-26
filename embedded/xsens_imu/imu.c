@@ -29,6 +29,19 @@ void SetupIMU(){
 		fprintf(stderr, "Error creating IMU thread\n");
 	}
 	
+	//Set all IMU structure values to zero
+	data->dVx = 0;
+	data->dVy = 0;
+	data->dVz = 0;
+	
+	data->accelX = 0;
+	data->accelY = 0;
+	data->accelZ = 0;
+	
+	data->q0 = 0;
+	data->q1 = 0;
+	data->q2 = 0;
+	data->q3 = 0;
 }
 
 void IMULoop(void *some_void_ptr){
