@@ -1,7 +1,7 @@
 /*
 * i2c.h
-*  Author: Rohan Daruwala
-*  Based on work by: gijs
+* Author: Rohan Daruwala
+* Based on work by: gijs
 */
 
 #ifndef I2C_H

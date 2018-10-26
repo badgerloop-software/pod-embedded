@@ -1,3 +1,8 @@
+/*
+* imu.h
+* Author: Rohan Daruwala
+*/
+
 #ifndef IMU_H
 #define IMU_H
 
