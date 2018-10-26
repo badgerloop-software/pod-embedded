@@ -1,10 +1,8 @@
 CC            = gcc
 CFLAGS        = -Wall -Wextra
+LIBS          = -lpthread
 
 all: test
-
-core.o: lib/core.c
-				$(CC) $(CFLAGS) -c $(INCLUDE) $<
 
 i2c.o: lib/i2c.c lib/i2c-dev.h
 				$(CC) $(CFLAGS) -c $(INCLUDE) $<
@@ -12,7 +10,10 @@ i2c.o: lib/i2c.c lib/i2c-dev.h
 imu.o: imu.c
 				$(CC) $(CFLAGS) -c $(INCLUDE) $<
 				
-test: core.o i2c.o imu.o
+test.o: test.c
+				$(CC) $(CFLAGS) -c $(INCLUDE) $<
+				
+test: i2c.o imu.o test.o
 				$(CC) $^ $(LIBS) -o test
 
 clean:

@@ -1,35 +1,31 @@
 /*
- * i2c.h
- *
- *  Created on: Jun 7, 2015
- *      Author: gijs
- */
+* i2c.h
+*  Author: Rohan Daruwala
+*  Based on work by: gijs
+*/
 
-#ifndef I2C_H_
-#define I2C_H_
+#ifndef I2C_H
+#define I2C_H
 
 #include <fcntl.h>
-#include <errno.h>
-#include <signal.h>
 #include "i2c-dev.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/ioctl.h>
-//#include <linux/i2c.h>
-//#include <linux/i2c-dev.h>
-
-typedef enum {
-	i2c0 = 0, i2c1 = 1
-} i2c;
 
 typedef struct {
 	int fd;
-	i2c i2cnr;
+	int bus;
 	int deviceAddress;
 	int openMode;
-} i2c_properties;
+} i2c_settings;
 
-extern int open_i2c(i2c_properties *i2c);
-extern int write_byte_i2c(i2c_properties *i2c, unsigned char reg);
-extern int write_data_i2c(i2c_properties *i2c, unsigned char reg, char value);
-extern int read_i2c(i2c_properties *i2c, unsigned char *readBuffer, int bufferSize);
+
+
+
+int i2c_begin(i2c_settings *i2c);
+int write_byte_i2c(i2c_settings *i2c, unsigned char reg);
+int write_data_i2c(i2c_settings *i2c, unsigned char reg, char value);
+int read_i2c(i2c_settings *i2c, unsigned char *readBuffer, int bufferSize);
 
 #endif /* I2C_H_ */
