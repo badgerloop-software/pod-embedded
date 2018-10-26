@@ -57,7 +57,7 @@ void IMULoop(void * some_void_ptr){
 		//Get buffer sizes
 		//int notifSize = res1[0] | res1[1] << 8;
 
-		int mSize = res1[2] | res1[3] << 8;
+		uint16_t mSize = res1[2] | res1[3] << 8;
 
 		//Notification buffer, ignoring for now
 		/*
