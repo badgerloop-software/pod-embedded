@@ -76,11 +76,16 @@ int main(int argc, char *argv[]) {
 				uint32_t tempy = (res3[i+7] << 24) | (res3[i+8] << 16) | (res3[i+9] << 8) | res3[i+10];
 				uint32_t tempz = (res3[i+11] << 24) | (res3[i+12] << 16) | (res3[i+13] << 8) | res3[i+14];
 				
+				//Time increment is 10ms
 				float dVx = *((float*) &tempx);
 				float dVy = *((float*) &tempy);
 				float dVz = *((float*) &tempz);
 				
-				printf("X: %f, Y: %f, Z: %f\n", dVx, dVy, dVz);
+				float accelX = dVx / 0.01;
+				float accelY = dVy / 0.01;
+				float accelZ = dVz / 0.01;
+				
+				printf("X: %f, Y: %f, Z: %f\n", accelX, accelY, accelZ);
 			}
 		}
 		printf("\n");
