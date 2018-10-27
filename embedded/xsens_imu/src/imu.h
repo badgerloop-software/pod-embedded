@@ -10,6 +10,8 @@
 #define STATUS_REG 0x04
 #define DATA_REG 0x06
 
+#include <semaphore.h> 
+
 typedef struct {
 	//Delta velocity
 	float dVx;
@@ -26,6 +28,9 @@ typedef struct {
 	float q1;
 	float q2;
 	float q3;
+	
+	// Mutex
+	sem_t mutex;
 	
 } IMU_data;
 
