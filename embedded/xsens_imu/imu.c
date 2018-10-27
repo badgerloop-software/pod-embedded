@@ -2,6 +2,7 @@
 * imu.c
 * Author: Rohan Daruwala
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -54,20 +55,14 @@ void SetupIMU(){
 void *IMULoop(){
 
 	while (1){
+		
+		//Get message length size
 		write_byte_i2c(i2c, STATUS_REG);
 		unsigned char res1[4];
 		read_i2c(i2c, res1, 4);
 
-		//Get buffer sizes
-		//int notifSize = res1[0] | res1[1] << 8;
-
 		uint16_t mSize = res1[2] | res1[3] << 8;
 
-		//Notification buffer, ignoring for now
-		/*
-		write_byte_i2c(i2c, 0x05);
-		unsigned char res2[notifSize];
-		read_i2c(i2c, res2, notifSize);*/
 
 		// Get Data
 		write_byte_i2c(i2c, DATA_REG);

@@ -29,4 +29,4 @@ int write_byte_i2c(i2c_settings *i2c, unsigned char reg);
 int write_data_i2c(i2c_settings *i2c, unsigned char reg, char value);
 int read_i2c(i2c_settings *i2c, unsigned char *readBuffer, int bufferSize);
 
-#endif /* I2C_H_ */
+#endif 
