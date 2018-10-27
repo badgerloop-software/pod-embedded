@@ -14,7 +14,7 @@ int main() {
 			// How to get data values using individual value pull functions
 			printf("Delta X: %f, Delta Y: %f, Delta Z: %f\n", getDeltaVX() , getDeltaVY(), getDeltaVZ());
 			printf("Accel X: %f, Accel Y: %f, Accel Z: %f\n", getAccelX(), getAccelY(), getAccelZ());
-			printf("Quat q0: %f, Quat q1: %f, Quat q2: %f, Quat q3: %f\n", getOrientationQ0(), getOrientationQ1(), getOrientationQ2(), getOrientationQ3());
+			printf("Quat q0: %f, Quat q1: %f, Quat q2: %f, Quat q3: %f\n", getOrientationDeltaQ0(), getOrientationDeltaQ1(), getOrientationDeltaQ2(), getOrientationDeltaQ3());
 		}
 		else{
 			// How to get all data values at a time 

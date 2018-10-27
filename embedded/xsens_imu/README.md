@@ -27,10 +27,15 @@ float getAccelY();
 float getAccelZ();
 
 void getDeltaOrientationData(float *fData);
-float getOrientationQ0();
-float getOrientationQ1();
-float getOrientationQ2();
-float getOrientationQ3();
+float getOrientationdDeltaQ0();
+float getOrientationDeltaQ1();
+float getOrientationDeltaQ2();
+float getOrientationDeltaQ3();
 ```
 	
 An example using all of these functions has been provided. 
+
+
+### Notes:
+
+This currently assumes that you are running on the I2C-2 bus (Meaning that sensors are plugged in on the `P9_19` and `P9_20` pins).

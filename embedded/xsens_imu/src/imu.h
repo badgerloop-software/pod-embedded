@@ -43,10 +43,10 @@ float getAccelY();
 float getAccelZ();
 
 void getDeltaOrientationData(float *fData);
-float getOrientationQ0();
-float getOrientationQ1();
-float getOrientationQ2();
-float getOrientationQ3();
+float getOrientationDeltaQ0();
+float getOrientationDeltaQ1();
+float getOrientationDeltaQ2();
+float getOrientationDeltaQ3();
  
 
 #endif

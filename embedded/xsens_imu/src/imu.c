@@ -187,28 +187,28 @@ float getAccelZ(){
 	return ans;
 }
 
-float getOrientationQ0(){
+float getOrientationDeltaQ0(){
 	sem_wait(&oMutex);
 	float ans = data->q0;
 	sem_post(&oMutex);
 	return ans;
 }
 
-float getOrientationQ1(){
+float getOrientationDeltaQ1(){
 	sem_wait(&oMutex);
 	float ans = data->q1;
 	sem_post(&oMutex);
 	return ans;
 }
 
-float getOrientationQ2(){
+float getOrientationDeltaQ2(){
 	sem_wait(&oMutex);
 	float ans = data->q2;
 	sem_post(&oMutex);
 	return ans;
 }
 
-float getOrientationQ3(){
+float getOrientationDeltaQ3(){
 	sem_wait(&oMutex);
 	float ans = data->q3;
 	sem_post(&oMutex);
