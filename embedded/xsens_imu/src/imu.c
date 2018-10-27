@@ -55,11 +55,11 @@ void *IMULoop(){
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
 	uint32_t tempq0, tempq1, tempq2, tempq3;
-	int iterator;
+	int i;
 
 	while (1){
 		
-		iterator = 0;
+		i = 0;
 		
 		// Information on data registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_datasheet.pdf
 
@@ -74,7 +74,7 @@ void *IMULoop(){
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
 
-		while(iterator++ < messageSize){
+		while(i++ < messageSize){
 			//Check delta velocity
 			if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
 
