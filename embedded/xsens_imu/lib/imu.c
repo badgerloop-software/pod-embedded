@@ -10,7 +10,7 @@
 #include <semaphore.h> 
 #include <unistd.h>
 #include "imu.h"
-#include "lib/i2c.h"
+#include "i2c.h"
 
 //Global Variables
 IMU_data * data;

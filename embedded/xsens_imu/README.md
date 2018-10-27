@@ -16,9 +16,6 @@ setupIMU();
 Next, you can pull data by using any of the following functions:
 
 ```
-void SetupIMU();
-void *IMULoop();
-
 void getDeltaVData(float *fData);
 float getDeltaVX();
 float getDeltaVY();
