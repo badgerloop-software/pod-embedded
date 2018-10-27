@@ -30,7 +30,7 @@ typedef struct {
 } IMU_data;
 
 void SetupIMU();
-void IMULoop(void *some_void_ptr);
+void *IMULoop();
 
 void getDeltaVData(float *fData);
 float getDeltaVX();

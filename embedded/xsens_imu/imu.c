@@ -51,7 +51,7 @@ void SetupIMU(){
 	data->q3 = 0;
 }
 
-void IMULoop(void * some_void_ptr){
+void *IMULoop(){
 
 	while (1){
 		write_byte_i2c(i2c, STATUS_REG);
