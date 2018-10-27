@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <pthread.h>
+#include <semaphore.h> 
 #include <unistd.h>
 #include "imu.h"
 #include "lib/i2c.h"
@@ -14,8 +15,11 @@
 IMU_data * data;
 i2c_settings * i2c;
 pthread_t IMUThread;
+sem_t vMutex, oMutex;
 
 void SetupIMU(){
+	sem_init(&vMutex, 0, 1);
+	sem_init(&oMutex, 0, 1);
 	i2c = malloc(sizeof(i2c_settings));
 	i2c->bus = 2;
 	i2c->deviceAddress = I2C_ADDRESS;
@@ -81,6 +85,7 @@ void IMULoop(void * some_void_ptr){
 				uint32_t tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
 				uint32_t tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
 
+				sem_wait(&vMutex);
 				//Convert into float values
 				data->dVx = * ((float *) &tempx);
 				data->dVy = * ((float *) &tempy);
@@ -90,6 +95,7 @@ void IMULoop(void * some_void_ptr){
 				data->accelX = data->dVx / 0.01;
 				data->accelY = data->dVy / 0.01;
 				data->accelZ = data->dVz / 0.01;
+				sem_post(&vMutex);
 
 			}
 
@@ -100,10 +106,12 @@ void IMULoop(void * some_void_ptr){
 				uint32_t tempq2 = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
 				uint32_t tempq3 = (dataBuffer[i + 15] << 24) | (dataBuffer[i + 16] << 16) | (dataBuffer[i + 17] << 8) | dataBuffer[i + 18];
 
+				sem_wait(&oMutex);
 				data->q0 = * ((float *) &tempq0);
 				data->q1 = * ((float *) &tempq1);
 				data->q2 = * ((float *) &tempq2);
 				data->q3 = * ((float *) &tempq3);
+				sem_post(&oMutex);
 
 			}
 
@@ -117,42 +125,93 @@ void IMULoop(void * some_void_ptr){
 
 }
 
+float *getDeltaVData(){
+	sem_wait(&vMutex);
+	float toReturn[3] = {data->dVx, data->dVy, data->dVz};
+	sem_post(&vMutex);
+	return toReturn;
+}
+
+float *getAccelData(){
+	sem_wait(&vMutex);
+	float toReturn[3] = {data->accelX, data->accelY, data->accelZ};
+	sem_post(&vMutex);
+	return toReturn;
+}
+
+float *getDeltaOrientationData(){
+	sem_wait(&oMutex);
+	float toReturn[4] = {data->q0, data->q1, data->q2, data->q3};
+	sem_post(&oMutex);
+	return toReturn;
+}
+
 float getDeltaVX(){
-	return data->dVx;
+	sem_wait(&vMutex);
+	float ans = data->dVx;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getDeltaVY(){
-	return data->dVy;
+	sem_wait(&vMutex);
+	float ans = data->dVy;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getDeltaVZ(){
-	return data->dVz;
+	sem_wait(&vMutex);
+	float ans = data->dVz;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getAccelX(){
-	return data->accelX;
+	sem_wait(&vMutex);
+	float ans = data->accelX;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getAccelY(){
-	return data->accelY;
+	sem_wait(&vMutex);
+	float ans = data->accelY;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getAccelZ(){
-	return data->accelZ;
+	sem_wait(&vMutex);
+	float ans = data->accelZ;
+	sem_post(&vMutex);
+	return ans;
 }
 
 float getOrientationQ0(){
-	return data->q0;
+	sem_wait(&oMutex);
+	float ans = data->q0;
+	sem_post(&oMutex);
+	return ans;
 }
 
 float getOrientationQ1(){
-	return data->q1;
+	sem_wait(&oMutex);
+	float ans = data->q1;
+	sem_post(&oMutex);
+	return ans;
 }
 
 float getOrientationQ2(){
-	return data->q2;
+	sem_wait(&oMutex);
+	float ans = data->q2;
+	sem_post(&oMutex);
+	return ans;
 }
 
 float getOrientationQ3(){
-	return data->q3;
+	sem_wait(&oMutex);
+	float ans = data->q3;
+	sem_post(&oMutex);
+	return ans;
 }

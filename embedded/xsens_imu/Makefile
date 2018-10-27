@@ -1,6 +1,6 @@
 CC            = gcc
 CFLAGS        = -Wall -Wextra
-LIBS          = -lpthread
+LIBS          = -lpthread -lrt
 
 all: test
 
