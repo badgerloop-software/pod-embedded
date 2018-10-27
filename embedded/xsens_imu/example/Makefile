@@ -4,10 +4,10 @@ LIBS          = -lpthread -lrt
 
 all: test
 
-i2c.o: ../lib/i2c.c ../lib/i2c-dev.h
+i2c.o: ../src/i2c.c ../src/i2c-dev.h
 				$(CC) $(CFLAGS) -c $(INCLUDE) $<
 
-imu.o: ../lib/imu.c
+imu.o: ../src/imu.c
 				$(CC) $(CFLAGS) -c $(INCLUDE) $<
 				
 test.o: test.c
