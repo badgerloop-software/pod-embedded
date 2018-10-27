@@ -17,8 +17,6 @@ i2c_settings * i2c;
 pthread_t IMUThread;
 
 void SetupIMU(){
-	sem_init(&data->mutex, 0, 1);
-	sem_init(&data->mutex, 0, 1);
 	i2c = malloc(sizeof(i2c_settings));
 	i2c->bus = 2;
 	i2c->deviceAddress = I2C_ADDRESS;
@@ -48,6 +46,8 @@ void SetupIMU(){
 	data->q1 = 0;
 	data->q2 = 0;
 	data->q3 = 0;
+	
+	sem_init(&data->mutex, 0, 1);
 }
 
 void *IMULoop(){
@@ -55,8 +55,11 @@ void *IMULoop(){
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
 	uint32_t tempq0, tempq1, tempq2, tempq3;
+	int iterator;
 
 	while (1){
+		
+		iterator = 0;
 		
 		// Information on data registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_datasheet.pdf
 
@@ -71,9 +74,9 @@ void *IMULoop(){
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
 
-		for (int i = 0; i < messageSize; i++){
+		while(iterator++ < messageSize){
 			//Check delta velocity
-			if (i + 14 < messageSize &&dataBuffer[i] == 0x40 &&dataBuffer[i + 1] == 0x10 &&dataBuffer[i + 2] == 0x0C){
+			if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
 
 				//Load data into 32-bit unsigned integers
 				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
@@ -95,7 +98,7 @@ void *IMULoop(){
 			}
 
 			//Check orientation
-			if (i + 18 < messageSize &&dataBuffer[i] == 0x80 &&dataBuffer[i + 1] == 0x30 &&dataBuffer[i + 2] == 0x10){
+			if (i + 18 < messageSize && dataBuffer[i] == 0x80 && dataBuffer[i + 1] == 0x30 && dataBuffer[i + 2] == 0x10){
 				tempq0 = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
 				tempq1 = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
 				tempq2 = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
@@ -109,7 +112,6 @@ void *IMULoop(){
 				sem_post(&data->mutex);
 
 			}
-
 		}
 
 		//IMU Time Increment (10 ms)
