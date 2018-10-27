@@ -32,17 +32,17 @@ typedef struct {
 void SetupIMU();
 void IMULoop(void *some_void_ptr);
 
-float *getDeltaVData();
+void getDeltaVData(float *fData);
 float getDeltaVX();
 float getDeltaVY();
 float getDeltaVZ();
 
-float *getAccelData();
+void getAccelData(float *fData);
 float getAccelX();
 float getAccelY();
 float getAccelZ();
 
-float *getDeltaOrientationData();
+void getDeltaOrientationData(float *fData);
 float getOrientationQ0();
 float getOrientationQ1();
 float getOrientationQ2();

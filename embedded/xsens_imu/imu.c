@@ -125,25 +125,29 @@ void IMULoop(void * some_void_ptr){
 
 }
 
-float *getDeltaVData(){
+void getDeltaVData(float *fData){
 	sem_wait(&vMutex);
-	float toReturn[3] = {data->dVx, data->dVy, data->dVz};
+	fData[0] = data->dVx;
+	fData[1] = data->dVy;
+	fData[2] = data->dVz;
 	sem_post(&vMutex);
-	return toReturn;
 }
 
-float *getAccelData(){
+void getAccelData(float *fData){
 	sem_wait(&vMutex);
-	float toReturn[3] = {data->accelX, data->accelY, data->accelZ};
+	fData[0] = data->accelX;
+	fData[1] = data->accelY;
+	fData[2] = data->accelZ;
 	sem_post(&vMutex);
-	return toReturn;
 }
 
-float *getDeltaOrientationData(){
+void getDeltaOrientationData(float *fData){
 	sem_wait(&oMutex);
-	float toReturn[4] = {data->q0, data->q1, data->q2, data->q3};
+	fData[0] = data->q0;
+	fData[1] = data->q1;
+	fData[2] = data->q2;
+	fData[3] = data->q3;
 	sem_post(&oMutex);
-	return toReturn;
 }
 
 float getDeltaVX(){
