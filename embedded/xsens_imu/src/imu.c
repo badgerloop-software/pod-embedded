@@ -74,7 +74,7 @@ void *IMULoop(){
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
 
-		while(i++ < messageSize){
+		while(i < messageSize){
 			//Check delta velocity
 			if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
 
@@ -112,6 +112,8 @@ void *IMULoop(){
 				sem_post(&data->mutex);
 
 			}
+			
+			i++;
 		}
 
 		//IMU Time Increment (10 ms)
