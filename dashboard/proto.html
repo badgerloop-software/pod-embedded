@@ -181,6 +181,10 @@
       </div>
     </div>
   </div>
+  <div class="col-xs grid-sizer">
+    <button class="btn btn-primary btn-lg generateLineChart" onclick="generateLineChart('test', 'Random Points', 'line')">Generate Test Line Chart</button>
+    <div id="div1"></div>
+  </div>
 </div>
 <script>
   var ctx = document.getElementById("myChart");
@@ -300,4 +304,6 @@
   <script src="./node_modules/draggabilly/draggabilly.js"></script> -->
   <script src="./public/javascripts/bootstrap.js"></script>
   <script src="./public/javascripts/terminal.js"></script>
+  <script src="./public/javascripts/plotly-latest.min.js"></script>
+  <script src="./public/javascripts/generateLineChart.js"></script>
 </body>
