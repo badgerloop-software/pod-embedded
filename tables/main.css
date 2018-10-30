@@ -84,9 +84,6 @@ h4 {
 .banner_dropdown:hover .banner_dropdown-content {
   display: block;
 }
-.banner_dropdown img {
-  padding-top: 10px;
-}
 
 
 /* grid layout */
