@@ -90,7 +90,7 @@ h4 {
 .grid {
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: 32.5vw 32.5vw 32.5vw;
+  grid-template-columns: 31.5vw 31.5vw 31.5vw;
   padding-top: 200px;
   padding-left: 30px;
   padding-right: 30px;
