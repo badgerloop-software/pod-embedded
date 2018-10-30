@@ -1,40 +1,6 @@
+/* general styling */
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.grid {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 32.5vw 32.5vw 32.5vw;
-}
-
-.box {
-  font-family: Verdana, Tahoma, sans-serif;
-  height: 500px;
-  margin: 5px;
-  z-index: 1;
-  background-color: #fff;
-  color: black;
-}
-
-.box-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.ok {
-  border-color: #C8EEC4;
-  border-style: solid;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.error {
-  border-color: #FC6962;
-  border-style: solid;
-  border-radius: 10px;
-  padding: 10px;
 }
 
 h1 {
@@ -49,37 +15,115 @@ h4 {
   box-sizing: border-box;
 }
 
-input {
-  background-image: url('/css/searchicon.png');
-  background-position: 10px 10px;
-  background-repeat: no-repeat;
-  width: 100%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
+/* grid layout */
+.grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 32.5vw 32.5vw 32.5vw;
+}
+/* makes so that on smaller screens the grid layout switches to 1x1 on smaller screens */
+@media only screen and (min-width: 900px) { 
+  #header {
+    grid-column: 1/4;
+    grid-row: 1;
+    height: 300px;
+  }
+  #motion {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  #braking {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #battery_pack {
+    grid-column: 3;
+    grid-row: 2;
+  }
+}
+@media only screen and (max-width: 899px) {
+  #header {
+    grid-column: 1/4;
+    grid-row: 1;
+    height: 300px;
+  }
+  #motion {
+    grid-column: 1/4;
+    grid-row: 2;
+  }
+  #braking {
+    grid-column: 1/4;
+    grid-row: 3;
+  }
+  #battery_pack {
+    grid-column: 3;
+    grid-row: 4;
+  }
 }
 
+/* Box's styling */
+.box {
+  font-family: Verdana, Tahoma, sans-serif;
+  height: 500px;
+  margin: 5px;
+  z-index: 1;
+  background-color: #fff;
+  color: black;
+}
+.box-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ok {
+  border-color: #C8EEC4;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+.error {
+  border-color: #FC6962;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* input field styling */
+input {
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  width: 100%;
+  margin-bottom: 12px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+input:focus {
+  outline: 3px solid #ddd;
+}
+
+/* table styling */
 table {
   border-collapse: collapse;
   width: 100%;
   border: 1px solid #ddd;
   font-size: 18px;
 }
-
 table th, table td {
   text-align: left;
   padding: 12px;
 }
-
 table tr {
   border-bottom: 1px solid #ddd;
 }
-
 table tr.header, table tr:hover {
   background-color: #f1f1f1;
 }
 
+/* dropdown styling */
 .dropbtn {
   background-color:#fff;
   border: none;
@@ -95,31 +139,15 @@ table tr.header, table tr:hover {
   border-radius: 6px;
   max-height: 75px;
 }
-
 .dropbtn:hover, .dropbtn:focus {
   background-color: #C8EEC4;
   color: white;
 }
-
-input {
-  background-image: url('searchicon.png');
-  background-position: 14px 12px;
-  background-repeat: no-repeat;
-  background-size: 20px;
-  font-size: 16px;
-  padding: 14px 20px 12px 45px;
-  border: none;
-  border-bottom: 1px solid #ddd;
-}
-
-input:focus {outline: 3px solid #ddd;}
-
 .dropdown {
   position: relative;
   display: inline-block;
   padding-bottom: 85px;
 }
-
 .dropdown-content {
   display: none;
   position: absolute;
@@ -130,37 +158,20 @@ input:focus {outline: 3px solid #ddd;}
   z-index: 1;
   height: 300px;
 }
-
 .dropdown-content a {
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
-
 .dropdown-content a:nth-child(odd) {
   background-color: white;
   ;
 }
+.dropdown a:hover {
+  background-color: #ddd;
+}
+.show {
+  display: block;
+}
 
-.dropdown a:hover {background-color: #ddd;}
-
-.show {display: block;}
-
-#header {
-  grid-column: 1/4;
-  grid-row: 1;
-  height: 300px;
-}
-#motion {
-  grid-column: 1;
-  grid-row: 2;
-}
-#braking {
-  grid-column: 2;
-  grid-row: 2;
-}
-#battery_pack {
-  grid-column: 3;
-  grid-row: 2;
-}

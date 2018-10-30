@@ -1,3 +1,4 @@
+//search for motion table
 function searchmotion() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("motioninput");
@@ -15,6 +16,8 @@ function searchmotion() {
       }
     }
   }
+
+  //search for braking table
   function searchbreak() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("brakinginput");
@@ -33,6 +36,7 @@ function searchmotion() {
     }
   }
 
+  //search for battery table
   function search_battery_pack() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("battery_pack_input");
@@ -51,6 +55,7 @@ function searchmotion() {
     }
   }
   
+  //random generator, and highlightng (need to fix div outline highlighting to be more effective)
   setInterval(function(){
     var i, v, w;
     for (i=0; i< 100; i++) {
@@ -82,6 +87,7 @@ function searchmotion() {
     }
 }, 300);
 
+//dropdown code
 function dropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
@@ -100,6 +106,7 @@ function filterFunction() {
     }
 }
 
+//clones table entry to table in header (currently IP)
 function cloneRow1() {
     var row = document.getElementById("primarytank"); // find row to copy
     var table = document.getElementById("tableToModify"); // find table to append to
