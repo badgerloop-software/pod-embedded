@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+
+  <body>
+    <div class="grid">
+
+          <div id="header" class="box ok">
+          <div class="dropdown">
+            <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
+              <div id="myDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <a href="" onclick="cloneRow1();">Secondary Tank (PSI)</a>
+                <a href="" onclick="cloneRow1();">Secondary Line (PSI)</a>
+                <a href="" onclick="cloneRow1();">Secondary Actuation (PSI)</a>
+                <a href="" onclick="cloneRow1();">Primary Tank (PSI)</a>
+                <a href="" onclick="cloneRow1();">Primary Line (PSI)</a>
+                <a href="" onclick="cloneRow1();">Primary Actuation (PSI)</a>
+                <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
+                <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
+                <a href="" onclick="cloneRow1();">Current Pressure (PSI)</a>
+                <a href="" onclick="cloneRow2();">Stopping Distance (m)</a>
+                <a href="" onclick="cloneRow2();">Retro</a>
+                <a href="" onclick="cloneRow2();">Position (m)</a>
+                <a href="" onclick="cloneRow2();">Velocity (m/s)</a>
+                <a href="" onclick="cloneRow2();">Acceleration (m/s<sup>2</sup>)</a>
+              </div>
+            </div>
+            <table id="tableToModify">
+              <tr class="header">
+                <th>Value</th>
+                <th>Min</th>
+                <th>Actual</th>
+                <th>Max</th>
+              </tr>
+            </table>
+          </div>
+
+          <div id="motion" class="box ok">
+            <div class="item-content">
+              <h1>Motion</h1>
+              <input type="text" id="motioninput" onkeyup="searchmotion()" placeholder="Search for values.." title="Type in a value">
+              <table id="motion">
+                <tr class="header">
+                  <th>Value</th>
+                  <th>Min</th>
+                  <th>Actual</th>
+                  <th>Max</th>
+                </tr>
+                <tr>
+                  <td>Stopping Distance (m)</td>
+                  <td>x</td>
+                  <td class="rand"></td>
+                  <td>x</td>
+                </tr>
+                <tr>
+                    <td>Retro</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Position (m)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Velocity (m/s)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Acceleration (m/s<sup>2</sup>)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div id="braking" class="box ok">
+            <div class="item-content">
+              <h1>Braking & Pressures</h1>
+              <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
+              <table id="braking">
+                  <tr class="header">
+                    <th>Value</th>
+                    <th>Min</th>
+                    <th>Actual</th>
+                    <th>Max</th>
+                  </tr>
+                  <tr>
+                    <td>Secondary Tank (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Secondary Line (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Secondary Actuation (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr id="primarytank">
+                    <td>Primary Tank (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Primary Line (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Primary Actuation (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Pressure Vessel Pressure (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                  <tr>
+                    <td>Current Pressure (PSI)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                  </tr>
+                </table>
+            </div>
+          </div>
+
+          <div id="battery_pack" class="box ok">
+            <div class="item-content">
+              <h1>Battery Pack</h1>
+              <input type="text" id="battery_pack_input" onkeyup="search_battery_pack()" placeholder="Search for values.." title="Type in a value">
+              <table id="battery_pack">
+                <tr class="header">
+                  <th>Value</th>
+                  <th>Min</th>
+                  <th>Actual</th>
+                  <th>Max</th>
+                </tr>
+                <tr>
+                  <td>Pack Voltage (V)</td>
+                  <td>x</td>
+                  <td class="rand"></td>
+                  <td>x</td>
+                </tr>
+                <tr>
+                    <td>Pack Current (A)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Pack SOC (%)</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+                <tr>
+                    <td>Pack AH</td>
+                    <td>x</td>
+                    <td class="rand"></td>
+                    <td>x</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+    </div>
+
+    <script src="main.js"></script>
+
+  </body>
+
+</html>
