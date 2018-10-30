@@ -2,15 +2,12 @@
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
 h1 {
-  color: gray;
+  color: gray;g
 }
-
 h4 {
   font-size: 20px;
 }
-
 * {
   box-sizing: border-box;
 }
