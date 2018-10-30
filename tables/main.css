@@ -47,7 +47,7 @@ h4 {
   font-size: 25px;
 }
 
-/* banner dropdown (need to make always on top of grid) */
+/* banner dropdown (need to fix, bit hard to get opened) */
 .banner_dropdown {
   float: right;
   overflow: hidden;
@@ -91,7 +91,7 @@ h4 {
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 31.5vw 31.5vw 31.5vw;
-  padding-top: 200px;
+  padding-top: 80px;
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -227,7 +227,6 @@ table tr.header, table tr:hover {
   min-width: 230px;
   overflow: auto;
   border: 1px solid #ddd;
-  z-index: 1;
   height: 300px;
 }
 .dropdown-content a {
