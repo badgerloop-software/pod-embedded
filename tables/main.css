@@ -139,7 +139,6 @@ h4 {
 .box {
   height: 500px;
   margin: 5px;
-  z-index: 1;
   background-color: #fff;
   color: black;
 }
