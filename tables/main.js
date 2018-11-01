@@ -85,7 +85,7 @@ function searchmotion() {
         document.getElementsByClassName("rand")[i].bgColor = '#fff';
       }
     }
-}, 300);
+  }, 300);
 
 //dropdown code
 function dropdown() {
