@@ -115,5 +115,4 @@ function cloneRow1() {
     table.appendChild(clone); // add new row to end of table
   }
 
-
-
+ 
