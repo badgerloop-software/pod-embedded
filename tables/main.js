@@ -114,5 +114,4 @@ function cloneRow1() {
     clone.id = "newID"; // change id or other attributes/contents
     table.appendChild(clone); // add new row to end of table
   }
-
  

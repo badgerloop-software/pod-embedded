@@ -250,6 +250,7 @@ table tr.header, table tr:hover {
   display: block;
 }
 
+/* styling for pop-up modal */
 .modal {
   position: fixed;
   left: 0;
@@ -269,7 +270,8 @@ table tr.header, table tr:hover {
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 1rem 1.5rem;
-  width: 24rem;
+  width: 50vw;
+  height: 60vh;
   border-radius: 0.5rem;
 }
 .close-button {
