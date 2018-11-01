@@ -3,17 +3,17 @@
   <head>
     <link rel="stylesheet" type="text/css" href="main.css">
     <script src="main.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="plotly.js"></script>
   </head>
 
   <body>
     <div class="banner">
-      <a class="left"><img src="logo.png" height="30px"></a>
+      <a class="left"><img src="images/logo.png" height="30px"></a>
       <a class="left">Control Dashboard</a>
       <a class="right">
         <div class="banner_dropdown">
           <button class="banner_dropbtn">Change View</button>
-          <img src="dropdown.png" height="12px">
+          <img src="images/dropdown.png" height="12px">
           <div class="banner_dropdown-content">
             <a href="#">Terminal</a>
             <a href="#">Charts</a>
@@ -164,6 +164,7 @@
         </div>
       </div>
 
+      
       <div id="battery_pack" class="box ok">
         <div class="item-content">
           <h1>Battery Pack</h1>
@@ -214,7 +215,7 @@
 
     </div>
 
-    <script> 
+    <script> //pop-up modal code
       var modal = document.querySelector(".modal");
       var trigger = document.querySelector(".trigger");
       var closeButton = document.querySelector(".close-button");
@@ -233,7 +234,8 @@
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
     </script>
-    <script>
+
+    <script> //plotly.js graph code (using external link for data, need to connect to random generator and later actual data feed)
         Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_apple_stock.csv", function(err, rows){
           function unpack(rows, key) {
           return rows.map(function(row) { return row[key]; });
