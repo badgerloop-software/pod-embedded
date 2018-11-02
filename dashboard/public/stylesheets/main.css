@@ -1,0 +1,295 @@
+/* import montserrat font (need to make local) */
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+/* general styling */
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+}
+h1 {
+  color: gray;
+}
+h4 {
+  font-size: 20px;
+}
+* {
+  box-sizing: border-box;
+}
+
+/* banner styling */
+.banner {
+  overflow: hidden;
+  background-color: gray;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+.banner .left {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+  font-size: 25px;
+}
+.banner .right {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 30px;
+  font-size: 25px;
+}
+
+/* banner dropdown (need to fix, bit hard to get opened) */
+.banner_dropdown {
+  float: right;
+  overflow: hidden;
+}
+.banner_dropdown .banner_dropbtn {
+  font-size: 25px;    
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  height: 100%;
+}
+.banner_dropdown-content {
+  display: none;
+  position: fixed;
+  top: 66px;
+  background-color: #f9f9f9;
+  width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000 !important;
+}
+.banner_dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+.banner_dropdown-content a:hover {
+  background-color: #ddd;
+}
+.banner_dropdown:hover .banner_dropdown-content {
+  display: block;
+}
+.banner_dropdown img {
+  padding-top: 10px;
+}
+
+/* grid layout */
+.grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 31.5vw 31.5vw 31.5vw;
+  padding-top: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+/* makes so that on smaller screens the grid layout switches to 1x1 on smaller screens */
+@media only screen and (min-width: 900px) { 
+  #header {
+    grid-column: 1/4;
+    grid-row: 1;
+    height: 300px;
+  }
+  #motion {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  #braking {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #battery_pack {
+    grid-column: 3;
+    grid-row: 2;
+  }
+}
+@media only screen and (max-width: 899px) {
+  #header {
+    grid-column: 1/4;
+    grid-row: 1;
+    height: 300px;
+  }
+  #motion {
+    grid-column: 1/4;
+    grid-row: 2;
+  }
+  #braking {
+    grid-column: 1/4;
+    grid-row: 3;
+  }
+  #battery_pack {
+    grid-column: 3;
+    grid-row: 4;
+  }
+}
+
+/* Box's styling */
+.box {
+  height: 500px;
+  margin: 5px;
+  background-color: #fff;
+  color: black;
+}
+.box-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ok {
+  border-color: #C8EEC4;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+.error {
+  border-color: #FC6962;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* input field styling */
+input {
+  background-image: url('images/searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  width: 100%;
+  margin-bottom: 12px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+input:focus {
+  outline: 3px solid #ddd;
+}
+
+/* table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+table th, table td {
+  text-align: left;
+  padding: 12px;
+}
+table tr {
+  border-bottom: 1px solid #ddd;
+}
+table tr.header, table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* dropdown styling */
+.dropbtn {
+  background-color:#D3D3D3;
+  border: none;
+  color: #808080;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  max-height: 75px;
+}
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #A9A9A9;
+  color: black;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 50px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  height: 300px;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:nth-child(odd) {
+  background-color: white;
+  ;
+}
+.dropdown a:hover {
+  background-color: #ddd;
+}
+.show {
+  display: block;
+}
+
+/* styling for pop-up modal */
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  width: 50vw;
+  height: 65vh;
+  border-radius: 0.5rem;
+}
+.close-button {
+  float: right;
+  width: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  background-color: lightgray;
+}
+.close-button:hover {
+  background-color: darkgray;
+}
+.show-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}

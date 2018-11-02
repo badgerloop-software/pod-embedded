@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
+    <script src="public/javascripts/main.js"></script>
+    <script src="public/javascripts/plotly.js"></script>
+    <title>Badgerloop Pod IV Dashboard</title>
+  </head>
+
+  <body>
+    <div class="banner">
+      <a class="left"><img src="public/images/logo.png" height="30px"></a>
+      <a class="left">Control Dashboard</a>
+      <a class="right">
+        <div class="banner_dropdown">
+          <button class="banner_dropbtn">Change View</button>
+          <img src="public/images/dropdown.png" height="25px">
+          <div class="banner_dropdown-content">
+            <a href="#">Terminal</a>
+            <a href="#">Charts</a>
+            <a href="#">Custom</a>
+          </div>
+        </div> 
+      </a>
+    </div>
+
+    <div class="grid">
+
+      <div id="header" class="box ok">
+      <div class="dropdown">
+        <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
+          <div id="myDropdown" class="dropdown-content">
+            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+            <a href="" onclick="cloneRow1();">Secondary Tank (PSI)</a>
+            <a href="" onclick="cloneRow1();">Secondary Line (PSI)</a>
+            <a href="" onclick="cloneRow1();">Secondary Actuation (PSI)</a>
+            <a href="" onclick="cloneRow1();">Primary Tank (PSI)</a>
+            <a href="" onclick="cloneRow1();">Primary Line (PSI)</a>
+            <a href="" onclick="cloneRow1();">Primary Actuation (PSI)</a>
+            <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
+            <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
+            <a href="" onclick="cloneRow1();">Current Pressure (PSI)</a>
+            <a href="" onclick="cloneRow2();">Stopping Distance (m)</a>
+            <a href="" onclick="cloneRow2();">Retro</a>
+            <a href="" onclick="cloneRow2();">Position (m)</a>
+            <a href="" onclick="cloneRow2();">Velocity (m/s)</a>
+            <a href="" onclick="cloneRow2();">Acceleration (m/s<sup>2</sup>)</a>
+          </div>
+        </div>
+        <table id="tableToModify">
+          <tr class="header">
+            <th>Value</th>
+            <th>Min</th>
+            <th>Actual</th>
+            <th>Max</th>
+          </tr>
+        </table>
+      </div>
+
+      <div id="motion" class="box ok">
+        <div class="item-content">
+          <h1>Motion</h1>
+          <input type="text" id="motioninput" onkeyup="searchmotion()" placeholder="Search for values.." title="Type in a value">
+          <table id="motion">
+            <tr class="header">
+              <th>Value</th>
+              <th>Min</th>
+              <th>Actual</th>
+              <th>Max</th>
+            </tr>
+            <tr>
+              <td><a class="trigger">Stopping Distance (m)</a></td>
+              <td>x</td>
+              <td class="rand"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+                <td>Retro</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>Position (m)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>Velocity (m/s)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>Acceleration (m/s<sup>2</sup>)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div id="braking" class="box ok">
+        <div class="item-content">
+          <h1>Braking & Pressures</h1>
+          <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
+          <table id="braking">
+              <tr class="header">
+                <th>Value</th>
+                <th>Min</th>
+                <th>Actual</th>
+                <th>Max</th>
+              </tr>
+              <tr>
+                <td>Secondary Tank (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Secondary Line (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Secondary Actuation (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr id="primarytank">
+                <td>Primary Tank (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Primary Line (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Primary Actuation (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Pressure Vessel Pressure (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+              <tr>
+                <td>Current Pressure (PSI)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+              </tr>
+            </table>
+        </div>
+      </div>
+
+      
+      <div id="battery_pack" class="box ok">
+        <div class="item-content">
+          <h1>Battery Pack</h1>
+          <input type="text" id="battery_pack_input" onkeyup="search_battery_pack()" placeholder="Search for values.." title="Type in a value">
+          <table id="battery_pack">
+            <tr class="header">
+              <th>Value</th>
+              <th>Min</th>
+              <th>Actual</th>
+              <th>Max</th>
+            </tr>
+            <tr>
+              <td>Pack Voltage (V)</td>
+              <td>x</td>
+              <td class="rand"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+                <td>Pack Current (A)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>Pack SOC (%)</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>Pack AH</td>
+                <td>x</td>
+                <td class="rand"></td>
+                <td>x</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close-button">×</span>
+          <h1>Stopping Distance (m)</h1>
+          <a></a>
+          <div id="myDiv"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script> //pop-up modal code
+      var modal = document.querySelector(".modal");
+      var trigger = document.querySelector(".trigger");
+      var closeButton = document.querySelector(".close-button");
+        
+      function toggleModal() {
+        modal.classList.toggle("show-modal");
+      }
+        
+      function windowOnClick(event) {
+        if (event.target === modal) {
+          toggleModal();
+        }
+      }
+        
+      trigger.addEventListener("click", toggleModal);
+      closeButton.addEventListener("click", toggleModal);
+      window.addEventListener("click", windowOnClick);
+    </script>
+
+    <script> //plotly.js graph code (using external link for data, need to connect to random generator and later actual data feed)
+        Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_apple_stock.csv", function(err, rows){
+          function unpack(rows, key) {
+          return rows.map(function(row) { return row[key]; });
+          }
+
+          var frames = []
+          var x = unpack(rows, 'AAPL_x')
+          var y = unpack(rows, 'AAPL_y')
+
+          var n = 100;
+          for (var i = 0; i < n; i++) {
+            frames[i] = {data: [{x: [], y: []}]}
+            frames[i].data[0].x = x.slice(0, i+1);
+            frames[i].data[0].y = y.slice(0, i+1);
+          }
+
+          Plotly.plot('myDiv', [{
+            x: frames[1].data[0].x,
+            y: frames[1].data[0].y,
+            fill: 'tozeroy',
+            type: 'scatter',
+            mode: 'lines',
+            line: {color: 'green'}
+          }], {
+            title: "Filled-Area Animation",
+            xaxis: {
+              type: 'date',
+              range: [
+                frames[99].data[0].x[0],
+                frames[99].data[0].x[99]
+              ]
+            },
+            yaxis: {
+              range: [
+                0,
+                90
+              ]
+            },
+            updatemenus: [{
+              x: 0.1,
+              y: 0,
+              yanchor: "top",
+              xanchor: "right",
+              showactive: false,
+              direction: "left",
+              type: "buttons",
+              pad: {"t": 87, "r": 10},
+              buttons: [{
+                method: "animate",
+                args: [null, {
+                  fromcurrent: true,
+                  transition: {
+                    duration: 0,
+                  },
+                  frame: {
+                    duration: 40,
+                    redraw: false
+                  }
+                }],
+                label: "Play"
+              }, {
+                method: "animate",
+                args: [
+                  [null],
+                  {
+                    mode: "immediate",
+                    transition: {
+                      duration: 0
+                    },
+                    frame: {
+                      duration: 0,
+                      redraw: false
+                    }
+                  }
+                ],
+                label: "Pause"
+              }]
+            }]
+          }).then(function() {
+            Plotly.addFrames('myDiv', frames);
+          });
+
+          })
+      </script>
+
+  </body>
+
+</html>

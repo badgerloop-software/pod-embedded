@@ -1,1 +1,5 @@
-# Badgerloop's Pod 4 Operator Dashboard
+# Pod 4 Dashboard
+*Author: Eric Udlis, Luke Houge*
+
+## npm install
+## npm start

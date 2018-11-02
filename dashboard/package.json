@@ -1,36 +1,24 @@
 {
   "name": "podivdashboard",
   "version": "1.0.0",
+  "description": "The Dashboard for Badgerloop Pod 4",
   "main": "app.js",
   "scripts": {
-    "start": " electron ."
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badgerloop-software/pod.git"
+  },
+  "author": "Eric Udlis",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/badgerloop-software/pod/issues"
+  },
+  "homepage": "https://github.com/badgerloop-software/pod#readme",
+  "devDependencies": {
+    "electron": "^3.0.5"
   },
   "dependencies": {
-    "compress": "*",
-    "dgram": "*",
-    "dotenv": "*",
-    "draggabilly": "^2.2.0",
-    "errorhandler": "*",
-    "events": "*",
-    "express": "*",
-    "express-handlebars": "*",
-    "express-session": "*",
-    "express-validator": "*",
-    "fs": "*",
-    "jquery": "^3.3.1",
-    "jquery-bridget": "^2.0.1",
-    "morgan": "*",
-    "packery": "^2.1.2",
-    "path": "*",
-    "underscore": "*",
-    "url": "^0.11.0"
-  },
-  "devDependencies": {
-    "@types/packery": "^1.4.31",
-    "chai": "^3.5.0",
-    "electron": "^3.0.2",
-    "mocha": "^5.2.0",
-    "supertest": "^3.3.0"
-  },
-  "license": "MIT"
+  }
 }
