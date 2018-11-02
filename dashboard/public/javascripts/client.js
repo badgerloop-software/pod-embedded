@@ -15,7 +15,7 @@ server.on('listening', function () {
 });
 
 server.on('message', function (message, remote) {
-    console.log(remote.address + ':' + remote.port + ' - ' + message);
+    // console.log(remote.address + ':' + remote.port + ' - ' + message);
     if (message == "ping") {
         recievedEmitter.emit("heartbeat");
     } else {
@@ -23,7 +23,7 @@ server.on('message', function (message, remote) {
         inData = JSON.parse(message);
         //console.log(inData);
         module.exports.inData = inData;
-        console.log(module.exports.inData)
+        // console.log(module.exports.inData)
         // console.log(module.exports.inData);
         recievedEmitter.emit('dataIn');
     }

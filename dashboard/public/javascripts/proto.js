@@ -68,19 +68,22 @@ comms.on('heartbeat', function () {
 });
 
 comms.on('dataIn', function () {
-    console.log("dataIn - Event Recieved")
-    di.updateData(client.inData);
+    console.log("dataIn - Event Recieved");
+    console.log(client.inData);
+    di.updateData(client.inData.data);
 });
 
 di.updater.on('updateData', () => {
-    var startDate = new Date();
-    var startTime = startDate.getMilliseconds();
+    // var startDate = new Date();
+    // var startTime = startDate.getMilliseconds();
     let groups = Object.keys(storedData);
     groups.forEach((group) => {
         let sensors = Object.keys(storedData[group]);
         sensors.forEach((sensor) => {
             try {
                 updateData(group, sensor);
+                var now = Date.now();
+                setAgeLabel(now - client.inData.age);
 
             } catch{
                 console.log("Unreconized Sensor- " + sensor) +" -Skipping";
@@ -88,10 +91,10 @@ di.updater.on('updateData', () => {
         });
     }
     )
-    var endDate = new Date();
-    var endTime = endDate.getMilliseconds();
-    var timeElasped = endTime - startTime;
-    console.log(timeElasped + " milliseconds elasped");
+    // var endDate = new Date();
+    // var endTime = endDate.getMilliseconds();
+    // var timeElasped = endTime - startTime;
+    // console.log(timeElasped + " milliseconds elasped");
 });
 
 function updateData(group, sensor) {
@@ -106,3 +109,7 @@ function updateData(group, sensor) {
         setSensorRed(sensor);
 }
 
+
+ function setAgeLabel(staleness){
+    d.getElementById('age').innerHTML = String(staleness);
+}

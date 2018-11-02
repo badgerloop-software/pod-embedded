@@ -51,7 +51,7 @@ function sendJSON(object){
 
 function sendTestData(){
     let testSocket = {
-        age: new Date().getUTCMilliseconds(),
+        age: Date.now(),
         data:{
             navigation : {
                 imu: getRandomValue(),
@@ -75,7 +75,7 @@ function sendTestData(){
 }
 
 
-setInterval(sendTestData, 10);
+setInterval(sendTestData, 1);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){
