@@ -23,6 +23,7 @@ h4 {
   position: fixed;
   top: 0;
   width: 100vw;
+  z-index: 1;
 }
 .banner .left {
   float: left;
@@ -96,6 +97,7 @@ h4 {
   padding-top: 80px;
   padding-left: 30px;
   padding-right: 30px;
+  padding-bottom: 30px;
 }
 
 /* makes so that on smaller screens the grid layout switches to 1x1 on smaller screens */
@@ -200,9 +202,9 @@ table tr.header, table tr:hover {
 
 /* dropdown styling */
 .dropbtn {
-  background-color:#fff;
+  background-color:#D3D3D3;
   border: none;
-  color: gray;
+  color: #808080;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -210,13 +212,13 @@ table tr.header, table tr:hover {
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 0.4s;
   cursor: pointer;
-  border: 2px solid #C8EEC4;
+  border: 2px solid #808080;
   border-radius: 6px;
   max-height: 75px;
 }
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #C8EEC4;
-  color: white;
+  background-color: #A9A9A9;
+  color: black;
 }
 .dropdown {
   position: relative;
@@ -270,7 +272,7 @@ table tr.header, table tr:hover {
   background-color: white;
   padding: 1rem 1.5rem;
   width: 50vw;
-  height: 60vh;
+  height: 65vh;
   border-radius: 0.5rem;
 }
 .close-button {
