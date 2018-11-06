@@ -5,6 +5,7 @@
     <script src="public/javascripts/main.js"></script>
     <script src="public/javascripts/plotly-latest.min.js"></script>
     <script src="public/javascripts/generateLineChart.js"></script>
+    <script src="public/javascripts/generateBlankChart.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -213,6 +214,7 @@
         <div class="item-content">
           <h1>Line Chart One</h1>
           <div id="lineChartOne"></div>
+          <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
         </div>  
       </div>
 
