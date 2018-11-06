@@ -3,7 +3,7 @@ function generateLineChart(id, tdID, title, chartType) {
     var xmax = 1000; //maximum x-axis range in seconds. Should be the total runtime
 
     var layout = {
-    xaxis: {range: [0, xmax]},
+    xaxis: {autorange: true},
     title: title,
     width: 450,
     height: 400,
@@ -17,10 +17,12 @@ function generateLineChart(id, tdID, title, chartType) {
 
     Plotly.newPlot(id, [{
         y:[data.getData(tdID)],
-        type: chartType
+        type: 'scatter',
+        mode: 'lines',
+        line: {color:'green'}
     }], layout);
 
-    var sampleRate = 50; // sample rate in ms per sample
+    var sampleRate = 300; // sample rate in ms per sample
 
     setInterval(function(){
         var currentData = data.getData(tdID);
