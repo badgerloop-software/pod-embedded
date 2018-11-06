@@ -1,5 +1,4 @@
-//module.exports = {
-function generateLineChart(id, title, chartType) {
+function generateLineChart(id, tdID, title, chartType) {
     var data = require("./public/javascripts/getData");
     var xmax = 1000; //maximum x-axis range in seconds. Should be the total runtime
 
@@ -16,21 +15,17 @@ function generateLineChart(id, title, chartType) {
       }
     };
 
-    document.getElementById("div1").style.height = "400px"
-    document.getElementById("div1").setAttribute("id", id);
-
     Plotly.newPlot(id, [{
-        y:[data.getData()],
+        y:[data.getData(tdID)],
         type: chartType
     }], layout);
 
     var sampleRate = 50; // sample rate in ms per sample
 
     setInterval(function(){
-        var currentData = data.getData();
+        var currentData = data.getData(tdID);
         Plotly.extendTraces(id,{ y:[[currentData]]}, [0]);
     }, sampleRate);
 }
-//}
 
     

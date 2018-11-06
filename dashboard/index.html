@@ -3,7 +3,9 @@
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
     <script src="public/javascripts/main.js"></script>
-    <script src="public/javascripts/plotly.js"></script>
+    <script src="public/javascripts/plotly-latest.min.js"></script>
+    <script src="public/javascripts/generateLineChart.js"></script>
+    <script src="public/javascripts/generateBlankChart.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -67,6 +69,8 @@
               <th>Min</th>
               <th>Actual</th>
               <th>Max</th>
+              <th>One</th>
+              <th>Two</th>
             </tr>
             <tr>
               <td><a class="trigger">Stopping Distance (m)</a></td>
@@ -77,8 +81,9 @@
             <tr>
                 <td>Retro</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td id = "dataRetro" class="rand"></td>
                 <td>x</td>
+                <td><button onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">One</button></td>
             </tr>
             <tr>
                 <td>Position (m)</td>
@@ -203,6 +208,21 @@
             </tr>
           </table>
         </div>
+      </div>
+
+      <div id="lineChart" class="lineChart">
+        <div class="item-content">
+          <h1>Line Chart One</h1>
+          <div id="lineChartOne"></div>
+          <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
+        </div>  
+      </div>
+
+      <div id="lineChart" class="lineChart">
+        <div class="item-content">
+          <h1>Line Chart Two</h1>
+          <div id="lineChartTwo"></div>
+        </div>  
       </div>
 
       <div class="modal">

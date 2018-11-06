@@ -19,6 +19,5 @@
   "devDependencies": {
     "electron": "^3.0.5"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

@@ -165,6 +165,18 @@ h4 {
   padding: 10px;
 }
 
+/* line chart styling */
+.lineChart {
+  height: 500px;
+  margin: 5px;
+  background-color: #fff;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+  color: black;
+}
+
 /* input field styling */
 input {
   background-image: url('../images/searchicon.png');
