@@ -167,7 +167,7 @@ h4 {
 
 /* input field styling */
 input {
-  background-image: url('images/searchicon.png');
+  background-image: url('../images/searchicon.png');
   background-position: 14px 12px;
   background-repeat: no-repeat;
   background-size: 20px;
