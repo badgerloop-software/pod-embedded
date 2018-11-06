@@ -19,12 +19,10 @@ server.on('message', function (message, remote) {
     if (message == "ping") {
         recievedEmitter.emit("heartbeat");
     } else {
-        
+        //Takes in the JSON and exports
         inData = JSON.parse(message);
-        //console.log(inData);
         module.exports.inData = inData;
-        // console.log(module.exports.inData)
-        // console.log(module.exports.inData);
+        //Emit to proto.js that data has been recieved
         recievedEmitter.emit('dataIn');
     }
 });

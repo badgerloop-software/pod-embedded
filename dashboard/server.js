@@ -74,7 +74,7 @@ function sendTestData(){
     sendJSON(testSocket);
 }
 
-
+//The line where test data is sent. setInterval(function, ms)
 setInterval(sendTestData, 1);
 
 function sendData(data){

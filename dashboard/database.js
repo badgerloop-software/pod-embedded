@@ -6,18 +6,18 @@ module.exports = {
         RMS: false
     },
     braking: {
-        solenoids: [0],
-        brakePadTemps: [0],
-        brakeGood: [255]
+        solenoids: [],
+        brakePadTemps: [],
+        brakeGood: []
     },
     navigation : {
-        imu: [123],
-        encoder: [321],
-        retro: [132] 
+        imu: [],
+        encoder: [],
+        retro: [] 
     },
     pressureVessel: {
-        pressure: [13],
-        airQuality: [23],
-        paranormal: [0]
+        pressure: [],
+        airQuality: [],
+        paranormal: []
     }
 }

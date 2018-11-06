@@ -67,12 +67,17 @@ comms.on('heartbeat', function () {
     console.log("Heartbeat Recieved");
 });
 
+
+//Data in recieved
 comms.on('dataIn', function () {
     console.log("dataIn - Event Recieved");
+    //Log it to be sure
     console.log(client.inData);
+    //Tell the Data Interfacer to start sorting it ... On a second look I could scrap this middleman altogether, I'll look into this
     di.updateData(client.inData.data);
 });
 
+//Render command
 di.updater.on('updateData', () => {
     // var startDate = new Date();
     // var startTime = startDate.getMilliseconds();
@@ -80,13 +85,15 @@ di.updater.on('updateData', () => {
     groups.forEach((group) => {
         let sensors = Object.keys(storedData[group]);
         sensors.forEach((sensor) => {
+            //Check to see if that particular sensors is being rendered at the time
             try {
                 updateData(group, sensor);
                 var now = Date.now();
                 setAgeLabel(now - client.inData.age);
 
             } catch{
-                console.log("Unreconized Sensor- " + sensor) +" -Skipping";
+                //If not, alert the user and move on
+                console.log("Unreconized Sensor- " + sensor +" -Skipping");
             }
         });
     }
@@ -98,11 +105,14 @@ di.updater.on('updateData', () => {
 });
 
 function updateData(group, sensor) {
-    let t = document.getElementById(String(sensor));
-    let tMin = Number(document.getElementById(String(sensor + "Min")).innerHTML);
-    let tMax = Number(document.getElementById(String(sensor + "Max")).innerHTML);
+    // Get numbers
+    let t = d.getElementById(String(sensor));
+    let tMin = Number(d.getElementById(String(sensor + "Min")).innerHTML);
+    let tMax = Number(d.getElementById(String(sensor + "Max")).innerHTML);
     let stored = storedData[group][sensor];
-    document.getElementById(String(sensor)).innerHTML = String(stored[stored.length - 1]);
+    //Set numbers
+    d.getElementById(String(sensor)).innerHTML = String(stored[stored.length - 1]);
+    //Add warning if necessary
     if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
         setSensorGreen(sensor);
     } else
