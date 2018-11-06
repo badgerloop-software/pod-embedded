@@ -305,3 +305,27 @@ table tr.header, table tr:hover {
   transform: scale(1.0);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+
+/* connection status styling */
+.connected{
+  border-color: #C8EEC4;
+  color: #C8EEC4;
+}
+.connected span2 {
+  display: none;
+}
+.disconnected{
+  border-color: #FC6962;
+  color: #FC6962;
+}
+.disconnected span1 {
+  display: none;
+}
+#breaking_status, #motion_status, #battery_status {
+  border-radius: 8px;
+  border-style: solid;
+  padding: 4px;
+  display: inline;
+  text-align: right;
+}
+

@@ -55,35 +55,111 @@ function searchmotion() {
     }
   }
   
-  //random generator, and highlightng (need to fix div outline highlighting to be more effective)
+//random generator for motion
   setInterval(function(){
-    var i, v, w;
-    for (i=0; i< 100; i++) {
-      v= Math.floor((Math.random()*100)+1);
-      document.getElementsByClassName("rand")[i].innerHTML = v;
-      w = 0
-      if (v < 10) {
-        document.getElementsByClassName("rand")[i].bgColor = '#FC6962';
+    var w=0;
+    for (i=1; i< 6; i++){
+      var x = document.getElementById("motion").rows[i].cells;
+      var y = Math.floor((Math.random()*100)+1) //change to data input
+      x[2].innerHTML =  y;
+      if (y<10) {
+        x[2].style.backgroundColor = '#FC6962';
         w++;
-        if (i < 6) {
-          document.getElementById("motion").className = "error";
-        }
-        else if (i > 6) {
-          document.getElementById("braking").className = "error";
-        }
       }
-      else if (v > 90) {
-        document.getElementsByClassName("rand")[i].bgColor = '#C8EEC4';
-        if (i < 6) {
-          document.getElementById("motion").className = "ok";
-        }
-        else if (i > 6) {
-          document.getElementById("braking").className = "ok";
-        }
+      else if (y>90) {
+        x[2].style.backgroundColor = '#C8EEC4';
       }
       else {
-        document.getElementsByClassName("rand")[i].bgColor = '#fff';
+        x[2].style.backgroundColor = '#fff';
       }
+    }
+    if (w != 0) {
+      document.getElementById("motion_div").className = "error";
+      w=0;
+    }
+    else {
+      document.getElementById("motion_div").className = "ok"; 
+      w=0;
+    }
+    //dummy function for status, 1= connected, 2= disconected
+    var c = Math.floor((Math.random()*2)+1)
+    if (c == 1) {
+      document.getElementById("motion_status").className = "connected"; 
+    }
+    if (c == 2) {
+      document.getElementById("motion_status").className = "disconnected"; 
+    }
+  }, 300);
+
+  //random generator for braking and pressures
+  setInterval(function(){
+    var w=0;
+    for (i=1; i< 9; i++){
+      var x = document.getElementById("braking").rows[i].cells;
+      var y = Math.floor((Math.random()*100)+1) //change to data input
+      x[2].innerHTML =  y;
+      if (y<10) {
+        x[2].style.backgroundColor = '#FC6962';
+        w++;
+      }
+      else if (y>90) {
+        x[2].style.backgroundColor = '#C8EEC4';
+      }
+      else {
+        x[2].style.backgroundColor = '#fff';
+      }
+    }
+    if (w != 0) {
+      document.getElementById("braking_div").className = "error";
+      w=0;
+    }
+    else {
+      document.getElementById("braking_div").className = "ok"; 
+      w=0;
+    }
+    //dummy function for status, 1= connected, 2= disconected
+    var c = Math.floor((Math.random()*2)+1)
+    if (c == 1) {
+      document.getElementById("breaking_status").className = "connected"; 
+    }
+    if (c == 2) {
+      document.getElementById("breaking_status").className = "disconnected"; 
+    }
+  }, 300);
+
+  //random generator for battery
+  setInterval(function(){
+    var w=0;
+    for (i=1; i< 5; i++){
+      var x = document.getElementById("battery_pack").rows[i].cells;
+      var y = Math.floor((Math.random()*100)+1) //change to data input
+      x[2].innerHTML =  y;
+      if (y<10) {
+        x[2].style.backgroundColor = '#FC6962';
+        w++;
+      }
+      else if (y>90) {
+        x[2].style.backgroundColor = '#C8EEC4';
+      }
+      else {
+        x[2].style.backgroundColor = '#fff';
+      }
+    }
+    if (w != 0) {
+      document.getElementById("battery_pack_div").className = "error";
+      w=0;
+    }
+    else {
+      document.getElementById("battery_pack_div").className = "ok"; 
+      w=0;
+    }
+    //dummy function for status, 1= connected, 2= disconected
+    var c = Math.floor((Math.random()*2)+1)
+    if (c == 1) {
+      document.getElementById("battery_status").className = "connected"; 
+    }
+    if (c == 2) {
+      document.getElementById("battery_status").className = "disconnected"; 
     }
   }, 300);
 
@@ -114,4 +190,3 @@ function cloneRow1() {
     clone.id = "newID"; // change id or other attributes/contents
     table.appendChild(clone); // add new row to end of table
   }
- 
