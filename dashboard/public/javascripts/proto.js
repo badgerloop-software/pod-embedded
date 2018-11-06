@@ -110,8 +110,8 @@ function updateData(group, sensor) {
     let tMin = Number(d.getElementById(String(sensor + "Min")).innerHTML);
     let tMax = Number(d.getElementById(String(sensor + "Max")).innerHTML);
     let stored = storedData[group][sensor];
-    //Set numbers
-    d.getElementById(String(sensor)).innerHTML = String(stored[stored.length - 1]);
+    //Set number
+    t.innerHTML = String(stored[stored.length - 1]);
     //Add warning if necessary
     if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
         setSensorGreen(sensor);
