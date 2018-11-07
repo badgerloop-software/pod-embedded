@@ -3,7 +3,9 @@
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
     <script src="public/javascripts/main.js"></script>
-    <script src="public/javascripts/plotly.js"></script>
+    <script src="public/javascripts/plotly-latest.min.js"></script>
+    <script src="public/javascripts/generateLineChart.js"></script>
+    <script src="public/javascripts/generateBlankChart.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -57,9 +59,10 @@
         </table>
       </div>
 
-      <div id="motion" class="box ok">
+      <div id="motion_div" class="box ok">
         <div class="item-content">
-          <h1>Motion</h1>
+          <h1 style="display:inline;">Motion </h1>
+          <h2 id="motion_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="motioninput" onkeyup="searchmotion()" placeholder="Search for values.." title="Type in a value">
           <table id="motion">
             <tr class="header">
@@ -69,42 +72,43 @@
               <th>Max</th>
             </tr>
             <tr>
-              <td><a class="trigger">Stopping Distance (m)</a></td>
+              <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
               <td>x</td>
-              <td class="rand"></td>
+              <td></td>
               <td>x</td>
             </tr>
             <tr>
                 <td>Retro</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td id = "dataRetro"></td>
                 <td>x</td>
             </tr>
             <tr>
                 <td>Position (m)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
             <tr>
                 <td>Velocity (m/s)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
             <tr>
                 <td>Acceleration (m/s<sup>2</sup>)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
           </table>
         </div>
       </div>
 
-      <div id="braking" class="box ok">
+      <div id="braking_div" class="box ok">
         <div class="item-content">
-          <h1>Braking & Pressures</h1>
+          <h1 style="display:inline;">Motion </h1>
+          <h2 id="breaking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
           <table id="braking">
               <tr class="header">
@@ -116,49 +120,49 @@
               <tr>
                 <td>Secondary Tank (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Secondary Line (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Secondary Actuation (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr id="primarytank">
                 <td>Primary Tank (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Primary Line (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Primary Actuation (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Pressure Vessel Pressure (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Current Pressure (PSI)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
               </tr>
             </table>
@@ -166,9 +170,10 @@
       </div>
 
       
-      <div id="battery_pack" class="box ok">
+      <div id="battery_pack_div" class="box ok">
         <div class="item-content">
-          <h1>Battery Pack</h1>
+          <h1 style="display:inline;">Battery </h1>
+          <h2 id="battery_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="battery_pack_input" onkeyup="search_battery_pack()" placeholder="Search for values.." title="Type in a value">
           <table id="battery_pack">
             <tr class="header">
@@ -180,37 +185,41 @@
             <tr>
               <td>Pack Voltage (V)</td>
               <td>x</td>
-              <td class="rand"></td>
+              <td></td>
               <td>x</td>
             </tr>
             <tr>
                 <td>Pack Current (A)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
             <tr>
                 <td>Pack SOC (%)</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
             <tr>
                 <td>Pack AH</td>
                 <td>x</td>
-                <td class="rand"></td>
+                <td></td>
                 <td>x</td>
             </tr>
           </table>
         </div>
       </div>
 
+      
+
       <div class="modal">
         <div class="modal-content">
           <span class="close-button">×</span>
-          <h1>Stopping Distance (m)</h1>
-          <a></a>
-          <div id="myDiv"></div>
+            <div class="item-content">
+              <h1>Line Chart One</h1>
+              <div id="lineChartOne"></div>
+              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
+            </div>  
         </div>
       </div>
 
@@ -235,92 +244,6 @@
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
     </script>
-
-    <script> //plotly.js graph code (using external link for data, need to connect to random generator and later actual data feed)
-        Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_apple_stock.csv", function(err, rows){
-          function unpack(rows, key) {
-          return rows.map(function(row) { return row[key]; });
-          }
-
-          var frames = []
-          var x = unpack(rows, 'AAPL_x')
-          var y = unpack(rows, 'AAPL_y')
-
-          var n = 100;
-          for (var i = 0; i < n; i++) {
-            frames[i] = {data: [{x: [], y: []}]}
-            frames[i].data[0].x = x.slice(0, i+1);
-            frames[i].data[0].y = y.slice(0, i+1);
-          }
-
-          Plotly.plot('myDiv', [{
-            x: frames[1].data[0].x,
-            y: frames[1].data[0].y,
-            fill: 'tozeroy',
-            type: 'scatter',
-            mode: 'lines',
-            line: {color: 'green'}
-          }], {
-            title: "Filled-Area Animation",
-            xaxis: {
-              type: 'date',
-              range: [
-                frames[99].data[0].x[0],
-                frames[99].data[0].x[99]
-              ]
-            },
-            yaxis: {
-              range: [
-                0,
-                90
-              ]
-            },
-            updatemenus: [{
-              x: 0.1,
-              y: 0,
-              yanchor: "top",
-              xanchor: "right",
-              showactive: false,
-              direction: "left",
-              type: "buttons",
-              pad: {"t": 87, "r": 10},
-              buttons: [{
-                method: "animate",
-                args: [null, {
-                  fromcurrent: true,
-                  transition: {
-                    duration: 0,
-                  },
-                  frame: {
-                    duration: 40,
-                    redraw: false
-                  }
-                }],
-                label: "Play"
-              }, {
-                method: "animate",
-                args: [
-                  [null],
-                  {
-                    mode: "immediate",
-                    transition: {
-                      duration: 0
-                    },
-                    frame: {
-                      duration: 0,
-                      redraw: false
-                    }
-                  }
-                ],
-                label: "Pause"
-              }]
-            }]
-          }).then(function() {
-            Plotly.addFrames('myDiv', frames);
-          });
-
-          })
-      </script>
 
   </body>
 

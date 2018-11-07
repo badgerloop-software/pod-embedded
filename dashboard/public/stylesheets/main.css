@@ -165,9 +165,21 @@ h4 {
   padding: 10px;
 }
 
+/* line chart styling */
+.lineChart {
+  height: 500px;
+  margin: 5px;
+  background-color: #fff;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+  color: black;
+}
+
 /* input field styling */
 input {
-  background-image: url('images/searchicon.png');
+  background-image: url('../images/searchicon.png');
   background-position: 14px 12px;
   background-repeat: no-repeat;
   background-size: 20px;
@@ -185,7 +197,6 @@ input:focus {
 /* table styling */
 table {
   border-collapse: collapse;
-  width: 100%;
   border: 1px solid #ddd;
   font-size: 18px;
 }
@@ -198,6 +209,10 @@ table tr {
 }
 table tr.header, table tr:hover {
   background-color: #f1f1f1;
+}
+td.last {
+  width: 1px;
+  white-space: nowrap;
 }
 
 /* dropdown styling */
@@ -293,3 +308,27 @@ table tr.header, table tr:hover {
   transform: scale(1.0);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
+
+/* connection status styling */
+.connected{
+  border-color: #C8EEC4;
+  color: #C8EEC4;
+}
+.connected span2 {
+  display: none;
+}
+.disconnected{
+  border-color: #FC6962;
+  color: #FC6962;
+}
+.disconnected span1 {
+  display: none;
+}
+#breaking_status, #motion_status, #battery_status {
+  border-radius: 8px;
+  border-style: solid;
+  padding: 4px;
+  display: inline;
+  text-align: right;
+}
+
