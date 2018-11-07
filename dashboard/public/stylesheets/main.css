@@ -199,6 +199,7 @@ table {
   border-collapse: collapse;
   border: 1px solid #ddd;
   font-size: 18px;
+  width: 100%; /* remove for auto-sizing */
 }
 table th, table td {
   text-align: left;

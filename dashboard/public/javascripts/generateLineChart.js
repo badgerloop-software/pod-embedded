@@ -5,7 +5,7 @@ function generateLineChart(id, tdID, title, chartType) {
     var layout = {
     xaxis: {autorange: true},
     title: title,
-    width: 450,
+    width: 800,
     height: 400,
     margin: {
         l: 40,
