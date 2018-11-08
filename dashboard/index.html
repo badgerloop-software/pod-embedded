@@ -27,36 +27,59 @@
 
     <div class="grid">
 
-      <div id="header" class="box ok">
+      <div id="header1" class="box ok">
       <div class="dropdown">
         <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
           <div id="myDropdown" class="dropdown-content">
             <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-            <a href="" onclick="cloneRow1();">Secondary Tank (PSI)</a>
-            <a href="" onclick="cloneRow1();">Secondary Line (PSI)</a>
-            <a href="" onclick="cloneRow1();">Secondary Actuation (PSI)</a>
-            <a href="" onclick="cloneRow1();">Primary Tank (PSI)</a>
-            <a href="" onclick="cloneRow1();">Primary Line (PSI)</a>
-            <a href="" onclick="cloneRow1();">Primary Actuation (PSI)</a>
-            <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
-            <a href="" onclick="cloneRow1();">Pressure Vessel Pressure (PSI)</a>
-            <a href="" onclick="cloneRow1();">Current Pressure (PSI)</a>
-            <a href="" onclick="cloneRow2();">Stopping Distance (m)</a>
-            <a href="" onclick="cloneRow2();">Retro</a>
-            <a href="" onclick="cloneRow2();">Position (m)</a>
-            <a href="" onclick="cloneRow2();">Velocity (m/s)</a>
-            <a href="" onclick="cloneRow2();">Acceleration (m/s<sup>2</sup>)</a>
+            <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
+            <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
+            <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
+            <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
+            <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
+            <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
+            <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+            <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+            <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
+            <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
+            <a href="" onclick="clone('Retro');return false;">Retro</a>
+            <a href="" onclick="clone('Position');return false;">Position (m)</a>
+            <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
+            <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
           </div>
         </div>
-        <table id="tableToModify">
-          <tr class="header">
-            <th>Value</th>
-            <th>Min</th>
-            <th>Actual</th>
-            <th>Max</th>
-          </tr>
-        </table>
+        <div class="header_focus" id="header_focus_1">
+          <p id="header_label_1">Value Name</p>
+          <h1 id="header_value_1"></h1>
+        </div>
+        <div class="header_focus" id="header_focus_2">
+            <p id="header_label_2">Value Name</p>
+            <h1 id="header_value_2"></h1>
+          </div>
       </div>
+
+      <div id="header2" class="box ok">
+        <div class="dropdown">
+          <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
+            <div id="myDropdown" class="dropdown-content">
+              <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+              <a href="" onclick="clone();">Secondary Tank (PSI)</a>
+              <a href="" onclick="clone();">Secondary Line (PSI)</a>
+              <a href="" onclick="clone();">Secondary Actuation (PSI)</a>
+              <a href="" onclick="clone();">Primary Tank (PSI)</a>
+              <a href="" onclick="clone();">Primary Line (PSI)</a>
+              <a href="" onclick="clone();">Primary Actuation (PSI)</a>
+              <a href="" onclick="clone();">Pressure Vessel Pressure (PSI)</a>
+              <a href="" onclick="clone();">Pressure Vessel Pressure (PSI)</a>
+              <a href="" onclick="clone();">Current Pressure (PSI)</a>
+              <a href="" onclick="cloneRow2();">Stopping Distance (m)</a>
+              <a href="" onclick="cloneRow2();">Retro</a>
+              <a href="" onclick="cloneRow2();">Position (m)</a>
+              <a href="" onclick="cloneRow2();">Velocity (m/s)</a>
+              <a href="" onclick="cloneRow2();">Acceleration (m/s<sup>2</sup>)</a>
+            </div>
+          </div>
+        </div>
 
       <div id="motion_div" class="box ok">
         <div class="item-content">
@@ -73,32 +96,32 @@
             <tr>
               <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
               <td>x</td>
-              <td></td>
+              <td id="Stopping Distance'"></td>
               <td>x</td>
             </tr>
             <tr>
-                <td>Retro</td>
-                <td>x</td>
-                <td id = "dataRetro"></td>
-                <td>x</td>
+              <td>Retro</td>
+              <td>x</td>
+              <td id = "dataRetro"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Position (m)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Position (m)</td>
+              <td>x</td>
+              <td id="Position"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Velocity (m/s)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Velocity (m/s)</td>
+              <td>x</td>
+              <td id="Velocity"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Acceleration (m/s<sup>2</sup>)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Acceleration (m/s<sup>2</sup>)</td>
+              <td>x</td>
+              <td id="Acceleration"></td>
+              <td>x</td>
             </tr>
           </table>
         </div>
@@ -119,49 +142,49 @@
               <tr>
                 <td>Secondary Tank (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id='Secondary Tank'></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Secondary Line (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Secondary Line"></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Secondary Actuation (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Secondary Actuation"></td>
                 <td>x</td>
               </tr>
               <tr id="primarytank">
                 <td>Primary Tank (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Primary Tank"></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Primary Line (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Primary Line"</td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Primary Actuation (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Primary Actuation"></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Pressure Vessel Pressure (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Pressure Vessel Pressure"></td>
                 <td>x</td>
               </tr>
               <tr>
                 <td>Current Pressure (PSI)</td>
                 <td>x</td>
-                <td></td>
+                <td id="Current Pressure"></td>
                 <td>x</td>
               </tr>
             </table>
@@ -184,32 +207,70 @@
             <tr>
               <td>Pack Voltage (V)</td>
               <td>x</td>
-              <td></td>
+              <td id="Pack Voltage"></td>
               <td>x</td>
             </tr>
             <tr>
-                <td>Pack Current (A)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Pack Current (A)</td>
+              <td>x</td>
+              <td id="Pack Current"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Pack SOC (%)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Pack SOC (%)</td>
+              <td>x</td>
+              <td id="Pack SOC"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Pack AH</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+              <td>Pack AH</td>
+              <td>x</td>
+              <td id=" Pack AH"></td>
+              <td>x</td>
             </tr>
           </table>
         </div>
       </div>
 
-      
+      <div id="motor_div" class="box ok">
+        <div class="item-content">
+          <h1 style="display:inline;">Motor </h1>
+          <h2 id="motor_status" class="connected"><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
+          <input type="text" id="motorinput" onkeyup="searchmotor()" placeholder="Search for values.." title="Type in a value">
+          <table id="motor">
+            <tr class="header">
+              <th>Value</th>
+              <th>Min</th>
+              <th>Actual</th>
+              <th>Max</th>
+            </tr>
+            <tr>
+              <td>Command Torque</td>
+              <td>x</td>
+              <td id="Command Torque"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Actual Torque</td>
+              <td>x</td>
+              <td id="Actual Torque"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Motor Speed (RPM)</td>
+              <td>x</td>
+              <td id="Motor Speed"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Motor Temp (C)</td>
+              <td>x</td>
+              <td id="Motor Temp"></td>
+              <td>x</td>
+            </tr>
+          </table>
+        </div>
+      </div>
 
       <div class="modal">
         <div class="modal-content">
