@@ -219,8 +219,13 @@ setInterval(function(){
 }, 300);
 
 //dropdown code
-function dropdown() {
-  document.getElementById("myDropdown").classList.toggle("show");
+function dropdown(num) {
+  if (num==1){
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+  else if (num ==2){
+    document.getElementById("myDropdown2").classList.toggle("show");
+  }
 }
 function filterFunction() {
   var input, filter, ul, li, a, i;
@@ -237,7 +242,7 @@ function filterFunction() {
   }
 }
 
-//clones table entry to header (currently IP)
+//clones table entry to header
 var x=1
 function clone(id) {
   if (x==1){

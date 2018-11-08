@@ -30,7 +30,7 @@
       <div id="header1" class="box">
         <div class="grid_focus">
           <div class="dropdown">
-            <button id="focus_add_button" onclick="dropdown()" class="dropbtn"><h5>Add Values</h5></button>
+            <button id="focus_add_button" onclick="dropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
             <div id="myDropdown" class="dropdown-content">
               <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
@@ -72,9 +72,9 @@
       <div id="header2" class="box">
           <div class="grid_focus2">
             <div class="dropdown">
-              <button id="focus_add_button" onclick="dropdown()" class="dropbtn"><h5>Add Values</h5></button>
+              <button id="focus_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values</h5></button>
               <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
-              <div id="myDropdown" class="dropdown-content">
+              <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                 <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
                 <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
@@ -298,8 +298,8 @@
             <div class="item-content">
               <h1>Line Chart One</h1>
               <div id="lineChartOne"></div>
-              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
-            </div>  
+                <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
+             </div>  
         </div>
       </div>
 

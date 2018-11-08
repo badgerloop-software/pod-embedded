@@ -357,6 +357,13 @@ td.last {
 .show {
   display: block;
 }
+#myDropdown {
+  top: 70px;
+}
+#myDropdown2 {
+  right: 45px;
+  top: 70px;
+}
 
 /* styling for pop-up modal */
 .modal {
