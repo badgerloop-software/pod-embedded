@@ -27,56 +27,76 @@
 
     <div class="grid">
 
-      <div id="header1" class="box ok">
-      <div class="dropdown">
-        <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
-          <div id="myDropdown" class="dropdown-content">
-            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-            <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
-            <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
-            <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
-            <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
-            <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
-            <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
-            <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-            <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-            <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
-            <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
-            <a href="" onclick="clone('Retro');return false;">Retro</a>
-            <a href="" onclick="clone('Position');return false;">Position (m)</a>
-            <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
-            <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
-          </div>
-        </div>
-        <div class="header_focus" id="header_focus_1">
-          <p id="header_label_1">Value Name</p>
-          <h1 id="header_value_1"></h1>
-        </div>
-        <div class="header_focus" id="header_focus_2">
-            <p id="header_label_2">Value Name</p>
-            <h1 id="header_value_2"></h1>
-          </div>
-      </div>
-
-      <div id="header2" class="box ok">
-        <div class="dropdown">
-          <button onclick="dropdown()" class="dropbtn"><h4>Add Values</h4></button>
+      <div id="header1" class="box">
+        <div class="grid_focus">
+          <div class="dropdown">
+            <button id="focus_add_button" onclick="dropdown()" class="dropbtn"><h5>Add Values</h5></button>
+            <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
             <div id="myDropdown" class="dropdown-content">
               <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-              <a href="" onclick="clone();">Secondary Tank (PSI)</a>
-              <a href="" onclick="clone();">Secondary Line (PSI)</a>
-              <a href="" onclick="clone();">Secondary Actuation (PSI)</a>
-              <a href="" onclick="clone();">Primary Tank (PSI)</a>
-              <a href="" onclick="clone();">Primary Line (PSI)</a>
-              <a href="" onclick="clone();">Primary Actuation (PSI)</a>
-              <a href="" onclick="clone();">Pressure Vessel Pressure (PSI)</a>
-              <a href="" onclick="clone();">Pressure Vessel Pressure (PSI)</a>
-              <a href="" onclick="clone();">Current Pressure (PSI)</a>
-              <a href="" onclick="cloneRow2();">Stopping Distance (m)</a>
-              <a href="" onclick="cloneRow2();">Retro</a>
-              <a href="" onclick="cloneRow2();">Position (m)</a>
-              <a href="" onclick="cloneRow2();">Velocity (m/s)</a>
-              <a href="" onclick="cloneRow2();">Acceleration (m/s<sup>2</sup>)</a>
+              <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
+              <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
+              <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
+              <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
+              <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
+              <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
+              <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+              <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+              <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
+              <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
+              <a href="" onclick="clone('Retro');return false;">Retro</a>
+              <a href="" onclick="clone('Position');return false;">Position (m)</a>
+              <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
+              <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+            </div>
+          </div>
+          <div class="header_focus" id="header_focus_1">
+            <p id="header_label_1">Value 1</p>
+            <h1 id="header_value_1"></h1>
+          </div>
+          <div class="header_focus" id="header_focus_2">
+            <p id="header_label_2">Value 2</p>
+            <h1 id="header_value_2"></h1>
+          </div>
+          <div class="header_focus" id="header_focus_3">
+            <p id="header_label_3">Value 3</p>
+            <h1 id="header_value_3"></h1>
+          </div>
+          <div class="header_focus" id="header_focus_4">
+            <p id="header_label_4">Value 4</p>
+            <h1 id="header_value_4"></h1>
+          </div>
+        </div>
+      </div>
+
+      <div id="header2" class="box">
+          <div class="grid_focus2">
+            <div class="dropdown">
+              <button id="focus_add_button" onclick="dropdown()" class="dropbtn"><h5>Add Values</h5></button>
+              <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
+              <div id="myDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
+                <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
+                <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
+                <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
+                <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
+                <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
+                <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+                <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+                <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
+                <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
+                <a href="" onclick="clone('Retro');return false;">Retro</a>
+                <a href="" onclick="clone('Position');return false;">Position (m)</a>
+                <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
+                <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+              </div>
+            </div>
+            <div class="header_focus_chart" id="header_focus_chart1">
+              <p id="header_label_chart1">Chart 1</p>
+            </div>
+            <div class="header_focus_chart" id="header_focus_chart2">
+              <p id="header_label_chart2">Chart 2</p>
             </div>
           </div>
         </div>
