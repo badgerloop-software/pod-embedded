@@ -8,10 +8,6 @@ const MongoClient = require('mongodb');
 const dbIP = constants.databaseAddr.ip;
 const dbPort = constants.databaseAddr.port;
 
-dataObj ={
-    "test": [0,0,0,0],
-    "test2": [0,0,0,0]
-}
 
 
 module.exports.updateData = function updateData(dataIn){
@@ -40,12 +36,12 @@ module.exports.archiveData = function archiveData(id){
     if(!id){
         id = getMongoID();
     }
-    MongoClient.connect("mongodb://127.0.0.1:27017",{useNewUrlParser: true} , function(err, db){
+    MongoClient.connect(String("mongodb://"+dbIP+":"+dbPort),{useNewUrlParser: true} , function(err, db){
         if(err) throw err;
             var dbo = db.db("BadgerloopRunData")
         dbo.createCollection(id, function(err, res){
             if(err) throw err;
-            console.log("Collection Created");
+            console.log("Collection " +id +" Created");
         })
         dbo.collection(id).insertOne(storedData, function(err, res){
             if(err) throw err;

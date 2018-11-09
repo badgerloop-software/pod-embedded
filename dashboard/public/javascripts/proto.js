@@ -126,6 +126,6 @@ function updateData(group, sensor) {
     d.getElementById('age').innerHTML = String(staleness);
 }
 
-archiveButton.addEventListener("click", function() {
+archiveButton.addEventListener("dblclick", function() {
     di.archiveData();
 });
