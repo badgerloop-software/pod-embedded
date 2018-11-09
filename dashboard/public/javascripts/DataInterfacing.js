@@ -8,12 +8,6 @@ const MongoClient = require('mongodb');
 const dbIP = constants.databaseAddr.ip;
 const dbPort = constants.databaseAddr.port;
 
-dataObj ={
-    "test": [0,0,0,0],
-    "test2": [0,0,0,0]
-}
-
-
 module.exports.updateData = function updateData(dataIn){
     //Sort through the data and append the new values to their respective arrays in database.js
     let groups = Object.keys(dataIn);
