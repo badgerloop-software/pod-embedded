@@ -149,7 +149,7 @@ setInterval(function(){
 //random generator for battery
 setInterval(function(){
   var w=0;
-  for (i=1; i< 5; i++){
+  for (i=1; i< 9; i++){
     var x = document.getElementById("battery_pack").rows[i].cells;
     var y = Math.floor((Math.random()*100)+1) //change to data input
     x[2].innerHTML =  y;
@@ -226,6 +226,9 @@ function dropdown(num) {
   else if (num ==2){
     document.getElementById("myDropdown2").classList.toggle("show");
   }
+  else if (num ==3){
+    document.getElementById("myDropdown3").classList.toggle("show");
+  }
 }
 function filterFunction() {
   var input, filter, ul, li, a, i;
@@ -292,5 +295,4 @@ function clear() {
   document.getElementById('header_label_3').innerHTML = "Value 3";
   document.getElementById('header_value_4').innerHTML = "";
   document.getElementById('header_label_4').innerHTML = "Value 4";
-  throw "";
-}
+ }

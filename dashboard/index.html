@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- note: ID tags w/ spaces are temporary-->
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
@@ -72,8 +73,9 @@
       <div id="header2" class="box">
           <div class="grid_focus2">
             <div class="dropdown">
-              <button id="focus_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values</h5></button>
-              <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
+              <button id="focus_chart_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
+              <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
+              <button id="focus_chart_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
               <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                 <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
@@ -91,6 +93,23 @@
                 <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
                 <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
               </div>
+              <div id="myDropdown3" class="dropdown-content">
+                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                  <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
+                  <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
+                  <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
+                  <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
+                  <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
+                  <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
+                  <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+                  <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+                  <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
+                  <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
+                  <a href="" onclick="clone('Retro');return false;">Retro</a>
+                  <a href="" onclick="clone('Position');return false;">Position (m)</a>
+                  <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
+                  <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+                </div>
             </div>
             <div class="header_focus_chart" id="header_focus_chart1">
               <p id="header_label_chart1">Chart 1</p>
@@ -99,6 +118,10 @@
               <p id="header_label_chart2">Chart 2</p>
             </div>
           </div>
+        </div>
+
+        <div id="header3" class="box">
+           <h1>Manual Overrides</h1> 
         </div>
 
       <div id="motion_div" class="box ok">
@@ -149,7 +172,7 @@
 
       <div id="braking_div" class="box ok">
         <div class="item-content">
-          <h1 style="display:inline;">Motion </h1>
+          <h1 style="display:inline;">Braking </h1>
           <h2 id="breaking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
           <table id="braking">
@@ -246,6 +269,30 @@
               <td>Pack AH</td>
               <td>x</td>
               <td id=" Pack AH"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Cell Max Voltage (V)</td>
+              <td>x</td>
+              <td id=" Cell Max Voltage"></td>
+              <td>x</td>
+            </tr>
+           <tr>
+              <td>Cell Min Voltage (V)</td>
+              <td>x</td>
+              <td id=" Cell Min Voltage"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>High Temp (C)</td>
+              <td>x</td>
+              <td id="High Temp"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Low Temp (C)</td>
+              <td>x</td>
+              <td id="Low Temp"></td>
               <td>x</td>
             </tr>
           </table>
