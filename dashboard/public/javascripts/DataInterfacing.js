@@ -8,6 +8,11 @@ const MongoClient = require('mongodb');
 const dbIP = constants.databaseAddr.ip;
 const dbPort = constants.databaseAddr.port;
 
+dataObj ={
+    "test": [0,0,0,0],
+    "test2": [0,0,0,0]
+}
+
 
 module.exports.updateData = function updateData(dataIn){
     //Sort through the data and append the new values to their respective arrays in database.js
@@ -25,30 +30,30 @@ module.exports.updateData = function updateData(dataIn){
     updater.emit('updateData');
 }
 
-module.exports.getMongoUrl = function getMongoUrl(id){
-    //Specify id if needed, if you do not specify one then one will be created
-    if(!id){
-        //Generated ids are datehourminute
-    generatedId = String(String(new Date().getDate())+ String(new Date().getHours())+String(new Date().getMinutes()));
-    console.log(generatedId);
-    id = generatedId;
-    }
-    return String("mongodb://" + dbIP +":" + dbPort +"/" + id);
+ function getMongoID(){
+    id = String(String(new Date().getDate())+ String(new Date().getHours())+String(new Date().getMinutes()));
+    console.log(id);
+    return String("run" + id);
 }
 
 module.exports.archiveData = function archiveData(id){
-    MongoClient.connect(this.getMongoUrl(id), function(err, db){
+    if(!id){
+        id = getMongoID();
+    }
+    MongoClient.connect("mongodb://127.0.0.1:27017",{useNewUrlParser: true} , function(err, db){
         if(err) throw err;
-        var dbo = db.db(String(id));
-        dbo.createCollection("runData", function(err, res){
+            var dbo = db.db("BadgerloopRunData")
+        dbo.createCollection(id, function(err, res){
             if(err) throw err;
             console.log("Collection Created");
         })
-        dbo.collection("runData").insertMany(dataObj, function(err, res){
+        dbo.collection(id).insertOne(storedData, function(err, res){
             if(err) throw err;
             db.close();
         })
 
     })
 }
+
+
 

@@ -8,6 +8,8 @@ var Packery = require('packery');
 var Draggabilly = require('draggabilly');
 var grid;
 var pckry;
+var archiveButton = d.getElementById("archiveButton");
+
 
 
 window.onload = function () {
@@ -123,3 +125,7 @@ function updateData(group, sensor) {
  function setAgeLabel(staleness){
     d.getElementById('age').innerHTML = String(staleness);
 }
+
+archiveButton.addEventListener("click", function() {
+    di.archiveData();
+});
