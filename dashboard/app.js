@@ -6,6 +6,9 @@ var app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 let win;
 
+
+
+
 function createWindow(){
   win = new BrowserWindow({width: 1920, height: 1080, webPreferences:{webSecurity: true}});
 
