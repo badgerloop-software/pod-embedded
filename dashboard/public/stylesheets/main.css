@@ -365,3 +365,64 @@ td.last {
 #header_focus_chart1{
   border-color: lightblue;
 }
+
+.stateButton {
+  background-color:white;
+  border: none;
+  color: #808080;
+  text-decoration: none;
+  position: inline-block;
+  margin: 4px 3px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  width: 100px;
+  height: 50px;
+  font-weight: 800;
+}
+.stateButton:hover {
+  background-color: black;
+  color: black;
+}
+#one {
+  background-color: #C10000;
+  color: white;
+}
+#two {
+  background-color: #3C9159;
+  color: white;
+}
+#three {
+  background-color: #A84671;
+  color: white;
+}
+#four {
+  background-color: #C66553;
+  color: white;
+}
+#five {
+  background-color: #C6A153;
+  color: white;
+}
+#six {
+  background-color: #C10000;
+  color: white;
+}
+#seven {
+  background-color: #554188;
+  color: white;
+}
+#eight {
+  background-color: #203060;
+  color: white;
+}
+#nine {
+  background-color: #388767;
+  color: white;
+}
+#ten {
+  background-color: gray;
+  color: white;
+}
