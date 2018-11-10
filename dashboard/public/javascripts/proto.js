@@ -61,7 +61,7 @@ function updateData(group, sensor) {
  function setAgeLabel(staleness){
     d.getElementById('age').innerHTML = String(staleness);
 }
-// TODO
-// archiveButton.addEventListener("dblclick", function() {
-//     di.archiveData();
-// });
+
+archiveButton.addEventListener("dblclick", function() {
+    di.archiveData();
+});
