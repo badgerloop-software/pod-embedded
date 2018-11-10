@@ -3,7 +3,8 @@
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
     <script src="public/javascripts/main.js"></script>
-    <script src="public/javascripts/plotly-latest.min.js"></script>
+    <script src="public/javascripts/proto.js"></script>
+    <script src="node_modules/plotly.js-dist/plotly.js"></script>
     <script src="public/javascripts/generateLineChart.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
@@ -72,33 +73,33 @@
             </tr>
             <tr>
               <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
-              <td>x</td>
-              <td></td>
-              <td>x</td>
+              <td id="stoppingDistanceMin">x</td>
+              <td id="stoppingDistance"></td>
+              <td id="stoppingDistanceMax">x</td>
             </tr>
             <tr>
                 <td>Retro</td>
-                <td>x</td>
-                <td id = "dataRetro"></td>
-                <td>x</td>
+                <td id="retroMin">x</td>
+                <td id="retro"></td>
+                <td id="retroMax">x</td>
             </tr>
             <tr>
                 <td>Position (m)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id ="positionMin">x</td>
+                <td id ="position"></td>
+                <td id ="positionMax">x</td>
             </tr>
             <tr>
                 <td>Velocity (m/s)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="velocityMin">x</td>
+                <td id="velocity"></td>
+                <td id="velocityMax">x</td>
             </tr>
             <tr>
                 <td>Acceleration (m/s<sup>2</sup>)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="accelerationMin">x</td>
+                <td id="acceleration"></td>
+                <td id="accelerationMax">x</td>
             </tr>
           </table>
         </div>
@@ -118,51 +119,51 @@
               </tr>
               <tr>
                 <td>Secondary Tank (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="secondaryTankMin">x</td>
+                <td id="secondaryTank"></td>
+                <td id="secondaryTankMax">x</td>
               </tr>
               <tr>
                 <td>Secondary Line (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="secondaryLineMin">x</td>
+                <td id="secondaryLine"></td>
+                <td id="secondaryLineMax">x</td>
               </tr>
               <tr>
                 <td>Secondary Actuation (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="seondaryActuationMin">x</td>
+                <td id="seondaryActuation"></td>
+                <td id="seondaryActuationMax">x</td>
               </tr>
               <tr id="primarytank">
                 <td>Primary Tank (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="primaryTankMin">x</td>
+                <td id="primaryTank"></td>
+                <td id="primaryTankMax">x</td>
               </tr>
               <tr>
                 <td>Primary Line (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="primaryLineMin">x</td>
+                <td id="primaryLine"></td>
+                <td id="primaryLineMax">x</td>
               </tr>
               <tr>
                 <td>Primary Actuation (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="primaryActuationMin">x</td>
+                <td id="primaryActuation"></td>
+                <td id="primaryActuationMax">x</td>
               </tr>
               <tr>
                 <td>Pressure Vessel Pressure (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="pressureVesselPressureMin">x</td>
+                <td id="pressureVesselPressure"></td>
+                <td id="pressureVesselPressureMax">x</td>
               </tr>
               <tr>
                 <td>Current Pressure (PSI)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="currentPressureMin">x</td>
+                <td id="currentPressure"></td>
+                <td id="currentPressureMax">x</td>
               </tr>
             </table>
         </div>
@@ -183,27 +184,27 @@
             </tr>
             <tr>
               <td>Pack Voltage (V)</td>
-              <td>x</td>
-              <td></td>
-              <td>x</td>
+              <td id="packVolatageMin">x</td>
+              <td id="packVolatage"></td>
+              <td id="packVolatageMax">x</td>
             </tr>
             <tr>
                 <td>Pack Current (A)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="packCurrentMin">x</td>
+                <td id="packCurrent"></td>
+                <td id="packCurrentMax">x</td>
             </tr>
             <tr>
                 <td>Pack SOC (%)</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="packSOCMin">x</td>
+                <td id="packSOC"></td>
+                <td id="packSOCMax">x</td>
             </tr>
             <tr>
                 <td>Pack AH</td>
-                <td>x</td>
-                <td></td>
-                <td>x</td>
+                <td id="packAHMin">x</td>
+                <td id="packAH"></td>
+                <td id="packAHMax">x</td>
             </tr>
           </table>
         </div>
@@ -243,7 +244,8 @@
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
     </script>
-
+    <script src="public/javascripts/proto.js"></script>
+    <script src="public/javascripts/main.js"></script>
   </body>
 
 </html>
