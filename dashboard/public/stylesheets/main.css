@@ -366,6 +366,7 @@ td.last {
   border-color: lightblue;
 }
 
+/* state machine styling */
 .stateButton {
   background-color:white;
   border: none;
@@ -425,4 +426,45 @@ td.last {
 #archiveButton {
   background-color: gray;
   color: white;
+}
+
+/* status styling */
+#podStatus {
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 30px;
+}
+#hostStatus {
+  height: 60px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 30px;
+}
+#statusConnection1 {
+  display: inline-block;
+  vertical-align: middle;
+  color: green;
+  font-weight: 800;
+}
+#statusConnection2 {
+  display: inline-block;
+  vertical-align: middle;
+  color: red;
+  font-weight: 800;
+}
+#age {
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
+}
+#ageDisplay {
+  padding: 0px;
+  vertical-align: middle;
+  margin-top: -20px;
+}
+#header4{
+  padding-bottom:100px;
 }
