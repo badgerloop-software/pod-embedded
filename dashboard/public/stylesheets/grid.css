@@ -57,18 +57,22 @@
     #motion_div {
       grid-column: 1;
       grid-row: 5;
+      height: 100%;
     }
     #braking_div {
       grid-column: 2;
       grid-row: 5;
+      height: 100%;
     }
     #battery_pack_div {
       grid-column: 3;
       grid-row: 5;
+      height: 100%;
     }
     #motor_div {
       grid-column: 4;
       grid-row: 5;
+      height: 100%;
     }
   }
   @media only screen and (max-width: 1024px) { 
