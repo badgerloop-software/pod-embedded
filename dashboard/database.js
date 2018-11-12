@@ -15,16 +15,18 @@ module.exports = {
         pressureVesselPressure: [],
         currentPressure: []
     },
-    navigation : {
+    motion : {
+        stoppingDistance: [],
         imu: [],
         position: [],
         retro: [],
         velocity: [],
         acceleration: []
     },
-    pressureVessel: {
-        pressure: [],
-        airQuality: [],
-        paranormal: []
+    battery :{
+        packVoltage: [],
+        packCurrent: [],
+        packSOC: [],
+        packAH: []
     }
 }

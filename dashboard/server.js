@@ -53,7 +53,8 @@ function sendTestData(){
     let testSocket = {
         age: Date.now(),
         data:{
-            navigation : {
+            motion : {
+                stoppingDistance: getRandomValue(),
                 imu: getRandomValue(),
                 position: getRandomValue(),
                 retro: getRandomValue(),
@@ -61,7 +62,7 @@ function sendTestData(){
                 acceleration: getRandomValue()
             },
             battery: {
-                packVolatage: getRandomValue(),
+                packVoltage: getRandomValue(),
                 packCurrent: getRandomValue(),
                 packSOC: getRandomValue(),
                 packAH: getRandomValue()

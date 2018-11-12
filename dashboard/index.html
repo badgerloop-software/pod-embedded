@@ -2,9 +2,7 @@
 <!-- note: ID tags w/ spaces are temporary-->
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">
-    <script src="public/javascripts/main.js"></script>
-    <script src="public/javascripts/proto.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">    <script src="public/javascripts/proto.js"></script>
     <script src="node_modules/plotly.js-dist/plotly.js"></script>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/grid.css">
     <link rel="stylesheet" type="text/css" href="public/stylesheets/fonts.css">
@@ -172,33 +170,33 @@
             </tr>
             <tr>
               <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
-              <td id="stoppingDistanceMin">x</td>
+              <td id="stoppingDistanceMin">0</td>
               <td id="stoppingDistance"></td>
-              <td id="stoppingDistanceMax">x</td>
+              <td id="stoppingDistanceMax">255</td>
             </tr>
             <tr>
                 <td>Retro</td>
-                <td id="retroMin">x</td>
+                <td id="retroMin">0</td>
                 <td id="retro"></td>
-                <td id="retroMax">x</td>
+                <td id="retroMax">255</td>
             </tr>
             <tr>
                 <td>Position (m)</td>
-                <td id ="positionMin">x</td>
+                <td id ="positionMin">0</td>
                 <td id ="position"></td>
-                <td id ="positionMax">x</td>
+                <td id ="positionMax">255</td>
             </tr>
             <tr>
                 <td>Velocity (m/s)</td>
-                <td id="velocityMin">x</td>
+                <td id="velocityMin">0</td>
                 <td id="velocity"></td>
-                <td id="velocityMax">x</td>
+                <td id="velocityMax">255</td>
             </tr>
             <tr>
                 <td>Acceleration (m/s<sup>2</sup>)</td>
-                <td id="accelerationMin">x</td>
+                <td id="accelerationMin">0</td>
                 <td id="acceleration"></td>
-                <td id="accelerationMax">x</td>
+                <td id="accelerationMax">255</td>
             </tr>
           </table>
         </div>
@@ -218,51 +216,51 @@
               </tr>
               <tr>
                 <td>Secondary Tank (PSI)</td>
-                <td id="secondaryTankMin">x</td>
+                <td id="secondaryTankMin">0</td>
                 <td id="secondaryTank"></td>
-                <td id="secondaryTankMax">x</td>
+                <td id="secondaryTankMax">255</td>
               </tr>
               <tr>
                 <td>Secondary Line (PSI)</td>
-                <td id="secondaryLineMin">x</td>
+                <td id="secondaryLineMin">0</td>
                 <td id="secondaryLine"></td>
-                <td id="secondaryLineMax">x</td>
+                <td id="secondaryLineMax">255</td>
               </tr>
               <tr>
                 <td>Secondary Actuation (PSI)</td>
-                <td id="seondaryActuationMin">x</td>
-                <td id="seondaryActuation"></td>
-                <td id="seondaryActuationMax">x</td>
+                <td id="secondaryActuationMin">0</td>
+                <td id="secondaryActuation"></td>
+                <td id="secondaryActuationMax">255</td>
               </tr>
               <tr id="primarytank">
                 <td>Primary Tank (PSI)</td>
-                <td id="primaryTankMin">x</td>
+                <td id="primaryTankMin">0</td>
                 <td id="primaryTank"></td>
-                <td id="primaryTankMax">x</td>
+                <td id="primaryTankMax">255</td>
               </tr>
               <tr>
                 <td>Primary Line (PSI)</td>
-                <td id="primaryLineMin">x</td>
+                <td id="primaryLineMin">0</td>
                 <td id="primaryLine"></td>
-                <td id="primaryLineMax">x</td>
+                <td id="primaryLineMax">255</td>
               </tr>
               <tr>
                 <td>Primary Actuation (PSI)</td>
-                <td id="primaryActuationMin">x</td>
+                <td id="primaryActuationMin">0</td>
                 <td id="primaryActuation"></td>
-                <td id="primaryActuationMax">x</td>
+                <td id="primaryActuationMax">255</td>
               </tr>
               <tr>
                 <td>Pressure Vessel Pressure (PSI)</td>
-                <td id="pressureVesselPressureMin">x</td>
+                <td id="pressureVesselPressureMin">0</td>
                 <td id="pressureVesselPressure"></td>
-                <td id="pressureVesselPressureMax">x</td>
+                <td id="pressureVesselPressureMax">255</td>
               </tr>
               <tr>
                 <td>Current Pressure (PSI)</td>
-                <td id="currentPressureMin">x</td>
+                <td id="currentPressureMin">0</td>
                 <td id="currentPressure"></td>
-                <td id="currentPressureMax">x</td>
+                <td id="currentPressureMax">255</td>
               </tr>
             </table>
         </div>
@@ -283,27 +281,27 @@
             </tr>
             <tr>
               <td>Pack Voltage (V)</td>
-              <td id="packVolatageMin">x</td>
-              <td id="packVolatage"></td>
-              <td id="packVolatageMax">x</td>
+              <td id="packVoltageMin">0</td>
+              <td id="packVoltage"></td>
+              <td id="packVoltageMax">255</td>
             </tr>
             <tr>
                 <td>Pack Current (A)</td>
-                <td id="packCurrentMin">x</td>
+                <td id="packCurrentMin">0</td>
                 <td id="packCurrent"></td>
-                <td id="packCurrentMax">x</td>
+                <td id="packCurrentMax">255</td>
             </tr>
             <tr>
                 <td>Pack SOC (%)</td>
-                <td id="packSOCMin">x</td>
+                <td id="packSOCMin">0</td>
                 <td id="packSOC"></td>
-                <td id="packSOCMax">x</td>
+                <td id="packSOCMax">255</td>
             </tr>
             <tr>
                 <td>Pack AH</td>
-                <td id="packAHMin">x</td>
+                <td id="packAHMin">0</td>
                 <td id="packAH"></td>
-                <td id="packAHMax">x</td>
+                <td id="packAHMax">255</td>
             </tr>
           </table>
         </div>
@@ -323,27 +321,27 @@
             </tr>
             <tr>
               <td>Command Torque</td>
-              <td>x</td>
+              <td>0</td>
               <td id="Command Torque"></td>
-              <td>x</td>
+              <td>255</td>
             </tr>
             <tr>
               <td>Actual Torque</td>
-              <td>x</td>
+              <td>0</td>
               <td id="Actual Torque"></td>
-              <td>x</td>
+              <td>255</td>
             </tr>
             <tr>
               <td>Motor Speed (RPM)</td>
-              <td>x</td>
+              <td>0</td>
               <td id="Motor Speed"></td>
-              <td>x</td>
+              <td>255</td>
             </tr>
             <tr>
               <td>Motor Temp (C)</td>
-              <td>x</td>
+              <td>0</td>
               <td id="Motor Temp"></td>
-              <td>x</td>
+              <td>255</td>
             </tr>
           </table>
         </div>
@@ -381,8 +379,6 @@
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
     </script>
-    <script src="public/javascripts/proto.js"></script>
-    <script src="public/javascripts/main.js"></script>
   </body>
 
 </html>

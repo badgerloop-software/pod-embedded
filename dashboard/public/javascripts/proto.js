@@ -27,7 +27,7 @@ di.updater.on('updateData', () => {
     groups.forEach((group) => {
         let sensors = Object.keys(storedData[group]);
         sensors.forEach((sensor) => {
-            //Check to see if that particular sensors is being rendered at the time
+            //Check to see if that particular sensor is being rendered at the time
             try {
                 updateData(group, sensor);
                 var now = Date.now();
