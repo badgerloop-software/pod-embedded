@@ -1,5 +1,5 @@
 function generateBlankChart(id, chartType) {
-    var xmax = 1000; //maximum x-axis range in seconds. Should be the total runtime
+    var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
 
     var layout = {
     xaxis: {range: [0, xmax]},
