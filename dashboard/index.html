@@ -2,14 +2,17 @@
 <!-- note: ID tags w/ spaces are temporary-->
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">    <script src="public/javascripts/proto.js"></script>
-    <script src="node_modules/plotly.js-dist/plotly.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">    
     <link rel="stylesheet" type="text/css" href="public/stylesheets/grid.css">
     <link rel="stylesheet" type="text/css" href="public/stylesheets/fonts.css">
     <script src="public/javascripts/dropdown.js"></script>
     <script src="public/javascripts/focusClone.js"></script>
     <script src="public/javascripts/tableSearch.js"></script>
     <script src="public/javascripts/generateLineChart.js"></script>
+    <script src="public/javascripts/proto.js"></script>
+    <script src="public/javascripts/dynamicStyling.js"></script>
+    <script src="node_modules/plotly.js-dist/plotly.js"></script>
+
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -39,20 +42,31 @@
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
             <div id="myDropdown" class="dropdown-content">
               <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-              <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
-              <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
-              <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
-              <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
-              <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
-              <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
-              <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-              <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-              <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
-              <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
-              <a href="" onclick="clone('Retro');return false;">Retro</a>
-              <a href="" onclick="clone('Position');return false;">Position (m)</a>
-              <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
-              <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+              <a href="" onclick="clone('stoppingDistance');return false;">Stopping Distance (m)</a>
+              <a href="" onclick="clone('retro');return false;">Retro</a>
+              <a href="" onclick="clone('position');return false;">Position (m)</a>
+              <a href="" onclick="clone('velocity');return false;">Velocity (m/s)</a>
+              <a href="" onclick="clone('acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+              <a href="" onclick="clone('secondaryTankMin');return false;">Secondary Tank (PSI)</a>
+              <a href="" onclick="clone('secondaryLine');return false;">Secondary Line (PSI)</a>
+              <a href="" onclick="clone('secondaryActuation');return false;";>Secondary Actuation (PSI)</a>
+              <a href="" onclick="clone('primaryTank');return false;";>Primary Tank (PSI)</a>
+              <a href="" onclick="clone('primaryLine');return false;";>Primary Line (PSI)</a>
+              <a href="" onclick="clone('primaryActuation');return false;";>Primary Actuation (PSI)</a>
+              <a href="" onclick="clone('pressureVesselPressure');return false;";>Pressure Vessel Pressure (PSI)</a>
+              <a href="" onclick="clone('currentPressure');return false;";>Current Pressure (PSI)</a>
+              <a href="" onclick="clone('packVoltage');return false;";>Pack Voltage (V)</a>
+              <a href="" onclick="clone('packCurrent');return false;";>Pack Current (V)</a>
+              <a href="" onclick="clone('packSOC');return false;";>Pack SOC (%)</a>
+              <a href="" onclick="clone('packAH');return false;";>Pack AH</a>
+              <a href="" onclick="clone('cellMaxVoltage');return false;";>Cell Max Voltage (V)</a>
+              <a href="" onclick="clone('cellMinVoltage');return false;";>Cell Min Voltage (V)</a>
+              <a href="" onclick="clone('highTemp');return false;";>High Temp (C)</a>
+              <a href="" onclick="clone('lowTemp');return false;";>Low Temp (C)</a>
+              <a href="" onclick="clone('commandTorque');return false;";>Command Torque</a>
+              <a href="" onclick="clone('actualTorque');return false;";>Actual Torque</a>
+              <a href="" onclick="clone('motorSpeed');return false;";>Motor Speed (RPM)</a>
+              <a href="" onclick="clone('motorTemp');return false;";>Motor Temp (C)</a>
             </div>
           </div>
           <div class="header_focus" id="header_focus_1">
@@ -281,27 +295,51 @@
             </tr>
             <tr>
               <td>Pack Voltage (V)</td>
-              <td id="packVoltageMin">0</td>
+              <td>x</td>
               <td id="packVoltage"></td>
-              <td id="packVoltageMax">255</td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Pack Current (A)</td>
-                <td id="packCurrentMin">0</td>
-                <td id="packCurrent"></td>
-                <td id="packCurrentMax">255</td>
+              <td>Pack Current (A)</td>
+              <td>x</td>
+              <td id="packCurrent"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Pack SOC (%)</td>
-                <td id="packSOCMin">0</td>
-                <td id="packSOC"></td>
-                <td id="packSOCMax">255</td>
+              <td>Pack SOC (%)</td>
+              <td>x</td>
+              <td id="packSOC"></td>
+              <td>x</td>
             </tr>
             <tr>
-                <td>Pack AH</td>
-                <td id="packAHMin">0</td>
-                <td id="packAH"></td>
-                <td id="packAHMax">255</td>
+              <td>Pack AH</td>
+              <td>x</td>
+              <td id="packAH"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Cell Max Voltage (V)</td>
+              <td>x</td>
+              <td id="cellMaxVoltage"></td>
+              <td>x</td>
+            </tr>
+           <tr>
+              <td>Cell Min Voltage (V)</td>
+              <td>x</td>
+              <td id="cellMinVoltage"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>High Temp (C)</td>
+              <td>x</td>
+              <td id="highTemp"></td>
+              <td>x</td>
+            </tr>
+            <tr>
+              <td>Low Temp (C)</td>
+              <td>x</td>
+              <td id="lowTemp"></td>
+              <td>x</td>
             </tr>
           </table>
         </div>
@@ -322,25 +360,25 @@
             <tr>
               <td>Command Torque</td>
               <td>0</td>
-              <td id="Command Torque"></td>
+              <td id="commandTorque"></td>
               <td>255</td>
             </tr>
             <tr>
               <td>Actual Torque</td>
               <td>0</td>
-              <td id="Actual Torque"></td>
+              <td id="actualTorque"></td>
               <td>255</td>
             </tr>
             <tr>
               <td>Motor Speed (RPM)</td>
               <td>0</td>
-              <td id="Motor Speed"></td>
+              <td id="motorSpeed"></td>
               <td>255</td>
             </tr>
             <tr>
               <td>Motor Temp (C)</td>
               <td>0</td>
-              <td id="Motor Temp"></td>
+              <td id="motorTemp"></td>
               <td>255</td>
             </tr>
           </table>

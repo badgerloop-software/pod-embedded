@@ -5,7 +5,8 @@ function clone(id) {
     setInterval(function(){
       var value = document.getElementById(id).innerHTML;
       document.getElementById('header_value_1').innerHTML = value;
-      document.getElementById('header_label_1').innerHTML = id;
+      var name = id.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+      document.getElementById('header_label_1').innerHTML = name;
     }, 300);
     x++;
   }
@@ -13,7 +14,8 @@ function clone(id) {
     setInterval(function(){
       var value = document.getElementById(id).innerHTML;
       document.getElementById('header_value_2').innerHTML = value;
-      document.getElementById('header_label_2').innerHTML = id;
+      var name = id.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+      document.getElementById('header_label_2').innerHTML = name;
     }, 300);
     x++;
   }
@@ -21,7 +23,8 @@ function clone(id) {
     setInterval(function(){
       var value = document.getElementById(id).innerHTML;
       document.getElementById('header_value_3').innerHTML = value;
-      document.getElementById('header_label_3').innerHTML = id;
+      var name = id.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+      document.getElementById('header_label_3').innerHTML = name;
     }, 300);
     x++;
   }
@@ -29,7 +32,8 @@ function clone(id) {
     setInterval(function(){
       var value = document.getElementById(id).innerHTML;
       document.getElementById('header_value_4').innerHTML = value;
-      document.getElementById('header_label_4').innerHTML = id;
+      var name = id.replace(/([a-z\xE0-\xFF])([A-Z\xC0\xDF])/g, '$1 $2');
+      document.getElementById('header_label_4').innerHTML = name;
     }, 300);
     x++;
   }
