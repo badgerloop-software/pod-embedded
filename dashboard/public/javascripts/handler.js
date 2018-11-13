@@ -29,6 +29,7 @@ di.updater.on('updateData', () => {
         sensors.forEach((sensor) => {
             //Check to see if that particular sensor is being rendered at the time
             try {
+                if(group !== "connections")
                 updateData(group, sensor);
                 
             } catch{
@@ -45,17 +46,13 @@ di.updater.on('updateData', () => {
 function updateData(group, sensor) {
     // Get numbers
     let t = d.getElementById(String(sensor));
-    // let tMin = Number(d.getElementById(String(sensor + "Min")).innerHTML);
-    // let tMax = Number(d.getElementById(String(sensor + "Max")).innerHTML);
     let stored = storedData[group][sensor];
     //Set number
+    if(stored[stored.length-1] == null){
+        console.log(group +" " + sensor + " " + stored[stored.length-1]);
+    }
     t.innerHTML = String(stored[stored.length - 1]);
-    //Add warning if necessary
-    // if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
-    //     setSensorGreen(sensor);
-    // } else{
-    //     setSensorRed(sensor);
-    // }
+
 }
 
 
@@ -63,7 +60,7 @@ function updateData(group, sensor) {
     d.getElementById('ageDisplay').innerHTML = String(staleness+"ms");
 }
 
-archiveButton.addEventListener("dblclick", function() {
+archiveButton.addEventListener("click", function() {
     di.archiveData();
     console.log("archiving data");
 });
