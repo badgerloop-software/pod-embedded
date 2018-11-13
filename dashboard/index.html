@@ -12,6 +12,7 @@
     <script src="public/javascripts/proto.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
     <script src="node_modules/plotly.js-dist/plotly.js"></script>
+    <script src="public/javascripts/plotly-latest.min.js"></script>
 
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
@@ -200,16 +201,16 @@
             </tr>
             <tr>
                 <td>Retro</td>
-                <td id="retroMin">0</td>
-                <td id="retro"></td>
-                <td id="retroMax">255</td>
+                <td>0</td>
+                <td id ="dataRetro"></td>
+                <td id = "test">255</td>
             </tr>
             <tr>
-                <td>Position (m)</td>
-                <td id ="positionMin">0</td>
-                <td id ="position"></td>
-                <td id ="positionMax">255</td>
-            </tr>
+              <td>Position (m)</td>
+              <td id ="positionMin">0</td>
+              <td id ="position"></td>
+              <td id ="positionMax">255</td>
+          </tr>
             <tr>
                 <td>Velocity (m/s)</td>
                 <td id="velocityMin">0</td>
@@ -398,11 +399,9 @@
       <div class="modal">
         <div class="modal-content">
           <span class="close-button">×</span>
-            <div class="item-content">
-              <h1>Line Chart One</h1>
+          <h1>Stopping Distance (m)</h1>
               <div id="lineChartOne"></div>
-                <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
-             </div>  
+              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
         </div>
       </div>
 
