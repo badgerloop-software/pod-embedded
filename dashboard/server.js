@@ -34,7 +34,6 @@ function sendTestData(){
         data:{
             motion : {
                 stoppingDistance: getRandomValue(),
-                imu: getRandomValue(),
                 position: getRandomValue(),
                 retro: getRandomValue(),
                 velocity: getRandomValue(),
@@ -44,7 +43,11 @@ function sendTestData(){
                 packVoltage: getRandomValue(),
                 packCurrent: getRandomValue(),
                 packSOC: getRandomValue(),
-                packAH: getRandomValue()
+                packAH: getRandomValue(),
+                cellMaxVoltage: getRandomValue(),
+                cellMinVoltage: getRandomValue(),
+                highTemp: getRandomValue(),
+                lowTemp: getRandomValue()
             },
             braking: {
                 secondaryTank: getRandomValue(),

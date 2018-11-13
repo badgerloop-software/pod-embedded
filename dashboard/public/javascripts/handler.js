@@ -65,4 +65,5 @@ function updateData(group, sensor) {
 
 archiveButton.addEventListener("dblclick", function() {
     di.archiveData();
+    console.log("archiving data");
 });
