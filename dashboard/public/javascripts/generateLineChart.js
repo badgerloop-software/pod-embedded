@@ -4,6 +4,7 @@ traceArray = [0];
 chartData = [0, 0, 0, 0];
 numTraces = 0
 yData = []
+xpos = 0;
 
 function generateLineChart(id, tdID, title, chartType) {
     //var data = require("./public/javascripts/getData");
@@ -23,7 +24,6 @@ function generateLineChart(id, tdID, title, chartType) {
         t: 40,
       }
     };
-
     
     if (id == 'lineChartOne') {
         if (chartState[0] == 0) {        // checks if chart one is empty
@@ -47,6 +47,7 @@ function generateLineChart(id, tdID, title, chartType) {
     function newChart() {
         getData();
         Plotly.newPlot(id, [{
+            x: [xpos],
             y: [chartData[0]],
             type: 'scatter',
             mode: 'lines',
@@ -58,25 +59,31 @@ function generateLineChart(id, tdID, title, chartType) {
 
     function addTrace() {
         Plotly.addTraces(id, [{
+            x: [xpos],
             y:[chartData[1]],
             type: 'scatter',
             mode: 'lines',
             line: {color:'blue'}
         }]);
-        
-        getDataAtInterval();
     }
 
     function getDataAtInterval() {
         setInterval(function(){
+            xpos += 1;
             getData();
             if (numTraces == 1) {
-                yData = [[chartData[0]]]
+                var update = {
+                    x: [[xpos]],
+                    y: [[chartData[0]]]
+                }
             }
             else if (numTraces == 2) {
-                yData = [[chartData[0]], [chartData[1]]]
+                var update = {
+                    x: [[xpos], [xpos]],
+                    y: [[chartData[0]], [chartData[1]]]
+                }
             }
-            Plotly.extendTraces(id, {y:yData}, traceArray);
+            Plotly.extendTraces(id, update, traceArray);
         }, sampleRate);
     }
     
