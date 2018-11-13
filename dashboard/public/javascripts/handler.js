@@ -30,13 +30,13 @@ di.updater.on('updateData', () => {
             //Check to see if that particular sensor is being rendered at the time
             try {
                 updateData(group, sensor);
-                var now = Date.now();
-                setAgeLabel(now - client.inData.age);
-
+                
             } catch{
                 //If not, alert the user and move on
                 console.log("Unreconized Sensor- " + sensor +" -Skipping");
             }
+            var now = Date.now();
+            setAgeLabel(now - client.inData.age);
         });
     }
     )
@@ -59,7 +59,8 @@ function updateData(group, sensor) {
 
 
  function setAgeLabel(staleness){
-    d.getElementById('age').innerHTML = String(staleness);
+     console.log("ugotthis")
+    d.getElementById('ageDisplay').innerHTML = String(staleness+"ms");
 }
 
 archiveButton.addEventListener("dblclick", function() {

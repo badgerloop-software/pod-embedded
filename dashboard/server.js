@@ -84,7 +84,7 @@ function sendTestData(){
 }
 
 //The line where test data is sent. setInterval(function, ms)
-setInterval(sendTestData, 100);
+setInterval(sendTestData, 1500);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){
