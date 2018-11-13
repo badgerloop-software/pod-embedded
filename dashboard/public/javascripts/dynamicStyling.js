@@ -3,6 +3,7 @@ setInterval(function(){
   var w=0;
   for (i=1; i< 6; i++){
     var x = document.getElementById("motion").rows[i].cells;
+    var y;
     x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
@@ -24,6 +25,7 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
+  var c;
   if (c > 1) {
     document.getElementById("motion_status").className = "connected"; 
   }
@@ -37,6 +39,7 @@ setInterval(function(){
   var w=0;
   for (i=1; i< 9; i++){
     var x = document.getElementById("braking").rows[i].cells;
+    var y;
     x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
@@ -58,6 +61,7 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
+  var c;
   if (c > 1) {
     document.getElementById("breaking_status").className = "connected"; 
   }
@@ -71,6 +75,7 @@ setInterval(function(){
   var w=0;
   for (i=1; i< 9; i++){
     var x = document.getElementById("battery_pack").rows[i].cells;
+    var y;
     x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
@@ -92,6 +97,7 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
+  var c;
   if (c > 1) {
     document.getElementById("battery_status").className = "connected"; 
   }
@@ -103,8 +109,9 @@ setInterval(function(){
 //random generator for motor
 setInterval(function(){
   var w=0;
-  for (i=1; i< 6; i++){
+  for (i=1; i< 5; i++){
     var x = document.getElementById("motor").rows[i].cells;
+    var y;
     x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
@@ -126,6 +133,7 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
+  var c;
   if (c == 1) {
     document.getElementById("motor_status").className = "connected"; 
   }
