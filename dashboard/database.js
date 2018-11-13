@@ -6,18 +6,30 @@ module.exports = {
         RMS: false
     },
     braking: {
-        solenoids: [],
-        brakePadTemps: [],
-        brakeGood: []
+        primaryTank: [],
+        primaryLine: [],
+        primaryActuation: [],
+        secondaryTank: [],
+        secondaryLine: [],
+        secondaryActuation: [],
+        pressureVesselPressure: [],
+        currentPressure: []
     },
-    navigation : {
-        imu: [],
-        encoder: [],
-        retro: [] 
+    motion : {
+        stoppingDistance: [],
+        position: [],
+        retro: [],
+        velocity: [],
+        acceleration: []
     },
-    pressureVessel: {
-        pressure: [],
-        airQuality: [],
-        paranormal: []
+    battery :{
+        packVoltage: [],
+        packCurrent: [],
+        packSOC: [],
+        packAH: [],
+        cellMaxVoltage: [],
+        cellMinVoltage: [],
+        highTemp: [],
+        lowTemp: []
     }
 }

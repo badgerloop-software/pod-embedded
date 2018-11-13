@@ -1,0 +1,470 @@
+/* general styling */
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+}
+h1 {
+  color: gray;
+  padding-left: 10px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 12px;
+}
+* {
+  box-sizing: border-box;
+}
+
+/* banner styling */
+.banner {
+  overflow: hidden;
+  background-color: gray;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+.banner .left {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+  font-size: 25px;
+}
+.banner .right {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 30px;
+  font-size: 25px;
+}
+
+/* banner dropdown (need to fix, bit hard to get opened) */
+.banner_dropdown {
+  float: right;
+  overflow: hidden;
+}
+.banner_dropdown .banner_dropbtn {
+  font-size: 25px;    
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  height: 100%;
+}
+.banner_dropdown-content {
+  display: none;
+  position: fixed;
+  top: 66px;
+  background-color: #f9f9f9;
+  width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1000 !important;
+}
+.banner_dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+.banner_dropdown-content a:hover {
+  background-color: #ddd;
+}
+.banner_dropdown:hover .banner_dropdown-content {
+  display: block;
+}
+.banner_dropdown img {
+  padding-top: 10px;
+}
+
+/* Box's styling */
+.box {
+  height: 500px;
+  margin: 5px;
+  background-color: #fff;
+  color: black;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 10px;
+}
+.box-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ok {
+  border-color: #C8EEC4;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+.error {
+  border-color: #FC6962;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* line chart styling */
+.lineChart {
+  height: 500px;
+  margin: 5px;
+  background-color: #fff;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+  color: black;
+}
+
+/* input field styling */
+input {
+  background-image: url('../images/searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  width: 100%;
+  margin-bottom: 12px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+input:focus {
+  outline: 3px solid #ddd;
+}
+
+/* table styling */
+table {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  width: 100%;
+}
+table th, table td {
+  text-align: left;
+  padding: 12px;
+}
+table tr {
+  border-bottom: 1px solid #ddd;
+}
+table tr.header, table tr:hover {
+  background-color: #f1f1f1;
+}
+td.last {
+  width: 1px;
+  white-space: nowrap;
+}
+
+/* dropdown styling */
+.dropbtn {
+  background-color:#D3D3D3;
+  border: none;
+  color: #808080;
+  text-align: center;
+  text-decoration: none;
+  position: inline-block;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  width: 100px;
+}
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #A9A9A9;
+  color: black;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 50px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  height: 300px;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:nth-child(odd) {
+  background-color: white;
+  ;
+}
+.dropdown a:hover {
+  background-color: #ddd;
+}
+.show {
+  display: block;
+}
+#myDropdown {
+  top: 70px;
+}
+#myDropdown2 {
+  right: 45px;
+  top: 110px;
+}
+#myDropdown3 {
+  right: 45px;
+  top: 210px;
+}
+
+/* styling for pop-up modal */
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  width: 50vw;
+  height: 65vh;
+  border-radius: 0.5rem;
+}
+.close-button {
+  float: right;
+  width: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  background-color: lightgray;
+}
+.close-button:hover {
+  background-color: darkgray;
+}
+.show-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+/* connection status styling */
+.connected{
+  border-color: #C8EEC4;
+  color: #C8EEC4;
+}
+.connected span2 {
+  display: none;
+}
+.disconnected{
+  border-color: #FC6962;
+  color: #FC6962;
+}
+.disconnected span1 {
+  display: none;
+}
+#breaking_status, #motion_status, #battery_status, #motor_status {
+  border-radius: 8px;
+  border-style: solid;
+  padding: 4px;
+  display: inline;
+  text-align: right;
+}
+
+/* header focus styling */
+.header_focus {
+  border-radius: 8px;
+  border-style: solid;
+  float: left;
+  margin: 4px 2px;
+  color: black;
+  width: 100%;
+  text-align: center;
+}
+#header_focus_1{
+  border-color: lightblue;
+}
+#header_focus_1:hover{
+  background-color: lightblue;
+}
+#header_focus_2{
+  border-color: lightsalmon;
+}
+#header_focus_2:hover{
+  background-color: lightsalmon;
+}
+#header_focus_3{
+  border-color: lightseagreen;
+}
+#header_focus_3:hover{
+  background-color: lightseagreen;
+}
+#header_focus_4{
+  border-color: lightcoral;
+  box-sizing: border-box;
+}
+#header_focus_4:hover{
+  background-color: lightcoral;
+}
+.header_focus:hover {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  color: white;
+}
+.header_focus h1{
+  color: black;
+}
+.header_focus:hover h1{
+  color: white;
+}
+.header_focus2 {
+  border-radius: 8px;
+  border-style: solid;
+  float: left;
+  margin: 4px 2px;
+  color: black;
+  width: 100%;
+  height: 120px;
+  text-align: center;
+}
+.header_focus_chart {
+  border-radius: 8px;
+  border-style: solid;
+  float: left;
+  margin: 4px 2px;
+  color: black;
+  width: 100%;
+  text-align: center;
+}
+#header_focus_chart1{
+  border-color: lightblue;
+}
+
+/* state machine styling */
+.stateButton {
+  background-color:white;
+  border: none;
+  color: #808080;
+  text-decoration: none;
+  position: inline-block;
+  margin: 4px 3px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 2px solid #808080;
+  border-radius: 6px;
+  width: 100px;
+  height: 50px;
+  font-weight: 800;
+}
+.stateButton:hover {
+  background-color: black;
+  color: black;
+}
+#one {
+  background-color: #C10000;
+  color: white;
+}
+#two {
+  background-color: #3C9159;
+  color: white;
+}
+#three {
+  background-color: #A84671;
+  color: white;
+}
+#four {
+  background-color: #C66553;
+  color: white;
+}
+#five {
+  background-color: #C6A153;
+  color: white;
+}
+#six {
+  background-color: #C10000;
+  color: white;
+}
+#seven {
+  background-color: #554188;
+  color: white;
+}
+#eight {
+  background-color: #203060;
+  color: white;
+}
+#nine {
+  background-color: #388767;
+  color: white;
+}
+#archiveButton {
+  background-color: gray;
+  color: white;
+}
+
+/* status styling */
+#podStatus {
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 30px;
+}
+#hostStatus {
+  height: 60px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 30px;
+}
+#statusConnection1 {
+  display: inline-block;
+  vertical-align: middle;
+  color: green;
+  font-weight: 800;
+}
+#statusConnection2 {
+  display: inline-block;
+  vertical-align: middle;
+  color: red;
+  font-weight: 800;
+}
+#age {
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
+}
+#ageDisplay {
+  padding: 0px;
+  vertical-align: middle;
+  margin-top: -20px;
+}
+#header4{
+  padding-bottom:100px;
+}

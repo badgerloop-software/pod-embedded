@@ -13,7 +13,7 @@ function createWindow(){
   win = new BrowserWindow({width: 1920, height: 1080, webPreferences:{webSecurity: true}});
 
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'proto.html'),
+    pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true,
   }));
