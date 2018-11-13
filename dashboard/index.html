@@ -11,8 +11,6 @@
     <script src="public/javascripts/generateLineChart.js"></script>
     <script src="public/javascripts/handler.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
-    <script src="node_modules/plotly.js-dist/plotly.js"></script>
-
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -400,7 +398,7 @@
           <span class="close-button">×</span>
           <h1>Stopping Distance (m)</h1>
               <div id="lineChartOne"></div>
-              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
+              <script>document.onload = generateLineChart('lineChartOne', 'line')</script>
         </div>
       </div>
 
