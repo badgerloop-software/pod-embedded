@@ -45,21 +45,21 @@ di.updater.on('updateData', () => {
 function updateData(group, sensor) {
     // Get numbers
     let t = d.getElementById(String(sensor));
-    let tMin = Number(d.getElementById(String(sensor + "Min")).innerHTML);
-    let tMax = Number(d.getElementById(String(sensor + "Max")).innerHTML);
+    // let tMin = Number(d.getElementById(String(sensor + "Min")).innerHTML);
+    // let tMax = Number(d.getElementById(String(sensor + "Max")).innerHTML);
     let stored = storedData[group][sensor];
     //Set number
     t.innerHTML = String(stored[stored.length - 1]);
     //Add warning if necessary
-    if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
-        setSensorGreen(sensor);
-    } else
-        setSensorRed(sensor);
+    // if (Number(t.innerHTML) > tMin && Number(t.innerHTML) < tMax) {
+    //     setSensorGreen(sensor);
+    // } else{
+    //     setSensorRed(sensor);
+    // }
 }
 
 
  function setAgeLabel(staleness){
-     console.log("ugotthis")
     d.getElementById('ageDisplay').innerHTML = String(staleness+"ms");
 }
 
