@@ -2,9 +2,10 @@ chartState = [0, 0, 0, 0];
 chartTDID = ["", "", "", ""];
 traceArray = [0];
 chartData = [0, 0, 0, 0];
-numTraces = 0
-yData = []
+numTraces = 0;
+yData = [];
 xpos = 0;
+chartFirstCreation = 0;
 
 function generateLineChart(id, tdID, title, chartType) {
     //var data = require("./public/javascripts/getData");
@@ -28,9 +29,10 @@ function generateLineChart(id, tdID, title, chartType) {
     if (id == 'lineChartOne') {
         if (chartState[0] == 0) {        // checks if chart one is empty
             chartTDID[0] = tdID;
+            traceArray = [0];
             numTraces = 1;
-            document.getElementById('test').innerHTML = yData;
             newChart();
+            chartFirstCreation = 1;
             chartState[0] = 1;
             
         } 
@@ -40,7 +42,6 @@ function generateLineChart(id, tdID, title, chartType) {
             numTraces = 2;
             addTrace();
             chartState[1] = 1;
-            //document.getElementById('test').innerHTML = chartData[0];
         }
     }
 
@@ -54,7 +55,9 @@ function generateLineChart(id, tdID, title, chartType) {
             line: {color:'green'}
         }], layout);
 
-        getDataAtInterval();
+        if (chartFirstCreation == 0) {
+            getDataAtInterval();
+        }
     }
 
     function addTrace() {
@@ -93,4 +96,11 @@ function generateLineChart(id, tdID, title, chartType) {
             chartData[i] = value.innerHTML;
         }      
     }
+}
+
+function removeTraces(id) {
+    Plotly.deleteTraces(id, traceArray);
+    chartState = [0, 0, 0, 0];
+    chartTDID = ["", "", "", ""];
+    numTraces = 0;
 }
