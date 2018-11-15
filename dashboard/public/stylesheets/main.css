@@ -289,11 +289,7 @@ td.last {
 .disconnected span1 {
   display: none;
 }
-<<<<<<< HEAD
-#breaking_status, #motion_status, #battery_status {
-=======
 #breaking_status, #motion_status, #battery_status, #motor_status {
->>>>>>> Dashboard-FrontBackEndMerge
   border-radius: 8px;
   border-style: solid;
   padding: 4px;
@@ -301,8 +297,6 @@ td.last {
   text-align: right;
 }
 
-<<<<<<< HEAD
-=======
 /* header focus styling */
 .header_focus {
   border-radius: 8px;
@@ -474,4 +468,3 @@ td.last {
 #header4{
   padding-bottom:100px;
 }
->>>>>>> Dashboard-FrontBackEndMerge
