@@ -1,4 +1,5 @@
 var constants = require('./constants');
+const DATA_SEND_RATE = 50;
 var dgram = require('dgram');
 
 const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port; 
@@ -66,7 +67,7 @@ function sendTestData(){
 }
 
 //The line where test data is sent. setInterval(function, ms)
-setInterval(sendTestData, 50);
+setInterval(sendTestData, DATA_SEND_RATE);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){
