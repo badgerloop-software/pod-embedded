@@ -1,9 +1,8 @@
 module.exports = { 
-    getData() {
-        for (i=0; i<=3; i++) {
-            var value = document.getElementById(chartTDID[i]);
-            chartData[i] = value.innerHTML;
-        }     
-        return chartData;
+    getData(tdID) {
+        var chartOneTraceOne = document.getElementById(tdID);
+        return chartOneTraceOne.innerHTML;
+        
+        //return Math.random(); // Placeholder until method of data access is available
     }
 }

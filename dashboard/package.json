@@ -19,5 +19,8 @@
   "devDependencies": {
     "electron": "^3.0.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mongodb": "^3.1.9",
+    "plotly.js-dist": "^1.42.5"
+  }
 }
