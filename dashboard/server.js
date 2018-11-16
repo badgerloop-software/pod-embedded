@@ -1,7 +1,6 @@
-var constants = require('./constants');
+const constants = require('./constants');
 const DATA_SEND_RATE = 50;
-var dgram = require('dgram');
-
+const dgram = require('dgram');
 const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port; 
 
 /* We're gonna come up with a damn template for sending data from the server to the dashboard one day

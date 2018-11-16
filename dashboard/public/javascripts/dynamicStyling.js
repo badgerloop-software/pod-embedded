@@ -4,7 +4,7 @@ setInterval(function(){
   for (i=1; i< 6; i++){ //for loop that goes through each row of the table, 'i' being used to represent row (should probably change to r)
     var x = document.getElementById("motion").rows[i].cells; //gets the cells in the row 'i' and sets to x
     var y;
-    x[2].innerHTML =  y; //sets a variable y to the value that is currently in the 3rd colunn (the value column)
+    //sets a variable y to the value that is currently in the 3rd colunn (the value column)
     if (y<2) { //if that obtained value is less than 2 (arbitrary number for now), style red and add to counter w which will be used to determine if any row had an error
       x[2].style.backgroundColor = '#FC6962';
       w++;
@@ -40,7 +40,6 @@ setInterval(function(){
   for (i=1; i< 9; i++){
     var x = document.getElementById("braking").rows[i].cells;
     var y;
-    x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
       w++;
@@ -76,7 +75,6 @@ setInterval(function(){
   for (i=1; i< 9; i++){
     var x = document.getElementById("battery_pack").rows[i].cells;
     var y;
-    x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
       w++;
@@ -112,7 +110,6 @@ setInterval(function(){
   for (i=1; i< 5; i++){
     var x = document.getElementById("motor").rows[i].cells;
     var y;
-    x[2].innerHTML =  y;
     if (y<2) {
       x[2].style.backgroundColor = '#FC6962';
       w++;
