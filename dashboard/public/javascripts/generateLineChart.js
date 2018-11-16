@@ -17,7 +17,7 @@ function generateLineChart(id, tdID, title) {
     var layout = {
     xaxis: {range: [0, xmax]},
     title: "",
-    width: 220,
+    width: 300,
     height: 220,
     margin: {
         l: 30,
