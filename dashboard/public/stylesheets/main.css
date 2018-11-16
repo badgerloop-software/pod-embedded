@@ -468,3 +468,8 @@ td.last {
 #header4{
   padding-bottom:100px;
 }
+.modebar {
+  display: none !important;
+  }
+  
+  
