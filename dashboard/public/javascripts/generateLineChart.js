@@ -6,6 +6,7 @@ numTraces = 0;
 yData = [];
 xpos = 0;
 chartFirstCreation = 0;
+chartTitles = ["", "", "", ""]
 
 function generateLineChart(id, tdID, title) {
     //var data = require("./public/javascripts/getData");
@@ -15,7 +16,7 @@ function generateLineChart(id, tdID, title) {
 
     var layout = {
     xaxis: {range: [0, xmax]},
-    title: title,
+    title: "",
     width: 220,
     height: 220,
     margin: {
@@ -25,12 +26,15 @@ function generateLineChart(id, tdID, title) {
         t: 30,
       }
     };
-    
+
     if (id == 'lineChartOne') {
         if (chartState[0] == 0) {        // checks if chart one is empty
             chartTDID[0] = tdID;
             traceArray = [0];
+            chartTitles[0] = title;
+            layout['title'] = chartTitles[0];
             numTraces = 1;
+            //document.getElementById("focus_add_button").innerHTML = chartTitles[0]
             newChart();
             chartFirstCreation = 1;
             chartState[0] = 1;
@@ -40,6 +44,8 @@ function generateLineChart(id, tdID, title) {
             chartTDID[1] = tdID;
             traceArray = [0, 1]
             numTraces = 2;
+            chartTitles[1] = title
+            layout['title'] = chartTitles[0]+ ', <br>' + chartTitles[1];
             addTrace();
             chartState[1] = 1;
         }
@@ -61,6 +67,7 @@ function generateLineChart(id, tdID, title) {
     }
 
     function addTrace() {
+        Plotly.relayout(id, layout);
         Plotly.addTraces(id, [{
             x: [xpos],
             y:[chartData[1]],
@@ -100,7 +107,9 @@ function generateLineChart(id, tdID, title) {
 
 function removeTraces(id) {
     Plotly.deleteTraces(id, traceArray);
-    chartState = [0, 0, 0, 0];
-    chartTDID = ["", "", "", ""];
+    if (id == 'lineChartOne') {
+        chartState[0] = chartState[1] = 0;
+        chartTDID[0] = chartTDID[1] = "";
+        chartTitles[0] = chartTitles[1] = "";
     numTraces = 0;
 }
