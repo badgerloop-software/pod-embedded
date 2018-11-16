@@ -9,7 +9,9 @@
     <script src="public/javascripts/focusClone.js"></script>
     <script src="public/javascripts/tableSearch.js"></script>
     <script src="public/javascripts/generateLineChart.js"></script>
+    <script src="public/javascripts/generateBlankChart.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
+    <script src="public/javascripts/plotly-latest.min.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -93,7 +95,7 @@
               <button id="focus_chart_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
               <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
+                <a href="" onclick="generateLineChart('lineChartOne', 'secondaryTank', 'Secondary Tank (PSI)', 'line');return false;">Secondary Tank (PSI)</a>
                 <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
                 <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
                 <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
@@ -128,6 +130,8 @@
             </div>
             <div class="header_focus_chart" id="header_focus_chart1">
               <p id="header_label_chart1">Chart 1</p>
+              <div id="lineChartOne"></div>
+              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
             </div>
             <div class="header_focus_chart" id="header_focus_chart2">
               <p id="header_label_chart2">Chart 2</p>
@@ -192,7 +196,7 @@
               <th>Two</th>
             </tr>
             <tr>
-              <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
+              <!--<td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>-->
               <td id="stoppingDistanceMin">0</td>
               <td id="stoppingDistance"></td>
               <td id="stoppingDistanceMax">255</td>
@@ -394,29 +398,10 @@
         </div>
       </div>
 
-      <div id="lineChart" class="lineChart">
-        <div class="item-content">
-          <h1>Line Chart One</h1>
-          <div id="lineChartOne"></div>
-          <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
-        </div>  
-      </div>
-
-      <button onclick="removeTraces('lineChartOne')">Remove all traces</button>
-
-      <div id="lineChart" class="lineChart">
-        <div class="item-content">
-          <h1>Line Chart Two</h1>
-          <div id="lineChartTwo"></div>
-        </div>  
-      </div>
-
       <div class="modal">
         <div class="modal-content">
           <span class="close-button">×</span>
           <h1>Stopping Distance (m)</h1>
-              <div id="lineChartOne"></div>
-              <script>document.onload = generateLineChart('lineChartOne', 'line')</script>
         </div>
       </div>
 

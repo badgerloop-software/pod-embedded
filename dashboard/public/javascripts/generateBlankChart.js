@@ -3,8 +3,8 @@ function generateBlankChart(id, chartType) {
 
     var layout = {
     xaxis: {range: [0, xmax]},
-    width: 450,
-    height: 400,
+    width: 200,
+    height: 200,
     margin: {
         l: 40,
         r: 40,
