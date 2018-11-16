@@ -91,7 +91,7 @@
             <div class="dropdown">
               <button id="focus_chart_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
               <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
-              <button id="focus_chart_clear_button" onclick="removeTraces('lineChartOne', 'lineChartTwo')" class="dropbtn"><h5>Clear</h5></button>
+              <button id="focus_chart_clear_button" onclick="removeTraces(); generateBlankChart('lineChartOne', 'Chart 1', 'line');" class="dropbtn"><h5>Clear</h5></button>
               <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                 <a href="" onclick="generateLineChart('lineChartOne', 'secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
