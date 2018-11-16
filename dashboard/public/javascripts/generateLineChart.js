@@ -109,5 +109,6 @@ function removeTraces(id1, id2) {
     Plotly.deleteTraces(id2, traceArray);
     chartState = [0, 0, 0, 0];
     chartTDID = ["", "", "", ""];
+    chartTitles = ["", "", "", ""];
     numTraces = 0;
 }
