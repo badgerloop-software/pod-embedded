@@ -34,7 +34,6 @@ function generateLineChart(id, tdID, title) {
             chartTitles[0] = title;
             layout['title'] = chartTitles[0];
             numTraces = 1;
-            //document.getElementById("focus_add_button").innerHTML = chartTitles[0]
             newChart();
             chartFirstCreation = 1;
             chartState[0] = 1;
@@ -112,4 +111,5 @@ function removeTraces(id) {
         chartTDID[0] = chartTDID[1] = "";
         chartTitles[0] = chartTitles[1] = "";
     numTraces = 0;
+    }
 }
