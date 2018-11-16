@@ -104,12 +104,10 @@ function generateLineChart(id, tdID, title) {
     }
 }
 
-function removeTraces(id) {
-    Plotly.deleteTraces(id, traceArray);
-    if (id == 'lineChartOne') {
-        chartState[0] = chartState[1] = 0;
-        chartTDID[0] = chartTDID[1] = "";
-        chartTitles[0] = chartTitles[1] = "";
+function removeTraces(id1, id2) {
+    Plotly.deleteTraces(id1, traceArray);
+    Plotly.deleteTraces(id2, traceArray);
+    chartState = [0, 0, 0, 0];
+    chartTDID = ["", "", "", ""];
     numTraces = 0;
-    }
 }
