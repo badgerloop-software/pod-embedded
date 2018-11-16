@@ -7,7 +7,7 @@ yData = [];
 xpos = 0;
 chartFirstCreation = 0;
 
-function generateLineChart(id, tdID, title, chartType) {
+function generateLineChart(id, tdID, title) {
     //var data = require("./public/javascripts/getData");
     
     var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
@@ -16,13 +16,13 @@ function generateLineChart(id, tdID, title, chartType) {
     var layout = {
     xaxis: {range: [0, xmax]},
     title: title,
-    width: 450,
-    height: 400,
+    width: 220,
+    height: 220,
     margin: {
-        l: 40,
-        r: 40,
-        b: 40,
-        t: 40,
+        l: 30,
+        r: 20,
+        b: 20,
+        t: 30,
       }
     };
     

@@ -95,7 +95,7 @@
               <button id="focus_chart_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
               <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                <a href="" onclick="generateLineChart('lineChartOne', 'secondaryTank', 'Secondary Tank (PSI)', 'line');return false;">Secondary Tank (PSI)</a>
+                <a href="" onclick="generateLineChart('lineChartOne', 'secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
                 <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
                 <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
                 <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
@@ -129,9 +129,9 @@
                 </div>
             </div>
             <div class="header_focus_chart" id="header_focus_chart1">
-              <p id="header_label_chart1">Chart 1</p>
+              <div style="height: 20px"></div>
               <div id="lineChartOne"></div>
-              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
+              <script>document.onload = generateBlankChart('lineChartOne', 'Chart 1', 'line')</script>
             </div>
             <div class="header_focus_chart" id="header_focus_chart2">
               <p id="header_label_chart2">Chart 2</p>
