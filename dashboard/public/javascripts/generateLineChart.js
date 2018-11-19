@@ -76,7 +76,7 @@ function generateLineChartOne(tdID, title) {
     }
 
     function addTrace() {
-        Plotly.relayout(lineChartOne, layout);
+        Plgitotly.relayout(lineChartOne, layout);
         Plotly.addTraces(lineChartOne, [{
             x: [xpos],
             y:[chartData1[1]],
