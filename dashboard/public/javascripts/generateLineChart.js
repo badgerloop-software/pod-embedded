@@ -28,7 +28,7 @@ function generateLineChartOne(tdID, title) {
     xaxis: {range: [0, xmax]},
     showlegend: false,
     title: "",
-    width: 300,
+    width: 220,
     height: 220,
     margin: {
         l: 30,
