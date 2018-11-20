@@ -219,6 +219,10 @@ td.last {
 .show {
   display: block;
 }
+
+.hide{
+  display: none;
+}
 #myDropdown {
   top: 70px;
 }

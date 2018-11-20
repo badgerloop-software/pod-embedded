@@ -11,7 +11,7 @@
     <script src="public/javascripts/generateLineChart.js"></script>
     <script src="public/javascripts/generateBlankChart.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
-    <script src="public/javascripts/plotly-latest.min.js"></script>
+    <script src="node_modules/plotly.js-dist/plotly.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -36,10 +36,10 @@
       <div id="header1" class="box">
         <div class="grid_focus">
           <div class="dropdown">
-            <button id="focus_add_button" onclick="dropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
+            <button id="focus_add_button" onclick="openDropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
-            <div id="myDropdown" class="dropdown-content">
-              <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+            <div id="myDropdown1" onfocusout="closeDropdown('1')" class="dropdown-content">
+              <input type="text" placeholder="Search.." id="dropdownInput1" onkeyup="filterFunction()">
               <a href="" onclick="clone('stoppingDistance');return false;">Stopping Distance (m)</a>
               <a href="" onclick="clone('retro');return false;">Retro</a>
               <a href="" onclick="clone('position');return false;">Position (m)</a>
@@ -89,11 +89,11 @@
       <div id="header2" class="box">
           <div class="grid_focus2">
             <div class="dropdown">
-              <button id="focus_chart_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
-              <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
+              <button id="focus_chart_add_button" onclick="openDropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
+              <button id="focus_chart_add_button2" onclick="openDropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
               <button id="focus_chart_clear_button" onclick="removeTraces(); generateBlankChart('lineChartOne', 'Chart 1', 'line'); generateBlankChart('lineChartTwo', 'Chart 2', 'line');" class="dropbtn"><h5>Clear</h5></button>
-              <div id="myDropdown2" class="dropdown-content">
-                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+              <div id="myDropdown2" onfocusout="closeDropdown('2')" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="dropdownInput2" onfocusout="closeDropdown('2')"  onkeyup="filterFunction()" autofocus>
                 <a href="" onclick="generateLineChartOne('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
                 <a href="" onclick="generateLineChartOne('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
                 <a href="" onclick="generateLineChartOne('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
@@ -108,8 +108,8 @@
                 <a href="" onclick="generateLineChartOne('velocity', 'Velocity (m/s)');return false;">Velocity (m/s)</a>
                 <a href="" onclick="generateLineChartOne('acceleration', 'Acceleration (m/s<sup>2</sup>)');return false;">Acceleration (m/s<sup>2</sup>)</a>
               </div>
-              <div id="myDropdown3" class="dropdown-content">
-                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+              <div id="myDropdown3" onfocusout="closeDropdown('3')" class="dropdown-content">
+                  <input type="text" placeholder="Search.."  id="dropdownInput3" onkeyup="filterFunction()">
                   <a href="" onclick="generateLineChartTwo('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
                   <a href="" onclick="generateLineChartTwo('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
                   <a href="" onclick="generateLineChartTwo('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
@@ -137,7 +137,7 @@
             </div>
           </div>
         </div>
-
+        <!-- State Machine Control Panel -->
         <div id="header3" class="box">
            <div class="gridStateMachine">
               <button id="one" class="stateButton"><p>Power Off</p></button>
@@ -169,8 +169,8 @@
               <button id="nine" class="stateButton"><p>Sec. Brake Vent Off</p></button>
            </div>
         </div>
-        <h1 id="test">hello</h1>
 
+        <!-- Latency Indicator-->
         <div id="header4" class="box">
           <center><div class="status">
              <img src="public/images/pod.png" id="podStatus">
@@ -180,7 +180,7 @@
              <img src="public/images/macbook.png" id="hostStatus">
           </div></center>
        </div>
-
+       <!-- Motion Table -->
       <div id="motion_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motion </h1>
@@ -226,7 +226,7 @@
           </table>
         </div>
       </div>
-
+      <!-- Braking Table -->
       <div id="braking_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Braking </h1>
@@ -291,7 +291,7 @@
         </div>
       </div>
 
-      
+      <!-- Battery Table -->
       <div id="battery_pack_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Battery </h1>
@@ -355,7 +355,7 @@
           </table>
         </div>
       </div>
-
+      <!-- Motor Table -->
       <div id="motor_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motor </h1>
