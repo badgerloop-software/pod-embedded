@@ -11,6 +11,11 @@ function closeDropdown(num){
   document.getElementById("myDropdown" + String(num)).classList.remove("show");
   document.getElementById("myDropdown" + String(num)).classList.add("hide");
 }
+function closeAllDropdowns(){
+  for(let i=1; i<4; i++){
+    closeDropdown(i);
+  }
+}
 
   function filterFunction() {
     var input, filter, a, i;
@@ -26,3 +31,12 @@ function closeDropdown(num){
         }
     }
   }
+  window.addEventListener("click", function(event) {
+    targetNode = String(event.target.tagName);
+    console.log(targetNode)
+    if(targetNode !== "A"){
+      if(targetNode !== "BUTTON"){
+        closeAllDropdowns();
+      }
+    }
+  });

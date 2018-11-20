@@ -202,6 +202,7 @@ td.last {
   overflow: auto;
   border: 1px solid #ddd;
   height: 300px;
+  z-index: 100;
 }
 .dropdown-content a {
   color: black;

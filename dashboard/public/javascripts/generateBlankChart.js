@@ -4,7 +4,7 @@ function generateBlankChart(id, title, chartType) {
     var layout = {
     xaxis: {range: [0, xmax]},
     title: title,
-    width: 220,
+    // width: 250,
     height: 220,
     margin: {
         l: 30,
