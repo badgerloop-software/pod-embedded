@@ -202,6 +202,7 @@ td.last {
   overflow: auto;
   border: 1px solid #ddd;
   height: 300px;
+  z-index: 100;
 }
 .dropdown-content a {
   color: black;
@@ -218,6 +219,10 @@ td.last {
 }
 .show {
   display: block;
+}
+
+.hide{
+  display: none;
 }
 #myDropdown {
   top: 70px;
@@ -468,3 +473,8 @@ td.last {
 #header4{
   padding-bottom:100px;
 }
+.modebar {
+  display: none !important;
+  }
+  
+  
