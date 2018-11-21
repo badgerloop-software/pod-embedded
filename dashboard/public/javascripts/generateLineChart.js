@@ -213,9 +213,14 @@ function generateLineChartTwo(tdID, title) {
 }
 
 function removeTraces() {
-    chartState1 = chartState2 = [0, 0];
-    chartTDID1 = chartTDID2 = ["", ""];
-    traceArray1 = traceArray2 = [0];
-    numTraces1 = numTraces2 = 0;
-    chartTitles1 = chartTitles2 = ["", ""]
+    chartState1 = [0, 0];
+    chartState2 = [0, 0];
+    chartTDID1 = ["", ""];
+    chartTDID2 = ["", ""];
+    traceArray1 = [0];
+    traceArray2 = [0];
+    numTraces1 = 0;
+    numTraces2 = 0;
+    chartTitles1 = ["", ""]
+    chartTitles2 = ["", ""]
 }
