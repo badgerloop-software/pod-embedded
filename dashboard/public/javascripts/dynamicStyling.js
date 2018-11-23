@@ -1,3 +1,4 @@
+const UPDATE_RATE = 100;
 //random generator for motion
 setInterval(function(){
   var w=0;
@@ -25,14 +26,14 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c;
-  if (c > 1) {
-    document.getElementById("motion_status").className = "connected"; 
-  }
-  if (c == 1) {
+  // var c =1;
+  // if (c > 1) {
+  //   document.getElementById("motion_status").className = "connected"; 
+  // }
+  // if (c == 1) {
     document.getElementById("motion_status").className = "disconnected"; 
-  }
-}, 300);
+  // }
+}, UPDATE_INTERVAL);
 
 //random generator for braking and pressures
 setInterval(function(){
@@ -60,14 +61,14 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c;
-  if (c > 1) {
-    document.getElementById("breaking_status").className = "connected"; 
-  }
-  if (c == 1) {
+  // var c = 1;
+  // if (c > 1) {
+  //   document.getElementById("breaking_status").className = "connected"; 
+  // }
+  // if (c == 1) {
     document.getElementById("breaking_status").className = "disconnected"; 
-  }
-}, 300);
+  // }
+}, UPDATE_INTERVAL);
 
 //random generator for battery
 setInterval(function(){
@@ -95,14 +96,14 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c;
-  if (c > 1) {
-    document.getElementById("battery_status").className = "connected"; 
-  }
-  if (c == 1) {
+  // var c;
+  // if (c > 1) {
+  //   document.getElementById("battery_status").className = "connected"; 
+  // }
+  // if (c == 1) {
     document.getElementById("battery_status").className = "disconnected"; 
-  }
-}, 300);
+  // }
+}, UPDATE_INTERVAL);
 
 //random generator for motor
 setInterval(function(){
@@ -130,11 +131,11 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c;
-  if (c == 1) {
-    document.getElementById("motor_status").className = "connected"; 
-  }
-  if (c >1) {
+  // var c = 1;
+  // if (c == 1) {
+  //   document.getElementById("motor_status").className = "connected"; 
+  // }
+  // if (c >1) {
     document.getElementById("motor_status").className = "disconnected"; 
-  }
-}, 300);
+  // }
+}, UPDATE_INTERVAL);
