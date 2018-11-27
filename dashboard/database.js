@@ -2,8 +2,6 @@ module.exports = {
     connections: {
         pod: false,
         NAP: false,
-        BMS: false,
-        RMS: false
     },
     braking: {
         primaryTank: [],
