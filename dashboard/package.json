@@ -1,0 +1,26 @@
+{
+  "name": "podivdashboard",
+  "version": "1.0.0",
+  "description": "The Dashboard for Badgerloop Pod 4",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badgerloop-software/pod.git"
+  },
+  "author": "Eric Udlis",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/badgerloop-software/pod/issues"
+  },
+  "homepage": "https://github.com/badgerloop-software/pod#readme",
+  "devDependencies": {
+    "electron": "^3.0.5"
+  },
+  "dependencies": {
+    "mongodb": "^3.1.10",
+    "plotly.js-dist": "^1.42.5"
+  }
+}
