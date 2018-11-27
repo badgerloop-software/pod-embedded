@@ -294,7 +294,7 @@ td.last {
 .disconnected span1 {
   display: none;
 }
-#breaking_status, #motion_status, #battery_status, #motor_status {
+#braking_status, #motion_status, #battery_status, #motor_status {
   border-radius: 8px;
   border-style: solid;
   padding: 4px;
