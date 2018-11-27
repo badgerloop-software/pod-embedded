@@ -225,15 +225,15 @@ td.last {
   display: none;
 }
 #myDropdown {
-  top: 70px;
+  top: 10px;
 }
 #myDropdown2 {
   right: 45px;
-  top: 110px;
+  top: 80px;
 }
 #myDropdown3 {
   right: 45px;
-  top: 210px;
+  top: 170px;
 }
 
 /* styling for pop-up modal */
