@@ -1,4 +1,3 @@
-const UPDATE_RATE = 100;
 //random generator for motion
 setInterval(function(){
   var w=0;
