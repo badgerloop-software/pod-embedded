@@ -1,24 +1,17 @@
 //dropdown code
-function openDropdown(num) {
-  console.log("opening dropdown" + String(num));
-  document.getElementById("myDropdown" + String(num)).classList.remove("hide");
-  document.getElementById("myDropdown" + String(num)).classList.add("show");
-  document.getElementById("dropdownInput" + String(num)).focus();
+function dropdown(num) {
+    if (num==1){
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    else if (num ==2){
+      document.getElementById("myDropdown2").classList.toggle("show");
+    }
+    else if (num ==3){
+      document.getElementById("myDropdown3").classList.toggle("show");
+    }
   }
-
-function closeDropdown(num){
-  console.log("closing dropdown" + String(num));
-  document.getElementById("myDropdown" + String(num)).classList.remove("show");
-  document.getElementById("myDropdown" + String(num)).classList.add("hide");
-}
-function closeAllDropdowns(){
-  for(let i=1; i<4; i++){
-    closeDropdown(i);
-  }
-}
-
   function filterFunction() {
-    var input, filter, a, i;
+    var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     div = document.getElementById("myDropdown");
@@ -31,12 +24,3 @@ function closeAllDropdowns(){
         }
     }
   }
-  window.addEventListener("click", function(event) {
-    targetNode = String(event.target.tagName);
-    console.log(targetNode)
-    if(targetNode !== "A"){
-      if(targetNode !== "BUTTON"){
-        closeAllDropdowns();
-      }
-    }
-  });

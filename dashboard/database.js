@@ -17,6 +17,7 @@ module.exports = {
     },
     motion : {
         stoppingDistance: [],
+        imu: [],
         position: [],
         retro: [],
         velocity: [],
@@ -26,10 +27,6 @@ module.exports = {
         packVoltage: [],
         packCurrent: [],
         packSOC: [],
-        packAH: [],
-        cellMaxVoltage: [],
-        cellMinVoltage: [],
-        highTemp: [],
-        lowTemp: []
+        packAH: []
     }
 }

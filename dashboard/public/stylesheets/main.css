@@ -202,7 +202,6 @@ td.last {
   overflow: auto;
   border: 1px solid #ddd;
   height: 300px;
-  z-index: 100;
 }
 .dropdown-content a {
   color: black;
@@ -220,20 +219,16 @@ td.last {
 .show {
   display: block;
 }
-
-.hide{
-  display: none;
-}
 #myDropdown {
-  top: 10px;
+  top: 70px;
 }
 #myDropdown2 {
   right: 45px;
-  top: 80px;
+  top: 110px;
 }
 #myDropdown3 {
   right: 45px;
-  top: 170px;
+  top: 210px;
 }
 
 /* styling for pop-up modal */
@@ -294,7 +289,7 @@ td.last {
 .disconnected span1 {
   display: none;
 }
-#braking_status, #motion_status, #battery_status, #motor_status {
+#breaking_status, #motion_status, #battery_status, #motor_status {
   border-radius: 8px;
   border-style: solid;
   padding: 4px;
@@ -473,8 +468,3 @@ td.last {
 #header4{
   padding-bottom:100px;
 }
-.modebar {
-  display: none !important;
-  }
-  
-  
