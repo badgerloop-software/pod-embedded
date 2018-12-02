@@ -1,5 +1,7 @@
-# Pod 4 Dashboard
-*Author: Eric Udlis, Luke Houge, Alex Vesel*
+# Pod 4 Operator's Dashboard
+*Authors: Eric Udlis, Luke Houge, Alex Vesel*
 
-## npm install
-## npm start
+## Run Instructions
+cd into folder
+npm install
+npm start
