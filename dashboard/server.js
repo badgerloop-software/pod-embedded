@@ -1,6 +1,6 @@
-var constants = require('./constants');
-var dgram = require('dgram');
-
+const constants = require('./constants');
+const DATA_SEND_RATE = 50;
+const dgram = require('dgram');
 const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port; 
 
 /* We're gonna come up with a damn template for sending data from the server to the dashboard one day
@@ -8,27 +8,6 @@ const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port;
 *
 * Today is not that day 
 */
-
-// var testSocket = {
-//     age: new Date().getUTCMilliseconds(),
-//     data: {
-//      navigation : {
-//          imu: getRandomValue(),
-//          encoder: getRandomValue(),
-//          retro: getRandomValue() 
-//      },
-//      pressureVessel: {
-//          pressure: getRandomValue(),
-//          airQuality: getRandomValue(),
-//          paranormal: getRandomValue()
-//      },
-//      braking: {
-//          solenoids: getRandomValue(),
-//          brakePadTemps: getRandomValue(),
-//          brakeGood: getRandomValue()
-//      }
-//     }
-// }
 var client = dgram.createSocket('udp4');
 
 // From dgram docs
@@ -55,7 +34,6 @@ function sendTestData(){
         data:{
             motion : {
                 stoppingDistance: getRandomValue(),
-                imu: getRandomValue(),
                 position: getRandomValue(),
                 retro: getRandomValue(),
                 velocity: getRandomValue(),
@@ -65,7 +43,11 @@ function sendTestData(){
                 packVoltage: getRandomValue(),
                 packCurrent: getRandomValue(),
                 packSOC: getRandomValue(),
-                packAH: getRandomValue()
+                packAH: getRandomValue(),
+                cellMaxVoltage: getRandomValue(),
+                cellMinVoltage: getRandomValue(),
+                highTemp: getRandomValue(),
+                lowTemp: getRandomValue()
             },
             braking: {
                 secondaryTank: getRandomValue(),
@@ -84,7 +66,7 @@ function sendTestData(){
 }
 
 //The line where test data is sent. setInterval(function, ms)
-setInterval(sendTestData, 100);
+setInterval(sendTestData, DATA_SEND_RATE);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){

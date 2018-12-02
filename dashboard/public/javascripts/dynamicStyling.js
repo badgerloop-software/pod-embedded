@@ -1,57 +1,55 @@
 //random generator for motion
 setInterval(function(){
   var w=0;
-  for (i=1; i< 6; i++){
-    var x = document.getElementById("motion").rows[i].cells;
-    var y = Math.floor((Math.random()*100)+1) //change to data input
-    x[2].innerHTML =  y;
-    if (y<2) {
-      x[2].style.backgroundColor = '#FC6962';
-      w++;
+  var table = document.getElementById('motion'); //creates table array
+    for (var r = 1, n = table.rows.length; r < n; r++) { //iterates through rows in given table
+      var y = table.rows[r].cells[2].innerHTML; //sets the value to y
+      if (y<10) { //checks if too low
+        table.rows[r].cells[2].style.backgroundColor = '#FC6962'; //makes red
+        w++; //adds to w, signifying that there is an error present in the table
+      }
+      else if (y>200) { //checks if in good range
+        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4'; //makes green
+      }
+      else {
+        table.rows[r].cells[2].style.backgroundColor = '#fff'; //else sets to white background
+      }
     }
-    else if (y>90) {
-      x[2].style.backgroundColor = '#C8EEC4';
-    }
-    else {
-      x[2].style.backgroundColor = '#fff';
-    }
-  }
-  if (w != 0) {
+  if (w != 0) { //if there was an error in any row during one run of the for loop, meaning w is not 0 as it was created as, then change the class of the div that tavble is in to 'error', which will make the border color red
     document.getElementById("motion_div").className = "error";
     w=0;
   }
-  else {
+  else { //if there was not an error during the for loop in any row, then keep the class of the div as 'ok'
     document.getElementById("motion_div").className = "ok"; 
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c = Math.floor((Math.random()*10)+1)
+  var c =2;
   if (c > 1) {
     document.getElementById("motion_status").className = "connected"; 
   }
   if (c == 1) {
     document.getElementById("motion_status").className = "disconnected"; 
   }
-}, 300);
+}, 100);
 
 //random generator for braking and pressures
 setInterval(function(){
   var w=0;
-  for (i=1; i< 9; i++){
-    var x = document.getElementById("braking").rows[i].cells;
-    var y = Math.floor((Math.random()*100)+1) //change to data input
-    x[2].innerHTML =  y;
-    if (y<2) {
-      x[2].style.backgroundColor = '#FC6962';
-      w++;
+  var table = document.getElementById('braking');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+      var y = table.rows[r].cells[2].innerHTML;
+      if (y<10) {
+        table.rows[r].cells[2].style.backgroundColor = '#FC6962';
+        w++;
+      }
+      else if (y>200) {
+        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
+      }
+      else {
+        table.rows[r].cells[2].style.backgroundColor = '#fff';
+      }
     }
-    else if (y>90) {
-      x[2].style.backgroundColor = '#C8EEC4';
-    }
-    else {
-      x[2].style.backgroundColor = '#fff';
-    }
-  }
   if (w != 0) {
     document.getElementById("braking_div").className = "error";
     w=0;
@@ -61,33 +59,32 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c = Math.floor((Math.random()*10)+1)
+  var c =2;
   if (c > 1) {
-    document.getElementById("breaking_status").className = "connected"; 
+    document.getElementById("braking_status").className = "connected"; 
   }
   if (c == 1) {
-    document.getElementById("breaking_status").className = "disconnected"; 
+    document.getElementById("braking_status").className = "disconnected"; 
   }
-}, 300);
+}, 100);
 
 //random generator for battery
 setInterval(function(){
   var w=0;
-  for (i=1; i< 9; i++){
-    var x = document.getElementById("battery_pack").rows[i].cells;
-    var y = Math.floor((Math.random()*100)+1) //change to data input
-    x[2].innerHTML =  y;
-    if (y<2) {
-      x[2].style.backgroundColor = '#FC6962';
-      w++;
+  var table = document.getElementById('battery_pack');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+      var y = table.rows[r].cells[2].innerHTML;
+      if (y<10) {
+        table.rows[r].cells[2].style.backgroundColor = '#FC6962';
+        w++;
+      }
+      else if (y>200) {
+        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
+      }
+      else {
+        table.rows[r].cells[2].style.backgroundColor = '#fff';
+      }
     }
-    else if (y>90) {
-      x[2].style.backgroundColor = '#C8EEC4';
-    }
-    else {
-      x[2].style.backgroundColor = '#fff';
-    }
-  }
   if (w != 0) {
     document.getElementById("battery_pack_div").className = "error";
     w=0;
@@ -96,34 +93,33 @@ setInterval(function(){
     document.getElementById("battery_pack_div").className = "ok"; 
     w=0;
   }
-  //dummy function for status, 2-10= connected, 1= disconected
-  var c = Math.floor((Math.random()*10)+1)
-  if (c > 1) {
-    document.getElementById("battery_status").className = "connected"; 
-  }
-  if (c == 1) {
-    document.getElementById("battery_status").className = "disconnected"; 
-  }
-}, 300);
+ //dummy function for status, 2-10= connected, 1= disconected
+ var c =2;
+ if (c > 1) {
+   document.getElementById("battery_status").className = "connected"; 
+ }
+ if (c == 1) {
+   document.getElementById("battery_status").className = "disconnected"; 
+ }
+}, 100);
 
 //random generator for motor
 setInterval(function(){
   var w=0;
-  for (i=1; i< 6; i++){
-    var x = document.getElementById("motor").rows[i].cells;
-    var y = Math.floor((Math.random()*100)+1) //change to data input
-    x[2].innerHTML =  y;
-    if (y<2) {
-      x[2].style.backgroundColor = '#FC6962';
-      w++;
+  var table = document.getElementById('motor');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+      var y = table.rows[r].cells[2].innerHTML;
+      if (y<10) {
+        table.rows[r].cells[2].style.backgroundColor = '#FC6962';
+        w++;
+      }
+      else if (y>200) {
+        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
+      }
+      else {
+        table.rows[r].cells[2].style.backgroundColor = '#fff';
+      }
     }
-    else if (y>90) {
-      x[2].style.backgroundColor = '#C8EEC4';
-    }
-    else {
-      x[2].style.backgroundColor = '#fff';
-    }
-  }
   if (w != 0) {
     document.getElementById("motor_div").className = "error";
     w=0;
@@ -133,11 +129,11 @@ setInterval(function(){
     w=0;
   }
   //dummy function for status, 2-10= connected, 1= disconected
-  var c = Math.floor((Math.random()*10)+1)
-  if (c == 1) {
+  var c =1;
+  if (c > 1) {
     document.getElementById("motor_status").className = "connected"; 
   }
-  if (c >1) {
+  if (c == 1) {
     document.getElementById("motor_status").className = "disconnected"; 
   }
-}, 300);
+}, 100);

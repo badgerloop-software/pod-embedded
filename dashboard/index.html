@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- note: ID tags w/ spaces are temporary-->
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">    
@@ -9,11 +8,9 @@
     <script src="public/javascripts/focusClone.js"></script>
     <script src="public/javascripts/tableSearch.js"></script>
     <script src="public/javascripts/generateLineChart.js"></script>
-    <script src="public/javascripts/proto.js"></script>
+    <script src="public/javascripts/generateBlankChart.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
     <script src="node_modules/plotly.js-dist/plotly.js"></script>
-    <script src="public/javascripts/plotly-latest.min.js"></script>
-
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
@@ -35,14 +32,13 @@
     </div>
 
     <div class="grid">
-
       <div id="header1" class="box">
         <div class="grid_focus">
           <div class="dropdown">
             <button id="focus_add_button" onclick="dropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
-            <div id="myDropdown" class="dropdown-content">
-              <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+            <div id="myDropdown1" class="dropdown-content">
+              <input type="text" placeholder="Search.." id="dropdownInput1" onkeyup="filterFunction()">
               <a href="" onclick="clone('stoppingDistance');return false;">Stopping Distance (m)</a>
               <a href="" onclick="clone('retro');return false;">Retro</a>
               <a href="" onclick="clone('position');return false;">Position (m)</a>
@@ -94,51 +90,53 @@
             <div class="dropdown">
               <button id="focus_chart_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
               <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
-              <button id="focus_chart_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
+              <button id="focus_chart_clear_button" onclick="removeTraces(); generateBlankChart('lineChartOne', 'Chart 1', 'line'); generateBlankChart('lineChartTwo', 'Chart 2', 'line');" class="dropbtn"><h5>Clear Charts</h5></button>
               <div id="myDropdown2" class="dropdown-content">
-                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
-                <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
-                <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
-                <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
-                <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
-                <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
-                <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-                <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-                <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
-                <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
-                <a href="" onclick="clone('Retro');return false;">Retro</a>
-                <a href="" onclick="clone('Position');return false;">Position (m)</a>
-                <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
-                <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+                <input type="text" placeholder="Search.." id="dropdownInput2"  onkeyup="filterFunction()" autofocus>
+                <a href="" onclick="generateLineChartOne('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
+                <a href="" onclick="generateLineChartOne('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
+                <a href="" onclick="generateLineChartOne('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
+                <a href="" onclick="generateLineChartOne('primaryTank', 'Primary Tank (PSI)');return false;";>Primary Tank (PSI)</a>
+                <a href="" onclick="generateLineChartOne('primaryLine', 'Primary Line (PSI)');return false;";>Primary Line (PSI)</a>
+                <a href="" onclick="generateLineChartOne('primaryActuation', 'Primary Actuation (PSI)');return false;";>Primary Actuation (PSI)</a>
+                <a href="" onclick="generateLineChartOne('pressureVesselPressure', 'Pressure Vessel Pressure (PSI)');return false;";>Pressure Vessel Pressure (PSI)</a>
+                <a href="" onclick="generateLineChartOne('currentPressure', 'Current Pressure (PSI)');return false;";>Current Pressure (PSI)</a>
+                <a href="" onclick="generateLineChartOne('stoppingDistance', 'Stopping Distance (m)');return false;">Stopping Distance (m)</a>
+                <a href="" onclick="generateLineChartOne('retro', 'Retro');return false;">Retro</a>
+                <a href="" onclick="generateLineChartOne('position', 'Position (m)');return false;">Position (m)</a>
+                <a href="" onclick="generateLineChartOne('velocity', 'Velocity (m/s)');return false;">Velocity (m/s)</a>
+                <a href="" onclick="generateLineChartOne('acceleration', 'Acceleration (m/s<sup>2</sup>)');return false;">Acceleration (m/s<sup>2</sup>)</a>
               </div>
               <div id="myDropdown3" class="dropdown-content">
-                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                  <a href="" onclick="clone('Secondary Tank');return false;">Secondary Tank (PSI)</a>
-                  <a href="" onclick="clone('Secondary Line');return false;">Secondary Line (PSI)</a>
-                  <a href="" onclick="clone('Secondary Actuation');return false;";>Secondary Actuation (PSI)</a>
-                  <a href="" onclick="clone('Primary Tank');return false;";>Primary Tank (PSI)</a>
-                  <a href="" onclick="clone('Primary Line');return false;";>Primary Line (PSI)</a>
-                  <a href="" onclick="clone('Primary Actuation');return false;";>Primary Actuation (PSI)</a>
-                  <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-                  <a href="" onclick="clone('Pressure Vessel Pressure');return false;";>Pressure Vessel Pressure (PSI)</a>
-                  <a href="" onclick="clone('Current Pressure');return false;";>Current Pressure (PSI)</a>
-                  <a href="" onclick="clone('Stopping Distance');return false;">Stopping Distance (m)</a>
-                  <a href="" onclick="clone('Retro');return false;">Retro</a>
-                  <a href="" onclick="clone('Position');return false;">Position (m)</a>
-                  <a href="" onclick="clone('Velocity');return false;">Velocity (m/s)</a>
-                  <a href="" onclick="clone('Acceleration');return false;">Acceleration (m/s<sup>2</sup>)</a>
+                  <input type="text" placeholder="Search.."  id="dropdownInput3" onkeyup="filterFunction()">
+                  <a href="" onclick="generateLineChartTwo('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('primaryTank', 'Primary Tank (PSI)');return false;";>Primary Tank (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('primaryLine', 'Primary Line (PSI)');return false;";>Primary Line (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('primaryActuation', 'Primary Actuation (PSI)');return false;";>Primary Actuation (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('pressureVesselPressure', 'Pressure Vessel Pressure (PSI)');return false;";>Pressure Vessel Pressure (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('currentPressure', 'Current Pressure (PSI)');return false;";>Current Pressure (PSI)</a>
+                  <a href="" onclick="generateLineChartTwo('stoppingDistance', 'Stopping Distance (m)');return false;">Stopping Distance (m)</a>
+                  <a href="" onclick="generateLineChartTwo('retro', 'Retro');return false;">Retro</a>
+                  <a href="" onclick="generateLineChartTwo('position', 'Position (m)');return false;">Position (m)</a>
+                  <a href="" onclick="generateLineChartTwo('velocity', 'Velocity (m/s)');return false;">Velocity (m/s)</a>
+                  <a href="" onclick="generateLineChartTwo('acceleration', 'Acceleration (m/s<sup>2</sup>)');return false;">Acceleration (m/s<sup>2</sup>)</a>
                 </div>
             </div>
             <div class="header_focus_chart" id="header_focus_chart1">
-              <p id="header_label_chart1">Chart 1</p>
+              <div style="height: 20px"></div>
+              <div id="lineChartOne"></div>
+              <script>document.onload = generateBlankChart('lineChartOne', 'Chart 1', 'line')</script>
             </div>
             <div class="header_focus_chart" id="header_focus_chart2">
-              <p id="header_label_chart2">Chart 2</p>
+              <div style="height: 20px"></div>
+              <div id="lineChartTwo"></div>
+              <script>document.onload = generateBlankChart('lineChartTwo', 'Chart 2', 'line')</script>
             </div>
           </div>
         </div>
-
+        <!-- State Machine Control Panel -->
         <div id="header3" class="box">
            <div class="gridStateMachine">
               <button id="one" class="stateButton"><p>Power Off</p></button>
@@ -171,6 +169,7 @@
            </div>
         </div>
 
+        <!-- Latency Indicator-->
         <div id="header4" class="box">
           <center><div class="status">
              <img src="public/images/pod.png" id="podStatus">
@@ -180,7 +179,7 @@
              <img src="public/images/macbook.png" id="hostStatus">
           </div></center>
        </div>
-
+       <!-- Motion Table -->
       <div id="motion_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motion </h1>
@@ -200,10 +199,10 @@
               <td id="stoppingDistanceMax">255</td>
             </tr>
             <tr>
-                <td>Retro</td>
-                <td>0</td>
-                <td id ="dataRetro"></td>
-                <td id = "test">255</td>
+              <td>Retro</td>
+              <td id="retroMin">125</td>
+              <td id ="retro"></td>
+              <td id ="retroMax">255</td>
             </tr>
             <tr>
               <td>Position (m)</td>
@@ -226,11 +225,11 @@
           </table>
         </div>
       </div>
-
+      <!-- Braking Table -->
       <div id="braking_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Braking </h1>
-          <h2 id="breaking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
+          <h2 id="braking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
           <table id="braking">
               <tr class="header">
@@ -291,7 +290,7 @@
         </div>
       </div>
 
-      
+      <!-- Battery Table -->
       <div id="battery_pack_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Battery </h1>
@@ -355,7 +354,7 @@
           </table>
         </div>
       </div>
-
+      <!-- Motor Table -->
       <div id="motor_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motor </h1>
@@ -400,8 +399,6 @@
         <div class="modal-content">
           <span class="close-button">×</span>
           <h1>Stopping Distance (m)</h1>
-              <div id="lineChartOne"></div>
-              <script>document.onload = generateBlankChart('lineChartOne', 'line')</script>
         </div>
       </div>
 
@@ -426,6 +423,7 @@
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
     </script>
+     <script src="public/javascripts/handler.js"></script>
   </body>
 
 </html>

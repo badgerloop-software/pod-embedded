@@ -1,7 +1,7 @@
 //dropdown code
 function dropdown(num) {
     if (num==1){
-      document.getElementById("myDropdown").classList.toggle("show");
+      document.getElementById("myDropdown1").classList.toggle("show");
     }
     else if (num ==2){
       document.getElementById("myDropdown2").classList.toggle("show");
