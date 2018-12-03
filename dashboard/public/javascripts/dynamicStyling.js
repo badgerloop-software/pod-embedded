@@ -4,12 +4,10 @@ setInterval(function(){
   var table = document.getElementById('motion'); //creates table array
     for (var r = 1, n = table.rows.length; r < n; r++) { //iterates through rows in given table
       var y = table.rows[r].cells[2].innerHTML; //sets the value to y
-      if (y<10) { //checks if too low
+      var x = table.rows[r].cells[1].innerHTML; //sets the min value to x
+      if (y<x) { //checks if too low
         table.rows[r].cells[2].style.backgroundColor = '#FC6962'; //makes red
         w++; //adds to w, signifying that there is an error present in the table
-      }
-      else if (y>200) { //checks if in good range
-        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4'; //makes green
       }
       else {
         table.rows[r].cells[2].style.backgroundColor = '#fff'; //else sets to white background
@@ -39,12 +37,10 @@ setInterval(function(){
   var table = document.getElementById('braking');
     for (var r = 1, n = table.rows.length; r < n; r++) {
       var y = table.rows[r].cells[2].innerHTML;
-      if (y<10) {
+      var x = table.rows[r].cells[1].innerHTML; //sets the min value to x
+      if (y<x) { //checks if too low
         table.rows[r].cells[2].style.backgroundColor = '#FC6962';
         w++;
-      }
-      else if (y>200) {
-        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
       }
       else {
         table.rows[r].cells[2].style.backgroundColor = '#fff';
@@ -74,12 +70,10 @@ setInterval(function(){
   var table = document.getElementById('battery_pack');
     for (var r = 1, n = table.rows.length; r < n; r++) {
       var y = table.rows[r].cells[2].innerHTML;
-      if (y<10) {
+      var x = table.rows[r].cells[1].innerHTML; //sets the min value to x
+      if (y<x) { //checks if too low
         table.rows[r].cells[2].style.backgroundColor = '#FC6962';
         w++;
-      }
-      else if (y>200) {
-        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
       }
       else {
         table.rows[r].cells[2].style.backgroundColor = '#fff';
@@ -109,12 +103,10 @@ setInterval(function(){
   var table = document.getElementById('motor');
     for (var r = 1, n = table.rows.length; r < n; r++) {
       var y = table.rows[r].cells[2].innerHTML;
-      if (y<10) {
+      var x = table.rows[r].cells[1].innerHTML; //sets the min value to x
+      if (y<x) { //checks if too low
         table.rows[r].cells[2].style.backgroundColor = '#FC6962';
         w++;
-      }
-      else if (y>200) {
-        table.rows[r].cells[2].style.backgroundColor = '#C8EEC4';
       }
       else {
         table.rows[r].cells[2].style.backgroundColor = '#fff';
