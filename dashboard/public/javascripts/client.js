@@ -1,4 +1,5 @@
 const constants = require('../../constants');
+const di = require('./DataInterfacing');
 const events = require('events');
 const request = require('request');
 var PORT = constants.serverAddr.port;
@@ -12,6 +13,7 @@ var inData;
 server.on('listening', function () {
     var address = server.address();
     console.log('UDP Server listening on ' + address.address + ":" + address.port);
+    di.createTestKeys();
 });
 
 server.on('message', function (message, remote) {

@@ -29,5 +29,8 @@ module.exports = {
         cellMinVoltage: [],
         highTemp: [],
         lowTemp: []
+    },
+    test:{
+        
     }
 }

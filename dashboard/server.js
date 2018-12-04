@@ -58,14 +58,19 @@ function sendTestData(){
                 primaryActuation: getRandomValue(),
                 pressureVesselPressure: getRandomValue(),
                 currentPressure: getRandomValue()
-            }
+            },
+            test:{}
 
         }
+   }
+   for(var i=0; i<150; i++){
+       testSocket.data.test[i] = getRandomValue();
    }
     sendJSON(testSocket);
 }
 
 //The line where test data is sent. setInterval(function, ms)
+heartbeat();
 setInterval(sendTestData, DATA_SEND_RATE);
 
 function sendData(data){

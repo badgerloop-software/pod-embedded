@@ -49,5 +49,12 @@ module.exports.archiveData = function archiveData(id) {
     })
 }
 
+module.exports.createTestKeys = function createTestKeys(){
+    console.log("creating test keys")
+    for(var i=0; i<150; i++){
+        storedData.test[i] = [1];
+    }
+}
+
 
 
