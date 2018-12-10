@@ -30,6 +30,7 @@ function sendJSON(object){
 
 function sendTestData(){
     let testSocket = {
+        type: 'data',
         age: Date.now(),
         data:{
             motion : {
@@ -70,13 +71,13 @@ function sendTestData(){
 }
 
 //The line where test data is sent. setInterval(function, ms)
-heartbeat();
+// 
+
 setInterval(sendTestData, DATA_SEND_RATE);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){
         if(err) throw err;
-        console.log('Send Data');
     })
 }
 

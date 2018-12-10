@@ -1,12 +1,11 @@
 const constants = require('../../constants');
 const events = require('events');
-const request = require('request');
-var PORT = constants.serverAddr.port;
-var HOST = constants.serverAddr.ip;
-const recievedEmitter = new events.EventEmitter();
-module.exports.recievedEmitter = recievedEmitter;
 var dgram = require('dgram');
 var server = dgram.createSocket('udp4');
+var PORT = constants.serverAddr.port;
+var HOST = constants.serverAddr.ip;
+const recievedEmitter = new events.EventEmitter() ;
+module.exports.recievedEmitter = recievedEmitter;
 var inData;
 
 server.on('listening', function () {
@@ -18,9 +17,8 @@ server.on('message', function (message, remote) {
     recieved = JSON.parse(message);
     switch (recieved.type) {
         case 'data':
-            inData = recieved;
-            module.exports.inData = inData;
-            //Emit to proto.js that data has been recieved
+            module.exports.inData = recieved;
+            //Emit to handler.js that data has been recieved
             recievedEmitter.emit('dataIn');
             break;
         case 'disconnect':
@@ -31,7 +29,6 @@ server.on('message', function (message, remote) {
 
 recievedEmitter.on('heartbeat', function () {
     console.log("pong");
-    // dashboard.changeState("podConnect", true);
 });
 
 
