@@ -29,7 +29,7 @@ function generateLineChartOne(tdID, title) {
     showlegend: false,
     title: "",
     // width: 220, Removing this makes the chart fill the div
-    height: 220,
+    height: 300,
     margin: {
         l: 30,
         r: 20,
@@ -125,7 +125,7 @@ function generateLineChartTwo(tdID, title) {
     showlegend: false,
     title: "",
     // width: 220,
-    height: 220,
+    height: 300,
     margin: {
         l: 30,
         r: 20,
