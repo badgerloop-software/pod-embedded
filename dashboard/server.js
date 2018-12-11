@@ -6,7 +6,7 @@ const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port;
 /* We're gonna come up with a damn template for sending data from the server to the dashboard one day
 *
 *
-* Today is not that day 
+* I think today is that day
 */
 var client = dgram.createSocket('udp4');
 
