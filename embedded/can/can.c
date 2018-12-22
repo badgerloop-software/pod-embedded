@@ -1,20 +1,41 @@
 #include <linux/can.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
 #include "can.h"
 #include <unistd.h>
-#include <linux/interrupt.h>
+//#include <linux/interrupt.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h> 
+
+#define CAN_INTF "vcan0"
+
+static struct sockaddr_can addr;
+static struct ifreq ifr;  // Used to look at flags on the network interface
+
+volatile bool NEW_CAN_MESSAGE = false;
+
+static int can_sock;
+static const struct itimerval new_val = {
+    {0, 10000}, 
+    {0, 10000}
+};
 
 
-struct sockaddr_can addr;
-struct ifreq ifreq;  // Used to look at flags on the network interface
+void can_rx_irq(){   
+    NEW_CAN_MESSAGE = true;
+}
 
-int init_can_connection(struct socket *s) {
+int init_can_connection(int *s) {
     *s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
-    if (strcpy(ifr.ifr_name, "can0")) {
-        printf("Failed to copy bus name into network interface\n\r");
-        return 1;
-    }
+    strcpy(ifr.ifr_name, CAN_INTF);
+        //printf("Failed to copy bus name into network interface\n\r");
+        //return 1;
+    
     if (ioctl(*s, SIOCGIFINDEX, &ifr) == -1) {
         printf("Failed to find bus\n\r");
         return 1;
@@ -22,38 +43,54 @@ int init_can_connection(struct socket *s) {
 
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
-    
+
+    bind(*s, (struct sockaddr *)&addr, sizeof(addr));
     return 0;
 }
 
-static int can_rx_irq(){
-
+int init_can_timer(const struct itimerval *new, struct itimerval *old) {
+    struct sigaction *action = malloc(sizeof(struct sigaction));
+    void (*canirq)(void) = &can_rx_irq;
+    action->sa_handler = (void *)(canirq);
+    sigaction(SIGALRM, action, NULL);
+    setitimer(ITIMER_REAL, new, old);
+    return 0;
 }
 
-int read_can_message(struct socket *s) {
-    struct can_frame recvd_msg;
-    uint8_t can_data[8];
-    int nBytes = read(*s, &rcvd_msg, sizeof(struct can_frame));
-
+inline int read_can_message(struct can_frame *recvd_msg) {
+    int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
+    /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
-        printf("Failed to receive data\n\r");
         return 1;
     }
-    can_data = recvd_msg.data;
-    request_irq
-    
-    
     return 0;
 }
 
-int main() {
-    struct socket can_sock;
-    
-    init_can_connection(&can_sock);
-    while (1) {
-        if 
-        
-        usleep(100000);  // Try to maintain 10 Hz for now
 
+inline int send_can_msg(uint32_t id, uint8_t *data, uint8_t size) {
+    struct can_frame tx_msg;
+
+    tx_msg.can_dlc = size;
+    tx_msg.can_id = id;     // Should actually be 11 bits max
+    
+    for(int i = 0; i < size; i++) {
+        tx_msg.data[i] = data[i];
     }
+    
+    send(can_sock, &tx_msg, sizeof(struct can_frame), MSG_DONTWAIT);
+
+    return 0;   // Not much we do with error codes here
+}
+
+
+int init_can() {
+    if (init_can_connection(&can_sock)) {
+        fprintf(stderr, "Failed to init\n\r");
+        return 1;
+    }
+    if (init_can_timer(&new_val, NULL)) {
+        fprintf(stderr, "Failed to set read timer\n\r");
+        return 1;
+    }
+    return 0;
 }
