@@ -48,6 +48,17 @@ h5 {
   padding-right: 30px;
   font-size: 25px;
 }
+.banner .trigger {
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 30px;
+  font-size: 25px;
+}
 
 /* banner dropdown (need to fix, bit hard to get opened) */
 .banner_dropdown {
