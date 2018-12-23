@@ -224,16 +224,16 @@ td.last {
 .hide{
   display: none;
 }
-#myDropdown {
-  top: 70px;
+#myDropdown1 {
+  top: 68px;
 }
 #myDropdown2 {
   right: 45px;
-  top: 110px;
+  top: 80px;
 }
 #myDropdown3 {
   right: 45px;
-  top: 210px;
+  top: 170px;
 }
 
 /* styling for pop-up modal */
@@ -294,7 +294,7 @@ td.last {
 .disconnected span1 {
   display: none;
 }
-#breaking_status, #motion_status, #battery_status, #motor_status {
+#braking_status, #motion_status, #battery_status, #motor_status {
   border-radius: 8px;
   border-style: solid;
   padding: 4px;
@@ -371,10 +371,48 @@ td.last {
   border-color: lightblue;
 }
 
+/* emergency stop styling */
+#estop {
+  background-color:#C10000;
+  text-decoration: none;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 5px solid #C10000;
+  border-radius: 6px;
+  width: 100%;
+  height: 106px;
+  margin-top: 6px;
+  font-weight: 800;
+}
+#estop:hover {
+  color: white;
+  animation-duration: 400ms;
+  animation-name: blink;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  background-color: #FF0000;
+  border: 2px solid #FF0000;
+}
+/* Blinking function-- to much so took out for now
+@keyframes blink {
+  from {
+     background-color: black;
+     border: 2px solid black;
+  }
+  to {
+     background-color: #FF0000;
+     border: 2px solid #FF0000;
+  }
+}
+*/
+#estop h1 {
+  color: white;
+}
+
 /* state machine styling */
 .stateButton {
   background-color:white;
-  border: none;
   color: #808080;
   text-decoration: none;
   position: inline-block;
@@ -385,7 +423,7 @@ td.last {
   border: 2px solid #808080;
   border-radius: 6px;
   width: 100px;
-  height: 50px;
+  height: 80px;
   font-weight: 800;
 }
 .stateButton:hover {

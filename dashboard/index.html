@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- note: ID tags w/ spaces are temporary-->
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="public/stylesheets/main.css">    
@@ -36,7 +35,7 @@
       <div id="header1" class="box">
         <div class="grid_focus">
           <div class="dropdown">
-            <button id="focus_add_button" onclick="openDropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
+            <button id="focus_add_button" onclick="dropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
             <div id="myDropdown1" class="dropdown-content">
               <input type="text" placeholder="Search.." id="dropdownInput1" onkeyup="filterFunction()">
@@ -89,8 +88,8 @@
       <div id="header2" class="box">
           <div class="grid_focus2">
             <div class="dropdown">
-              <button id="focus_chart_add_button" onclick="openDropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
-              <button id="focus_chart_add_button2" onclick="openDropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
+              <button id="focus_chart_add_button" onclick="dropdown('2')" class="dropbtn"><h5>Add Values Chart 1</h5></button>
+              <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
               <button id="focus_chart_clear_button" onclick="removeTraces(); generateBlankChart('lineChartOne', 'Chart 1', 'line'); generateBlankChart('lineChartTwo', 'Chart 2', 'line');" class="dropbtn"><h5>Clear Charts</h5></button>
               <div id="myDropdown2" class="dropdown-content">
                 <input type="text" placeholder="Search.." id="dropdownInput2"  onkeyup="filterFunction()" autofocus>
@@ -170,6 +169,11 @@
            </div>
         </div>
 
+        <!-- Emergency Stop-->
+        <div id="header5">
+          <button id="estop"><h1>EMERGENCY STOP</h1></button>
+        </div>
+
         <!-- Latency Indicator-->
         <div id="header4" class="box">
           <center><div class="status">
@@ -180,6 +184,12 @@
              <img src="public/images/macbook.png" id="hostStatus">
           </div></center>
        </div>
+
+       <!-- Extra Box -->
+       <div id="extra" class="box">
+          
+       </div>
+
        <!-- Motion Table -->
       <div id="motion_div" class="box ok">
         <div class="item-content">
@@ -195,7 +205,7 @@
             </tr>
             <tr>
               <td><a class="trigger" onclick="generateLineChart('lineChartOne', 'dataRetro', 'Retro', 'line')">Stopping Distance (m)</a></td>
-              <td id="stoppingDistanceMin">0</td>
+              <td id="stoppingDistanceMin">5</td>
               <td id="stoppingDistance"></td>
               <td id="stoppingDistanceMax">255</td>
             </tr>
@@ -207,19 +217,19 @@
             </tr>
             <tr>
               <td>Position (m)</td>
-              <td id ="positionMin">0</td>
+              <td id ="positionMin">3</td>
               <td id ="position"></td>
               <td id ="positionMax">255</td>
           </tr>
             <tr>
                 <td>Velocity (m/s)</td>
-                <td id="velocityMin">0</td>
+                <td id="velocityMin">10</td>
                 <td id="velocity"></td>
                 <td id="velocityMax">255</td>
             </tr>
             <tr>
                 <td>Acceleration (m/s<sup>2</sup>)</td>
-                <td id="accelerationMin">0</td>
+                <td id="accelerationMin">15</td>
                 <td id="acceleration"></td>
                 <td id="accelerationMax">255</td>
             </tr>
@@ -230,7 +240,7 @@
       <div id="braking_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Braking </h1>
-          <h2 id="breaking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
+          <h2 id="braking_status" class=""><span1>Connected</span1><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
           <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
           <table id="braking">
               <tr class="header">
@@ -241,49 +251,49 @@
               </tr>
               <tr>
                 <td>Secondary Tank (PSI)</td>
-                <td id="secondaryTankMin">0</td>
+                <td id="secondaryTankMin">22</td>
                 <td id="secondaryTank"></td>
                 <td id="secondaryTankMax">255</td>
               </tr>
               <tr>
                 <td>Secondary Line (PSI)</td>
-                <td id="secondaryLineMin">0</td>
+                <td id="secondaryLineMin">12</td>
                 <td id="secondaryLine"></td>
                 <td id="secondaryLineMax">255</td>
               </tr>
               <tr>
                 <td>Secondary Actuation (PSI)</td>
-                <td id="secondaryActuationMin">0</td>
+                <td id="secondaryActuationMin">8</td>
                 <td id="secondaryActuation"></td>
                 <td id="secondaryActuationMax">255</td>
               </tr>
               <tr id="primarytank">
                 <td>Primary Tank (PSI)</td>
-                <td id="primaryTankMin">0</td>
+                <td id="primaryTankMin">22</td>
                 <td id="primaryTank"></td>
                 <td id="primaryTankMax">255</td>
               </tr>
               <tr>
                 <td>Primary Line (PSI)</td>
-                <td id="primaryLineMin">0</td>
+                <td id="primaryLineMin">19</td>
                 <td id="primaryLine"></td>
                 <td id="primaryLineMax">255</td>
               </tr>
               <tr>
                 <td>Primary Actuation (PSI)</td>
-                <td id="primaryActuationMin">0</td>
+                <td id="primaryActuationMin">2</td>
                 <td id="primaryActuation"></td>
                 <td id="primaryActuationMax">255</td>
               </tr>
               <tr>
                 <td>Pressure Vessel Pressure (PSI)</td>
-                <td id="pressureVesselPressureMin">0</td>
+                <td id="pressureVesselPressureMin">25</td>
                 <td id="pressureVesselPressure"></td>
                 <td id="pressureVesselPressureMax">255</td>
               </tr>
               <tr>
                 <td>Current Pressure (PSI)</td>
-                <td id="currentPressureMin">0</td>
+                <td id="currentPressureMin">32</td>
                 <td id="currentPressure"></td>
                 <td id="currentPressureMax">255</td>
               </tr>
@@ -306,49 +316,49 @@
             </tr>
             <tr>
               <td>Pack Voltage (V)</td>
-              <td>x</td>
+              <td>12</td>
               <td id="packVoltage"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>Pack Current (A)</td>
-              <td>x</td>
+              <td>18</td>
               <td id="packCurrent"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>Pack SOC (%)</td>
-              <td>x</td>
+              <td>22</td>
               <td id="packSOC"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>Pack AH</td>
-              <td>x</td>
+              <td>14</td>
               <td id="packAH"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>Cell Max Voltage (V)</td>
-              <td>x</td>
+              <td>28</td>
               <td id="cellMaxVoltage"></td>
               <td>x</td>
             </tr>
            <tr>
               <td>Cell Min Voltage (V)</td>
-              <td>x</td>
+              <td>22</td>
               <td id="cellMinVoltage"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>High Temp (C)</td>
-              <td>x</td>
+              <td>3</td>
               <td id="highTemp"></td>
               <td>x</td>
             </tr>
             <tr>
               <td>Low Temp (C)</td>
-              <td>x</td>
+              <td>8</td>
               <td id="lowTemp"></td>
               <td>x</td>
             </tr>
