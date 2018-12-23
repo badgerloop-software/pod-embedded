@@ -409,12 +409,29 @@
 
       <div class="modal">
         <div class="modal-content">
-          <span class="close-button">×</span>
-          <h1>Stopping Distance (m)</h1>
+          <span class="close-button">X</span>
+          <h1>Dashboard Settings</h1>
+          <form class="settingsForm">
+            <label for="podIP" id="first-name">Pod IP</label>
+            <input id="podIP" type="text">
+      
+            <label for="podPort" id="last-name">Pod Port</label>
+            <input id="podPort" type="number">
+      
+            <label for="databaseIP">Database IP</label>
+            <input id="databaseIP" type="text">
+      
+            <label for="databasePort">Database Port</label>
+            <input id="databasePort" type="number">
+      
+            <label for="scanningRate">Scanning Rate</label>
+            <input id="scanningRate" type="number">
+      
+            <button id="podSettingsSubmit" type="button">Submit</button>
+          </form>
         </div>
+      </div>   
       </div>
-
-    </div>
 
     <script> //pop-up modal code
       var modal = document.querySelector(".modal");
@@ -423,6 +440,7 @@
         
       function toggleModal() {
         modal.classList.toggle("show-modal");
+        fillConstants();
       }
         
       function windowOnClick(event) {

@@ -1,9 +1,11 @@
 const comms = require('./public/javascripts/client').recievedEmitter;
-var client = require('./public/javascripts/client');
+const client = require('./public/javascripts/client');
 const di = require('./public/javascripts/DataInterfacing');
+var constants = require('./constants');
 var storedData = require('./database');
 var d = document, db = document.body;
 var archiveButton = d.getElementById("archiveButton");
+var settingsSubmit = d.getElementById("podSettingsSubmit");
 
 
 comms.on('heartbeat', function () {
@@ -64,3 +66,20 @@ archiveButton.addEventListener("click", function() {
     di.archiveData();
     console.log("archiving data");
 });
+
+settingsSubmit.addEventListener("click", () => {
+    constants.serverAddr.ip = d.getElementById("podIP").innerHTML;
+    constants.serverAddr.port = Number(d.getElementById("podPort").innerHTML);
+    constants.databaseAddr.ip = d.getElementById("databaseIP").innerHTML;
+    constants.databaseAddr.port = Number(d.getElementById("databasePort").innerHTML);
+    constants.scanningRate = Number(d.getElementById("scanningRate").innerHTML);
+});
+
+function fillConstants() {
+    console.log("filling");
+    d.getElementById("podIP").innerHTML = constants.serverAddr.ip;
+    d.getElementById("podPort").innerHTML = constants.serverAddr.port;
+    d.getElementById("databaseIP").innerHTML = constants.databaseAddr.ip;
+    d.getElementById("databasePort").innerHTML = constants.databaseAddr.port
+    d.getElementById("scanningRate").innerHTML = constants.scanningRate;
+}
