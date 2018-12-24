@@ -44,7 +44,6 @@ void *TelemetryLoop(){
 				std::chrono::system_clock::now().time_since_epoch()
 			);
 			age.SetUint64(ms.count());
-			document.AddMember("age", age, document.GetAllocator());
 			
 			// STOPPING DISTANCE
 			Value stopDistance;
@@ -132,6 +131,8 @@ void *TelemetryLoop(){
 			
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
+			
+			document.AddMember("age", age, document.GetAllocator());
 			
 			Document motionDoc;
 			motionDoc.SetObject();
