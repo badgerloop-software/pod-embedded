@@ -35,7 +35,7 @@ typedef struct {
 } IMU_data;
 
 void SetupIMU();
-void *IMULoop();
+void *IMULoop(void *arg);
 
 void getDeltaVData(float *fData);
 float getDeltaVX();

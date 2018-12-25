@@ -23,8 +23,9 @@ void SetupLVTelemetry(){
 }
 
 
-void *LVTelemetryLoop(){
-
+void *LVTelemetryLoop(void *arg)
+{
+	(void) arg;
 	try {
 		// Create socket
 		UDPSocket sock;

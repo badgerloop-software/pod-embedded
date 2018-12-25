@@ -17,12 +17,12 @@ i2c_settings * i2c;
 pthread_t IMUThread;
 
 void SetupIMU(){
-	i2c = malloc(sizeof(i2c_settings));
+	i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
 	i2c->bus = 2;
 	i2c->deviceAddress = I2C_ADDRESS;
 	i2c->openMode = O_RDWR;
 
-	data = malloc(sizeof(IMU_data));
+	data = (IMU_data *) malloc(sizeof(IMU_data));
 
 	if (i2c_begin(i2c) == -1){
 		fprintf(stderr, "Could not open i2c bus.\n");
@@ -50,7 +50,8 @@ void SetupIMU(){
 	sem_init(&data->mutex, 0, 1);
 }
 
-void *IMULoop(){
+void *IMULoop(void *arg){
+	(void) arg;
 	
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
