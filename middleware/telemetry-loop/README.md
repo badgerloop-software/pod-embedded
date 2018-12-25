@@ -1,4 +1,4 @@
-# UDP Library for Communicating with Dashboard Server
+# Dashboard Server Telemetry Loop
 *Developer: Rohan Daruwala*
 
 ### Platform: 
