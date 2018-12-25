@@ -20,7 +20,7 @@ or
 SetupHVTelemetry();
 ```
 
-If you need to edit the IP address or port of the receiving server, modify the values in TelemetrySender.h
+If you need to edit the IP address or port of the receiving server, modify the values in the respective .h files
 
 This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
 	
