@@ -4,7 +4,7 @@
 #include "../src/TelemetrySender.h"
 
 int main() {
-	SetupTelemetry();
+	SetupLVTelemetry();
 	
 	while(1){
 		usleep(1000000);

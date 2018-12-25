@@ -4,7 +4,7 @@
 #define IPADDR "127.0.0.1"
 #define PORT 33333
 
-void *TelemetryLoop();
-void SetupTelemetry();
+void *LVTelemetryLoop();
+void SetupLVTelemetry();
 
 #endif

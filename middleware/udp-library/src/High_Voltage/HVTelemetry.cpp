@@ -14,16 +14,16 @@
 using namespace rapidjson;
 using namespace std;
 
-pthread_t TelemThread;
+pthread_t HVTelemThread;
 
-void SetupTelemetry(){
-	if (pthread_create(&TelemThread, NULL, TelemetryLoop, NULL)){
+void SetupHVTelemetry(){
+	if (pthread_create(&HVTelemThread, NULL, HVTelemetryLoop, NULL)){
 		fprintf(stderr, "Error creating HV Telemetry thread\n");
 	}
 }
 
 
-void *TelemetryLoop(){
+void *HVTelemetryLoop(){
 
 	try {
 		// Create socket
