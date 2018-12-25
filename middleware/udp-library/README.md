@@ -4,13 +4,11 @@
 ### Platform: 
 	BeagleBone Black
 	
-	
 ### How it works:
 	
 Start the telemetry loop by calling the function:
 	
 ```
-#include "TelemetrySender.h"
 SetupTelemetry();
 ```
 

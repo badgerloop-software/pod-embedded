@@ -3,13 +3,13 @@
 #include <cstdio>
 #include <chrono>
 #include <pthread.h>
-#include "PracticalSocket.h"
-#include "TelemetrySender.h"
-#include "rapidjson/document.h"     // rapidjson's DOM-style API
-#include "rapidjson/prettywriter.h" // for stringify JSON
+#include "../PracticalSocket.h"
+#include "HVTelemetry.h"
+#include "../rapidjson/document.h"     // rapidjson's DOM-style API
+#include "../rapidjson/prettywriter.h" // for stringify JSON
 
 /* ADD SENSOR INCLUDES HERE */
-#include "../../../embedded/xsens_imu/src/imu.h"
+
 
 using namespace rapidjson;
 using namespace std;
@@ -18,7 +18,7 @@ pthread_t TelemThread;
 
 void SetupTelemetry(){
 	if (pthread_create(&TelemThread, NULL, TelemetryLoop, NULL)){
-		fprintf(stderr, "Error creating Telemetry thread\n");
+		fprintf(stderr, "Error creating HV Telemetry thread\n");
 	}
 }
 
@@ -44,27 +44,7 @@ void *TelemetryLoop(){
 				std::chrono::system_clock::now().time_since_epoch()
 			);
 			age.SetUint64(ms.count());
-			
-			// STOPPING DISTANCE
-			Value stopDistance;
-			stopDistance.SetNull();
-			
-			// POSITION
-			Value pos;
-			pos.SetNull();
-			
-			// RETRO
-			Value retro;
-			retro.SetNull();
-			
-			// VELOCITY
-			Value vel;
-			vel.SetNull();
-			
-			// ACCELERATION
-			Value accel;
-			accel.SetNull();
-			
+						
 			// PACK VOLTAGE
 			Value packV;
 			packV.SetNull();
@@ -88,14 +68,6 @@ void *TelemetryLoop(){
 			// CELL MIN VOLTAGE
 			Value cellMinV;
 			cellMaxV.SetNull();
-			
-			// HIGH TEMP
-			Value tempH;
-			tempH.SetNull();
-			
-			// LOW TEMP
-			Value tempL;
-			tempL.SetNull();
 			
 			// SECONDARY TANK
 			Value secondaryTank;
@@ -121,26 +93,9 @@ void *TelemetryLoop(){
 			Value primaryActuation;
 			primaryActuation.SetNull();
 			
-			// PRESSURE VESSEL PRESSURE
-			Value pressureV;
-			pressureV.SetNull();
-			
-			// CURRENT PRESSURE
-			Value currP;
-			currP.SetNull();
-			
-			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
 			document.AddMember("age", age, document.GetAllocator());
-			
-			Document motionDoc;
-			motionDoc.SetObject();
-			motionDoc.AddMember("stoppingDistance", stopDistance, motionDoc.GetAllocator());
-			motionDoc.AddMember("position", pos, motionDoc.GetAllocator());
-			motionDoc.AddMember("retro", retro, motionDoc.GetAllocator());
-			motionDoc.AddMember("velocity", vel, motionDoc.GetAllocator());
-			motionDoc.AddMember("acceleration", accel, motionDoc.GetAllocator());
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();
@@ -150,8 +105,6 @@ void *TelemetryLoop(){
 			batteryDoc.AddMember("packAH", packAH, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMaxVoltage", cellMaxV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMinVoltage", cellMinV, batteryDoc.GetAllocator());
-			batteryDoc.AddMember("highTemp", tempH, batteryDoc.GetAllocator());
-			batteryDoc.AddMember("lowTemp", tempL, batteryDoc.GetAllocator());
 			
 			Document brakingDoc;
 			brakingDoc.SetObject();
@@ -161,15 +114,12 @@ void *TelemetryLoop(){
 			brakingDoc.AddMember("primaryTank", primaryTank, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("primaryLine", primaryLine, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("primaryActuation", primaryActuation, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("pressureVesselPressure", pressureV, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("currentPressure", currP, brakingDoc.GetAllocator());
 			
 			Document dataDoc;
 			dataDoc.SetObject();
 			
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
-			dataDoc.AddMember("motion", motionDoc, dataDoc.GetAllocator());
 			dataDoc.AddMember("battery", batteryDoc, dataDoc.GetAllocator());
 			dataDoc.AddMember("braking", brakingDoc, dataDoc.GetAllocator());
 			document.AddMember("data", dataDoc, document.GetAllocator());
@@ -183,7 +133,7 @@ void *TelemetryLoop(){
 			// Repeatedly send the string (not including \0) to the server
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), IPADDR, PORT);
-			usleep(3000);
+			usleep(30000);
 		}
 	} 
 	catch (SocketException &e) {
