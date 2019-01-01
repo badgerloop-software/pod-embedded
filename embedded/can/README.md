@@ -7,5 +7,3 @@ This uses the underlying SIGALRM, and will be signaled at a fixed interval. The 
 The caller should then set the state variable to false, allowing for the timer to trigger the next read. 
 
     Second, writing to CAN is done simply with a call to `send_can_msg`. It takaes in the ID of the message to send, an array of up to 8 bytes of data, and the number of bytes that should be sent. 
-
-    `can_test.c` in the embedded/tests/ is a good example of how the API can be utilized.
