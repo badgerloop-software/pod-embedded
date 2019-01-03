@@ -38,7 +38,7 @@
             <button id="focus_add_button" onclick="dropdown('1')" class="dropbtn"><h5>Add Values</h5></button>
             <button id="focus_clear_button" onclick="clear()" class="dropbtn"><h5>Clear</h5></button>
             <div id="myDropdown1" class="dropdown-content">
-              <input type="text" placeholder="Search.." id="dropdownInput1" onkeyup="filterFunction()">
+              <input type="text" placeholder="Search.." id="dropdownInput1" onkeyup="filterFunction('1')">
               <a href="" onclick="clone('stoppingDistance');return false;">Stopping Distance (m)</a>
               <a href="" onclick="clone('retro');return false;">Retro</a>
               <a href="" onclick="clone('position');return false;">Position (m)</a>
@@ -92,7 +92,7 @@
               <button id="focus_chart_add_button2" onclick="dropdown('3')" class="dropbtn"><h5>Add Values Chart 2</h5></button>
               <button id="focus_chart_clear_button" onclick="removeTraces(); generateBlankChart('lineChartOne', 'Chart 1', 'line'); generateBlankChart('lineChartTwo', 'Chart 2', 'line');" class="dropbtn"><h5>Clear Charts</h5></button>
               <div id="myDropdown2" class="dropdown-content">
-                <input type="text" placeholder="Search.." id="dropdownInput2"  onkeyup="filterFunction()" autofocus>
+                <input type="text" placeholder="Search.." id="dropdownInput2"  onkeyup="filterFunction('2')" autofocus>
                 <a href="" onclick="generateLineChartOne('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
                 <a href="" onclick="generateLineChartOne('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
                 <a href="" onclick="generateLineChartOne('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
@@ -108,7 +108,7 @@
                 <a href="" onclick="generateLineChartOne('acceleration', 'Acceleration (m/s<sup>2</sup>)');return false;">Acceleration (m/s<sup>2</sup>)</a>
               </div>
               <div id="myDropdown3" class="dropdown-content">
-                  <input type="text" placeholder="Search.."  id="dropdownInput3" onkeyup="filterFunction()">
+                  <input type="text" placeholder="Search.."  id="dropdownInput3" onkeyup="filterFunction('3')">
                   <a href="" onclick="generateLineChartTwo('secondaryTank', 'Secondary Tank (PSI)');return false;">Secondary Tank (PSI)</a>
                   <a href="" onclick="generateLineChartTwo('secondaryLine', 'Secondary Line (PSI)');return false;">Secondary Line (PSI)</a>
                   <a href="" onclick="generateLineChartTwo('secondaryActuation', 'Secondary Actuation (PSI)');return false;";>Secondary Actuation (PSI)</a>
