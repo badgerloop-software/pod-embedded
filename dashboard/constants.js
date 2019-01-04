@@ -24,6 +24,5 @@ module.exports =  {
         ready:{},
         postRun:{},
         crawl:{}
-     },
-    
+     }  
 }

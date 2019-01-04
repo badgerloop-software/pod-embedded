@@ -6,7 +6,7 @@ const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port;
 /* We're gonna come up with a damn template for sending data from the server to the dashboard one day
 *
 *
-* Today is not that day 
+* I think today is that day
 */
 var client = dgram.createSocket('udp4');
 
@@ -30,6 +30,7 @@ function sendJSON(object){
 
 function sendTestData(){
     let testSocket = {
+        type: 'data',
         age: Date.now(),
         data:{
             motion : {
@@ -58,20 +59,25 @@ function sendTestData(){
                 primaryActuation: getRandomValue(),
                 pressureVesselPressure: getRandomValue(),
                 currentPressure: getRandomValue()
-            }
+            },
+            test:{}
 
         }
+   }
+   for(var i=0; i<150; i++){
+       testSocket.data.test[i] = getRandomValue();
    }
     sendJSON(testSocket);
 }
 
 //The line where test data is sent. setInterval(function, ms)
+// 
+
 setInterval(sendTestData, DATA_SEND_RATE);
 
 function sendData(data){
     client.send(data,0,data.length, PORT, IP, function(err, bytes){
         if(err) throw err;
-        console.log('Send Data');
     })
 }
 
