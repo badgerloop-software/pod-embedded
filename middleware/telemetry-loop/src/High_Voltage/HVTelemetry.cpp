@@ -44,6 +44,10 @@ void *HVTelemetryLoop(){
 				std::chrono::system_clock::now().time_since_epoch()
 			);
 			age.SetUint64(ms.count());
+			
+			// TYPE
+			Value type;
+			type.SetString("data");
 						
 			// PACK VOLTAGE
 			Value packV;
@@ -96,6 +100,7 @@ void *HVTelemetryLoop(){
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
 			document.AddMember("age", age, document.GetAllocator());
+			document.AddMember("type", type, document.GetAllocator());
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();

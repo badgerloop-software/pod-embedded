@@ -46,6 +46,10 @@ void *LVTelemetryLoop(void *arg)
 			);
 			age.SetUint64(ms.count());
 			
+			// TYPE
+			Value type;
+			type.SetString("data");
+			
 			// STOPPING DISTANCE
 			Value stopDistance;
 			stopDistance.SetNull();
@@ -86,6 +90,7 @@ void *LVTelemetryLoop(void *arg)
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
 			document.AddMember("age", age, document.GetAllocator());
+			document.AddMember("type", type, document.GetAllocator());
 			
 			Document motionDoc;
 			motionDoc.SetObject();
