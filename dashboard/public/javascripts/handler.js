@@ -68,18 +68,18 @@ archiveButton.addEventListener("click", function() {
 });
 
 settingsSubmit.addEventListener("click", () => {
-    constants.serverAddr.ip = d.getElementById("podIP").innerHTML;
-    constants.serverAddr.port = Number(d.getElementById("podPort").innerHTML);
-    constants.databaseAddr.ip = d.getElementById("databaseIP").innerHTML;
-    constants.databaseAddr.port = Number(d.getElementById("databasePort").innerHTML);
-    constants.scanningRate = Number(d.getElementById("scanningRate").innerHTML);
+    constants.serverAddr.ip = d.getElementById("podIP").value;
+    constants.serverAddr.port = Number(d.getElementById("podPort").value);
+    constants.databaseAddr.ip = d.getElementById("databaseIP").value;
+    constants.databaseAddr.port = Number(d.getElementById("databasePort").value);
+    constants.scanningRate = Number(d.getElementById("scanningRate").value);
 });
 
 function fillConstants() {
     console.log("filling");
-    d.getElementById("podIP").innerHTML = constants.serverAddr.ip;
-    d.getElementById("podPort").innerHTML = constants.serverAddr.port;
-    d.getElementById("databaseIP").innerHTML = constants.databaseAddr.ip;
-    d.getElementById("databasePort").innerHTML = constants.databaseAddr.port
-    d.getElementById("scanningRate").innerHTML = constants.scanningRate;
+    d.getElementById("podIP").value = String(constants.serverAddr.ip);
+    d.getElementById("podPort").value = constants.serverAddr.port;
+    d.getElementById("databaseIP").value = constants.databaseAddr.ip;
+    d.getElementById("databasePort").value = constants.databaseAddr.port
+    d.getElementById("scanningRate").value = constants.scanningRate;
 }

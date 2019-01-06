@@ -203,9 +203,7 @@
     width: 100%;
     border: 0;
   }
-  form button:hover {
-    background: red;
-  }
+
   
   label {
     padding: 0.5em 0.5em 0.5em 0;
