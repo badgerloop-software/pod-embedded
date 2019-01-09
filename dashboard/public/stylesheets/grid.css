@@ -185,3 +185,29 @@
     grid-row: 3;
     height: 105px;
   }
+
+  /* form */
+  #formLeft {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  #formRight {
+    grid-column: 2/3;
+    grid-row: 1;
+  }
+  #formFull {
+    grid-column: 1/3;
+    grid-row: 2;
+  }
+  #formLeft {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  #formRight {
+    grid-column: 2/3;
+    grid-row: 1;
+  }
+  #formFull {
+    grid-column: 1/3;
+    grid-row: 2;
+  }
