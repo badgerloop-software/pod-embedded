@@ -525,5 +525,45 @@ td.last {
 .modebar {
   display: none !important;
   }
-  
-  
+
+/* form styling */
+form {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 50% 50%;
+  padding: 1em;
+  margin: 2rem auto 0 auto;
+  max-width: 600px;
+}
+form input {
+  background: #fff;
+  border: 1px solid black;
+}
+form button {
+  background: lightgrey;
+  padding: 0.7em;
+  width: 100%;
+  border: 0;
+}
+label {
+  padding: 0.5em 0.5em 0.5em 0;
+}
+.formInput {
+  padding: 0.7em;
+  margin-bottom: 0.5rem;
+}
+.formInput:focus {
+  outline: 3px solid gold;
+}
+#formLeft {
+  grid-column: 1;
+  grid-row: 1/3;
+}
+#formRight {
+  grid-column: 1;
+  grid-row: 1/3;
+}
+#formFull {
+  grid-column: 1;
+  grid-row: 1/3;
+}

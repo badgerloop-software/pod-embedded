@@ -412,22 +412,26 @@
           <span class="close-button">X</span>
           <h1>Dashboard Settings</h1>
           <form class="settingsForm">
-            <label for="podIP" id="first-name">Pod IP</label>
-            <input id="podIP" type="text">
+            <div id="formLeft">
+              <label for="podIP" id="first-name">Pod IP</label>
+              <input id="podIP" class="formInput" type="text">
       
-            <label for="podPort" id="last-name">Pod Port</label>
-            <input id="podPort" type="number">
+              <label for="podPort" id="last-name">Pod Port</label>
+              <input id="podPort" class="formInput" type="number">
+            </div>
+            <div id="formRight">
+              <label for="databaseIP">Database IP</label>
+              <input id="databaseIP" class="formInput"  type="text">
+        
+              <label for="databasePort">Database Port</label>
+              <input id="databasePort" class="formInput" type="number">
+            </div>
+            <div id="formFull">
+              <label for="scanningRate">Scanning Rate</label>
+              <input id="scanningRate" class="formInput" type="number">
       
-            <label for="databaseIP">Database IP</label>
-            <input id="databaseIP" type="text">
-      
-            <label for="databasePort">Database Port</label>
-            <input id="databasePort" type="number">
-      
-            <label for="scanningRate">Scanning Rate</label>
-            <input id="scanningRate" type="number">
-      
-            <button id="podSettingsSubmit" type="button">Submit</button>
+              <button id="podSettingsSubmit" type="button">Submit</button>
+            </div>
           </form>
         </div>
       </div>   
