@@ -529,41 +529,97 @@ td.last {
 /* form styling */
 form {
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 50% 50%;
-  padding: 1em;
-  margin: 2rem auto 0 auto;
+  grid-gap: 50px;
+  grid-template-columns: 48% 48;
+  margin: 10px auto 10px auto;
   max-width: 600px;
+}
+#formTitle {
+  margin-bottom: 0;
 }
 form input {
   background: #fff;
-  border: 1px solid black;
+  border: 1px solid #1E1E1E;
+  border-radius:8px;
 }
-form button {
-  background: lightgrey;
-  padding: 0.7em;
+#podSettingsSubmit {
+  font-size: 15px;
+  background: #D3D3D3;
+  border: 1px solid white;
+  border-radius:8px;
   width: 100%;
-  border: 0;
+  height: 40px;
+  margin-top: 100px;
+}
+#podSettingsSubmit:hover {
+  background: #3C3C3C;
+  color: white;
+  border-radius:8px;
+  transition: all .25s ease-in-out;
+  -moz-transition: all .25s ease-in-out;
+  -webkit-transition: all .25s ease-in-out;
 }
 label {
-  padding: 0.5em 0.5em 0.5em 0;
+  padding-top: 10px;
+  color: #1E1E1E;
+  font-style: italic;
+  bottom: 10px;
 }
 .formInput {
   padding: 0.7em;
-  margin-bottom: 0.5rem;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 .formInput:focus {
-  outline: 3px solid gold;
+  background: #D3D3D3;
+  border: 1px solid black;
+  border-radius:8px;
+
 }
 #formLeft {
-  grid-column: 1;
-  grid-row: 1/3;
+  grid-column: 1/2;
+  grid-row: 1/2;
 }
 #formRight {
-  grid-column: 1;
-  grid-row: 1/3;
+  grid-column: 2/3;
+  grid-row: 1;
 }
 #formFull {
-  grid-column: 1;
-  grid-row: 1/3;
+  grid-column: 1/3;
+  grid-row: 2;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #000000;
+  margin: 1em 0;
+  padding: 0; 
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;   
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%; 
+  background: #4CAF50;
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
 }

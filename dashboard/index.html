@@ -413,6 +413,8 @@
           <h1>Dashboard Settings</h1>
           <form class="settingsForm">
             <div id="formLeft">
+              <h4 id="formTitle">Pod Settings</h1>
+              <hr>
               <label for="podIP" id="first-name">Pod IP</label>
               <input id="podIP" class="formInput" type="text">
       
@@ -420,6 +422,8 @@
               <input id="podPort" class="formInput" type="number">
             </div>
             <div id="formRight">
+              <h4 id="formTitle">Database Settings</h1>
+              <hr>
               <label for="databaseIP">Database IP</label>
               <input id="databaseIP" class="formInput"  type="text">
         
@@ -427,9 +431,12 @@
               <input id="databasePort" class="formInput" type="number">
             </div>
             <div id="formFull">
-              <label for="scanningRate">Scanning Rate</label>
-              <input id="scanningRate" class="formInput" type="number">
-      
+              <h4 id="formTitle">Dashboard Settings</h1>
+              <hr>
+              <label for="scanningRate">Scanning Rate: <span id="value"></span> </label>
+              <div class="slidecontainer">
+                  <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+              </div>
               <button id="podSettingsSubmit" type="button">Submit</button>
             </div>
           </form>
@@ -456,6 +463,14 @@
       trigger.addEventListener("click", toggleModal);
       closeButton.addEventListener("click", toggleModal);
       window.addEventListener("click", windowOnClick);
+
+      var slider = document.getElementById("myRange");
+      var output = document.getElementById("value");
+      output.innerHTML = slider.value;
+
+      slider.oninput = function() {
+        output.innerHTML = this.value;
+      }
     </script>
      <script src="public/javascripts/handler.js"></script>
   </body>
