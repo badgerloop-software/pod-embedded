@@ -73,10 +73,11 @@ settingsSubmit.addEventListener("click", () => {
     constants.databaseAddr.ip = d.getElementById("databaseIP").value;
     constants.databaseAddr.port = Number(d.getElementById("databasePort").value);
     constants.scanningRate = Number(d.getElementById("scanningRate").value);
+    d.getElementById("formFeedback").innerHTML = "Settings Applied";
 });
 
 function fillConstants() {
-    console.log("filling");
+    d.getElementById("formFeedback").innerHTML = "";
     d.getElementById("podIP").value = String(constants.serverAddr.ip);
     d.getElementById("podPort").value = constants.serverAddr.port;
     d.getElementById("databaseIP").value = constants.databaseAddr.ip;
