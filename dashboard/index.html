@@ -414,7 +414,6 @@
           <form class="settingsForm">
             <div id="formLeft">
               <h4 id="formTitle">Pod Settings</h1>
-              <hr>
               <label for="podIP" id="first-name">Pod IP</label>
               <input id="podIP" class="formInput" type="text">
       
@@ -423,7 +422,6 @@
             </div>
             <div id="formRight">
               <h4 id="formTitle">Database Settings</h1>
-              <hr>
               <label for="databaseIP">Database IP</label>
               <input id="databaseIP" class="formInput"  type="text">
         
@@ -432,12 +430,8 @@
             </div>
             <div id="formFull">
               <h4 id="formTitle">Dashboard Settings</h1>
-              <hr>
-              <hr>
               <label for="scanningRate">Scanning Rate: <span id="value"></span> </label>
-              <div class="slidecontainer">
-                  <input id="scanningRate" type="number" min="0" max="500" class="inputNotSearchable">
-              </div>
+              <input id="scanningRate" class="formInput" type="number" min="0" max="500" class="inputNotSearchable">
               <button id="podSettingsSubmit" type="button">Submit</button>
               <p id="formFeedback"></p>
             </div>
