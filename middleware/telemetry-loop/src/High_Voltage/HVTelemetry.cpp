@@ -16,8 +16,14 @@ using namespace std;
 
 pthread_t HVTelemThread;
 
-void SetupHVTelemetry(){
-	if (pthread_create(&HVTelemThread, NULL, HVTelemetryLoop, NULL)){
+void SetupHVTelemetry(char* ip, int port){
+	
+	HVTelemArgs *args = (HVTelemArgs*) malloc(sizeof(HVTelemArgs));
+		
+	args->ipaddr = strdup(ip);
+	args->port = port;
+	
+	if (pthread_create(&HVTelemThread, NULL, HVTelemetryLoop, args)){
 		fprintf(stderr, "Error creating HV Telemetry thread\n");
 	}
 }
@@ -137,7 +143,7 @@ void *HVTelemetryLoop(){
 			
 			// Repeatedly send the string (not including \0) to the server
 		
-			sock.sendTo(sb.GetString(), strlen(sb.GetString()), IPADDR, PORT);
+			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
 			usleep(30000);
 		}
 	} 

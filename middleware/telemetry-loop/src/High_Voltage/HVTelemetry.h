@@ -1,10 +1,12 @@
 #ifndef HVTELEMETRY_SENDER_H
 #define HVTELEMETRY_SENDER_H
 
-#define IPADDR "127.0.0.1"
-#define PORT 33333
+typedef struct HVTelemArgs{
+	char *ipaddr;
+	int port;
+} HVTelemArgs;
 
 void *HVTelemetryLoop();
-void SetupHVTelemetry();
+void SetupHVTelemetry(char* ip, int port);
 
 #endif
