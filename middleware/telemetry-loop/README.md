@@ -10,14 +10,14 @@ Start the telemetry loop by calling the function:
 	
 ```
 #include src/Low_Voltage/LVTelemetry.h
-SetupLVTelemetry();
+SetupLVTelemetry("IP Address", Port);
 ```
 
 or
 
 ```
 #include src/High_Voltage/HVTelemetry.h
-SetupHVTelemetry();
+SetupHVTelemetry("IP Address", Port);
 ```
 
 If you need to edit the IP address or port of the receiving server, modify the values in the respective .h files
