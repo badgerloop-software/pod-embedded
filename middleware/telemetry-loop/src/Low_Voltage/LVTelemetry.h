@@ -5,6 +5,11 @@
 #define PORT 33333
 
 void *LVTelemetryLoop(void *arg);
-void SetupLVTelemetry();
+void SetupLVTelemetry(char* ip, int port);
+
+typedef struct Munch2Args{
+	char *ipaddr;
+	int port;
+} LVTelemArgs;
 
 #endif

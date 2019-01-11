@@ -16,8 +16,15 @@ using namespace std;
 
 pthread_t LVTelemThread;
 
-void SetupLVTelemetry(){
-	if (pthread_create(&LVTelemThread, NULL, LVTelemetryLoop, NULL)){
+void SetupLVTelemetry(char* ip, int port){
+	
+	LVTelemArgs *args = malloc(sizeof(LVTelemArgs));
+	
+	args->ipaddr = malloc(sizeof(ip));
+	strcpy(args->ipaddr, ip);
+	args->port = port;
+	
+	if (pthread_create(&LVTelemThread, NULL, LVTelemetryLoop, args)){
 		fprintf(stderr, "Error creating LV Telemetry thread\n");
 	}
 }
@@ -25,7 +32,7 @@ void SetupLVTelemetry(){
 
 void *LVTelemetryLoop(void *arg)
 {
-	(void) arg;
+	LVTelemArgs *sarg = (LVTelemArgs*) arg;
 	try {
 		// Create socket
 		UDPSocket sock;
@@ -128,7 +135,7 @@ void *LVTelemetryLoop(void *arg)
 			
 			// Repeatedly send the string (not including \0) to the server
 		
-			sock.sendTo(sb.GetString(), strlen(sb.GetString()), IPADDR, PORT);
+			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
 			usleep(30000);
 		}
 	} 
