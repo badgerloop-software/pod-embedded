@@ -18,7 +18,7 @@ pthread_t LVTelemThread;
 
 void SetupLVTelemetry(char* ip, int port){
 	
-	LVTelemArgs *args = malloc(sizeof(LVTelemArgs));
+	LVTelemArgs *args = (LVTelemArgs*) malloc(sizeof(LVTelemArgs));
 	
 	args->ipaddr = malloc(sizeof(ip));
 	strcpy(args->ipaddr, ip);
