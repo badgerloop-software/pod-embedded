@@ -30,7 +30,7 @@ function sendJSON(object){
 
 function sendTestData(){
     let testSocket = {
-        age: Date.now(),
+        type: 'data',
         data:{
             motion : {
                 stoppingDistance: getRandomValue(),

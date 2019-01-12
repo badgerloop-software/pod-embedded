@@ -1,10 +1,14 @@
 const comms = require('./public/javascripts/client').recievedEmitter;
 var client = require('./public/javascripts/client');
 const di = require('./public/javascripts/DataInterfacing');
+const stopwatch = require('./public/javascripts/stopwatch').stopwatch;
 var storedData = require('./database');
 var d = document, db = document.body;
 var archiveButton = d.getElementById("archiveButton");
+var timer = new stopwatch();
 
+//Init
+timer.start();
 
 comms.on('heartbeat', function () {
     changeState("podConnect", true);
@@ -36,11 +40,12 @@ di.updater.on('updateData', () => {
                 //If not, alert the user and move on
                 console.log("Unreconized Sensor- " + sensor +" -Skipping");
             }
-            var now = Date.now();
-            setAgeLabel(now - client.inData.age);
         });
     }
     )
+    console.log(timer.currentTime);
+    setAgeLabel(timer.currentTime);
+    // timer.reset();
 });
 
 function updateData(group, sensor) {
