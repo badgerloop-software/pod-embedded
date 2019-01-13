@@ -1,9 +1,11 @@
 const comms = require('./public/javascripts/client').recievedEmitter;
-var client = require('./public/javascripts/client');
+const client = require('./public/javascripts/client');
 const di = require('./public/javascripts/DataInterfacing');
+var constants = require('./constants');
 var storedData = require('./database');
 var d = document, db = document.body;
 var archiveButton = d.getElementById("archiveButton");
+var settingsSubmit = d.getElementById("podSettingsSubmit");
 
 
 comms.on('heartbeat', function () {
@@ -34,7 +36,7 @@ di.updater.on('updateData', () => {
                 
             } catch{
                 //If not, alert the user and move on
-                console.log("Unreconized Sensor- " + sensor +" -Skipping");
+                console.log("Unreconized Sensor- " + sensor +" -Not Rendering");
             }
             var now = Date.now();
             setAgeLabel(now - client.inData.age);
@@ -61,6 +63,24 @@ function updateData(group, sensor) {
 }
 
 archiveButton.addEventListener("click", function() {
-    di.archiveData();
     console.log("archiving data");
+    di.archiveData();
 });
+
+settingsSubmit.addEventListener("click", () => {
+    constants.serverAddr.ip = d.getElementById("podIP").value;
+    constants.serverAddr.port = Number(d.getElementById("podPort").value);
+    constants.databaseAddr.ip = d.getElementById("databaseIP").value;
+    constants.databaseAddr.port = Number(d.getElementById("databasePort").value);
+    constants.scanningRate = Number(d.getElementById("scanningRate").value);
+    d.getElementById("formFeedback").innerHTML = "Settings Applied";
+});
+
+function fillConstants() {
+    d.getElementById("formFeedback").innerHTML = "";
+    d.getElementById("podIP").value = String(constants.serverAddr.ip);
+    d.getElementById("podPort").value = constants.serverAddr.port;
+    d.getElementById("databaseIP").value = constants.databaseAddr.ip;
+    d.getElementById("databasePort").value = constants.databaseAddr.port
+    d.getElementById("scanningRate").value = constants.scanningRate;
+}
