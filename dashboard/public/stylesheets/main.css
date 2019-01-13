@@ -284,6 +284,9 @@ td.last {
   border-color: #C8EEC4;
   color: #C8EEC4;
 }
+.connected span1{
+  display: none;
+}
 .connected span2 {
   display: none;
 }
@@ -295,8 +298,6 @@ td.last {
   display: none;
 }
 #braking_status, #motion_status, #battery_status, #motor_status {
-  border-radius: 8px;
-  border-style: solid;
   padding: 4px;
   display: inline;
   text-align: right;

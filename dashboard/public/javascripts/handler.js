@@ -9,7 +9,6 @@ var archiveButton = d.getElementById("archiveButton");
 comms.on('heartbeat', function () {
     changeState("podConnect", true);
     console.log("Heartbeat Recieved");
-    di.createTestKeys();
 });
 
 

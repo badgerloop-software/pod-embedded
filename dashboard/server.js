@@ -60,12 +60,8 @@ function sendTestData(){
                 pressureVesselPressure: getRandomValue(),
                 currentPressure: getRandomValue()
             },
-            test:{}
 
         }
-   }
-   for(var i=0; i<150; i++){
-       testSocket.data.test[i] = getRandomValue();
    }
     sendJSON(testSocket);
 }
