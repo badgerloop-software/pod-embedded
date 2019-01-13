@@ -36,7 +36,7 @@ di.updater.on('updateData', () => {
                 
             } catch{
                 //If not, alert the user and move on
-                console.log("Unreconized Sensor- " + sensor +" -Skipping");
+                console.log("Unreconized Sensor- " + sensor +" -Not Rendering");
             }
             var now = Date.now();
             setAgeLabel(now - client.inData.age);
@@ -63,8 +63,8 @@ function updateData(group, sensor) {
 }
 
 archiveButton.addEventListener("click", function() {
-    di.archiveData();
     console.log("archiving data");
+    di.archiveData();
 });
 
 settingsSubmit.addEventListener("click", () => {

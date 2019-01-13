@@ -16,8 +16,8 @@ module.exports.updateData = function updateData(dataIn) {
         // console.log(i);
         sensors.forEach((sensor) => {
             input = dataIn[i][sensor];
-                target = storedData[i][sensor];
-                target.push(input);
+            target = storedData[i][sensor];
+            target.push(input);
         });
     });
     //Tell proto.js to render the data
@@ -34,7 +34,7 @@ module.exports.archiveData = function archiveData(id) {
     if (!id) {
         id = getMongoID();
     }
-    MongoClient.connect("mongodb://127.0.0.1:27017", { useNewUrlParser: true }, function (err, db) {
+    MongoClient.connect(String("mongodb://" + constants.databaseAddr.ip + ":" + constants.databaseAddr.port), { useNewUrlParser: true }, function (err, db) {
         if (err) throw err;
         var dbo = db.db("BadgerloopRunData")
         dbo.createCollection(id, function (err, res) {
@@ -48,6 +48,8 @@ module.exports.archiveData = function archiveData(id) {
 
     })
 }
+
+
 
 
 
