@@ -1,5 +1,5 @@
 const constants = require('./constants');
-const DATA_SEND_RATE = 100;
+const DATA_SEND_RATE = 300;
 const dgram = require('dgram');
 const IP = constants.serverAddr.ip, PORT = constants.serverAddr.port; 
 
