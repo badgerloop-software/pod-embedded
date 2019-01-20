@@ -25,11 +25,13 @@ function generateLineChartOne(tdID, title) {
     var sampleRate = 300; // sample rate in ms per sample
 
     var layout = {
-    xaxis: {range: [0, xmax]},
+    xaxis: {
+        rangemode: 'tozero',
+        autorange: true},
     showlegend: false,
     title: "",
     // width: 220, Removing this makes the chart fill the div
-    height: 220,
+    height: 300,
     margin: {
         l: 30,
         r: 20,
@@ -121,11 +123,13 @@ function generateLineChartTwo(tdID, title) {
     var sampleRate = 300; // sample rate in ms per sample
 
     var layout = {
-    xaxis: {range: [0, xmax]},
+        xaxis: {
+            rangemode: 'tozero',
+            autorange: true},
     showlegend: false,
     title: "",
     // width: 220,
-    height: 220,
+    height: 300,
     margin: {
         l: 30,
         r: 20,

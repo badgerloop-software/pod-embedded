@@ -2,6 +2,6 @@
 *Authors: Eric Udlis, Luke Houge, Alex Vesel*
 
 ## Run Instructions
-cd into folder
-npm install
-npm start
+- cd into folder
+- npm install
+- npm start
