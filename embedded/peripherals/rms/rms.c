@@ -4,6 +4,10 @@
 
 Rms *rms;
 
+/* RMS Init Function:
+ *      Creates RMS data struct
+ *      Sets each value = 0
+ */
 void rms_init() {
 	rms = malloc(sizeof(Rms));
 	rms->igbt_temp = 0;
@@ -29,6 +33,10 @@ void rms_init() {
 	rms->output_voltage_ln = 0;
 }
 
+/* RMS CAN Parser Function
+ *      Based on the CAN ID passed, parsing out the data bytes into
+ *      their respective values in the RMS data struct
+ */
 int rms_parser(uint32_t id, uint8_t *data){
 	switch(id){
 		case (0xa0):

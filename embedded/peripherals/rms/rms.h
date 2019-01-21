@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+/* RMS Data struct */
 typedef struct {
 	uint16_t igbt_temp;
 	uint16_t gate_driver_board_temp;
@@ -25,11 +26,15 @@ typedef struct {
 	uint16_t electrical_freq;
 	uint16_t dc_bus_current;
 	uint16_t output_voltage_ln;
-
 } Rms;
 
+/* Actual instance of struct, used for holding data until sent externally to database */
 extern Rms *rms;
+
+/* RMS Init function */
 void rms_init();
+
+/* Handles parsing of all recieved CAN messages */
 int rms_parser(uint32_t id, uint8_t *data);
 
 #endif 
