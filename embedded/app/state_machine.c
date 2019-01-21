@@ -24,7 +24,7 @@ void initState(state_t* state, char* name, stateTransition_t *(*action)() ){
 }
 
 
-//TODO: So all these function handles are representing what each state is actually doing?
+//TODO: So all these function handles are representing what each state is actually doing? And when you transition out of that state's action it returns a function pointer to said transition?
 //TODO: If so, I'm assuming the transitions still need to be created?
 //TODO: Are you planning on creating a "tranisition in" and "transition out" function for each state?
 //TODO: And the 'transitions' field in the state_t struct is an array holding function pointers to said functions?
@@ -125,7 +125,7 @@ void buildStateMachine() {
 		runFault = malloc(sizeof(state_t));
 		postFault = malloc(sizeof(state_t));
 
-		int stateCount = 0;
+		int stateCount = 0; //TODO: what do plan on using this variable for?
 
         /* Initializing states */
 		initState(powerOn, "powerOn", stateTransition_t *(*powerOnAction)());
