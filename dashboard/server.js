@@ -25,13 +25,13 @@ function heartbeat(){
     })
 }
 function sendJSON(object){
+    console.log("send data");
     sendData(JSON.stringify(object));
 }
 
 function sendTestData(){
     let testSocket = {
         type: 'data',
-        age: Date.now(),
         data:{
             motion : {
                 stoppingDistance: getRandomValue(),
@@ -59,7 +59,7 @@ function sendTestData(){
                 primaryActuation: getRandomValue(),
                 pressureVesselPressure: getRandomValue(),
                 currentPressure: getRandomValue()
-            },
+            }
 
         }
    }
