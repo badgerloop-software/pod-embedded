@@ -25,6 +25,7 @@ function heartbeat(){
     })
 }
 function sendJSON(object){
+    console.log("send data");
     sendData(JSON.stringify(object));
 }
 
@@ -58,7 +59,7 @@ function sendTestData(){
                 primaryActuation: getRandomValue(),
                 pressureVesselPressure: getRandomValue(),
                 currentPressure: getRandomValue()
-            },
+            }
 
         }
    }
