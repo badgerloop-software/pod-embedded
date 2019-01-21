@@ -3,7 +3,7 @@
 
 #define NUM_STATES 17
 
-
+void initState(state_t*, char*, stateTransition_t *(*action)() );
 
 void buildStateMachine();
 
@@ -18,14 +18,17 @@ void runStateMachine();
 
 typedef struct stateTransition_t {
 	state_t *target;
-	bool (*action)();
+	bool (*action)(); //TODO: Any particular reason you're using a bool pointer here rather that void?
 } stateTransition_t
 
 /* 	struct: state_t
+*  	
 * 	fields:
-*		action = The thing that the state does. If it should transition it returns
-*			a pointer to the transiton, otherwise NULL
-*		name = The name of the state
+*		action      = The thing that the state does. If it should transition it returns
+*			        a pointer to the transiton, otherwise NULL
+*		
+*		name        = The name of the state
+*		
 *		transitions = A list of all transitions exiting the state
 */
 
