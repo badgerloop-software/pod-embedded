@@ -40,20 +40,54 @@ module.exports.inData;
 udpServer.bind(PORT, HOST);
 
 //TCP Packet Sending
-const tcpServer = net.createServer((c) =>{
-    console.log("Client connected");
-    c.on('end', () => {
-        console.log("client disconnected");
-    });
-    c.write('hello\r\n');
-    c.pipe(c);
+// const tcpServer = net.createServer((c) =>{
+//     console.log("Client connected Server " + c.remoteAddress+':'+c.remotePort);
+//     c.on('end', () => {
+//         console.log("client disconnected");
+//     });
+//     c.write('hello\r\n');
+//     c.pipe(c);
+// });
+
+// tcpServer.on('error', (err) => {
+//     throw err;
+// });
+
+// tcpServer.on('connection', (c) =>{
+//     console.log(c);
+// })
+
+// tcpServer.listen(constants.serverAddr.tcpPort, constants.serverAddr.ip);
+function getConnection(){
+const options = {
+    host: constants.serverAddr.ip,
+    port: constants.serverAddr.tcpPort
+}
+const tcpClient = net.createConnection(options, () =>{
+    console.log('Connection from' = tcpClient.remoteAddress + ":"+ tcpClient.remotePort);
+});
+tcpClient.setTimeout(1000);
+tcpClient.setEncoding('utf8');
+
+tcpClient.on('data',(e) => {
+    console.log('Pod Returned: '+ e);
 });
 
-tcpServer.on('error', (err) => {
+tcpClient.on('end', () =>{
+    console.log('Pod Disconnected');
+});
+
+tcpClient.on('timeout', ()=>{
+    console.log('Lol pod timedout, you done goofed');
+});
+
+tcpClient.on('error', ()=>{
     throw err;
 });
 
-tcpServer.listen()
+return tcpClient;
+};
 
-
+var terminalOutput = getConnection();
+terminalOutput.write('Lol hey');
 
