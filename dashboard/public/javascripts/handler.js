@@ -1,6 +1,6 @@
-const client = require('./public/javascripts/client');
+const client = require('./public/javascripts/communication');
 const di = require('./public/javascripts/DataInterfacing');
-const comms = require('./public/javascripts/client').recievedEmitter;
+const comms = require('./public/javascripts/communication').recievedEmitter;
 var constants = require('./constants');
 var storedData = require('./database');
 var d = document, db = document.body;

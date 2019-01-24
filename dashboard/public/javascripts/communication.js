@@ -1,19 +1,23 @@
 const constants = require('../../constants');
 const events = require('events');
-var dgram = require('dgram');
-var server = dgram.createSocket('udp4');
+const dgram = require('dgram');
+const net = require('net');
+
+var udpServer = dgram.createSocket('udp4');
 var PORT = constants.serverAddr.port;
-var HOST = constants.serverAddr.ip;
-const recievedEmitter = new events.EventEmitter() ;
+var HOST = "127.0.0.1";
+const recievedEmitter = new events.EventEmitter();
 module.exports.recievedEmitter = recievedEmitter;
 var inData;
 
-server.on('listening', function () {
-    var address = server.address();
+//UDP Data Recieving
+
+udpServer.on('listening', function () {
+    var address = udpServer.address();
     console.log('UDP Server listening on ' + address.address + ":" + address.port);
 });
 
-server.on('message', function (message, remote) {
+udpServer.on('message', function (message, remote) {
     recieved = JSON.parse(message);
     switch (recieved.type) {
         case 'data':
@@ -33,6 +37,23 @@ recievedEmitter.on('heartbeat', function () {
 
 
 module.exports.inData;
-server.bind(PORT, HOST);
+udpServer.bind(PORT, HOST);
+
+//TCP Packet Sending
+const tcpServer = net.createServer((c) =>{
+    console.log("Client connected");
+    c.on('end', () => {
+        console.log("client disconnected");
+    });
+    c.write('hello\r\n');
+    c.pipe(c);
+});
+
+tcpServer.on('error', (err) => {
+    throw err;
+});
+
+tcpServer.listen()
+
 
 
