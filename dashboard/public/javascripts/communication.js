@@ -39,6 +39,12 @@ recievedEmitter.on('heartbeat', function () {
 module.exports.inData;
 udpServer.bind(PORT, HOST);
 
+/*
+
+This is some stuff I want to play with later - Eric
+
+*/
+
 //TCP Packet Sending
 // const tcpServer = net.createServer((c) =>{
 //     console.log("Client connected Server " + c.remoteAddress+':'+c.remotePort);
@@ -58,36 +64,52 @@ udpServer.bind(PORT, HOST);
 // })
 
 // tcpServer.listen(constants.serverAddr.tcpPort, constants.serverAddr.ip);
-function getConnection(){
-const options = {
-    host: constants.serverAddr.ip,
-    port: constants.serverAddr.tcpPort
-}
-const tcpClient = net.createConnection(options, () =>{
-    console.log('Connection from' = tcpClient.remoteAddress + ":"+ tcpClient.remotePort);
+// function getConnection(){
+// const options = {
+//     host: constants.serverAddr.ip,
+//     port: constants.serverAddr.tcpPort
+// }
+// const tcpClient = net.createConnection(options, () =>{
+//     console.log('Connection from' = tcpClient.remoteAddress + ":"+ tcpClient.remotePort);
+// });
+// tcpClient.setTimeout(1000);
+// tcpClient.setEncoding('utf8');
+
+// tcpClient.on('data',(e) => {
+//     console.log('Pod Returned: '+ e);
+// });
+
+// tcpClient.on('end', () =>{
+//     console.log('Pod Disconnected');
+// });
+
+// tcpClient.on('timeout', ()=>{
+//     console.log('Lol pod timedout, you done goofed');
+// });
+
+// tcpClient.on('error', ()=>{
+//     throw err;
+// });
+
+// return tcpClient;
+// };
+
+// var terminalOutput = getConnection();
+// terminalOutput.write('Lol hey');
+
+var tcpSender = new net.Socket();
+tcpSender.connect(constants.serverAddr.tcpPort, constants.serverAddr.ip, () =>{
+    console.log('Pod Connected');
+    tcpSender.write('Pod, are you a beaver? Cause dam');
 });
-tcpClient.setTimeout(1000);
-tcpClient.setEncoding('utf8');
 
-tcpClient.on('data',(e) => {
-    console.log('Pod Returned: '+ e);
+tcpSender.setTimeout(2000);
+
+tcpSender.on('data', (e)=>{
+    console.log('Recieved: ' + e);
+    tcpSender.destroy();
 });
 
-tcpClient.on('end', () =>{
-    console.log('Pod Disconnected');
-});
-
-tcpClient.on('timeout', ()=>{
-    console.log('Lol pod timedout, you done goofed');
-});
-
-tcpClient.on('error', ()=>{
-    throw err;
-});
-
-return tcpClient;
-};
-
-var terminalOutput = getConnection();
-terminalOutput.write('Lol hey');
-
+tcpSender.on('close', () =>{
+    console.log('Connection Closed');
+})
