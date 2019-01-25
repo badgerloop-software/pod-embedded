@@ -39,6 +39,23 @@ recievedEmitter.on('heartbeat', function () {
 module.exports.inData;
 udpServer.bind(PORT, HOST);
 
+
+var tcpSender = new net.Socket();
+tcpSender.connect(constants.serverAddr.tcpPort, constants.serverAddr.ip, () =>{
+    console.log('Pod Connected');
+    tcpSender.write('Pod, are you a beaver? Cause dam');
+});
+
+tcpSender.setTimeout(2000);
+
+tcpSender.on('data', (e)=>{
+    console.log('Recieved: ' + e);
+    tcpSender.destroy();
+});
+
+tcpSender.on('close', () =>{
+    console.log('Connection Closed');
+});
 /*
 
 This is some stuff I want to play with later - Eric
@@ -96,20 +113,3 @@ This is some stuff I want to play with later - Eric
 
 // var terminalOutput = getConnection();
 // terminalOutput.write('Lol hey');
-
-var tcpSender = new net.Socket();
-tcpSender.connect(constants.serverAddr.tcpPort, constants.serverAddr.ip, () =>{
-    console.log('Pod Connected');
-    tcpSender.write('Pod, are you a beaver? Cause dam');
-});
-
-tcpSender.setTimeout(2000);
-
-tcpSender.on('data', (e)=>{
-    console.log('Recieved: ' + e);
-    tcpSender.destroy();
-});
-
-tcpSender.on('close', () =>{
-    console.log('Connection Closed');
-})

@@ -2,7 +2,7 @@ module.exports =  {
     serverAddr: {
         ip : "127.0.0.1",
         port : 33333,
-        tcpPort: 1337
+        tcpPort: 9091
     },
     databaseAddr: {
        ip: "127.0.0.1",
