@@ -7,7 +7,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#include "LVTCPSocket.h"
+#include "HVTCPSocket.h"
 
 
 pthread_t TCPThread;
@@ -22,6 +22,7 @@ void SetupLVTCPServer(){
 	 
 }
 
+
 /* Thread Loop */
 void *TCPLoop(void *arg){
 	
@@ -32,13 +33,13 @@ void *TCPLoop(void *arg){
 		
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
-	
-	// Create Server fd	
+		
+	// Create Server fd
 	if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){ 
 		fprintf(stderr, "Error creating socket FD\n");
 		exit(EXIT_FAILURE); 
 	} 
-		
+	
 	// Attach Socket
 	if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
 												  &opt, sizeof(opt))){ 
