@@ -80,6 +80,10 @@ void *TCPLoop(void *arg){
 		
 		printf("RECEIVED: %s\n",buffer);  
 		
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
+			send(new_socket, (char*) "pong!" , strlen("pong!") , 0 ); 
+		}
+		
 		// Do things
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
 			// DO POWER OFF
@@ -90,7 +94,7 @@ void *TCPLoop(void *arg){
 		}
 		
 		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
+		send(new_socket, (char*) "Received packet!", strlen("Received packet!"), 0); 
 	}
 	
 }
