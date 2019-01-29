@@ -1,19 +1,23 @@
 const constants = require('../../constants');
 const events = require('events');
-var dgram = require('dgram');
-var server = dgram.createSocket('udp4');
+const dgram = require('dgram');
+const net = require('net');
+
+var udpServer = dgram.createSocket('udp4');
 var PORT = constants.serverAddr.port;
 var HOST = constants.serverAddr.ip;
-const recievedEmitter = new events.EventEmitter() ;
+const recievedEmitter = new events.EventEmitter();
 module.exports.recievedEmitter = recievedEmitter;
 var inData;
 
-server.on('listening', function () {
-    var address = server.address();
+//UDP Data Recieving
+
+udpServer.on('listening', function () {
+    var address = udpServer.address();
     console.log('UDP Server listening on ' + address.address + ":" + address.port);
 });
 
-server.on('message', function (message, remote) {
+udpServer.on('message', function (message, remote) {
     recieved = JSON.parse(message);
     switch (recieved.type) {
         case 'data':
@@ -33,6 +37,23 @@ recievedEmitter.on('heartbeat', function () {
 
 
 module.exports.inData;
-server.bind(PORT, HOST);
+udpServer.bind(PORT, HOST);
 
+module.exports.sendPacket = function sendPacket(ip, port, msg){
 
+let tcpSender = new net.Socket();
+tcpSender.connect(port, ip, () =>{
+    console.log('Pod Connected');
+    tcpSender.write(msg);
+});
+
+tcpSender.setTimeout(2000);
+
+tcpSender.on('data', (e)=>{
+    console.log('Recieved: ' + e);
+});
+
+tcpSender.on('close', () =>{
+    console.log('Connection Closed');
+});
+}

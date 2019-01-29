@@ -3,7 +3,7 @@
 var tableIDs = ["motion", "braking", "battery_pack", "motor"]; //arrays for loop to iterate through
 var divIDs = ["motion_div", "braking_div", "battery_pack_div", "motor_div"];
 var statusIDs = ["motion_status", "braking_status", "battery_status", "motor_status"];
- coms = require('./public/javascripts/client').recievedEmitter;
+ coms = require('./public/javascripts/communication').recievedEmitter;
 
 coms.on('disconnect', (subsystem) => {
   document.getElementById(String(subsystem + '_div')).className = 'disconnected';
