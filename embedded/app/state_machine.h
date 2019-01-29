@@ -3,7 +3,6 @@
 
 #define NUM_STATES 17
 
-void initState(state_t*, char*, stateTransition_t *(*action)() );
 
 void buildStateMachine();
 
@@ -34,13 +33,15 @@ typedef struct stateTransition_t {
 
 typedef struct state_t {
 	stateTransition_t *(*action)();
-	char *name;
+	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
+    int numTransitions;
 } state_t
 
 typedef struct stateMachine_t {
 	state_t *currState;
 	state_t **allStates;
+    char *  overrideStateName;
 } stateMachine_t;
 
 stateMachine_t stateMachine;
