@@ -20,7 +20,7 @@ or
 SetupHVTelemetry("IP Address", Port);
 ```
 
-If you need to edit the IP address or port of the receiving server, modify the values in the respective .h files
+Where "IP Address and "Port" are that of the dashboard server.
 
 This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
 	
