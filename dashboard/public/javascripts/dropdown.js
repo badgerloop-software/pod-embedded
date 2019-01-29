@@ -1,4 +1,7 @@
-//dropdown code
+/*
+Author: Luke Houge
+Purpose: Enable dynamic and searchable dropdowns
+*/
 function dropdown(num) {
   if (num==1){
     document.getElementById("myDropdown1").classList.toggle("show");

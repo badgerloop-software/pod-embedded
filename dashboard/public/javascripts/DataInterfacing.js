@@ -1,55 +1,63 @@
-const constants = require('../../constants');
-const events = require('events');
+/*
+Author: Eric Udlis
+Purpose: Interface with the local tempory database and long term database
+*/
+const constants = require("../../constants");
+const events = require("events");
 const updater = new events.EventEmitter();
 module.exports.updater = updater;
-const storedData = require('../../database');
-const MongoClient = require('mongodb');
+const storedData = require("../../database");
+const MongoClient = require("mongodb");
 
 const dbIP = constants.databaseAddr.ip;
 const dbPort = constants.databaseAddr.port;
 
 module.exports.updateData = function updateData(dataIn) {
-    //Sort through the data and append the new values to their respective arrays in database.js
-    let groups = Object.keys(dataIn);
-    groups.forEach((i) => {
-        let sensors = Object.keys(dataIn[i]);
-        // console.log(i);
-        sensors.forEach((sensor) => {
-            input = dataIn[i][sensor];
-            target = storedData[i][sensor];
-            target.push(input);
-        });
+  //Sort through the data and append the new values to their respective arrays in database.js
+  let groups = Object.keys(dataIn);
+  groups.forEach(i => {
+    let sensors = Object.keys(dataIn[i]);
+    // console.log(i);
+    sensors.forEach(sensor => {
+      input = dataIn[i][sensor];
+      target = storedData[i][sensor];
+      target.push(input);
     });
-    //Tell proto.js to render the data
-    updater.emit('updateData');
-}
+  });
+  //Tell proto.js to render the data
+  updater.emit("updateData");
+};
+
+// Mongodb Interfacing
 
 function getMongoID() {
-    id = String(String(new Date().getDate()) + String(new Date().getHours()) + String(new Date().getMinutes()));
-    console.log(id);
-    return String("run" + id);
+//Creates a unique ID for each run
+  id = String(
+    String(new Date().getDate()) +
+      String(new Date().getHours()) +
+      String(new Date().getMinutes())
+  );
+  console.log(id);
+  return String("run" + id);
 }
 
 module.exports.archiveData = function archiveData(id) {
-    if (!id) {
-        id = getMongoID();
-    }
-    MongoClient.connect(String("mongodb://" + constants.databaseAddr.ip + ":" + constants.databaseAddr.port), { useNewUrlParser: true }, function (err, db) {
+  if (!id) {
+      //if we didn't specify an ID, make one
+    id = getMongoID();
+  }
+  MongoClient.connect(
+    String("mongodb://" + constants.databaseAddr.ip +":" + constants.databaseAddr.port), { useNewUrlParser: true },function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("BadgerloopRunData");
+      dbo.createCollection(id, function(err, res) {
         if (err) throw err;
-        var dbo = db.db("BadgerloopRunData")
-        dbo.createCollection(id, function (err, res) {
-            if (err) throw err;
-            console.log("Collection Created");
-        })
-        dbo.collection(id).insertOne(storedData, function (err, res) {
-            if (err) throw err;
-            db.close();
-        })
-
-    })
-}
-
-
-
-
-
+        console.log("Collection Created");
+      });
+      dbo.collection(id).insertOne(storedData, function(err, res) {
+        if (err) throw err;
+        db.close();
+      });
+    }
+  );
+};

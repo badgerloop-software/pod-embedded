@@ -1,5 +1,7 @@
-//dynamically styles cells and table based on values in range or not
-
+/*
+Author: Luke Houge, Eric Udlis
+Purpose: Dynamically styles cells and table based on values in range or not
+*/
 var tableIDs = ["motion", "braking", "battery_pack", "motor"]; //arrays for loop to iterate through
 var divIDs = ["motion_div", "braking_div", "battery_pack_div", "motor_div"];
 var statusIDs = ["motion_status", "braking_status", "battery_status", "motor_status"];
@@ -97,3 +99,19 @@ setInterval(function(){
     }
   }
 }, 100);
+
+// Table Search Boxes
+function searchTable(range){
+  var input, filter, table, tr, td, i;
+  input = document.getElementById(range + "input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById(range);
+  tr = table.getElementsByTagName("tr");
+  for(let i=0; i< tr.length; i++){
+    td = tr[i].getElementsByTagName("td")[0];
+    if(td){
+      if(td.innerHTML.toUpperCase().indexOf(filter) > -1) tr[i].style.display = "";
+      else tr[i].style.display = "none";
+    }
+  }
+}

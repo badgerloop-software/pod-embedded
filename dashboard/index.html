@@ -6,15 +6,14 @@
     <link rel="stylesheet" type="text/css" href="public/stylesheets/fonts.css">
     <script src="public/javascripts/dropdown.js"></script>
     <script src="public/javascripts/focusClone.js"></script>
-    <script src="public/javascripts/tableSearch.js"></script>
-    <script src="public/javascripts/generateLineChart.js"></script>
-    <script src="public/javascripts/generateBlankChart.js"></script>
+    <script src="public/javascripts/chartHandling.js"></script>
     <script src="public/javascripts/dynamicStyling.js"></script>
     <script src="node_modules/plotly.js-dist/plotly.js"></script>
     <title>Badgerloop Pod IV Dashboard</title>
   </head>
 
   <body>
+    <!-- Top Bar -->
     <div class="banner">
       <a class="left"><img src="public/images/logo.png" height="30px"></a>
       <a id="title" class="left">Control Dashboard</a>
@@ -33,6 +32,7 @@
     </div>
 
     <div class="grid">
+      <!-- Focus Box -->
       <div id="header1" class="box">
         <div class="grid_focus">
           <div class="dropdown">
@@ -85,7 +85,7 @@
           </div>
         </div>
       </div>
-
+<!-- Charts -->
       <div id="header2" class="box">
           <div class="grid_focus2">
             <div class="dropdown">
@@ -195,8 +195,8 @@
       <div id="motion_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motion </h1>
-          <h2 id="motion_status" class="disconnected"><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
-          <input type="text" id="motioninput" onkeyup="searchmotion()" placeholder="Search for values.." title="Type in a value">
+          <h2 id="motion_status" class="disconnected"><span2 style="display:inline;">Disconnected</span2></h2><br><br>
+          <input type="text" id="motioninput" onkeyup="searchTable('motion')" placeholder="Search for values.." title="Type in a value">
           <table id="motion">
             <tr class="header">
               <th>Value</th>
@@ -241,8 +241,8 @@
       <div id="braking_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Braking </h1>
-          <h2 id="braking_status" class=""><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
-          <input type="text" id="brakinginput" onkeyup="searchbreak()" placeholder="Search for values.." title="Type in a value">
+          <h2 id="braking_status" class=""><span2 style="display:inline;">Disconnected</span2></h2><br><br>
+          <input type="text" id="brakinginput" onkeyup="searchTable('braking')" placeholder="Search for values.." title="Type in a value">
           <table id="braking">
               <tr class="header">
                 <th>Value</th>
@@ -306,8 +306,8 @@
       <div id="battery_pack_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Battery </h1>
-          <h2 id="battery_status" class=""><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
-          <input type="text" id="battery_pack_input" onkeyup="search_battery_pack()" placeholder="Search for values.." title="Type in a value">
+          <h2 id="battery_status" class=""><span2 style="display:inline;">Disconnected</span2></h2><br><br>
+          <input type="text" id="battery_pack_input" onkeyup="searchTable('battery_pack')" placeholder="Search for values.." title="Type in a value">
           <table id="battery_pack">
             <tr class="header">
               <th>Value</th>
@@ -370,8 +370,8 @@
       <div id="motor_div" class="box ok">
         <div class="item-content">
           <h1 style="display:inline;">Motor </h1>
-          <h2 id="motor_status" class="disconnected"><span2>Disconnected</span2 style="display:inline;"></h2><br><br>
-          <input type="text" id="motorinput" onkeyup="searchmotor()" placeholder="Search for values.." title="Type in a value">
+          <h2 id="motor_status" class="disconnected"><span2 style="display:inline;">Disconnected</span2></h2><br><br>
+          <input type="text" id="motorinput" onkeyup="searchTable('motor')" placeholder="Search for values.." title="Type in a value">
           <table id="motor">
             <tr class="header">
               <th>Value</th>
@@ -406,14 +406,14 @@
           </table>
         </div>
       </div>
-
+      <!-- Dashboard Settings Modal -->
       <div class="modal">
         <div class="modal-content">
           <span class="close-button">×</span>
           <h1>Dashboard Settings</h1>
           <form class="settingsForm">
             <div id="formLeft">
-              <h4 id="formTitle">Pod Settings</h1>
+              <h4 id="formTitle">Pod Settings</h4>
               <label for="podIP" id="first-name">Pod IP</label>
               <input id="podIP" class="formInput" type="text">
       
@@ -421,7 +421,7 @@
               <input id="podPort" class="formInput" type="number">
             </div>
             <div id="formRight">
-              <h4 id="formTitle">Database Settings</h1>
+              <h4 id="formTitle">Database Settings</h4>
               <label for="databaseIP">Database IP</label>
               <input id="databaseIP" class="formInput"  type="text">
         
@@ -429,7 +429,7 @@
               <input id="databasePort" class="formInput" type="number">
             </div>
             <div id="formFull">
-              <h4 id="formTitle">Dashboard Settings</h1>
+              <h4 id="formTitle">Dashboard Settings</h4>
               <label for="scanningRate">Scanning Rate: <span id="value"></span> </label>
               <input id="scanningRate" class="formInput" type="number" min="0" max="500" class="inputNotSearchable">
               <button id="podSettingsSubmit" type="button">Submit</button>
@@ -462,5 +462,4 @@
     </script>
      <script src="public/javascripts/handler.js"></script>
   </body>
-
 </html>
