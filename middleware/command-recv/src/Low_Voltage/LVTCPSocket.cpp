@@ -85,7 +85,7 @@ void *TCPLoop(void *arg){
 		}
 		
 		if(!strncmp(buffer, "do something", MAX_COMMAND_SIZE)){
-			// DO something
+			// Do something
 		}
 		
 		// Send acknowledge packet back
