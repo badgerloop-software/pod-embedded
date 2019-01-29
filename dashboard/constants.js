@@ -1,8 +1,15 @@
 module.exports =  {
     serverAddr: {
-        ip : "127.0.0.1",
-        port : 33333,
-        tcpPort: 9091
+        ip : "0.0.0.0",
+        port : 33333
+    },
+    hvBone: {
+       ip: "192.168.1.146",
+       port: 9091,
+    },
+    lvBone: {
+       ip: "192.168.1.140",
+       port: 9091
     },
     databaseAddr: {
        ip: "127.0.0.1",
