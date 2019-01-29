@@ -20,6 +20,8 @@ or
 SetupHVTelemetry("IP Address", Port);
 ```
 
+Where "IP Address and "Port" are that of the dashboard server.
+
 This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
 	
 ### How to add data
