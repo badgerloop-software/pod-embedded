@@ -28,7 +28,7 @@ void *TCPLoop(void *arg){
 	
 	(void) arg;
 
-	int server_fd, new_socket, valread;
+	int server_fd, new_socket;
 	int opt = 1;
 		
 	struct sockaddr_in address;
