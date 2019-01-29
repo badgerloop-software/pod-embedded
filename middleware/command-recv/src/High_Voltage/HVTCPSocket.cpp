@@ -76,7 +76,8 @@ void *TCPLoop(void *arg){
 			fprintf(stderr, "Error accepting a packet\n"); 
 			exit(EXIT_FAILURE); 
 		}
-		valread = read(new_socket, buffer, 1024); 
+		
+		read(new_socket, buffer, 1024); 
 		
 		printf("RECEIVED: %s\n",buffer);  
 		
