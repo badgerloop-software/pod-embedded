@@ -22,7 +22,7 @@ comms.on("dataIn", function() {
   console.log("dataIn - Event Recieved");
   //Log it to be sure
   console.log(client.inData);
-  //Tell the Data Interfacer to start sorting it ... On a second look I could scrap this middleman altogether, I'll look into this
+  //Tell the Data Interfacer to start sorting it
   di.updateData(client.inData.data);
 });
 
