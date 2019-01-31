@@ -1,5 +1,5 @@
-n/*
-Author: Luke Houge
+/*
+Author: Luke Houge, Eric Udlis
 Purpose: Enable dynamic and searchable dropdowns
 */
 function dropdown(num) {

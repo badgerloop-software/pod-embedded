@@ -42,13 +42,10 @@ function clone(id) {
 }
 
 //clear for focus div
+//FYI This function didn't work before I condensed it -E
 function clear() {
-  document.getElementById("header_value_1").innerHTML = "";
-  document.getElementById("header_label_1").innerHTML = "Value 1";
-  document.getElementById("header_value_2").innerHTML = "";
-  document.getElementById("header_label_2").innerHTML = "Value 2";
-  document.getElementById("header_value_3").innerHTML = "";
-  document.getElementById("header_label_3").innerHTML = "Value 3";
-  document.getElementById("header_value_4").innerHTML = "";
-  document.getElementById("header_label_4").innerHTML = "Value 4";
+  for(i=1; i<5; i++){
+    document.getElementById("header_value_"+String(i)).innerHTML = "";
+    document.getElementById("header_label_"+String(i)).innerHTML = "Value "+String(i);  
+  }
 }
