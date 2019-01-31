@@ -2,6 +2,8 @@
 Author: Luke Houge
 Purpose: Enable dynamic and searchable dropdowns
 */
+
+// determines which dropdown is being triggered
 function dropdown(num) {
   if (num==1){
     document.getElementById("myDropdown1").classList.toggle("show");
@@ -14,7 +16,9 @@ function dropdown(num) {
   }
 }
 
+//search filter function for  dropdowns
 function filterFunction(a) {
+  //determines which dropdown (1,2, or 3) is being called
   var inputnum;
   var dropnum;
   if (a==1){
@@ -29,7 +33,9 @@ function filterFunction(a) {
     inputnum = "dropdownInput3";
     dropnum = "myDropdown3";
   }
-  var input, filter, ul, li, a, i;
+
+  //filter function
+  var input, filter, a, i;
   input = document.getElementById(inputnum);
   filter = input.value.toUpperCase();
   div = document.getElementById(dropnum);
