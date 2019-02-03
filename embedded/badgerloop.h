@@ -1,0 +1,5 @@
+
+
+enum STATUS {OK, ERROR};
+
+
