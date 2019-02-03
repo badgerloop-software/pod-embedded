@@ -11,6 +11,7 @@
          url('../fonts/montserrat-v12-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
          url('../fonts/montserrat-v12-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
   }
+  
   /* montserrat-italic - latin */
   @font-face {
     font-family: 'Montserrat';
@@ -38,6 +39,7 @@
          url('../fonts/montserrat-v12-latin-800italic.ttf') format('truetype'), /* Safari, Android, iOS */
          url('../fonts/montserrat-v12-latin-800italic.svg#Montserrat') format('svg'); /* Legacy iOS */
   }
+
   /* montserrat-800 - latin */
   @font-face {
     font-family: 'Montserrat';
