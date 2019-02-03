@@ -59,6 +59,7 @@ di.updater.on("updateData", () => {
   }
 });
 
+// Update the Database and Render the latest entry
 function updateData(group, sensor) {
   // Get numbers
   let t = d.getElementById(String(sensor));
@@ -70,15 +71,20 @@ function updateData(group, sensor) {
   t.innerHTML = String(stored[stored.length - 1]);
 }
 
+//Sets the latency counter
 function setAgeLabel(staleness) {
   d.getElementById("ageDisplay").innerHTML = String(staleness + "ms");
 }
 
+//Handles the archive button click
 archiveButton.addEventListener("click", function() {
   di.archiveData();
   console.log("archiving data");
 });
 
+//Settings Form
+
+//Submits Entries to File
 settingsSubmit.addEventListener("click", () => {
   constants.serverAddr.ip = d.getElementById("podIP").value;
   constants.serverAddr.port = Number(d.getElementById("podPort").value);
@@ -88,6 +94,7 @@ settingsSubmit.addEventListener("click", () => {
   d.getElementById("formFeedback").innerHTML = "Settings Applied";
 });
 
+//Fills entries in text boxes
 function fillConstants() {
   d.getElementById("formFeedback").innerHTML = "";
   d.getElementById("podIP").value = String(constants.serverAddr.ip);
