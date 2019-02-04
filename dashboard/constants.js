@@ -4,7 +4,7 @@ Purpose: Store all constants in one place
 */
 module.exports = {
   serverAddr: {
-    ip: "127.0.0.1",
+    ip: "0.0.0.0",
     port: 33333
   },
   hvBone: {
