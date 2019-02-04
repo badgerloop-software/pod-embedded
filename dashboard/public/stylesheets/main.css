@@ -393,6 +393,32 @@ td.last {
   border-color: lightblue;
 }
 
+/*master start styling */
+#start {
+  background-color:green;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border: 5px solid green;
+  border-radius: 10px;
+  width: 100%;
+  height: 49%;
+  font-weight: 1000px;
+  margin-top: -2px;
+}
+#start:hover {
+  color: white;
+  animation-duration: 400ms;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  background-color: darkgreen;
+  border: 2px solid darkgreen;
+  padding: 10px;
+}
+#start h1 {
+  color: white;
+}
+
 /* emergency stop styling */
 #estop {
   background-color:#C10000;
@@ -401,11 +427,11 @@ td.last {
   transition-duration: 0.4s;
   cursor: pointer;
   border: 5px solid #C10000;
-  border-radius: 6px;
+  border-radius: 10px;
+  margin-top: 10px;
   width: 100%;
-  height: 106px;
-  margin-top: 6px;
-  font-weight: 800;
+  height: 49%;
+  font-weight: 1000px;
 }
 #estop:hover {
   color: white;
@@ -416,7 +442,7 @@ td.last {
   background-color: #FF0000;
   border: 2px solid #FF0000;
 }
-/* Blinking function-- to much so took out for now
+/* blinking color warning */
 @keyframes blink {
   from {
      background-color: black;
@@ -427,7 +453,6 @@ td.last {
      border: 2px solid #FF0000;
   }
 }
-*/
 #estop h1 {
   color: white;
 }
@@ -530,12 +555,37 @@ td.last {
   vertical-align: middle;
   margin-top: -20px;
 }
+
+/* Header 4 (link and latency) styling */
 #header4{
   padding-bottom:100px;
+  display: flex;
+  justify-content: space-around;
 }
+#header4 h1 {
+  font-size: 1.3vw; /* responsive size */
+  width:100%;
+  display:flex; /* vertically centering */
+  align-items: center; /* vertically centering */
+  justify-content: center; /* vertically centering */
+}
+#header4Left {
+  width: 30%;
+}
+#header4Right {
+  float: right;
+  width: 70%;
+  padding-left: 90px;
+}
+.link {
+  font-size: 50px;
+  line-height: 0px;
+}
+
+/* something ??? */
 .modebar {
   display: none !important;
-  }
+}
 
 /* form styling */
 form {
@@ -605,4 +655,9 @@ hr {
   border-top: 1px solid #000000;
   margin: 1em 0;
   padding: 0; 
+}
+
+/* extra box styling */ 
+#extra {
+  border: none;
 }

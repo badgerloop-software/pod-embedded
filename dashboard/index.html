@@ -170,25 +170,33 @@
            </div>
         </div>
 
-        <!-- Emergency Stop-->
-        <div id="header5">
-          <button id="estop"><h1>EMERGENCY STOP</h1></button>
-        </div>
-
         <!-- Latency Indicator-->
         <div id="header4" class="box">
-          <center><div class="status">
-             <img src="public/images/pod.png" id="podStatus">
-             <div id="statusConnection1"><p>-----------------</p></div>
-            <div id="age"><h5>Measured Latency</h5><h1 id="ageDisplay">ms</h1></div>
-             <div id="statusConnection2"><p>-----------------</p></div>
-             <img src="public/images/macbook.png" id="hostStatus">
-          </div></center>
+          <div id="header4Left">
+            <h1>Link Connection <br>and Latency</h1>
+          </div>
+          <div id="header4Right">
+            <div class="status">
+              <img src="public/images/pod.png" id="podStatus">
+            <div id="statusConnection2">
+              <p class="link">----</p>
+            </div>
+            <div id="age">
+              <h5>Measured Latency</h5>
+              <h1 id="ageDisplay">ms</h1>
+            </div>
+            <div id="statusConnection2">
+              <p class="link">----</p>
+            </div>
+            <img src="public/images/macbook.png" id="hostStatus">
+            </div>
+          </div>
        </div>
 
-       <!-- Extra Box -->
+       <!-- Emergency Start and Stop Buttons -->
        <div id="extra" class="box">
-          
+          <button id="start"><h1>MASTER START</h1></button>
+          <button id="estop"><h1>EMERGENCY STOP</h1></button>
        </div>
 
        <!-- Motion Table -->
