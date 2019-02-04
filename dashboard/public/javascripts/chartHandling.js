@@ -1,5 +1,5 @@
 /*
-Author: Alex Vessel
+Author: Alex Vesel
 Purpose: Create, fill, and clear charts using Plotly.js
 */
 xpos = 0;
@@ -21,6 +21,8 @@ yData2 = [];
 chartFirstCreation2 = 0;
 chartTitles2 = ["", ""];
 
+
+// function to generate blank chart on startup and clear
 function generateBlankChart(id, title, chartType) {
   var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
 
@@ -49,9 +51,8 @@ function generateBlankChart(id, title, chartType) {
   );
 }
 
+// function to add single and double traces to line chart one
 function generateLineChartOne(tdID, title) {
-  //var data = require("./public/javascripts/getData");
-
   var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
   var sampleRate = 300; // sample rate in ms per sample
 
@@ -115,6 +116,7 @@ function generateLineChartOne(tdID, title) {
     }
   }
 
+  // adds trace to 
   function addTrace() {
     Plotly.relayout(lineChartOne, layout);
     Plotly.addTraces(lineChartOne, [
@@ -155,9 +157,8 @@ function generateLineChartOne(tdID, title) {
   }
 }
 
+// function to add single and double traces to line chart two
 function generateLineChartTwo(tdID, title) {
-  //var data = require("./public/javascripts/getData");
-
   var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
   var sampleRate = 300; // sample rate in ms per sample
 
@@ -179,7 +180,7 @@ function generateLineChartTwo(tdID, title) {
   };
 
   if (chartState2[0] == 0) {
-    // checks if chart one is empty
+    // checks if chart two is empty
     chartTDID2[0] = tdID;
     traceArray2 = [0];
     chartTitles2[0] = title;
@@ -189,7 +190,7 @@ function generateLineChartTwo(tdID, title) {
     chartFirstCreation2 = 1;
     chartState2[0] = 1;
   } else if (chartState2[1] == 0) {
-    // checks if chart one has second trace
+    // checks if chart two has second trace
     chartTDID2[1] = tdID;
     traceArray2 = [0, 1];
     numTraces2 = 2;
@@ -263,6 +264,7 @@ function generateLineChartTwo(tdID, title) {
   }
 }
 
+// function to remove all traces from all charts
 function removeTraces() {
   chartState1 = [0, 0];
   chartState2 = [0, 0];
