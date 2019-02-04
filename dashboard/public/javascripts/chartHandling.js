@@ -2,6 +2,8 @@
 Author: Alex Vesel
 Purpose: Create, fill, and clear charts using Plotly.js
 */
+
+// global variable initilization for chart execution
 xpos = 0;
 chartState1 = [0, 0];
 chartTDID1 = ["", ""];
@@ -51,15 +53,15 @@ function generateBlankChart(id, title, chartType) {
   );
 }
 
-// function to add single and double traces to line chart one
+// contains all functions to add single and double traces to line chart one
 function generateLineChartOne(tdID, title) {
-  var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
-  var sampleRate = 300; // sample rate in ms per sample
+  var xmax = 100;               //maximum x-axis range in seconds. Should be the total runtime
+  var sampleRate = 300;         // sample rate in ms per sample
 
   var layout = {
     xaxis: {
       rangemode: "tozero",
-      autorange: true
+      autorange: true           // set true to have plot condense as time progresses
     },
     showlegend: false,
     title: "",
@@ -116,7 +118,7 @@ function generateLineChartOne(tdID, title) {
     }
   }
 
-  // adds trace to 
+  // function to add trace to line chart one
   function addTrace() {
     Plotly.relayout(lineChartOne, layout);
     Plotly.addTraces(lineChartOne, [
@@ -129,7 +131,7 @@ function generateLineChartOne(tdID, title) {
       }
     ]);
   }
-
+  // extends line chart one traces at each time step
   function getDataAtInterval() {
     setInterval(function() {
       xpos += 1;
@@ -149,6 +151,7 @@ function generateLineChartOne(tdID, title) {
     }, sampleRate);
   }
 
+  // gets data from selected table cell
   function getData() {
     for (i = 0; i <= numTraces1 - 1; i++) {
       var value = document.getElementById(chartTDID1[i]);
@@ -157,15 +160,15 @@ function generateLineChartOne(tdID, title) {
   }
 }
 
-// function to add single and double traces to line chart two
+// contains all functions to add single and double traces to line chart two
 function generateLineChartTwo(tdID, title) {
-  var xmax = 100; //maximum x-axis range in seconds. Should be the total runtime
-  var sampleRate = 300; // sample rate in ms per sample
+  var xmax = 100;               //maximum x-axis range in seconds. Should be the total runtime
+  var sampleRate = 300;         // sample rate in ms per sample
 
   var layout = {
     xaxis: {
       rangemode: "tozero",
-      autorange: true
+      autorange: true           // set true to have plot condense as time progresses
     },
     showlegend: false,
     title: "",
@@ -222,6 +225,7 @@ function generateLineChartTwo(tdID, title) {
     }
   }
 
+  // function to add trace to line chart two
   function addTrace() {
     Plotly.relayout(lineChartTwo, layout);
     Plotly.addTraces(lineChartTwo, [
@@ -235,6 +239,7 @@ function generateLineChartTwo(tdID, title) {
     ]);
   }
 
+  // extends line chart two traces at each time step
   function getDataAtInterval() {
     setInterval(function() {
       if (chartFirstCreation1 == 0) {
@@ -256,6 +261,7 @@ function generateLineChartTwo(tdID, title) {
     }, sampleRate);
   }
 
+  // gets data from selected table cell
   function getData() {
     for (i = 0; i <= numTraces2 - 1; i++) {
       var value = document.getElementById(chartTDID2[i]);
@@ -264,7 +270,7 @@ function generateLineChartTwo(tdID, title) {
   }
 }
 
-// function to remove all traces from all charts
+// function to remove all traces from all charts, resets global variables
 function removeTraces() {
   chartState1 = [0, 0];
   chartState2 = [0, 0];
