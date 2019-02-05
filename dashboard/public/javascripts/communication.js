@@ -1,3 +1,7 @@
+/*
+Author: Eric Udlis
+Purpose: The hub of all incomming and outgoing connections
+*/
 const constants = require('../../constants');
 const events = require('events');
 const dgram = require('dgram');
