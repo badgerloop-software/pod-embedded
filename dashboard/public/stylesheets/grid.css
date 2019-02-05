@@ -1,5 +1,32 @@
 /* general grid layouts */
 .grid {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68%;
+  padding-top: 80px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+.grid_focus {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 19% 19% 19% 19% 19%;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.grid_focus2 {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 40% 40% 19%;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.gridStateMachine {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68% .68%;
@@ -160,56 +187,185 @@
     grid-row: 1;
     height: 65px;
   }
+    grid-template-columns: 11% 11% 11% 11% 11% 11% 11% 11% 11%;
+    padding: 10px;
+}
 
-  /* grid layout for charts*/
-  #header_focus_chart1 {
-    grid-column: 1;
-    grid-row: 1;
-    height: 330px;
+/* makes so that on smaller screens the grid layout switches to 1x1 on smaller screens */
+@media only screen and (min-width: 1200px) { 
+  #header1 {
+    grid-column: 1/45;
+    grid-row: 1/3;
+    height: 180px;
   }
-  #header_focus_chart2 {
-    grid-column: 2;
-    grid-row: 1;
-    height: 330px;
+  #header2 {
+    grid-column: 45/85;
+    grid-row: 1/4;
+    height: 370px;
   }
-  #focus_chart_add_button {
-    grid-column: 3;
-    grid-row: 1;
-    height: 105px;
+  #header3 {
+    grid-column: 1/45;
+    grid-row: 3/5;
+    height: 300px;
   }
-  #focus_chart_add_button2 {
-    grid-column: 3;
+  #header4 {
+    grid-column: 45/85;
+    grid-row: 4;
+    height: 80px;
+  }
+  #extra {
+    grid-column: 1/11;
+    grid-row: 5;
+    height: 100%;
+  }
+  #motion_div {
+    grid-column: 11/29;
+    grid-row: 5;
+    height: 100%;
+  }
+  #braking_div {
+    grid-column: 29/49;
+    grid-row: 5;
+    height: 100%;
+  }
+  #battery_pack_div {
+    grid-column: 49/68;
+    grid-row: 5;
+    height: 100%;
+  }
+  #motor_div {
+    grid-column: 68/85;
+    grid-row: 5;
+    height: 100%;
+  }
+}
+@media only screen and (max-width: 1024px) { 
+  #title {
+    display: none;
+  }
+  #header1 {
+    grid-column: 1/5;
+    grid-row: 1;
+    height: 170px;
+  }
+  #header2 {
+    grid-column: 1/5;
     grid-row: 2;
-    height: 105px;
+    height: 375px;
   }
-  #focus_chart_clear_button {
-    grid-column: 3;
+  #header3 {
+    grid-column: 1/5;
     grid-row: 3;
-    height: 105px;
+    height: 200px;
   }
+
 
   /* form grid layout (for the settings modal) */
-  #formLeft {
-    grid-column: 1/2;
-    grid-row: 1/2;
+  #header4 {
+    grid-column: 1/5;
+    grid-row: 4;
+    height: 100px;
+
   }
-  #formRight {
-    grid-column: 2/3;
-    grid-row: 1;
+  #motion_div {
+    grid-column: 1/5;
+    grid-row: 5;
   }
-  #formFull {
-    grid-column: 1/3;
-    grid-row: 2;
+  #braking_div {
+    grid-column: 1/5;
+    grid-row: 6;
   }
-  #formLeft {
-    grid-column: 1/2;
-    grid-row: 1/2;
+  #battery_pack_div {
+    grid-column: 1/5;
+    grid-row: 7;
   }
-  #formRight {
-    grid-column: 2/3;
-    grid-row: 1;
+  #motor_div {
+    grid-column: 1/5;
+    grid-row: 8;
   }
-  #formFull {
-    grid-column: 1/3;
-    grid-row: 2;
-  }
+}
+
+/* grid layout for focus div */
+#header_focus_1 {
+  grid-column: 1;
+  grid-row: 1;
+  height: 140px;
+}
+#header_focus_2 {
+  grid-column: 2;
+  grid-row: 1;
+  height: 140px;
+}
+#header_focus_3 {
+  grid-column: 3;
+  grid-row: 1;
+  height: 140px;
+}
+#header_focus_4 {
+  grid-column: 4;
+  grid-row: 1;
+  height: 140px;
+}
+#focus_add_button {
+  grid-column: 5;
+  grid-row: 2;
+  height: 65px;
+}
+#focus_clear_button {
+  grid-column: 5;
+  grid-row: 1;
+  height: 65px;
+}
+
+/* grid layout for charts*/
+#header_focus_chart1 {
+  grid-column: 1;
+  grid-row: 1;
+  height: 330px;
+}
+#header_focus_chart2 {
+  grid-column: 2;
+  grid-row: 1;
+  height: 330px;
+}
+#focus_chart_add_button {
+  grid-column: 3;
+  grid-row: 1;
+  height: 105px;
+}
+#focus_chart_add_button2 {
+  grid-column: 3;
+  grid-row: 2;
+  height: 105px;
+}
+#focus_chart_clear_button {
+  grid-column: 3;
+  grid-row: 3;
+  height: 105px;
+}
+
+/* form */
+#formLeft {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+#formRight {
+  grid-column: 2/3;
+  grid-row: 1;
+}
+#formFull {
+  grid-column: 1/3;
+  grid-row: 2;
+}
+#formLeft {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+#formRight {
+  grid-column: 2/3;
+  grid-row: 1;
+}
+#formFull {
+  grid-column: 1/3;
+  grid-row: 2;
+}
