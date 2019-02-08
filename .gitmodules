@@ -1,3 +1,3 @@
 [submodule "pod-dashboard"]
-	path = pod-dashboard
+	path = dashboard
 	url = https://github.com/badgerloop-software/pod-dashboard.git
