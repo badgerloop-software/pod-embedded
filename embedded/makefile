@@ -1,21 +1,61 @@
-# A super ham fisted start at an overall makefile. I swear it'll get better when
-# I learn more! Mostly to take a stab at getting all of our includes to work
-# and get something going. Im just sorry for the state its in now and for my
-# variable naming. 	- Ezra Boley
+EXE = badgerloop
+DRIVERS = drivers
+PERIPHERALS = peripherals
+EXAMPLES = examples
 
-CC			 := gcc
-INC_DIRS     := drivers/include app/include peripherals/include examples/include
-DBG_INC_DIR  := examples/include #Find a way to work this in instead of above
-INC_OPTS	 := $(foreach d, $(INC_DIRS), -I$d)
+DRIVER_SRC_DIR = drivers/src/
+PERIPHERAL_SRC_DIR = peripherals/src/
+EXAMPLES_SRC_DIR = examples/
 
-OBJS		 := #Not sure yet. 
-EXEC		 := badgerloop
-CFLAGS 		 := $(INC_OPTS) -o $(EXEC)
+OBJ_DIR = $(OUTPUT_DIR)obj/
+OBJ_DIR_DRIVER = $(OUTPUT_DIR)obj/
+OBJ_DIR_PERIPHERAL = $(OUTPUT_DIR)obj/
+OBJ_DIR_EXAMPLE = $(OUTPUT_DIR)obj/
+OUTPUT_DIR = bin/
+
+DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
+PERIPHERAL_SRC = $(wildcard $(PERIPHERAL_SRC_DIR)/*.c)
+EXAMPLES_SRC = $(wildcard $(EXAMPLES_SRC_DIR)/*.c)
+
+DRIVER_OBJ := $(DRIVER_SRC:$(DRIVER_SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+PERIPHERAL_OBJ := $(PERIPHERAL_SRC:$(PERIPHERAL_SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+EXAMPLES_OBJ := $(EXAMPLES_SRC:$(EXAMPLES_SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+CPPFLAGS += -Idrivers/include -Iperipherals/include
+CFLAGS += -Wall
+LDFLAGS += -Llib
+LDLIBS += -lm -lpthread
+
+.PHONY: all clean
+
+all: $(EXE)
+
+directories: ${OBJ_DIR}
+
+${OBJ_DIR}:
+	${MKDIR_P} ${OBJ_DIR}
+
+$(EXE): directories $(DRIVER_OBJ) $(PERIPHERAL_OBJ)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	
+#$(DRIVERS): directories $(DRIVER_OBJ)
+#	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+#	
+#$(PERIPHERALS): directories $(PERIPHERAL_OBJ)
+#	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	
+$(EXAMPLES): directories $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(EXAMPLES_OBJ)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 
-all: 
-	$(CC) $(ARGS) $(OBJS)
+$(OBJ_DIR_DRIVER)/%.o: $(DRIVER_SRC_DIR)/%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	
+$(OBJ_DIR_PERIPHERAL)/%.o: $(PERIPHERAL_SRC_DIR)/%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+		
+$(OBJ_DIR_EXAMPLE)/%.o: $(EXAMPLES_SRC_DIR)/%.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
-i2c.o:
-
-can.o: can.c
+clean:
+	rm -rf $(OBJ)
