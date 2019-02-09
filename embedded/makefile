@@ -36,7 +36,10 @@ LDLIBS += -lm -lpthread
 
 all: directories $(EXE)
 
-examples: example_directories $(EXAMPLES) $(EXAMPLES_MAKE)
+examples: examples_make
+	make examples_make
+
+examples_make: example_directories $(EXAMPLES) $(EXAMPLES_MAKE)
 
 directories: ${OBJ_DIR}
 
