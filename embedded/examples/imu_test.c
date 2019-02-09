@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "../src/imu.h"
+#include "imu.h"
 
 int main() {
 	SetupIMU();

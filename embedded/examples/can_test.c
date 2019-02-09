@@ -1,4 +1,4 @@
-#include "../src/can.h"
+#include "can.h"
 #include <stdio.h>
 
 #define NUM_BYTES 4
