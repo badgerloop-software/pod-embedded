@@ -3,13 +3,13 @@
 #include <cstdio>
 #include <chrono>
 #include <pthread.h>
-#include "../PracticalSocket.h"
-#include "LVTelemetry.h"
-#include "../rapidjson/document.h"     // rapidjson's DOM-style API
-#include "../rapidjson/prettywriter.h" // for stringify JSON
+#include "PracticalSocket.h"
+#include "LVTelemetry_Loop.h"
+#include "document.h"     // rapidjson's DOM-style API
+#include "prettywriter.h" // for stringify JSON
 
 /* ADD SENSOR INCLUDES HERE */
-#include "../../../../embedded/xsens_imu/src/imu.h"
+#include "imu.h"
 
 using namespace rapidjson;
 using namespace std;
