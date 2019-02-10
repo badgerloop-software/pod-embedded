@@ -10,20 +10,20 @@
 #include "LVTCPSocket.h"
 
 
-pthread_t TCPThread;
+pthread_t LVTCPThread;
 
 
 /* Setup PThread Loop */
 void SetupLVTCPServer(){
 	
-	if (pthread_create(&TCPThread, NULL, TCPLoop, NULL)){
+	if (pthread_create(&LVTCPThread, NULL, LVTCPLoop, NULL)){
 		fprintf(stderr, "Error creating LV Telemetry thread\n");
 	}
 	 
 }
 
 /* Thread Loop */
-void *TCPLoop(void *arg){
+void *LVTCPLoop(void *arg){
 	
 	(void) arg;
 

@@ -10,14 +10,14 @@
 #include "HVTCPSocket.h"
 
 
-pthread_t TCPThread;
+pthread_t HVTCPThread;
 
 
 /* Setup PThread Loop */
-void SetupLVTCPServer(){
+void SetupHVTCPServer(){
 	
-	if (pthread_create(&TCPThread, NULL, TCPLoop, NULL)){
-		fprintf(stderr, "Error creating LV Telemetry thread\n");
+	if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL)){
+		fprintf(stderr, "Error creating HV Telemetry thread\n");
 	}
 	 
 }
@@ -49,7 +49,7 @@ void *TCPLoop(void *arg){
 		
 	address.sin_family = AF_INET; 
 	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons(LV_TCP_PORT_RECV); 
+	address.sin_port = htons(HV_TCP_PORT_RECV); 
 		
 	// Bind Socket
 	if (bind(server_fd, (struct sockaddr *)&address,  

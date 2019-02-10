@@ -29,7 +29,9 @@ void SetupHVTelemetry(char* ip, int port){
 }
 
 
-void *HVTelemetryLoop(){
+void *HVTelemetryLoop(void *arg){
+	
+	HVTelemArgs *sarg = (HVTelemArgs*) arg;
 
 	try {
 		// Create socket
