@@ -1,22 +1,54 @@
+/***
+ *  Filename: states.c
+ *
+ *  Summary: All of the in-depth functionality of each state. Each state has its
+ *  own actions and transitions and this is where all of the states actions are
+ *  defined. It also has a number of helper functions to simplify the states
+ *  actions.
+ *
+ *  RE: Ezra Boley, ...
+ */
+
+/* Includes */
+#include "state_machine.h"
+
+/* Defines */
+
+/* Pressure sensor acceptable limits (in PSI) */
+#define PS1_BOTTOM_LIMIT        1000
+#define PS1_TOP_LIMIT           3000
+#define PS2_BOTTOM_LIMIT        1000
+#define PS2_TOP_LIMIT           3000
+#define PS3_BOTTOM_LIMIT        1000
+#define PS3_TOP_LIMIT           3000           
+#define PS4_BOTTOM_LIMIT        0
+#define PS4_TOP_LIMIT           20
+
+
+/* Imports/Externs */
+extern stateMachine_t stateMachine;
+extern data_t pressures;
+
 static bool checkNonBrakingPres() {
-    bool ret = true;
-    if (pressures.ps1 < PS1_BOTTOM_LIMIT || pressures.ps1 > PS1_BOTTOM_LIMIT) {
+    bool noProblem = true;
+    if (pressures.ps1 < PS1_BOTTOM_LIMIT || pressures.ps1 > PS1_TOP_LIMIT) {
         fprintf(stderr, "Tank pressure failing\n");
-        ret = false;
+        noProblem = false;
     }
     if (pressures.ps2 < PS2_BOTTOM_LIMIT || pressures.ps2 > PS2_TOP_LIMIT) {
         fprint(stderr, "Line pressure failing\n");
-        ret = false;
+        noProblem = false;
     }
     if (pressures.ps3 < PS3_BOTTOM_LIMIT || pressures.ps3 > PS3_TOP_LIMIT) {
         fprintf(stderr, "Line pressure failing\n");
-        ret = false;
+        noProblem = false;
     }
     if (pressures.ps4 < PS4_BOTTOM_LIMIT || pressures.ps4 > PS4_TOP_LIMIT) {
         fprintf(stderr, "Line pressure failing\n");
-        ret = false;
+        noProblem = false;
     }
 
+    return noProblem;
 }
 
 

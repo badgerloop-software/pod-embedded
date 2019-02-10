@@ -1,3 +1,15 @@
+/***
+ * filename: state_machine.c
+ *
+ * summary: This is the collection of a lot of the pods data and
+ * where it will check for faults. The pod will always be running this code and
+ * the state machine that lives here is inherently global as it applies to the
+ * whole pod. 
+ * 
+ * RE: Ezra Boley, ...
+ *
+ ***/
+
 #include "badgerloop.h"
 #include <stdio.h>
 #include <string.h>
@@ -12,6 +24,10 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
 static void initTransition(stateTransition_t *transition, state_t *target, void (*action)() ); 
 
 extern data_t pressures;
+
+
+
+stateMachine_t stateMachine;
 
 inline state_t *findState(char *stateName) {
     for (int i = 0; i < NUM_STATES; i++) {
@@ -108,29 +124,6 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
 
 
 static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
-
-}
-
-
-/* Lets add a way to see which is failing here */
-static bool checkNonBrakingPres() {
-    bool ret = true;
-    if (pressures.ps1 < PS1_BOTTOM_LIMIT || pressures.ps1 > PS1_BOTTOM_LIMIT) {
-        fprintf(stderr, "Tank pressure failing\n");
-        ret = false;
-    }
-    if (pressures.ps2 < PS2_BOTTOM_LIMIT || pressures.ps2 > PS2_TOP_LIMIT) {
-        fprint(stderr, "Line pressure failing\n");
-        ret = false;
-    }
-    if (pressures.ps3 < PS3_BOTTOM_LIMIT || pressures.ps3 > PS3_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        ret = false;
-    }
-    if (pressures.ps4 < PS4_BOTTOM_LIMIT || pressures.ps4 > PS4_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        ret = false;
-    }
 
 }
 
