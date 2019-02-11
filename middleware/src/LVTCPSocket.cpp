@@ -7,24 +7,23 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#include "HVTCPSocket.h"
+#include "LVTCPSocket.h"
 
 
-pthread_t TCPThread;
+pthread_t LVTCPThread;
 
 
 /* Setup PThread Loop */
 void SetupLVTCPServer(){
 	
-	if (pthread_create(&TCPThread, NULL, TCPLoop, NULL)){
+	if (pthread_create(&LVTCPThread, NULL, LVTCPLoop, NULL)){
 		fprintf(stderr, "Error creating LV Telemetry thread\n");
 	}
 	 
 }
 
-
 /* Thread Loop */
-void *TCPLoop(void *arg){
+void *LVTCPLoop(void *arg){
 	
 	(void) arg;
 
@@ -33,13 +32,13 @@ void *TCPLoop(void *arg){
 		
 	struct sockaddr_in address;
 	int addrlen = sizeof(address);
-		
-	// Create Server fd
+	
+	// Create Server fd	
 	if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0){ 
 		fprintf(stderr, "Error creating socket FD\n");
 		exit(EXIT_FAILURE); 
 	} 
-	
+		
 	// Attach Socket
 	if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
 												  &opt, sizeof(opt))){ 
@@ -81,6 +80,10 @@ void *TCPLoop(void *arg){
 		
 		printf("RECEIVED: %s\n",buffer);  
 		
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
+			send(new_socket, (char*) "pong!" , strlen("pong!") , 0 ); 
+		}
+		
 		// Do things
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
 			// DO POWER OFF
@@ -91,7 +94,7 @@ void *TCPLoop(void *arg){
 		}
 		
 		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
+		send(new_socket, (char*) "Received packet!", strlen("Received packet!"), 0); 
 	}
 	
 }

@@ -3,10 +3,10 @@
 #include <cstdio>
 #include <chrono>
 #include <pthread.h>
-#include "../PracticalSocket.h"
-#include "HVTelemetry.h"
-#include "../rapidjson/document.h"     // rapidjson's DOM-style API
-#include "../rapidjson/prettywriter.h" // for stringify JSON
+#include "PracticalSocket.h"
+#include "HVTelemetry_Loop.h"
+#include "document.h"     // rapidjson's DOM-style API
+#include "prettywriter.h" // for stringify JSON
 
 /* ADD SENSOR INCLUDES HERE */
 
@@ -29,7 +29,9 @@ void SetupHVTelemetry(char* ip, int port){
 }
 
 
-void *HVTelemetryLoop(){
+void *HVTelemetryLoop(void *arg){
+	
+	HVTelemArgs *sarg = (HVTelemArgs*) arg;
 
 	try {
 		// Create socket
