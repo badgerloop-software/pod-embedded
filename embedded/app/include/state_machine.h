@@ -18,16 +18,6 @@
 #define PUST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
-/* Limits for each pressure sensor, in PSI */
-#define PS1_BOTTOM_LIMIT        1000
-#define PS1_TOP_LIMIT           3000
-#define PS2_BOTTOM_LIMIT        1000
-#define PS2_TOP_LIMIT           3000
-#define PS3_BOTTOM_LIMIT        1000
-#define PS3_TOP_LIMIT           3000           
-#define PS4_BOTTOM_LIMIT        0
-#define PS4_TOP_LIMIT           20
-
 
 void buildStateMachine();
 
