@@ -14,6 +14,7 @@
 #include "state_machine.h"
 #include "data.h"
 
+
 /* Defines */
 
 /* Pressure sensor acceptable limits (in PSI) */
@@ -25,17 +26,28 @@
 #define PS3_TOP_LIMIT           3000
 #define PS4_BOTTOM_LIMIT        0
 #define PS4_TOP_LIMIT           20
+/**/
 
 #define MAX_BATT_TEMP			60	/* Degrees Celcius */
-#define MAX_STOPPED_ACCEL		0.3
+#define MAX_STOPPED_ACCEL		0.3 /* Limit for qualifying the pod as stopped in m/s */
 
 
 /* Imports/Externs */
+
 extern stateMachine_t stateMachine;
 extern data_t data;
 int timer;
 static bool checkPrimPressures(void);
 static bool checkStopped(void);
+
+
+/***
+ * checkPrimPressures - Compares the readings from the pressure sensors on
+ * the primary brakes agaainst expected values. Applicable only for pre-braking
+ * pressures
+ *
+ * RETURNS: true if everything is ok, false if there is an issue
+ */
 
 static bool checkPrimPressures(void) {
     bool noProblem = true;
@@ -59,6 +71,11 @@ static bool checkPrimPressures(void) {
     return noProblem;
 }
 
+/***
+ * checkStopped - checks a variety of values to make sure the pod is stopped.
+ *
+ * RETURNS: true if stopped, false if moving
+ */
 
 static bool checkStopped(void) {
 	if (data.motion->accel < MAX_STOPPED_ACCEL || timer == 0) {
@@ -66,8 +83,14 @@ static bool checkStopped(void) {
 	}
 }
 
+/***
+ * Actions for all the states.
+ * They perform transition and error condition
+ * checking and perform the functionality of the state: e.g. brake if in
+ * braking.
+ *
+ */
 
-// Thanks -Ethan <3
 stateTransition_t * powerOffAction() {
     return findTransition(currState, IDLE_NAME);
 }
