@@ -250,3 +250,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/c,c++,node,java,linux,macos,windows
+
+#Dashboard Assets
+**/public/fonts
+**/public/images
