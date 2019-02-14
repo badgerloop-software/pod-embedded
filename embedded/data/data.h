@@ -3,7 +3,7 @@
  *
  * The Data Struct - Top of the great hierarchy of our descending data
  * tree
- *  
+ *
  */
 
 typedef struct data_t {
@@ -39,6 +39,7 @@ typedef struct motion_t {
     int pos;
     int vel;
     int accel;
+	int retro_count;
 } motion_t;
 
 

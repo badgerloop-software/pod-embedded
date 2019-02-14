@@ -4,13 +4,14 @@
  * summary: This is the collection of a lot of the pods data and
  * where it will check for faults. The pod will always be running this code and
  * the state machine that lives here is inherently global as it applies to the
- * whole pod. 
- * 
+ * whole pod.
+ *
  * RE: Ezra Boley, ...
  *
  ***/
 
 #include "badgerloop.h"
+#include "data.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -21,12 +22,10 @@
         })
 
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTrans );
-static void initTransition(stateTransition_t *transition, state_t *target, void (*action)() ); 
-
-extern data_t pressures;
+static void initTransition(stateTransition_t *transition, state_t *target, void (*action)() );
 
 
-
+extern data_t allData;
 stateMachine_t stateMachine;
 
 inline state_t *findState(char *stateName) {
@@ -109,16 +108,16 @@ void buildStateMachine() {
 	initState(preFault, PRE_RUN_FAULT_NAME, stateTransition_t *(*preFaultAction)());
 	initState(runFault, RUN_FAULT_NAME, stateTransition_t *(*runFaultAction)());
 	initState(postFault, POST_RUN_FAULT_NAME, stateTransition_t *(*postFaultAction)());
-    
+
     /* Create all of the transitions */
-        
+
 }
 
 
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTransitions ) {
     static int indexInAllStates = 0;
     strncpy(state->name, name, strlen(name) );
-    state->action = action; 
+    state->action = action;
     stateMachine.allStates[indexInAllStates++] = state;
 }
 
