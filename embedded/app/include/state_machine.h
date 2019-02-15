@@ -32,7 +32,7 @@ void runStateMachine();
 typedef struct stateTransition_t {
 	state_t *target;
 	bool (*action)(); //TODO: Any particular reason you're using a bool pointer here rather that void?
-} stateTransition_t
+} stateTransition_t;
 
 /* 	struct: state_t
 *  	
