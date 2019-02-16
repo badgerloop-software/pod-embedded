@@ -1,6 +1,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifndef SMACHINE_H
+#define SMACHINE_H
+
 #define NUM_STATES              14
 
 #define PRE_RUN_FAULT_NAME      "preFault"
@@ -50,7 +53,7 @@ typedef struct state_t {
 	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
     int numTransitions;
-} state_t
+} state_t;
 
 typedef struct stateMachine_t {
 	state_t *currState;
@@ -58,3 +61,4 @@ typedef struct stateMachine_t {
     char *  overrideStateName;
 } stateMachine_t;
 
+#endif
