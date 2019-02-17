@@ -3,11 +3,15 @@
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
+#include "data.h"
+
+extern data_t data;
 
 int init() {
 	// 1. init all drivers
 	
 	// 2. init all peripherals
+	
 	
 	SetupHVTelemetry("192.168.1.112", 33333);
 	SetupHVTCPServer();

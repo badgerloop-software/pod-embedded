@@ -1,3 +1,17 @@
+/***
+ *
+ * Flags structure - 
+ *
+ */
+
+typedef struct flags_t {
+    int readyPump;
+    int pumpDown;
+    int readyCommand;
+    int propulse;
+    int emergencyBreak;
+} flags_t;
+
 
 /***
  *
@@ -11,6 +25,7 @@ typedef struct data_t {
     motion_t   *motion;
     bms_t      *bms;
     rms_t      *rms;
+    flags_t    *flags;
 } data_t;
 
 /***
