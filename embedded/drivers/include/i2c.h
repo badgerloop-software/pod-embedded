@@ -27,6 +27,7 @@ typedef struct {
 int i2c_begin(i2c_settings *i2c);
 int write_byte_i2c(i2c_settings *i2c, unsigned char reg);
 int write_data_i2c(i2c_settings *i2c, unsigned char reg, char value);
+int write_multiple_bytes_i2c(i2c_settings *i2c, unsigned char reg, char *values, int size);
 int read_i2c(i2c_settings *i2c, unsigned char *readBuffer, int bufferSize);
 
 #endif 

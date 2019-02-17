@@ -42,6 +42,19 @@ int write_data_i2c(i2c_settings *i2c, unsigned char reg, char value) {
 	return 0;
 }
 
+int write_multiple_bytes_i2c(i2c_settings *i2c, unsigned char reg, char *values, int size){
+	unsigned char buf[size + 1];
+	buf[0] = reg;
+	for(int i = 0; i < size; i++){
+		buf[i+1] = values[i];
+	}
+	if (write(i2c->fd, buf, size+1) != size+1) {
+		fprintf(stderr, "I2C write multiple data bytes error\n");
+		return 1;
+	}
+	
+}
+
 int read_i2c(i2c_settings *i2c, unsigned char *readBuffer, int bufferSize) {
 	if (read(i2c->fd, readBuffer, bufferSize) != bufferSize) {
 		fprintf(stderr, "I2C data read error\n");
