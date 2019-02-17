@@ -52,7 +52,7 @@ int write_multiple_bytes_i2c(i2c_settings *i2c, unsigned char reg, char *values,
 		fprintf(stderr, "I2C write multiple data bytes error\n");
 		return 1;
 	}
-	
+	return 0;
 }
 
 int read_i2c(i2c_settings *i2c, unsigned char *readBuffer, int bufferSize) {
