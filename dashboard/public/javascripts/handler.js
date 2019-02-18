@@ -82,6 +82,40 @@ archiveButton.addEventListener("click", function() {
   console.log("archiving data");
 });
 
+//Handles power off button click
+one.addEventListener("click", function() {
+  console.log("powering off")
+});
+
+//Handles Idle/Ready button click
+two.addEventListener("click", function() {
+  console.log("idling")
+});
+
+//Handles Post Run/service low speed/Safe to Approach button click
+three.addEventListener("click", function() {
+  console.log("safe to approach")
+});
+
+//Handles pumpdown/ready for pumpdown button click
+four.addEventListener("click", function() {
+  console.log("pumpdown")
+});
+
+//Handles hyperloop/openair/external subtrack button click
+five.addEventListener("click", function() {
+  console.log("hyperloop")
+});
+
+//Handles pre/during/post run buttons
+six.addEventListener("click", function() {
+  console.log("run status")
+});
+
+//Handles primary brake on/off button click
+seven.addEventListener("click", function() {
+  console.log("primary brake status")
+});
 //Settings Form
 
 //Submits Entries to File
