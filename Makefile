@@ -9,6 +9,7 @@ EMBD_EXAMPLES_SRC_DIR = embedded/examples
 MIDDLEWARE_SRC_DIR = middleware/src
 MIDDLEWARE_EX_DIR = middleware/examples
 APP_SRC_DIR = embedded/app/src
+MAIN_SRC_DIR = embedded/app/main
 
 OUTPUT_DIR := out
 OBJ_DIR = $(OUTPUT_DIR)/obj
@@ -18,6 +19,7 @@ OBJ_DIR_EXAMPLE = $(OUTPUT_DIR)/obj/tests
 OBJ_DIR_MDL = $(OUTPUT_DIR)/obj
 OBJ_DIR_MDL_EXAMPLE = $(OUTPUT_DIR)/obj/tests
 OBJ_DIR_APP = $(OUTPUT_DIR)/obj
+OBJ_DIR_MAIN = $(OUTPUT_DIR)/obj
 
 
 DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
@@ -26,6 +28,7 @@ EMBD_EXAMPLES_SRC = $(wildcard $(EMBD_EXAMPLES_SRC_DIR)/*.c)
 MDL_SRC = $(wildcard $(MIDDLEWARE_SRC_DIR)/*.cpp)
 MDL_EXAMPLES_SRC = $(wildcard $(MIDDLEWARE_EX_DIR)/*.cpp)
 APP_SRC = $(wildcard $(APP_SRC_DIR)/*.c)
+MAIN_SRC = $(wildcard $(MAIN_SRC_DIR)/*.cpp)
 
 DRIVER_OBJ := $(DRIVER_SRC:$(DRIVER_SRC_DIR)/%.c=$(OBJ_DIR_DRIVER)/%.o)
 PERIPHERAL_OBJ := $(PERIPHERAL_SRC:$(PERIPHERAL_SRC_DIR)/%.c=$(OBJ_DIR_PERIPHERAL)/%.o)
@@ -33,6 +36,7 @@ EMBD_EXAMPLES_OBJ := $(EMBD_EXAMPLES_SRC:$(EMBD_EXAMPLES_SRC_DIR)/%.c=$(OBJ_DIR_
 MDL_OBJ := $(MDL_SRC:$(MIDDLEWARE_SRC_DIR)/%.cpp=$(OBJ_DIR_MDL)/%.o)
 MDL_EXAMPLES_OBJ := $(MDL_EXAMPLES_SRC:$(MIDDLEWARE_EX_DIR)/%.cpp=$(OBJ_DIR_MDL_EXAMPLE)/%.o)
 APP_OBJ := $(APP_SRC:$(APP_SRC_DIR)/%.c=$(OBJ_DIR_APP)/%.o)
+MAIN_OBJ := $(MAIN_SRC:$(MAIN_SRC_DIR)/%.cpp=$(OBJ_DIR_MAIN)/%.o)
 
 EX_OUT := out
 EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
@@ -65,7 +69,7 @@ ${OBJ_DIR}:
 ${OBJ_DIR_EXAMPLE}:
 	mkdir -p ${OBJ_DIR_EXAMPLE}
 
-$(EXE): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ)
+$(EXE): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ) $(MAIN_OBJ)
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $(OUTPUT_DIR)/$@
 	
 $(EMBD_EXAMPLES): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(EMBD_EXAMPLES_OBJ) $(MDL_EXAMPLES_OBJ)
@@ -91,6 +95,9 @@ $(OBJ_DIR_MDL_EXAMPLE)/%.o: $(MIDDLEWARE_EX_DIR)/%.cpp
 	
 $(OBJ_DIR_APP)/%.o: $(APP_SRC_DIR)/%.c
 	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	
+$(OBJ_DIR_MAIN)/%.o: $(MAIN_SRC_DIR)/%.cpp
+	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(OUTPUT_DIR)

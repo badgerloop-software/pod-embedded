@@ -15,12 +15,12 @@ int init() {
 	
 	// 2. init all peripherals
 	
-	if ((data = malloc(sizeof(data_t)))		            == NULL) { STATE_ERROR(); }
-	if ((data->pressure = malloc(sizeof(pressure_t)))   == NULL) { STATE_ERROR(); }
-	if ((data->motion = malloc(sizeof(motion_t)))       == NULL) { STATE_ERROR(); }
-	if ((data->bms = malloc(sizeof(bms_t)))     		== NULL) { STATE_ERROR(); }
-	if ((data->rms = malloc(sizeof(rms_t)))      		== NULL) { STATE_ERROR(); }
-	if ((data->flags = malloc(sizeof(flags_t)))         == NULL) { STATE_ERROR(); }
+	if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { STATE_ERROR(); }
+	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))     == NULL) { STATE_ERROR(); }
+	if ((data->motion = (motion_t *)malloc(sizeof(motion_t)))            == NULL) { STATE_ERROR(); }
+	if ((data->bms = (bms_t *) malloc(sizeof(bms_t)))     	          	 == NULL) { STATE_ERROR(); }
+	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		         == NULL) { STATE_ERROR(); }
+	if ((data->flags = (flags_t *) malloc(sizeof(flags_t)))              == NULL) { STATE_ERROR(); }
 	
 	// Init pressure values to 0
 	data->pressure->ps1 = 0;
@@ -90,8 +90,8 @@ int init() {
 	data->flags->emergencyBreak = 0;
 	
 	
-//	SetupHVTelemetry("192.168.1.112", 33333);
-//	SetupHVTCPServer();	
+	SetupHVTelemetry((char *) "192.168.1.112", 33333);
+	SetupHVTCPServer();	
     return 0;	
 }
 
