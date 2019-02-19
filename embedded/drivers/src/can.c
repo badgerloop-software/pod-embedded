@@ -30,7 +30,7 @@ void can_rx_irq(){
     NEW_CAN_MESSAGE = true;
 }
 
-int init_can_connection(int *s) {
+static int init_can_connection(int *s) {
     *s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     strcpy(ifr.ifr_name, CAN_INTF);
         //printf("Failed to copy bus name into network interface\n\r");
@@ -48,7 +48,7 @@ int init_can_connection(int *s) {
     return 0;
 }
 
-int init_can_timer(const struct itimerval *new, struct itimerval *old) {
+static int init_can_timer(const struct itimerval *new, struct itimerval *old) {
     struct sigaction *action = malloc(sizeof(struct sigaction));
     void (*canirq)(void) = &can_rx_irq;
     action->sa_handler = (void *)(canirq);
@@ -57,7 +57,7 @@ int init_can_timer(const struct itimerval *new, struct itimerval *old) {
     return 0;
 }
 
-inline int read_can_message(struct can_frame *recvd_msg) {
+inline int readCanMessage(struct can_frame *recvd_msg) {
     int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
     /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
@@ -83,7 +83,7 @@ inline int send_can_msg(uint32_t id, uint8_t *data, uint8_t size) {
 }
 
 
-int init_can() {
+int initCan() {
     if (init_can_connection(&can_sock)) {
         fprintf(stderr, "Failed to init\n\r");
         return 1;
