@@ -7,11 +7,13 @@
 #include <pthread.h>
 #include <unistd.h>
 
+#include "data.h"
 #include "HVTCPSocket.h"
 
 
 pthread_t HVTCPThread;
 
+extern data_t data;
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
@@ -82,13 +84,26 @@ void *TCPLoop(void *arg){
 		printf("RECEIVED: %s\n",buffer);  
 		
 		// Do things
-		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
-			// DO POWER OFF
+		if(!strncmp(buffer, "readyPump", MAX_COMMAND_SIZE)){
+			data->flags->readyPump = 1;
 		}
 		
-		if(!strncmp(buffer, "do something", MAX_COMMAND_SIZE)){
-			// Do something
+		if(!strncmp(buffer, "pumpDown", MAX_COMMAND_SIZE)){
+			data->flags->readyPump = 1;
 		}
+		
+		if(!strncmp(buffer, "readyCommand", MAX_COMMAND_SIZE)){
+			data->flags->readyCommand = 1;
+		}
+		
+		if(!strncmp(buffer, "propulse", MAX_COMMAND_SIZE)){
+			data->flags->propulse = 1;
+		}
+		
+		if(!strncmp(buffer, "emergencyBreak", MAX_COMMAND_SIZE)){
+			data->flags->emergencyBreak = 1;
+		}
+
 		
 		// Send acknowledge packet back
 		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
