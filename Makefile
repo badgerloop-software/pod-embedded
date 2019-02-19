@@ -10,6 +10,7 @@ MIDDLEWARE_SRC_DIR = middleware/src
 MIDDLEWARE_EX_DIR = middleware/examples
 APP_SRC_DIR = embedded/app/src
 
+OUTPUT_DIR := out
 OBJ_DIR = $(OUTPUT_DIR)/obj
 OBJ_DIR_DRIVER = $(OUTPUT_DIR)/obj
 OBJ_DIR_PERIPHERAL = $(OUTPUT_DIR)/obj
@@ -18,7 +19,6 @@ OBJ_DIR_MDL = $(OUTPUT_DIR)/obj
 OBJ_DIR_MDL_EXAMPLE = $(OUTPUT_DIR)/obj/tests
 OBJ_DIR_APP = $(OUTPUT_DIR)/obj
 
-OUTPUT_DIR = bin
 
 DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
 PERIPHERAL_SRC = $(wildcard $(PERIPHERAL_SRC_DIR)/*.c)
@@ -34,12 +34,12 @@ MDL_OBJ := $(MDL_SRC:$(MIDDLEWARE_SRC_DIR)/%.cpp=$(OBJ_DIR_MDL)/%.o)
 MDL_EXAMPLES_OBJ := $(MDL_EXAMPLES_SRC:$(MIDDLEWARE_EX_DIR)/%.cpp=$(OBJ_DIR_MDL_EXAMPLE)/%.o)
 APP_OBJ := $(APP_SRC:$(APP_SRC_DIR)/%.c=$(OBJ_DIR_APP)/%.o)
 
-EX_OUT = bin
+EX_OUT := out
 EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
 EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
 
-GCC = gcc
-GPP = g++
+GCC := gcc
+GPP := g++
 CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
 CFLAGS += -Wall
 CPFLAGS += -Wall -Wextra -std=c++11

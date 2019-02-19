@@ -12,20 +12,36 @@
 
 #include "badgerloop.h"
 #include "data.h"
+#include "state_machine.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-#define STATE_ERROR() ({                \
-          printf("ERROR exiting...\n"); \
-          exit(-1);                     \
-        })
-
-static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTrans );
-static void initTransition(stateTransition_t *transition, state_t *target, void (*action)() );
+static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTrans);
+static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() );
 
 
 extern data_t *data;
+
+extern stateTransition_t * powerOnAction(void);
+extern stateTransition_t * idleAction(void);
+extern stateTransition_t * readyForPumpdownAction(void);
+extern stateTransition_t * pumpdownAction(void);
+extern stateTransition_t * readyForLaunchAction(void);
+extern stateTransition_t * propulsionAction(void);
+extern stateTransition_t * brakingAction(void);
+extern stateTransition_t * stoppedAction(void);
+extern stateTransition_t * crawlAction(void);
+extern stateTransition_t * postRunAction(void);
+extern stateTransition_t * safeToApproachAction(void);
+extern stateTransition_t * secondaryBrakingAction(void);
+extern stateTransition_t * preFaultAction(void);
+extern stateTransition_t * runFaultAction(void);
+extern stateTransition_t * postFaultAction(void);
+
+
+
 stateMachine_t stateMachine;
 
 /***
@@ -106,44 +122,44 @@ void buildStateMachine(void) {
 			*readyForLaunch, *propulsion, *braking, *secondaryBraking,
 			*stopped, *crawl, *rebrake, *postRun, *safeToApproach, *preFault,
 			*runFault, *postFault;
-	state_t **allStates = malloc(NUM_STATES * sizeof(*state_t));
+	state_t **allStates = malloc(NUM_STATES * sizeof(state_t*));
 
 	stateMachine.allStates = allStates;
 
     /* Allocating space for each state */
-	if (powerOn = malloc(sizeof(state_t))           == NULL) { STATE_ERROR() }
-	if (idle = malloc(sizeof(state_t))              == NULL) { STATE_ERROR() }
-	if (readyForPumpdown = malloc(sizeof(state_t))  == NULL) { STATE_ERROR() }
-	if (pumpdown = malloc(sizeof(state_t))          == NULL) { STATE_ERROR() }
-	if (readyForLaunch = malloc(sizeof(state_t))    == NULL) { STATE_ERROR() }
-	if (propulsion = malloc(sizeof(state_t))        == NULL) { STATE_ERROR() }
-	if (braking = malloc(sizeof(state_t))           == NULL) { STATE_ERROR() }
-	if (secondaryBraking = malloc(sizeof(state_t))  == NULL) { STATE_ERROR() }
-	if (stopped = malloc(sizeof(state_t))           == NULL) { STATE_ERROR() }
-	if (crawl = malloc(sizeof(state_t))             == NULL) { STATE_ERROR() }
-	if (rebrake = malloc(sizeof(state_t))           == NULL) { STATE_ERROR() }
-	if (postRun = malloc(sizeof(state_t))           == NULL) { STATE_ERROR() }
-	if (safeToApproach = malloc(sizeof(state_t))    == NULL) { STATE_ERROR() }
-	if (preFault = malloc(sizeof(state_t))          == NULL) { STATE_ERROR() }
-	if (runFault = malloc(sizeof(state_t))          == NULL) { STATE_ERROR() }
-	if (postFault = malloc(sizeof(state_t))         == NULL) { STATE_ERROR() }
+	if ((powerOn = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
+	if ((idle = malloc(sizeof(state_t)))              == NULL) { STATE_ERROR(); }
+	if ((readyForPumpdown = malloc(sizeof(state_t)))  == NULL) { STATE_ERROR(); }
+	if ((pumpdown = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
+	if ((readyForLaunch = malloc(sizeof(state_t)))    == NULL) { STATE_ERROR(); }
+	if ((propulsion = malloc(sizeof(state_t)))        == NULL) { STATE_ERROR(); }
+	if ((braking = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
+	if ((secondaryBraking = malloc(sizeof(state_t)))  == NULL) { STATE_ERROR(); }
+	if ((stopped = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
+	if ((crawl = malloc(sizeof(state_t)))             == NULL) { STATE_ERROR(); }
+	if ((rebrake = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
+	if ((postRun = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
+	if ((safeToApproach = malloc(sizeof(state_t)))    == NULL) { STATE_ERROR(); }
+	if ((preFault = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
+	if ((runFault = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
+	if ((postFault = malloc(sizeof(state_t)))         == NULL) { STATE_ERROR(); }
 
     /* Initializing states TODO add the num transition arguement to each of
      * these*/
-	initState(powerOn, POWER_OFF_NAME, stateTransition_t *(*powerOnAction)());   // FIXME Not sure if this state should be poweroff or poweron
-	initState(idle, IDLE_NAME, stateTransition_t *(*idleAction)());
-	initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, stateTransition_t *(*readyForPumpdownAction)());
-	initState(pumpdown, PUMPDOWN_NAME, stateTransition_t *(*pumpdownAction)());
-	initState(readyForLaunch, READY_NAME, stateTransition_t *(*readyForPumpdownAction)());
-	initState(propulsion, PROPULSION_NAME, stateTransition_t *(*propulsionAction)());
-	initState(braking, BRAKING_NAME, stateTransition_t *(*brakingAction)());
-	initState(stopped, STOPPED_NAME, stateTransition_t *(*stoppedAction)());
-	initState(crawl, CRAWL_NAME, stateTransition_t *(*crawlAction)());
-	initState(postRun, POST_RUN_NAME, stateTransition_t *(*postRunAction)());
-	initState(safeToApproach, SAFE_TO_APPROACH_NAME, stateTransition_t *(*safeToApproachAction)());
-	initState(preFault, PRE_RUN_FAULT_NAME, stateTransition_t *(*preFaultAction)());
-	initState(runFault, RUN_FAULT_NAME, stateTransition_t *(*runFaultAction)());
-	initState(postFault, POST_RUN_FAULT_NAME, stateTransition_t *(*postFaultAction)());
+	initState(powerOn, POWER_OFF_NAME, powerOnAction, 1);   // FIXME Not sure if this state should be poweroff or poweron
+	initState(idle, IDLE_NAME, idleAction, 1);
+	initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 1);
+	initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 1);
+	initState(readyForLaunch, READY_NAME, readyForLaunchAction, 1);
+	initState(propulsion, PROPULSION_NAME, propulsionAction, 1);
+	initState(braking, BRAKING_NAME, brakingAction, 1);
+	initState(stopped, STOPPED_NAME, stoppedAction, 1);
+	initState(crawl, CRAWL_NAME, crawlAction, 1);
+	initState(postRun, POST_RUN_NAME, postRunAction, 1);
+	initState(safeToApproach, SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
+	initState(preFault, PRE_RUN_FAULT_NAME, preFaultAction, 1);
+	initState(runFault, RUN_FAULT_NAME, runFaultAction, 1);
+	initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 1);
 
     /* Create all of the transitions */
 

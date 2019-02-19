@@ -1,23 +1,26 @@
 // Includes
-#include "badgerloop.h"
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "data.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 data_t *data;
+
+extern void SetupHVTelemetry(char *ip, int port);
+extern void SetupHVTCPServer(void);
 
 int init() {
 	// 1. init all drivers
 	
 	// 2. init all peripherals
 	
-	if (data = malloc(sizeof(data_t))          				  == NULL) { STATE_ERROR() }
-	if (data->pressure = malloc(sizeof(pressure_t))           == NULL) { STATE_ERROR() }
-	if (data->motion = malloc(sizeof(motion_t))           	  == NULL) { STATE_ERROR() }
-	if (data->bms = malloc(sizeof(bms_t))           		  == NULL) { STATE_ERROR() }
-	if (data->rms = malloc(sizeof(rms_t))           		  == NULL) { STATE_ERROR() }
-	if (data->flags = malloc(sizeof(flags_t))           	  == NULL) { STATE_ERROR() }
+	if ((data = malloc(sizeof(data_t)))		            == NULL) { STATE_ERROR(); }
+	if ((data->pressure = malloc(sizeof(pressure_t)))   == NULL) { STATE_ERROR(); }
+	if ((data->motion = malloc(sizeof(motion_t)))       == NULL) { STATE_ERROR(); }
+	if ((data->bms = malloc(sizeof(bms_t)))     		== NULL) { STATE_ERROR(); }
+	if ((data->rms = malloc(sizeof(rms_t)))      		== NULL) { STATE_ERROR(); }
+	if ((data->flags = malloc(sizeof(flags_t)))         == NULL) { STATE_ERROR(); }
 	
 	// Init pressure values to 0
 	data->pressure->ps1 = 0;
@@ -87,25 +90,23 @@ int init() {
 	data->flags->emergencyBreak = 0;
 	
 	
-	SetupHVTelemetry("192.168.1.112", 33333);
-	SetupHVTCPServer();	
-	
+//	SetupHVTelemetry("192.168.1.112", 33333);
+//	SetupHVTCPServer();	
+    return 0;	
 }
 
 int main() {
 	/* Create the big data structures to house pod data */
-	Bms bms; 
-	Rms rms;
 	
 	if (init() == 1) {
 		printf("Error in initialization! Exiting...\r\n");
-		exit();
+		exit(1);
 	}
-	
+	printf("Now this is pod racing\n");
 	while(1) {
-	
+	    break;
 		// Control Loop!		
 
 	}
-
+    return 0;
 }

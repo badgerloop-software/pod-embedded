@@ -1,8 +1,13 @@
+#ifndef SMACHINE_H
+#define SMACHINE_H
+#define STATE_ERROR() ({                \
+          printf("ERROR exiting...\n"); \
+          exit(-1);                     \
+        })
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifndef SMACHINE_H
-#define SMACHINE_H
+
 
 #define NUM_STATES              14
 
@@ -18,13 +23,17 @@
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"
 #define CRAWL_NAME              "crawl"
-#define PUST_RUN_NAME           "postRun"
+#define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
 
 void buildStateMachine();
 
 void runStateMachine();
+
+typedef struct state_t state_t;
+typedef struct stateTransition_t stateTransition_t;
+typedef struct stateMachine_t stateMachine_t;
 
 /*
 * The state machine is a directed graph. Each edge is a transition

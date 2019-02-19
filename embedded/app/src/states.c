@@ -10,7 +10,9 @@
  */
 
 /* Includes */
-#include <stdout.h>
+#include <stdio.h>
+#include <stdbool.h>
+
 #include "state_machine.h"
 #include "data.h"
 
@@ -40,6 +42,7 @@ int timer;
 static bool checkPrimPressures(void);
 static bool checkStopped(void);
 
+extern stateTransition_t *findTransition(state_t *currState, char *name);
 
 /***
  * checkPrimPressures - Compares the readings from the pressure sensors on
@@ -56,10 +59,10 @@ static bool checkPrimPressures(void) {
         noProblem = false;
     }
     if (data->pressure->ps2 < PS2_BOTTOM_LIMIT || data->pressure->ps2 > PS2_TOP_LIMIT) {
-        fprint(stderr, "Line pressure failing\n");
+        fprintf(stderr, "Line pressure failing\n");
         noProblem = false;
     }
-    if (data->pressures->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
+    if (data->pressure->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
         fprintf(stderr, "Line pressure failing\n");
         noProblem = false;
     }
@@ -78,11 +81,13 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	if (data->motion->accel < MAX_STOPPED_ACCEL || timer == 0) {
-
-	}
+	return data->motion->accel < MAX_STOPPED_ACCEL && timer == 0;
 }
 
+
+static bool checkBattTemp(void) {
+    return data->bms->highTemp < MAX_BATT_TEMP; 
+}
 /***
  * Actions for all the states.
  * They perform transition and error condition
@@ -91,28 +96,28 @@ static bool checkStopped(void) {
  *
  */
 
-stateTransition_t * powerOffAction() {
-    return findTransition(currState, IDLE_NAME);
+stateTransition_t * powerOnAction() {
+    return findTransition(stateMachine.currState, IDLE_NAME);
 }
 
 stateTransition_t * idleAction() {
-	if (!checkPrimPressures() || checkStopped()
+	if (!checkPrimPressures() || checkStopped());
     return NULL;
 }
 
 stateTransition_t * readyForPumpdownAction() {
    	/* Check error conditions */
-    if (!checkPrimPressures() || data->bms->highTemp > MAX_BATT_TEMP) {
-		return findTransition(currState, PRE_RUN_FAULT_NAME);
+    if (!checkPrimPressures() || !checkBattTemp()) {
+		return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
 	/* Check if we should transition */
-    if () {
+    if (true) {
 
 	}
     return NULL;
 }
 
-stateTransition_t * pumpDownAction() {
+stateTransition_t * pumpdownAction() {
 	return NULL;
 }
 
@@ -125,10 +130,9 @@ stateTransition_t * propulsionAction() {
 }
 
 stateTransition_t * brakingAction() {
-    if (/* 30s timer has hit */ || /* post_run button pushed */);
         /* transition to post run */
-	if (/*No retro tape for 15s*/ && data->motion->accel < 0.1) {
-        /* Start a timer to transition in 30 s */
+	if (data->motion->accel < 0.1) {
+        printf("STOPPED\n"); 
     }
 
     return NULL;
@@ -144,7 +148,15 @@ stateTransition_t * crawlAction() {
 }
 
 stateTransition_t * postRunAction() {
-	return NULL;
+	if (!checkBattTemp()) {
+        return NULL;
+    }
+    
+    if (data->bms->packVoltage == 0 ) {
+
+    }
+
+    return NULL;
 }
 
 stateTransition_t * safeToApproachAction() {
@@ -163,6 +175,6 @@ stateTransition_t * runFaultAction() {
 	return NULL;
 }
 
-stateTransition_t * postFaultAciton() {
+stateTransition_t * postFaultAction() {
 	return NULL;
 }
