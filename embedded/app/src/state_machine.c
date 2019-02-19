@@ -25,7 +25,7 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
 static void initTransition(stateTransition_t *transition, state_t *target, void (*action)() );
 
 
-extern data_t data;
+extern data_t *data;
 stateMachine_t stateMachine;
 
 /***

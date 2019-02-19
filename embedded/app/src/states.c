@@ -35,7 +35,7 @@
 /* Imports/Externs */
 
 extern stateMachine_t stateMachine;
-extern data_t data;
+extern data_t *data;
 int timer;
 static bool checkPrimPressures(void);
 static bool checkStopped(void);
@@ -51,19 +51,19 @@ static bool checkStopped(void);
 
 static bool checkPrimPressures(void) {
     bool noProblem = true;
-    if (data.pressure->ps1 < PS1_BOTTOM_LIMIT || data.pressure->ps1 > PS1_TOP_LIMIT) {
+    if (data->pressure->ps1 < PS1_BOTTOM_LIMIT || data->pressure->ps1 > PS1_TOP_LIMIT) {
         fprintf(stderr, "Tank pressure failing\n");
         noProblem = false;
     }
-    if (data.pressure->ps2 < PS2_BOTTOM_LIMIT || data.pressure->ps2 > PS2_TOP_LIMIT) {
+    if (data->pressure->ps2 < PS2_BOTTOM_LIMIT || data->pressure->ps2 > PS2_TOP_LIMIT) {
         fprint(stderr, "Line pressure failing\n");
         noProblem = false;
     }
-    if (data.pressures->ps3 < PS3_BOTTOM_LIMIT || data.pressure->ps3 > PS3_TOP_LIMIT) {
+    if (data->pressures->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
         fprintf(stderr, "Line pressure failing\n");
         noProblem = false;
     }
-    if (data.pressure->ps4 < PS4_BOTTOM_LIMIT || data.pressure->ps4 > PS4_TOP_LIMIT) {
+    if (data->pressure->ps4 < PS4_BOTTOM_LIMIT || data->pressure->ps4 > PS4_TOP_LIMIT) {
         fprintf(stderr, "Line pressure failing\n");
         noProblem = false;
     }
@@ -78,7 +78,7 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	if (data.motion->accel < MAX_STOPPED_ACCEL || timer == 0) {
+	if (data->motion->accel < MAX_STOPPED_ACCEL || timer == 0) {
 
 	}
 }
@@ -102,7 +102,7 @@ stateTransition_t * idleAction() {
 
 stateTransition_t * readyForPumpdownAction() {
    	/* Check error conditions */
-    if (!checkPrimPressures() || data.bms->highTemp > MAX_BATT_TEMP) {
+    if (!checkPrimPressures() || data->bms->highTemp > MAX_BATT_TEMP) {
 		return findTransition(currState, PRE_RUN_FAULT_NAME);
     }
 	/* Check if we should transition */
@@ -127,7 +127,7 @@ stateTransition_t * propulsionAction() {
 stateTransition_t * brakingAction() {
     if (/* 30s timer has hit */ || /* post_run button pushed */);
         /* transition to post run */
-	if (/*No retro tape for 15s*/ && data.motion->accel < 0.1) {
+	if (/*No retro tape for 15s*/ && data->motion->accel < 0.1) {
         /* Start a timer to transition in 30 s */
     }
 
