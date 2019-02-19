@@ -12,7 +12,12 @@ int init() {
 	
 	// 2. init all peripherals
 	
-	
+	if (data = malloc(sizeof(data_t))          				  == NULL) { STATE_ERROR() }
+	if (data->pressure = malloc(sizeof(pressure_t))           == NULL) { STATE_ERROR() }
+	if (data->motion = malloc(sizeof(motion_t))           	  == NULL) { STATE_ERROR() }
+	if (data->bms = malloc(sizeof(bms_t))           		  == NULL) { STATE_ERROR() }
+	if (data->rms = malloc(sizeof(rms_t))           		  == NULL) { STATE_ERROR() }
+	if (data->flags = malloc(sizeof(flags_t))           	  == NULL) { STATE_ERROR() }
 	
 	SetupHVTelemetry("192.168.1.112", 33333);
 	SetupHVTCPServer();

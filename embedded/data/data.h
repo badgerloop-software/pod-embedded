@@ -54,7 +54,7 @@ typedef struct motion_t {
     int pos;
     int vel;
     int accel;
-	int retro_count;
+    int retro_count;
 } motion_t;
 
 
