@@ -13,7 +13,7 @@
 
 pthread_t HVTCPThread;
 
-extern data_t data;
+extern data_t *data;
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){

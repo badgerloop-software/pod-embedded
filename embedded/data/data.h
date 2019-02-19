@@ -21,11 +21,11 @@ typedef struct flags_t {
  */
 
 typedef struct data_t {
-    pressure_t *pressure;
-    motion_t   *motion;
-    bms_t      *bms;
-    rms_t      *rms;
-    flags_t    *flags;
+    struct pressure_t *pressure;
+    struct motion_t   *motion;
+    struct bms_t      *bms;
+    struct rms_t      *rms;
+    struct flags_t    *flags;
 } data_t;
 
 /***
