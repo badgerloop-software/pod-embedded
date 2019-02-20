@@ -100,9 +100,9 @@ $(OBJ_DIR_MAIN)/%.o: $(MAIN_SRC_DIR)/%.cpp
 	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
 
 format:
-	clang-format -style=llvm $DRIVER_SRC > $DRIVER_SRC 
-	clang-format -style=llvm $PERIPHERAL_SRC > $PERIPHERAL_SRC
-	clang-format -style=llvm $APP_SRC > $APP_SRC
+	clang-format -style=llvm $(DRIVER_SRC) > $(DRIVER_SRC).log
+	clang-format -style=llvm $(PERIPHERAL_SRC) > $(PERIPHERAL_SRC).log
+	clang-format -style=llvm $(APP_SRC) > $(APP_SRC).log
 	
 scan: 
 	scan-build make > scan_build_out.log
