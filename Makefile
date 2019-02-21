@@ -47,7 +47,7 @@ FORMAT_SRC = $(addprefix format,$(APP_SRC)) $(addprefix format,$(PERIPHERAL_SRC)
 GCC := gcc
 GPP := g++
 CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
-CFLAGS += -Wall
+CFLAGS += -Wall -std=c11
 CPFLAGS += -Wall -Wextra -std=c++11
 LDFLAGS += -Llib
 LDLIBS += -lm -lpthread
