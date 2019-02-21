@@ -1,14 +1,14 @@
 // Includes
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "data.h"
-#include <stdio.h>
-#include <stdlib.h>
-data_t *data;
 
-extern void SetupHVTelemetry(char *ip, int port);
-extern void SetupHVTCPServer(void);
+
+data_t *data;
 
 int init() {
 	// 1. init all drivers
