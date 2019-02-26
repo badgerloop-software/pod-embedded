@@ -87,7 +87,7 @@ int init() {
 	data->flags->pumpDown = 0;
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
-	data->flags->emergencyBreak = 0;
+	data->flags->emergencyBrake = 0;
 	
 	
 	SetupHVTelemetry((char *) "192.168.1.112", 33333);
