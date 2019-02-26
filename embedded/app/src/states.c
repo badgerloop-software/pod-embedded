@@ -101,38 +101,69 @@ stateTransition_t * powerOnAction() {
 }
 
 stateTransition_t * idleAction() {
-	if (!checkPrimPressures() || checkStopped());
+    // First check for nominal values?
+    
+    if(!checkPrimPressures() || !checkStopped()){
+        STATE_ERROR();
+    }
+
+    if(data->flags->readyPump){
+        return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
+    }
+
     return NULL;
 }
 
 stateTransition_t * readyForPumpdownAction() {
-   	/* Check error conditions */
-    if (!checkPrimPressures() || !checkBattTemp()) {
-		return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-	/* Check if we should transition */
-    if (true) {
+    // First check for nominal values?
 
-	}
+    if (!checkPrimPressures() || !checkBattTemp()) {
+	return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+
+    if (data->flags->pumpDown){
+        return findTransition(stateMachine.currState, PUMPDOWN_NAME);
+    }
+
     return NULL;
 }
 
 stateTransition_t * pumpdownAction() {
-	return NULL;
+    // First check for nominal values?
+
+    if(data->flags->readyCommand){
+	return findTransition(stateMachine.currState, READY_NAME);
+    }
+
+    return NULL;
 }
 
 stateTransition_t * readyForLaunchAction() {
-	return NULL;
+    // First check for nominal values?
+    
+    if(data->flags->propulse){
+        return findTransition(stateMachine.currState, PROPULSION_NAME);
+    }
+
+    return NULL;
 }
 
 stateTransition_t * propulsionAction() {
-	return NULL;
+    if(data->flags->emergencyBrake){
+	// If it's an emergency, shold we trigger braking first then go through the formalities of doing a state transition?
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+
+    // Check for nominal values?
+    
+
+    return NULL;
 }
 
 stateTransition_t * brakingAction() {
-        /* transition to post run */
-	if (data->motion->accel < 0.1) {
-        printf("STOPPED\n"); 
+    /* transition to post run */
+    if (data->motion->accel < 0.1) {
+        return findTransition(stateMachine.currState, POST_RUN_NAME); 
     }
 
     return NULL;
