@@ -8,13 +8,14 @@
 #include "document.h"     // rapidjson's DOM-style API
 #include "prettywriter.h" // for stringify JSON
 
-/* ADD SENSOR INCLUDES HERE */
+#include "data.h"
 
 
 using namespace rapidjson;
 using namespace std;
 
 pthread_t HVTelemThread;
+extern data_t *data;
 
 void SetupHVTelemetry(char* ip, int port){
 	
@@ -59,27 +60,27 @@ void *HVTelemetryLoop(void *arg){
 						
 			// PACK VOLTAGE
 			Value packV;
-			packV.SetNull();
+			packV.SetFloat(data->bms->packVoltage);
 			
 			// PACK CURRENT
 			Value packC;
-			packC.SetNull();
+			packC.SetFloat(data->bms->packCurrent);
 			
 			// PACK SOC
 			Value packSOC;
-			packSOC.SetNull();
+			packSOC.SetUint(data->bms->Soc);
 			
 			// PACK AH
 			Value packAH;
-			packAH.SetNull();
+			packAH.SetUint(data->bms->packAh);
 			
 			// CELL MAX VOLTAGE
 			Value cellMaxV;
-			cellMaxV.SetNull();
+			cellMaxV.SetUint(data->bms->cellMaxVoltage);
 			
 			// CELL MIN VOLTAGE
 			Value cellMinV;
-			cellMaxV.SetNull();
+			cellMinV.SetUint(data->bms->cellMinVoltage);
 			
 			// SECONDARY TANK
 			Value secondaryTank;
