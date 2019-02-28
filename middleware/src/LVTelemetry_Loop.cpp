@@ -121,7 +121,7 @@ void *LVTelemetryLoop(void *arg)
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			StringBuffer sb;
-			PrettyWriter<StringBuffer> writer(sb);
+			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging
 			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
 			
 			// Repeatedly send the string (not including \0) to the servers
