@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include "PracticalSocket.h"
 #include "LVTelemetry_Loop.h"
-#include "document.h"     // rapidjson's DOM-style API
-#include "prettywriter.h" // for stringify JSON
+#include "document.h"
+#include "writer.h"
 
 /* ADD SENSOR INCLUDES HERE */
 extern "C" 
@@ -126,7 +126,7 @@ void *LVTelemetryLoop(void *arg)
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			StringBuffer sb;
-			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging
+			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too
 			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
 			
 			// Repeatedly send the string (not including \0) to the servers

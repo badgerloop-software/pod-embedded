@@ -11,7 +11,7 @@ typedef struct flags_t {
     int pumpDown;
     int readyCommand;
     int propulse;
-    int emergencyBreak;
+    int emergencyBrake;
 } flags_t;
 
 
