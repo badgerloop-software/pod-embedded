@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <chrono>
 #include <pthread.h>
+#include <stdint.h>
 #include "PracticalSocket.h"
 #include "LVTelemetry_Loop.h"
 #include "document.h"     // rapidjson's DOM-style API
@@ -36,6 +37,8 @@ void *LVTelemetryLoop(void *arg)
 		// Create socket
 		UDPSocket sock;
 		
+		uint64_t packetCount = 0;
+		
 		while(1){
 		
 			// Create document
@@ -47,10 +50,7 @@ void *LVTelemetryLoop(void *arg)
 
 			// TIME
 			Value age;
-			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-				std::chrono::system_clock::now().time_since_epoch()
-			);
-			age.SetUint64(ms.count());
+			age.SetUint64(packetCount++);
 			
 			// TYPE
 			Value type;
@@ -68,13 +68,13 @@ void *LVTelemetryLoop(void *arg)
 			Value retro;
 			retro.SetNull();
 			
-			// VELOCITY
+			// VELOCITY - Change "X" to "Y" if need be
 			Value vel;
-			vel.SetNull();
+			vel.SetFloat(getDeltaVX());
 			
-			// ACCELERATION
+			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			accel.SetNull();
+			accel.SetFloat(getAccelX());
 				
 			// HIGH TEMP
 			Value tempH;
