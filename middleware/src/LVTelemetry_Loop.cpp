@@ -132,9 +132,10 @@ void *LVTelemetryLoop(void *arg)
 			PrettyWriter<StringBuffer> writer(sb);
 			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
 			
-			// Repeatedly send the string (not including \0) to the server
+			// Repeatedly send the string (not including \0) to the servers
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
+			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_SERVER_PORT);
 			usleep(30000);
 		}
 	} 
