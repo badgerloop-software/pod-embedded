@@ -1,7 +1,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdio>
-#include <chrono>
 #include <pthread.h>
 #include <stdint.h>
 #include "PracticalSocket.h"
@@ -137,6 +136,11 @@ void *LVTelemetryLoop(void *arg)
 			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
 			
 			// Repeatedly send the string (not including \0) to the servers
+			
+			if(strlen(sb.GetString()) >= 4096){
+				fprintf(stderr, "STRING SIZE EXCEEDS 4096. SIZE: %i", strlen(sb.GetString()));
+				return;
+			}
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_SERVER_PORT);
