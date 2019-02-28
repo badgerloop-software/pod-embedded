@@ -50,7 +50,6 @@ void *IMULoop(void *arg){
 	
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
-	uint32_t tempq0, tempq1, tempq2, tempq3;
 	int i;
 
 	while (1){
