@@ -24,6 +24,11 @@ void SetupLVTelemetry(char* ip, int port){
 	
 	LVTelemArgs *args = (LVTelemArgs*) malloc(sizeof(LVTelemArgs));
 	
+	if(args == NULL){
+		fprintf(stderr, "MALLOC ERROR\n");
+		exit(1);
+	}
+	
 	args->ipaddr = strdup(ip);
 	args->port = port;
 	
