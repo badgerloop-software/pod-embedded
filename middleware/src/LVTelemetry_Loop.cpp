@@ -10,7 +10,11 @@
 #include "prettywriter.h" // for stringify JSON
 
 /* ADD SENSOR INCLUDES HERE */
-#include "imu.h"
+extern "C" 
+{
+	#include "imu.h"
+}
+
 
 using namespace rapidjson;
 using namespace std;
