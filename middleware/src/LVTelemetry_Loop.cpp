@@ -52,12 +52,8 @@ void *LVTelemetryLoop(void *arg)
 			/* SET DATA VALUES */
 
 			// TIME
-			Value age;
-			age.SetUint64(packetCount++);
-			
-			// TYPE
-			Value type;
-			type.SetString("data");
+			Value packet_id;
+			packet_id.SetUint64(packetCount++);
 			
 			// STOPPING DISTANCE
 			Value stopDistance;
@@ -98,8 +94,7 @@ void *LVTelemetryLoop(void *arg)
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
-			document.AddMember("age", age, document.GetAllocator());
-			document.AddMember("type", type, document.GetAllocator());
+			document.AddMember("id", packet_id, document.GetAllocator());
 			
 			Document motionDoc;
 			motionDoc.SetObject();
@@ -119,17 +114,11 @@ void *LVTelemetryLoop(void *arg)
 			brakingDoc.AddMember("pressureVesselPressure", pressureV, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("currentPressure", currP, brakingDoc.GetAllocator());
 			
-			Document dataDoc;
-			dataDoc.SetObject();
-			
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
-			dataDoc.AddMember("motion", motionDoc, dataDoc.GetAllocator());
-			dataDoc.AddMember("battery", batteryDoc, dataDoc.GetAllocator());
-			dataDoc.AddMember("braking", brakingDoc, dataDoc.GetAllocator());
-			document.AddMember("data", dataDoc, document.GetAllocator());
-			
-			
+			document.AddMember("motion", motionDoc, document.GetAllocator());
+			document.AddMember("battery", batteryDoc, document.GetAllocator());
+			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			StringBuffer sb;
 			PrettyWriter<StringBuffer> writer(sb);
