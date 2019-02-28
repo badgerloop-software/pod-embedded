@@ -9,4 +9,7 @@
 #define TLM_RECV_PORT 9099
 #endif
 
+void SetupHVTelemRecv();
+void *HVTelemRecv(void *arg);
+
 #endif

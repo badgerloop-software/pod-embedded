@@ -1,3 +1,4 @@
+#include "HV_Telem_Recv.h"
 #include "PracticalSocket.h"  
 #include "document.h"
 #include "data.h" 
@@ -40,32 +41,29 @@ void *HVTelemRecv(void *arg){
 					
 			// Now to try and parse it
 			Document document;
-			document.Parse(recvString.c_str());
+			document.Parse(recvString);
 			
 			// Get a counter
 			if(!document.HasMember("id")){
-				return;
-			}
+				// Make sure it's a new packet
+				if(document["id"].GetFloat() > recentPacketID){
+					recentPacketID = document["id"].GetFloat();
+					
+					// TODO complete as new sensors/etc are added
+					// Parse data in
+					
+					// MOTION DATA
+					const Value &motion = document["motion"];
+					data->motion->vel = motion["velocity"].GetFloat();
+					data->motion->accel = motion["acceleration"].GetFloat();
+					
+					
+				}
+				else{
+					fprintf(stderr, "Encountered total: %i dropped packets due to ID error\n", ++packetErrCounter);
+				}
 			
-			// Make sure it's a new packet
-			if(document["id"].GetFloat() > recentPacketID){
-				recentPacketID = document["id"].GetFloat();
-				
-				// TODO complete as new sensors/etc are added
-				// Parse data in
-				
-				// MOTION DATA
-				Value motion = document["motion"];
-				data->motion->vel = motion["velocity"].GetFloat();
-				data->motion->accel = motion["acceleration"].GetFloat();
-				
-				
 			}
-			else{
-				fprintf(stderr, "Encountered total: %i dropped packets due to ID error\n", ++packetErrCounter);
-			}
-			
-			
 		} 
 		catch (SocketException &e) {
 			cerr << e.what() << endl;
