@@ -46,8 +46,8 @@ void *HVTelemRecv(void *arg){
 			// Get a counter
 			if(document.HasMember("id")){
 				// Make sure it's a new packet
-				if(document["id"].GetFloat() > recentPacketID){
-					recentPacketID = document["id"].GetFloat();
+				if(document["id"].GetUint64() > recentPacketID){
+					recentPacketID = document["id"].GetUint64();
 					
 					// TODO complete as new sensors/etc are added
 					// Parse data in
