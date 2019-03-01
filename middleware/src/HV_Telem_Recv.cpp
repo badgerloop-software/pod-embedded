@@ -35,8 +35,8 @@ void *HVTelemRecv(void *arg){
 			int bytesRcvd = sock.recvFrom(recvString, MAX_TLM_HV_RECV, sourceAddress, sourcePort);
 			recvString[bytesRcvd] = '\0'; 
 			
-			cout << "Received " << recvString << " from " << sourceAddress << ": "
-					 << sourcePort << endl;
+			//cout << "Received " << recvString << " from " << sourceAddress << ": "
+			//		 << sourcePort << endl;
 					
 					
 			// Now to try and parse it
@@ -44,7 +44,7 @@ void *HVTelemRecv(void *arg){
 			document.Parse(recvString);
 			
 			// Get a counter
-			if(!document.HasMember("id")){
+			if(document.HasMember("id")){
 				// Make sure it's a new packet
 				if(document["id"].GetFloat() > recentPacketID){
 					recentPacketID = document["id"].GetFloat();
