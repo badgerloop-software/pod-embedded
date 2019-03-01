@@ -54,7 +54,10 @@ LDLIBS += -lm -lpthread
 
 .PHONY: all clean tests
 
-all: directories $(MAIN_MAKE)
+all: main_tgts
+	make main_tgts
+	
+main_tgts: directories MAIN_SUPPORT_OBJ $(MAIN_MAKE)
 
 examples: examples_make
 	make examples_make
