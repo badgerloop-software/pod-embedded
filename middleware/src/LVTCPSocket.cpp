@@ -9,7 +9,6 @@
 
 #include "LVTCPSocket.h"
 
-
 pthread_t LVTCPThread;
 
 

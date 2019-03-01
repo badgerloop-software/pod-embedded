@@ -108,7 +108,6 @@ void *HVTelemetryLoop(void *arg){
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
 			document.AddMember("id", packet_id, document.GetAllocator());
-			document.AddMember("type", type, document.GetAllocator());
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();
