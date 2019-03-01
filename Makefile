@@ -1,4 +1,3 @@
-EXE = badgerloop
 DRIVERS = drivers
 PERIPHERALS = peripherals
 EMBD_EXAMPLES = tests
@@ -19,7 +18,7 @@ OBJ_DIR_EXAMPLE = $(OUTPUT_DIR)/obj/tests
 OBJ_DIR_MDL = $(OUTPUT_DIR)/obj
 OBJ_DIR_MDL_EXAMPLE = $(OUTPUT_DIR)/obj/tests
 OBJ_DIR_APP = $(OUTPUT_DIR)/obj
-OBJ_DIR_MAIN = $(OUTPUT_DIR)/obj
+OBJ_DIR_MAIN = $(OUTPUT_DIR)/obj/main
 
 
 DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
@@ -38,6 +37,9 @@ MDL_EXAMPLES_OBJ := $(MDL_EXAMPLES_SRC:$(MIDDLEWARE_EX_DIR)/%.cpp=$(OBJ_DIR_MDL_
 APP_OBJ := $(APP_SRC:$(APP_SRC_DIR)/%.c=$(OBJ_DIR_APP)/%.o)
 MAIN_OBJ := $(MAIN_SRC:$(MAIN_SRC_DIR)/%.cpp=$(OBJ_DIR_MAIN)/%.o)
 
+MAIN_OBJ_D = $(wildcard $(OBJ_DIR_MAIN)/*.o)
+MAIN_MAKE := $(MAIN_OBJ_D:$(OBJ_DIR_MAIN)/%.o=$(OUTPUT_DIR)/%)
+
 EX_OUT := out
 EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
 EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
@@ -52,29 +54,35 @@ LDLIBS += -lm -lpthread
 
 .PHONY: all clean tests
 
-all: directories $(EXE)
+all: directories $(MAIN_MAKE)
 
 examples: examples_make
 	make examples_make
 
 examples_make: example_directories $(EMBD_EXAMPLES) $(EMBD_EXAMPLES_MAKE)
 
-directories: ${OBJ_DIR}
+directories: ${OBJ_DIR} ${OBJ_DIR_MAIN}
 
-example_directories: ${OBJ_DIR_EXAMPLE}
+example_directories: ${OBJ_DIR_EXAMPLE} ${OBJ_DIR_MAIN}
 
 ${OBJ_DIR}:
 	mkdir -p ${OBJ_DIR}
 	
 ${OBJ_DIR_EXAMPLE}:
 	mkdir -p ${OBJ_DIR_EXAMPLE}
+	
+${OBJ_DIR_MAIN}:
+	mkdir -p ${OBJ_DIR_MAIN}
+	
+MAIN_SUPPORT_OBJ: $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(MAIN_OBJ)
 
-$(EXE): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ) $(MAIN_OBJ)
-	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $(OUTPUT_DIR)/$@
 	
 $(EMBD_EXAMPLES): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(EMBD_EXAMPLES_OBJ) $(MDL_EXAMPLES_OBJ)
 	
 $(EX_OUT)/%: $(OBJ_DIR_EXAMPLE)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) 
+	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	
+$(OUTPUT_DIR)/%: $(OBJ_DIR_MAIN)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) 
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 
