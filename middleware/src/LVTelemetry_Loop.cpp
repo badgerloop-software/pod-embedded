@@ -59,7 +59,7 @@ void *LVTelemetryLoop(void *arg)
 			
 			/* SET DATA VALUES */
 
-			// TIME
+			// PACKET ID
 			Value packet_id;
 			packet_id.SetUint64(packetCount++);
 			
@@ -130,13 +130,9 @@ void *LVTelemetryLoop(void *arg)
 			
 			StringBuffer sb;
 			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too
-			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
+			document.Accept(writer);
 			
 			// Repeatedly send the string (not including \0) to the servers
-			
-			if(strlen(sb.GetString()) >= 4096){
-				fprintf(stderr, "STRING SIZE EXCEEDS 4096. SIZE: %zu", strlen(sb.GetString()));
-			}
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_SERVER_PORT);
