@@ -57,7 +57,7 @@ void *HVTelemRecv(void *arg){
 					data->motion->vel = motion["velocity"].GetFloat();
 					data->motion->accel = motion["acceleration"].GetFloat();
 					
-					printf("Updated vel to: %lf, accel to: %lf\n", data->motion->vel, data->motion->accel);	
+					//printf("Updated vel to: %lf, accel to: %lf\n", data->motion->vel, data->motion->accel);	
 					
 				}
 				else{

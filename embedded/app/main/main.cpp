@@ -1,6 +1,7 @@
 // Includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
@@ -106,9 +107,8 @@ int main() {
 	}
 	printf("Now this is pod racing\n");
 	while(1) {
-	    break;
-		// Control Loop!		
-
+		usleep(100000);
+		// Control loop
 	}
     return 0;
 }

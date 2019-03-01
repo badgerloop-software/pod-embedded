@@ -32,7 +32,7 @@ void SetupLVTelemetry(char* ip, int port){
 	args->ipaddr = strdup(ip);
 	args->port = port;
 	
-	// Init LV telemetry devices
+	// Init LV peripheral devices
 	SetupIMU();
 	
 	if (pthread_create(&LVTelemThread, NULL, LVTelemetryLoop, args)){
