@@ -45,7 +45,7 @@ EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
 GCC := gcc
 GPP := g++
 CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
-CFLAGS += -Wall
+CFLAGS += -Wall -std=gnu11
 CPFLAGS += -Wall -Wextra -std=c++11
 LDFLAGS += -Llib
 LDLIBS += -lm -lpthread
