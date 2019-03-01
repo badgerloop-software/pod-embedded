@@ -41,11 +41,6 @@ void SetupIMU(){
 	data->accelX = 0;
 	data->accelY = 0;
 	data->accelZ = 0;
-
-	data->q0 = 0;
-	data->q1 = 0;
-	data->q2 = 0;
-	data->q3 = 0;
 	
 	sem_init(&data->mutex, 0, 1);
 }
@@ -55,7 +50,6 @@ void *IMULoop(void *arg){
 	
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
-	uint32_t tempq0, tempq1, tempq2, tempq3;
 	int i;
 
 	while (1){
@@ -97,22 +91,6 @@ void *IMULoop(void *arg){
 				sem_post(&data->mutex);
 
 			}
-
-			//Check orientation
-			if (i + 18 < messageSize && dataBuffer[i] == 0x80 && dataBuffer[i + 1] == 0x30 && dataBuffer[i + 2] == 0x10){
-				tempq0 = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
-				tempq1 = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
-				tempq2 = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
-				tempq3 = (dataBuffer[i + 15] << 24) | (dataBuffer[i + 16] << 16) | (dataBuffer[i + 17] << 8) | dataBuffer[i + 18];
-
-				sem_wait(&data->mutex);
-				data->q0 = * ((float *) &tempq0);
-				data->q1 = * ((float *) &tempq1);
-				data->q2 = * ((float *) &tempq2);
-				data->q3 = * ((float *) &tempq3);
-				sem_post(&data->mutex);
-
-			}
 			
 			i++;
 		}
@@ -138,15 +116,6 @@ void getAccelData(float *fData){
 	fData[0] = data->accelX;
 	fData[1] = data->accelY;
 	fData[2] = data->accelZ;
-	sem_post(&data->mutex);
-}
-
-void getDeltaOrientationData(float *fData){
-	sem_wait(&data->mutex);
-	fData[0] = data->q0;
-	fData[1] = data->q1;
-	fData[2] = data->q2;
-	fData[3] = data->q3;
 	sem_post(&data->mutex);
 }
 
@@ -188,34 +157,6 @@ float getAccelY(){
 float getAccelZ(){
 	sem_wait(&data->mutex);
 	float ans = data->accelZ;
-	sem_post(&data->mutex);
-	return ans;
-}
-
-float getOrientationDeltaQ0(){
-	sem_wait(&data->mutex);
-	float ans = data->q0;
-	sem_post(&data->mutex);
-	return ans;
-}
-
-float getOrientationDeltaQ1(){
-	sem_wait(&data->mutex);
-	float ans = data->q1;
-	sem_post(&data->mutex);
-	return ans;
-}
-
-float getOrientationDeltaQ2(){
-	sem_wait(&data->mutex);
-	float ans = data->q2;
-	sem_post(&data->mutex);
-	return ans;
-}
-
-float getOrientationDeltaQ3(){
-	sem_wait(&data->mutex);
-	float ans = data->q3;
 	sem_post(&data->mutex);
 	return ans;
 }

@@ -6,7 +6,6 @@
  *  defined. It also has a number of helper functions to simplify the states
  *  actions.
  *
- *  RE: Ezra Boley, ...
  */
 
 /* Includes */
