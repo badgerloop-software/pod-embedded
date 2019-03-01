@@ -20,6 +20,11 @@ extern data_t *data;
 void SetupHVTelemetry(char* ip, int port){
 	
 	HVTelemArgs *args = (HVTelemArgs*) malloc(sizeof(HVTelemArgs));
+	
+	if(args == NULL){
+		fprintf(stderr, "MALLOC ERROR\n");
+		exit(1);
+	}
 		
 	args->ipaddr = strdup(ip);
 	args->port = port;

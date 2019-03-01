@@ -1,10 +1,12 @@
 // Includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
+#include "HV_Telem_Recv.h"
 #include "data.h"
 
 
@@ -87,11 +89,12 @@ int init() {
 	data->flags->pumpDown = 0;
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
-	data->flags->emergencyBreak = 0;
+	data->flags->emergencyBrake = 0;
 	
 	
 	SetupHVTelemetry((char *) "192.168.1.112", 33333);
-	SetupHVTCPServer();	
+	SetupHVTCPServer();
+	SetupHVTelemRecv();	
     return 0;	
 }
 
@@ -104,9 +107,8 @@ int main() {
 	}
 	printf("Now this is pod racing\n");
 	while(1) {
-	    break;
-		// Control Loop!		
-
+		usleep(100000);
+		// Control loop
 	}
     return 0;
 }
