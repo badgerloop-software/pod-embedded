@@ -10,7 +10,7 @@
 Start the IMU process by calling the SetupIMU function:
 	
 ```
-setupIMU();
+SetupIMU();
 ```
 	
 Next, you can pull data by using any of the following functions:

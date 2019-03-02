@@ -54,9 +54,9 @@ typedef struct pressure_t {
  *
  */
 typedef struct motion_t {
-    int pos;
-    int vel;
-    int accel;
+    float pos;
+    float vel;
+    float accel;
     int retro_count;
 } motion_t;
 

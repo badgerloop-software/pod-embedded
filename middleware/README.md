@@ -95,3 +95,36 @@ To add a data point (or another document) to a document, use the following comma
 ```
 document.AddMember("key", newData, document.GetAllocator());
 ```
+
+
+## High-Voltage UDP Data Parser
+
+The Low-Voltage BeagleBone collects data from various sensors and then sends it to the High-Voltage BeagleBone. The HV module needs to read-in and parse the data.
+
+### How it works:
+	
+Start the telemetry loop::
+	
+```
+#include "HV_Telem_Recv.h"
+SetupHVTelemRecv();
+```
+
+This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
+	
+### How to add data parsing
+
+As data is added to the LV section (See the UDP Data section), it will need to be parsed on the HV end. To do so, use the following template:
+
+```
+uint64_t id = document["id"].GetUint64();
+```
+
+Or if you have nested objects:
+
+```
+const Value &<VAR> = document["CATEGORY"];
+float test = <VAR>[SUBCATEGORY].GetFloat();
+```
+
+Both types have been implemented in the file already if you need further reference
