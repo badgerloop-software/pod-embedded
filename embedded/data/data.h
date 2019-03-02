@@ -28,6 +28,7 @@ typedef struct data_t {
     struct bms_t      *bms;
     struct rms_t      *rms;
     struct flags_t    *flags;
+    struct timers_t   *timers;
 } data_t;
 
 /***
@@ -59,6 +60,17 @@ typedef struct motion_t {
     int retro_count;
 } motion_t;
 
+
+/***
+ * timers_t - A collection of useful timers for keeping track of the last time
+ * that we did various things. These will probably be kept in their own thread
+ * later, but its good to have them now for programming.
+ *
+ */
+typedef struct timers_t {
+    int lastRetro;
+    int timeInState;
+}
 
 /***
  * bms_t - All of the data collected about the battery system

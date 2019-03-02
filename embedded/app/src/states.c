@@ -81,7 +81,8 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	return data->motion->accel < MAX_STOPPED_ACCEL && timer == 0;
+	return data->motion->accel < MAX_STOPPED_ACCEL && 
+        (time() - data->timers->lastRetro) > 15;
 }
 
 
@@ -143,17 +144,32 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * crawlAction() {
+    if (!checkBattTemp()) {
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if () {
+
+    }
+    
+    if (checkStopped()) {
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
+    }
 
 	return NULL;
 }
 
 stateTransition_t * postRunAction() {
 	if (!checkBattTemp()) {
-        return NULL;
+        return findTransition(stateMachine.currState, POST_FAULT_NAME);
     }
     
-    if (data->bms->packVoltage == 0 ) {
+    if (timeInState >= 30 && data->bms->packVoltage > 0) {
+        return findTransition(stateMachine.currState, POST_FAULT_NAME);
+    }
 
+    if (data->bms->packVoltage == 0 && data->ps1 < 30) {
+        return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
     }
 
     return NULL;
