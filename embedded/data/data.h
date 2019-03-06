@@ -70,7 +70,7 @@ typedef struct motion_t {
 typedef struct timers_t {
     int lastRetro;
     int timeInState;
-}
+} timers_t;
 
 /***
  * bms_t - All of the data collected about the battery system
