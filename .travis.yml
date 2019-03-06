@@ -1,5 +1,5 @@
 language: c
 compiler: gcc
-script: make && make scan && make format
+script: make && make scan
 git:
   submodules: false
