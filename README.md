@@ -1,11 +1,13 @@
 # Badgerloop Pod IV
+[![Build Status](https://travis-ci.org/badgerloop-software/pod.svg?branch=master)](https://travis-ci.org/badgerloop-software/pod)
+
 *Developers: Ezra Boley, Eric Udlis, Rohan Daruwala, Luke Houge, Alex Vesel*
 
 The master repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-There are currently two sets of targets:
+There are currently two sets of targets (placed into the `out/` folder):
 
 1) Making the main programs (`badgerloop_LV` and `badgerloop_HV`)
 
@@ -18,6 +20,7 @@ make
 ```
 make examples
 ```
+
 
 ### Adding Tests
 
