@@ -7,7 +7,7 @@ The master repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-There are currently two sets of targets:
+There are currently two sets of targets (placed into the `out/` folder):
 
 1) Making the main programs (`badgerloop_LV` and `badgerloop_HV`)
 
@@ -20,6 +20,7 @@ make
 ```
 make examples
 ```
+
 
 ### Adding Tests
 
