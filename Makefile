@@ -44,6 +44,8 @@ EX_OUT := out
 EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
 EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
 
+FORMAT_SRC = $(addprefix format,$(APP_SRC)) $(addprefix format,$(PERIPHERAL_SRC)) $(addprefix format, $(DRIVER_SRC))
+
 GCC := gcc
 GPP := g++
 CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
@@ -110,5 +112,13 @@ $(OBJ_DIR_APP)/%.o: $(APP_SRC_DIR)/%.c
 $(OBJ_DIR_MAIN)/%.o: $(MAIN_SRC_DIR)/%.cpp
 	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
 
+$(FORMAT_SRC): 
+	clang-format -style=llvm $(@:format%=%) > $(@:format%=%).log
+
+format: $(FORMAT_SRC)
+
+scan: 
+	scan-build make > scan_build_out.log
+	
 clean:
 	rm -rf $(OUTPUT_DIR)
