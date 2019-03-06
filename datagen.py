@@ -36,7 +36,7 @@ def build_struct(title, dataMembers):
     structString += " {};\n\n\n".format(title)
     return structString
 
-def build_header():
+def build_header(deps):
     header = """
 /****************************************************************************
 *****************************************************************************
@@ -47,6 +47,9 @@ def build_header():
 ****************************************************************************
 ****************************************************************************/\n\n
 """
+    for dep in deps:
+        header += "#include <{}>\n".format(dep)
+    header += "\n\n"
     return header
 
 def slap_a_comment_on_that_bad_boy():
@@ -55,9 +58,9 @@ def slap_a_comment_on_that_bad_boy():
 def main():
     schema = load_schema()
     print(schema)
-    dataHStr = build_header()
-    dataHStr += build_data_struct(schema.keys())
-    for key, val in schema.items():
+    dataHStr = build_header(schema["dependencies"])
+    dataHStr += build_data_struct(schema["data"].keys())
+    for key, val in schema["data"].items():
         dataHStr += slap_a_comment_on_that_bad_boy()
         dataHStr += build_struct(key, val)
     build_data_h(dataHStr)
