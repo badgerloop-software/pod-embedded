@@ -11,7 +11,7 @@ typedef struct flags_t {
     int pumpDown;
     int readyCommand;
     int propulse;
-    int emergencyBreak;
+    int emergencyBrake;
 } flags_t;
 
 
@@ -53,9 +53,9 @@ typedef struct pressure_t {
  *
  */
 typedef struct motion_t {
-    int pos;
-    int vel;
-    int accel;
+    float pos;
+    float vel;
+    float accel;
     int retro_count;
 } motion_t;
 

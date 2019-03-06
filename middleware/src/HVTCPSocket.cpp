@@ -100,8 +100,8 @@ void *TCPLoop(void *arg){
 			data->flags->propulse = 1;
 		}
 		
-		if(!strncmp(buffer, "emergencyBreak", MAX_COMMAND_SIZE)){
-			data->flags->emergencyBreak = 1;
+		if(!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE)){
+			data->flags->emergencyBrake = 1;
 		}
 
 		

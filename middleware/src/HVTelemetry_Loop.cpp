@@ -1,24 +1,29 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdio>
-#include <chrono>
 #include <pthread.h>
 #include "PracticalSocket.h"
 #include "HVTelemetry_Loop.h"
-#include "document.h"     // rapidjson's DOM-style API
-#include "prettywriter.h" // for stringify JSON
+#include "document.h"
+#include "writer.h" 
 
-/* ADD SENSOR INCLUDES HERE */
+#include "data.h"
 
 
 using namespace rapidjson;
 using namespace std;
 
 pthread_t HVTelemThread;
+extern data_t *data;
 
 void SetupHVTelemetry(char* ip, int port){
 	
 	HVTelemArgs *args = (HVTelemArgs*) malloc(sizeof(HVTelemArgs));
+	
+	if(args == NULL){
+		fprintf(stderr, "MALLOC ERROR\n");
+		exit(1);
+	}
 		
 	args->ipaddr = strdup(ip);
 	args->port = port;
@@ -32,6 +37,8 @@ void SetupHVTelemetry(char* ip, int port){
 void *HVTelemetryLoop(void *arg){
 	
 	HVTelemArgs *sarg = (HVTelemArgs*) arg;
+	
+	uint64_t packetCount = 0;
 
 	try {
 		// Create socket
@@ -46,40 +53,33 @@ void *HVTelemetryLoop(void *arg){
 			
 			/* SET DATA VALUES */
 
-			// TIME
-			Value age;
-			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-				std::chrono::system_clock::now().time_since_epoch()
-			);
-			age.SetUint64(ms.count());
-			
-			// TYPE
-			Value type;
-			type.SetString("data");
+			// PACKET ID
+			Value packet_id;
+			packet_id.SetUint64(packetCount++);
 						
 			// PACK VOLTAGE
 			Value packV;
-			packV.SetNull();
+			packV.SetFloat(data->bms->packVoltage);
 			
 			// PACK CURRENT
 			Value packC;
-			packC.SetNull();
+			packC.SetFloat(data->bms->packCurrent);
 			
 			// PACK SOC
 			Value packSOC;
-			packSOC.SetNull();
+			packSOC.SetUint(data->bms->Soc);
 			
 			// PACK AH
 			Value packAH;
-			packAH.SetNull();
+			packAH.SetUint(data->bms->packAh);
 			
 			// CELL MAX VOLTAGE
 			Value cellMaxV;
-			cellMaxV.SetNull();
+			cellMaxV.SetUint(data->bms->cellMaxVoltage);
 			
 			// CELL MIN VOLTAGE
 			Value cellMinV;
-			cellMaxV.SetNull();
+			cellMinV.SetUint(data->bms->cellMinVoltage);
 			
 			// SECONDARY TANK
 			Value secondaryTank;
@@ -107,8 +107,7 @@ void *HVTelemetryLoop(void *arg){
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
-			document.AddMember("age", age, document.GetAllocator());
-			document.AddMember("type", type, document.GetAllocator());
+			document.AddMember("id", packet_id, document.GetAllocator());
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();
@@ -128,20 +127,16 @@ void *HVTelemetryLoop(void *arg){
 			brakingDoc.AddMember("primaryLine", primaryLine, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("primaryActuation", primaryActuation, brakingDoc.GetAllocator());
 			
-			Document dataDoc;
-			dataDoc.SetObject();
-			
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
-			dataDoc.AddMember("battery", batteryDoc, dataDoc.GetAllocator());
-			dataDoc.AddMember("braking", brakingDoc, dataDoc.GetAllocator());
-			document.AddMember("data", dataDoc, document.GetAllocator());
+			document.AddMember("battery", batteryDoc, document.GetAllocator());
+			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			
 			
 			StringBuffer sb;
-			PrettyWriter<StringBuffer> writer(sb);
-			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
+			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too
+			document.Accept(writer);
 			
 			// Repeatedly send the string (not including \0) to the server
 		

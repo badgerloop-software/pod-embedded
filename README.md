@@ -7,7 +7,7 @@ The master repository for Badgerloop's pod in the Hyperloop Competition
 
 There are currently two sets of targets:
 
-1) Making the main program
+1) Making the main programs (`badgerloop_LV` and `badgerloop_HV`)
 
 ```
 make
@@ -21,4 +21,4 @@ make examples
 
 ### Adding Tests
 
-In order to add a test or example, put a .c file into the embedded/examples folder. Make sure that your file contains a "main" function.
+In order to add a test or example, put a .c or .cpp file into the respective "example" folder. Make sure that your file contains a "main" function.
