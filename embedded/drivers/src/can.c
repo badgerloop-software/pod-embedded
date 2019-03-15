@@ -20,12 +20,12 @@ volatile bool NEW_CAN_MESSAGE = false;
 
 static int can_sock;
 static const struct itimerval new_val = {
-    {0, 10000}, 
+    {0, 10000},
     {0, 10000}
 };
 
 
-void can_rx_irq(){   
+void can_rx_irq(){
     NEW_CAN_MESSAGE = true;
 }
 
@@ -56,7 +56,7 @@ static int init_can_timer(const struct itimerval *new, struct itimerval *old) {
     return 0;
 }
 
-inline int readCanMessage(struct can_frame *recvd_msg) {
+inline int readCanMsg(struct can_frame *recvd_msg) {
     int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
     /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
@@ -66,17 +66,15 @@ inline int readCanMessage(struct can_frame *recvd_msg) {
 }
 
 
-inline int send_can_msg(uint32_t id, uint8_t *data, uint8_t size) {
+inline int sendCanMsg(uint32_t id, uint8_t *data, uint8_t size) {
     struct can_frame tx_msg;
 
     tx_msg.can_dlc = size;
     tx_msg.can_id = id;     // Should actually be 11 bits max
-    
     int i;
     for(i = 0; i < size; i++) {
         tx_msg.data[i] = data[i];
     }
-    
     send(can_sock, &tx_msg, sizeof(struct can_frame), MSG_DONTWAIT);
 
     return 0;   // Not much we do with error codes here
