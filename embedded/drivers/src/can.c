@@ -12,7 +12,6 @@
 #include <string.h>
 #include <stdlib.h> 
 
-#define CAN_INTF "vcan0"
 
 static struct sockaddr_can addr;
 static struct ifreq ifr;  // Used to look at flags on the network interface
@@ -73,7 +72,8 @@ inline int send_can_msg(uint32_t id, uint8_t *data, uint8_t size) {
     tx_msg.can_dlc = size;
     tx_msg.can_id = id;     // Should actually be 11 bits max
     
-    for(int i = 0; i < size; i++) {
+    int i;
+    for(i = 0; i < size; i++) {
         tx_msg.data[i] = data[i];
     }
     

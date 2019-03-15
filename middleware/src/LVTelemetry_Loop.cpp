@@ -1,15 +1,19 @@
 #include <iostream>
 #include <unistd.h>
 #include <cstdio>
-#include <chrono>
 #include <pthread.h>
+#include <stdint.h>
 #include "PracticalSocket.h"
 #include "LVTelemetry_Loop.h"
-#include "document.h"     // rapidjson's DOM-style API
-#include "prettywriter.h" // for stringify JSON
+#include "document.h"
+#include "writer.h"
 
 /* ADD SENSOR INCLUDES HERE */
-#include "imu.h"
+extern "C" 
+{
+	#include "imu.h"
+}
+
 
 using namespace rapidjson;
 using namespace std;
@@ -19,6 +23,11 @@ pthread_t LVTelemThread;
 void SetupLVTelemetry(char* ip, int port){
 	
 	LVTelemArgs *args = (LVTelemArgs*) malloc(sizeof(LVTelemArgs));
+	
+	if(args == NULL){
+		fprintf(stderr, "MALLOC ERROR\n");
+		exit(1);
+	}
 	
 	args->ipaddr = strdup(ip);
 	args->port = port;
@@ -36,6 +45,8 @@ void *LVTelemetryLoop(void *arg)
 		// Create socket
 		UDPSocket sock;
 		
+		uint64_t packetCount = 0;
+		
 		while(1){
 		
 			// Create document
@@ -45,16 +56,9 @@ void *LVTelemetryLoop(void *arg)
 			
 			/* SET DATA VALUES */
 
-			// TIME
-			Value age;
-			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-				std::chrono::system_clock::now().time_since_epoch()
-			);
-			age.SetUint64(ms.count());
-			
-			// TYPE
-			Value type;
-			type.SetString("data");
+			// PACKET ID
+			Value packet_id;
+			packet_id.SetUint64(packetCount++);
 			
 			// STOPPING DISTANCE
 			Value stopDistance;
@@ -68,13 +72,13 @@ void *LVTelemetryLoop(void *arg)
 			Value retro;
 			retro.SetNull();
 			
-			// VELOCITY
+			// VELOCITY - Change "X" to "Y" if need be
 			Value vel;
-			vel.SetNull();
+			vel.SetFloat(getDeltaVX());
 			
-			// ACCELERATION
+			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			accel.SetNull();
+			accel.SetFloat(getAccelX());
 				
 			// HIGH TEMP
 			Value tempH;
@@ -95,8 +99,7 @@ void *LVTelemetryLoop(void *arg)
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
-			document.AddMember("age", age, document.GetAllocator());
-			document.AddMember("type", type, document.GetAllocator());
+			document.AddMember("id", packet_id, document.GetAllocator());
 			
 			Document motionDoc;
 			motionDoc.SetObject();
@@ -116,25 +119,20 @@ void *LVTelemetryLoop(void *arg)
 			brakingDoc.AddMember("pressureVesselPressure", pressureV, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("currentPressure", currP, brakingDoc.GetAllocator());
 			
-			Document dataDoc;
-			dataDoc.SetObject();
-			
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
-			dataDoc.AddMember("motion", motionDoc, dataDoc.GetAllocator());
-			dataDoc.AddMember("battery", batteryDoc, dataDoc.GetAllocator());
-			dataDoc.AddMember("braking", brakingDoc, dataDoc.GetAllocator());
-			document.AddMember("data", dataDoc, document.GetAllocator());
-			
-			
+			document.AddMember("motion", motionDoc, document.GetAllocator());
+			document.AddMember("battery", batteryDoc, document.GetAllocator());
+			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			StringBuffer sb;
-			PrettyWriter<StringBuffer> writer(sb);
-			document.Accept(writer);    // Accept() traverses the DOM and generates Handler events.
+			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too
+			document.Accept(writer);
 			
-			// Repeatedly send the string (not including \0) to the server
+			// Repeatedly send the string (not including \0) to the servers
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
+			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_SERVER_PORT);
 			usleep(30000);
 		}
 	} 

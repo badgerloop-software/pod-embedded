@@ -23,12 +23,6 @@ typedef struct {
 	float accelY;
 	float accelZ;
 	
-	//Orientation data (Quaternions) 
-	float q0;
-	float q1;
-	float q2;
-	float q3;
-	
 	// Mutex
 	sem_t mutex;
 	
@@ -46,12 +40,6 @@ void getAccelData(float *fData);
 float getAccelX();
 float getAccelY();
 float getAccelZ();
-
-void getDeltaOrientationData(float *fData);
-float getOrientationDeltaQ0();
-float getOrientationDeltaQ1();
-float getOrientationDeltaQ2();
-float getOrientationDeltaQ3();
  
 
 #endif
