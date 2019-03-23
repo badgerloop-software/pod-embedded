@@ -32,12 +32,18 @@
 #define MAX_BATT_TEMP			60	/* Degrees Celcius */
 #define MAX_STOPPED_ACCEL		0.3 /* Limit for qualifying the pod as stopped in m/s */
 
+/* In mV */
+#define MAX_CELL_VOLTAGE        4200    
+#define MIN_CELL_VOLTAGE        3000
+
+#define TUBE_LENGTH             3800    /*in ft //FIXME I could be wrong on this on haha */
+
+#define MAX_RUN_TIME            30  /* in seconds, TODO get the real number */
 
 /* Imports/Externs */
 
 extern stateMachine_t stateMachine;
 extern data_t *data;
-int timer;
 static bool checkPrimPressures(void);
 static bool checkStopped(void);
 
@@ -157,35 +163,42 @@ stateTransition_t * propulsionAction() {
     // Check for nominal values?
     
 
+    if (data->timers->global > MAX_RUN_TIME
+
     return NULL;
 }
 
 stateTransition_t * brakingAction() {
     /* transition to post run */
-    if (data->motion->accel < 0.1) {
-        return findTransition(stateMachine.currState, POST_RUN_NAME); 
+    if (!checkBattTemp()) 
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    if (checkStopped()) {
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
-
     return NULL;
 }
 
 stateTransition_t * stoppedAction() {
+    if (!checkBattTemp()) 
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+
+
 	return NULL;
 }
 
 stateTransition_t * crawlAction() {
-    if (!checkBattTemp()) {
+    if (!checkBattTemp())
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    }
-    
-    if () {
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    if (data->pressures->pv < 13)
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
 
-    }
+    if (data->motion->position >= (TUBE_LENGTH - 100))
+        return findTransition(stateMachine.currState, BRAKING_NAME);
     
-    if (checkStopped()) {
-        return findTransition(stateMachine.currState, POST_RUN_NAME);
-    }
-
 	return NULL;
 }
 
@@ -194,7 +207,7 @@ stateTransition_t * postRunAction() {
         return findTransition(stateMachine.currState, POST_FAULT_NAME);
     }
     
-    if (timeInState >= 30 && data->bms->packVoltage > 0) {
+    if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
         return findTransition(stateMachine.currState, POST_FAULT_NAME);
     }
 

@@ -38,7 +38,7 @@ int init() {
 	data->motion->pos = 0;
 	data->motion->vel = 0;
 	data->motion->accel = 0;
-	data->motion->retro_count = 0;
+	data->motion->retroCount = 0;
 	
 	// Init bms values to 0
 	data->bms->packCurrent = 0;
@@ -62,27 +62,27 @@ int init() {
 	data->bms->numCells = 0;
 	
 	// Init rms values to 0
-	data->rms->igbt_temp = 0;
-	data->rms->gate_driver_board_temp = 0;
-	data->rms->control_board_temp = 0;
-	data->rms->motor_temp = 0;
-	data->rms->motor_speed = 0;
-	data->rms->phase_a_current = 0;
-	data->rms->phase_b_current = 0;
-	data->rms->phase_c_current = 0;
-	data->rms->dc_bus_voltage = 0;
+	data->rms->igbtTemp = 0;
+	data->rms->gateDriverBoardTemp = 0;
+	data->rms->controlBoardTemp = 0;
+	data->rms->motorTemp = 0;
+	data->rms->motorSpeed = 0;
+	data->rms->phaseACurrent = 0;
+	data->rms->phaseBCurrent = 0;
+	data->rms->phaseCCurrent = 0;
+	data->rms->dcBusVoltage = 0;
 	//data->rms->output_voltage_peak = 0;
-	data->rms->lv_voltage = 0;
-	data->rms->can_code_1 = 0;
-	data->rms->can_code_2 = 0;
-	data->rms->fault_code_1 = 0;
-	data->rms->fault_code_2 = 0;
-	data->rms->commanded_torque = 0;
-	data->rms->actual_torque = 0;
-	data->rms->relay_state = 0;
-	data->rms->electrical_freq = 0;
-	data->rms->dc_bus_current = 0;
-	data->rms->output_voltage_ln = 0;
+	data->rms->lvVoltage = 0;
+	data->rms->canCode1 = 0;
+	data->rms->canCode2 = 0;
+	data->rms->faultCode1 = 0;
+	data->rms->faultCode2 = 0;
+	data->rms->commandedTorque = 0;
+	data->rms->actualTorque = 0;
+	data->rms->relayState = 0;
+	data->rms->electricalFreq = 0;
+	data->rms->dcBusCurrent = 0;
+	data->rms->outputVoltageLn = 0;
 	
 	// Init flags values to 0
 	data->flags->readyPump = 0;
