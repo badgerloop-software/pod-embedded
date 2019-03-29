@@ -103,10 +103,13 @@ void *TCPLoop(void *arg){
 		if(!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE)){
 			data->flags->emergencyBrake = 1;
 		}
-
 		
-		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
+		// HEARTBEAT
+		if(!strncmp(buffer, "swac", MAX_COMMAND_SIZE)){
+			// Send acknowledge packet back
+			send(new_socket, (char*) "rules" , strlen("rules") , 0 ); 
+		}
+
 	}
 	
 }
