@@ -70,4 +70,6 @@ void *HVTelemRecv(void *arg){
 			cerr << e.what() << endl;
 		}
 	}
+	
+	return NULL;
 }
