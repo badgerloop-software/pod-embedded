@@ -80,21 +80,17 @@ void *LVTCPLoop(void *arg){
 		
 		printf("RECEIVED: %s\n",buffer);  
 		
-		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
-			send(new_socket, (char*) "pong!" , strlen("pong!") , 0 ); 
-		}
-		
 		// Do things
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
 			// DO POWER OFF
 		}
 		
-		if(!strncmp(buffer, "do something", MAX_COMMAND_SIZE)){
-			// Do something
+		// HEARTBEAT
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
+			// Send acknowledge packet back
+			send(new_socket, (char*) "pong2" , strlen("pong2") , 0 ); 
 		}
-		
-		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!", strlen("Received packet!"), 0); 
+
 	}
 	
 }

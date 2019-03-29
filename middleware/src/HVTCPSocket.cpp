@@ -105,9 +105,9 @@ void *TCPLoop(void *arg){
 		}
 		
 		// HEARTBEAT
-		if(!strncmp(buffer, "swac", MAX_COMMAND_SIZE)){
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
 			// Send acknowledge packet back
-			send(new_socket, (char*) "rules" , strlen("rules") , 0 ); 
+			send(new_socket, (char*) "pong1" , strlen("pong1") , 0 ); 
 		}
 
 	}
