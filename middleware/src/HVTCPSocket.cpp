@@ -103,6 +103,29 @@ void *TCPLoop(void *arg){
 		if(!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE)){
 			data->flags->emergencyBrake = 1;
 		}
+
+		if(!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake off
+		}
+		if(!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake on
+		}
+		if(!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn sec brake off
+		}
+		if(!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO turn sec brake on
+		}
+
+		if(!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE)){
+			// TODO turn hv on
+		}
+
+		if(!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE)){
+			// TODO turn hv off
+		}
+
+		
 		
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
