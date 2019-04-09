@@ -84,7 +84,7 @@ stateTransition_t * powerOnAction() {
 
 stateTransition_t * idleAction() {
     // First check for nominal values?
-    
+    data->state = 1;
     if(!checkPrimPressures() || !checkStopped()){
         STATE_ERROR();
     }
@@ -98,7 +98,7 @@ stateTransition_t * idleAction() {
 
 stateTransition_t * readyForPumpdownAction() {
     // First check for nominal values?
-
+    data->state = 2;
     if (!checkPrimPressures() || !checkBattTemp()) {
 	return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
@@ -112,7 +112,7 @@ stateTransition_t * readyForPumpdownAction() {
 
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
-
+    data->state = 3;
     if(data->flags->readyCommand){
 	return findTransition(stateMachine.currState, READY_NAME);
     }
@@ -122,7 +122,7 @@ stateTransition_t * pumpdownAction() {
 
 stateTransition_t * readyForLaunchAction() {
     // First check for nominal values?
-    
+    data->state = 4;
     if(data->flags->propulse){
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
@@ -135,7 +135,7 @@ stateTransition_t * propulsionAction() {
 	// If it's an emergency, shold we trigger braking first then go through the formalities of doing a state transition?
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
-
+    data->state = 5;
     // Check for nominal values?
     
 
@@ -147,6 +147,7 @@ stateTransition_t * propulsionAction() {
 }
 
 stateTransition_t * brakingAction() {
+    data->state = 6;
     /* transition to post run */
     if (!checkBattTemp()) 
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
@@ -157,6 +158,7 @@ stateTransition_t * brakingAction() {
 }
 
 stateTransition_t * stoppedAction() {
+    data->state = 7;
     if (!checkBattTemp()) 
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
@@ -167,6 +169,7 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * crawlAction() {
+    data->state = 8;
     if (!checkBattTemp())
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
@@ -181,6 +184,7 @@ stateTransition_t * crawlAction() {
 }
 
 stateTransition_t * postRunAction() {
+    data->state = 9;
 	if (!checkBattTemp()) {
         return findTransition(stateMachine.currState, POST_FAULT_NAME);
     }
@@ -197,21 +201,26 @@ stateTransition_t * postRunAction() {
 }
 
 stateTransition_t * safeToApproachAction() {
+    data->state = 10;
 	return NULL;
 }
 
 stateTransition_t * secondaryBrakingAction() {
+    data->state = 14;
 	return NULL;
 }
 
 stateTransition_t * preFaultAction() {
+    data->state = 11;
 	return NULL;
 }
 
 stateTransition_t * runFaultAction() {
+    data->state = 12;
 	return NULL;
 }
 
 stateTransition_t * postFaultAction() {
+    data->state = 13;
 	return NULL;
 }

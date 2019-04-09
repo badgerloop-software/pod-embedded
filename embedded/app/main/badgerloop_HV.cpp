@@ -91,6 +91,8 @@ int init() {
 	data->flags->propulse = 0;
 	data->flags->emergencyBrake = 0;
 	
+	data->state = 0;
+	
 	
 	SetupHVTelemetry((char *) "192.168.1.112", 33333);
 	SetupHVTCPServer();

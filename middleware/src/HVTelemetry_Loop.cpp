@@ -56,6 +56,10 @@ void *HVTelemetryLoop(void *arg){
 			// PACKET ID
 			Value packet_id;
 			packet_id.SetUint64(packetCount++);
+			
+			// CURRENT STATE
+			Value state;
+			state.SetUint(data->state);
 						
 			// PACK VOLTAGE
 			Value packV;
@@ -131,6 +135,7 @@ void *HVTelemetryLoop(void *arg){
 			
 			document.AddMember("battery", batteryDoc, document.GetAllocator());
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
+			document.AddMember("state", state, document.GetAllocator());
 			
 			
 			
