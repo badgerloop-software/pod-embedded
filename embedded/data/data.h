@@ -28,6 +28,7 @@ typedef struct data_t {
     struct bms_t      *bms;
     struct rms_t      *rms;
     struct flags_t    *flags;
+    int state;
 } data_t;
 
 /***

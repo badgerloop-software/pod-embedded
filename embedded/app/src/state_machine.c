@@ -6,8 +6,6 @@
  * the state machine that lives here is inherently global as it applies to the
  * whole pod.
  *
- * RE: Ezra Boley, ...
- *
  ***/
 
 #include "badgerloop.h"
