@@ -160,6 +160,8 @@ void buildStateMachine(void) {
 	initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 1);
 
     /* Create all of the transitions */
+    
+    
 
 }
 
@@ -173,9 +175,18 @@ void buildStateMachine(void) {
  */
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTransitions ) {
     static int indexInAllStates = 0;
+    
+    int i = 0;
     strncpy(state->name, name, strlen(name) );
     state->action = action;
+    state->numTransitions = numTransitions;
+    state->transitions = malloc(numTransitions * (sizeof(stateTransition_t *)));
+    for (i = 0; i < numTransitions; i++) {
+        state->transitions[i] = malloc(sizeof(stateTransition_t));
+        state->transitions[i]->target = NULL;
+    }
     stateMachine.allStates[indexInAllStates++] = state;
+    
 }
 
 /***
@@ -183,6 +194,19 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
  *
  */
 static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
-
+    transition->target;
 }
 
+static int addTransition(state_t *state, stateTransition_t *trans) {
+    int i = 0;
+    for (i = 0; state->transitions[i]->target != NULL || i < state->numTransitions; i++);
+    if (i >= state->numTransitions) {
+        fprintf(stderr, "[WARN] adding too many transitions! Ignoring extra.\n");
+        return -1;
+    }
+    state->transitions[i] = trans;
+}
+
+static int initPowerOff() {
+    
+}
