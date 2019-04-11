@@ -1,13 +1,23 @@
 #include "can.h"
+#include "rms.h"
 #include <stdio.h>
 
 #define NUM_BYTES 4
 
 void rx_test(struct can_frame *can_mesg) {
     if (NEW_CAN_MESSAGE) {
-        read_can_message(can_mesg);    // Checks for a CAN message
-        printf("ID: %#X || ", can_mesg->can_id);
-        printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
+        int status = read_can_message(can_mesg);    // Checks for a CAN message
+        if(!status){
+            printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
+            printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
+            
+            int rms_parse = rms_parser(can_mesg->can_id, can_mesg->data);
+            
+            if(rms_parse){
+                printf("RMS Data parsed successfully\n");
+            }
+            
+        }
         NEW_CAN_MESSAGE = false;
     }
 }
@@ -18,6 +28,7 @@ void tx_test(uint32_t can_id, uint8_t *data, const int num_bytes) {
 
 int main() {
     init_can();
+    rms_init();
     struct can_frame can_mesg;
     uint8_t data[NUM_BYTES] = {0xDE, 0xAD, 0xBE, 0xEF};
     uint32_t can_id = 0x123;    // Actually must be < 12 bits, but format is 32
@@ -28,5 +39,3 @@ int main() {
     }
     return 0;
 }
-
-
