@@ -6,8 +6,6 @@
  * the state machine that lives here is inherently global as it applies to the
  * whole pod.
  *
- * RE: Ezra Boley, ...
- *
  ***/
 
 #include "badgerloop.h"
@@ -118,39 +116,26 @@ void runStateMachine(void) {
  */
 void buildStateMachine(void) {
 	    /* Create all of the states*/
-	state_t *powerOn, *idle, *readyForPumpdown, *pumpdown,
+	state_t *powerOff, *idle, *readyForPumpdown, *pumpdown,
 			*readyForLaunch, *propulsion, *braking, *secondaryBraking,
 			*stopped, *crawl, *rebrake, *postRun, *safeToApproach, *preFault,
 			*runFault, *postFault;
 	state_t **allStates = malloc(NUM_STATES * sizeof(state_t*));
-
-	stateMachine.allStates = allStates;
-
-    /* Allocating space for each state */
-	if ((powerOn = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
-	if ((idle = malloc(sizeof(state_t)))              == NULL) { STATE_ERROR(); }
-	if ((readyForPumpdown = malloc(sizeof(state_t)))  == NULL) { STATE_ERROR(); }
-	if ((pumpdown = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
-	if ((readyForLaunch = malloc(sizeof(state_t)))    == NULL) { STATE_ERROR(); }
-	if ((propulsion = malloc(sizeof(state_t)))        == NULL) { STATE_ERROR(); }
-	if ((braking = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
-	if ((secondaryBraking = malloc(sizeof(state_t)))  == NULL) { STATE_ERROR(); }
-	if ((stopped = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
-	if ((crawl = malloc(sizeof(state_t)))             == NULL) { STATE_ERROR(); }
-	if ((rebrake = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
-	if ((postRun = malloc(sizeof(state_t)))           == NULL) { STATE_ERROR(); }
-	if ((safeToApproach = malloc(sizeof(state_t)))    == NULL) { STATE_ERROR(); }
-	if ((preFault = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
-	if ((runFault = malloc(sizeof(state_t)))          == NULL) { STATE_ERROR(); }
-	if ((postFault = malloc(sizeof(state_t)))         == NULL) { STATE_ERROR(); }
-
-    /* Initializing states TODO add the num transition arguement to each of
-     * these*/
-	initState(powerOn, POWER_OFF_NAME, powerOnAction, 1);   // FIXME Not sure if this state should be poweroff or poweron
-	initState(idle, IDLE_NAME, idleAction, 1);
-	initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 1);
-	initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 1);
-	initState(readyForLaunch, READY_NAME, readyForLaunchAction, 1);
+    
+	stateMachine.allStates = 
+    {
+            powerOff, idle, readyForPumpdown, pumpdown,
+            readyForLaunch, propulsion, braking, secondaryBraking,
+            stopped, crawl, postRun, safeToApproach, preFault, runFault, postFault
+    };
+    
+    // This is the new API
+    initPowerOff(powerOff);
+    initIdle(idle);
+    initReadyForPumpdown(readyForPumpdown);
+    initPumpdown(pumpdown);
+    initReadyForLaunch(readyForLaunch);
+    // TODO replace old way of creating states
 	initState(propulsion, PROPULSION_NAME, propulsionAction, 1);
 	initState(braking, BRAKING_NAME, brakingAction, 1);
 	initState(stopped, STOPPED_NAME, stoppedAction, 1);
@@ -160,9 +145,6 @@ void buildStateMachine(void) {
 	initState(preFault, PRE_RUN_FAULT_NAME, preFaultAction, 1);
 	initState(runFault, RUN_FAULT_NAME, runFaultAction, 1);
 	initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 1);
-
-    /* Create all of the transitions */
-
 }
 
 /***
@@ -175,9 +157,22 @@ void buildStateMachine(void) {
  */
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTransitions ) {
     static int indexInAllStates = 0;
+    int i = 0;
+    
+    state = malloc(sizeof(state_t));
+    if (state == NULL) {
+        STATE_ERROR();
+    }
     strncpy(state->name, name, strlen(name) );
     state->action = action;
+    state->numTransitions = numTransitions;
+    state->transitions = malloc(numTransitions * (sizeof(stateTransition_t *)));
+    for (i = 0; i < numTransitions; i++) {
+        state->transitions[i] = malloc(sizeof(stateTransition_t));
+        state->transitions[i]->target = NULL;
+    }
     stateMachine.allStates[indexInAllStates++] = state;
+    
 }
 
 /***
@@ -185,6 +180,77 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
  *
  */
 static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
-
+    transition = malloc(sizeof(stateTransition_t));
+    if (transition == NULL) return -1;
+    transition->target;
 }
 
+static int addTransition(state_t *state, stateTransition_t *trans) {
+    int i = 0;
+    for (i = 0; state->transitions[i]->target != NULL || i < state->numTransitions; i++);
+    if (i >= state->numTransitions) {
+        fprintf(stderr, "[WARN] adding too many transitions! Ignoring extra.\n");
+        return -1;
+    }
+    state->transitions[i] = trans;
+}
+
+static int initPowerOff(state_t *powerOff) {
+    stateTransition_t *toIdle, *toPreFault;
+	
+    initState(powerOff, POWER_OFF_NAME, powerOnAction, 2);   
+    
+    initTransition(toIdle, findState(IDLE_NAME), NULL);
+    initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL); 
+    addTransition(powerOff, toIdle);
+    addTransition(powerOff, toPreFault);
+    return 0;
+}
+
+static int initIdle(state_t *idle) {
+    stateTransition_t *toReadyForPumpdown, *toPreFault;
+
+    initState(idle, IDLE_NAME, idleAction, 2);
+
+    initTransition(toReadyForPumpdown, findState(READY_FOR_PUMPDOWN_NAME), NULL);
+    initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL);
+    addTransition(idle, toReadyForPumpdown);
+    addTransition(idle, toPreFault);
+    return 0;
+}
+
+static int initReadyForPumpdown(state_t *readyForPumpdown) {
+    stateTransition_t *toPumpdown, *toPreFault;
+
+    initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 2);
+    
+    initTransition(toPumpdown, findState(PUMPDOWN_NAME), NULL);
+    initTransition(toPreFault, findStaet(PRE_RUN_FAULT_NAME), NULL);
+    addTransition(readyForPumpdown, toPumpdown);
+    addTransition(readyForPumpdown, toPreFault);
+    return 0;
+}
+
+static int initPumpdown(state_t *pumpdown) {
+    stateTransition_t *toReadyForLaunch, *toPreFault;
+
+    initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 2);
+
+    initTransition(toReadyForLaunch, findState(READY_NAME), NULL);
+    initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL);
+    addTransition(pumpdown, toReadyForLaunch);
+    addTransition(pumpdown, toPreFault);
+    return 0;
+}
+
+static int initReadyForLaunch(state_t *ready) {
+    stateTransition_t *toPropulsion, *toRunFault;
+
+    initState(ready, READY_NAME, readyForLaunchAction, 2);
+
+    initTransition(toPropulsion, findState(PROPULSION_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    addTransition(ready, toPropulsion);
+    addTransition(ready, toRunFault);
+    return 0;
+}
