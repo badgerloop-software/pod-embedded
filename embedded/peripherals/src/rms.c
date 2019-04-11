@@ -6,37 +6,6 @@
 
 extern data_t *data;
 
-/* RMS Init Function:
- *      Creates RMS data struct
- *      Sets each value = 0
- */
-
-// DO NOT NEED TO CALL FROM HV MAIN
-// ONLY FROM THE CAN_TEST EXAMPLE
-void rms_init() {
-	data->rms->igbtTemp = 0;
-	data->rms->gateDriverBoardTemp = 0;
-	data->rms->controlBoardTemp = 0;
-	data->rms->motorTemp = 0;
-	data->rms->motorSpeed = 0;
-	data->rms->phaseACurrent = 0;
-	data->rms->phaseBCurrent = 0;
-	data->rms->phaseCCurrent = 0;	
-	data->rms->dcBusVoltage=0;
-	//rms->output_voltage_peak = 0;
-	data->rms->lvVoltage = 0;
-	data->rms->canCode1 = 0;
-	data->rms->canCode2 = 0;
-	data->rms->faultCode1 = 0;
-	data->rms->faultCode2 = 0;
-	data->rms->commandedTorque = 0;
-	data->rms->actualTorque = 0;
-	data->rms->relayState = 0;	
-	data->rms->electricalFreq = 0;
-	data->rms->dcBusCurrent = 0;
-	data->rms->outputVoltageLn = 0;
-}
-
 /* RMS CAN Parser Function
  *      Based on the CAN ID passed, parsing out the data bytes into
  *      their respective values in the RMS data struct
