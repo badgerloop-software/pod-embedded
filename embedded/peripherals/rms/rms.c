@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "rms.h"
-
+#include "data.h"
 Rms *rms;
 
 /* RMS Init Function:
@@ -10,27 +10,27 @@ Rms *rms;
  */
 void rms_init() {
 	rms = malloc(sizeof(Rms));
-	rms->igbt_temp = 0;
-	rms->gate_driver_board_temp = 0;
-	rms->control_board_temp = 0;
-	rms->motor_temp = 0;
-	rms->motor_speed = 0;
-	rms->phase_a_current = 0;
-	rms->phase_b_current = 0;
-	rms->phase_c_current = 0;	
-	rms->dc_bus_voltage=0;
+	rms->igbtTemp = 0;
+	rms->gateDriverBoardTemp = 0;
+	rms->controlBoardTemp = 0;
+	rms->motorTemp = 0;
+	rms->motorSpeed = 0;
+	rms->phaseACurrent = 0;
+	rms->phaseBCurrent = 0;
+	rms->phaseCCurrent = 0;	
+	rms->dcBusVoltage=0;
 	//rms->output_voltage_peak = 0;
-	rms->lv_voltage = 0;
-	rms->can_code_1 = 0;
-	rms->can_code_2 = 0;
-	rms->fault_code_1 = 0;
-	rms->fault_code_2 = 0;
-	rms->commanded_torque = 0;
-	rms->actual_torque = 0;
-	rms->relay_state = 0;	
-	rms->electrical_freq = 0;
-	rms->dc_bus_current = 0;
-	rms->output_voltage_ln = 0;
+	rms->lvVoltage = 0;
+	rms->canCode1 = 0;
+	rms->canCode2 = 0;
+	rms->faultCode1 = 0;
+	rms->faultCode2 = 0;
+	rms->commandedTorque = 0;
+	rms->actualTorque = 0;
+	rms->relayState = 0;	
+	rms->electricalFreq = 0;
+	rms->dcBusCurrent = 0;
+	rms->outputVoltageLn = 0;
 }
 
 /* RMS CAN Parser Function
