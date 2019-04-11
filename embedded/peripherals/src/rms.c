@@ -46,7 +46,7 @@ int rms_parser(uint32_t id, uint8_t *rmsData){
 		case (0xa0):
 			data->rms->igbtTemp = (rmsData[0] | (rmsData[1] <<8)) / 10; //Deg C
 			data->rms->gateDriverBoardTemp = (rmsData[6] | (rmsData[7] << 8)) / 10; //Deg C
-			printf("IGBT: %d\r\n", data->rms->igbt_temp);
+			printf("IGBT: %d\r\n", data->rms->igbtTemp);
 			printf("Gate Driver Board Temp: %d\r\n", data->rms->gateDriverBoardTemp);
 			break;
 		case (0xa1):
@@ -89,14 +89,14 @@ int rms_parser(uint32_t id, uint8_t *rmsData){
 		case (0xaa):
 			data->rms->canCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
 			data->rms->canCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
-			printf("CAN Code 1: %lld\r\n", data->rms->canCode1);
-			printf("CAN Code 2: %lld\r\n", data->rms->canCode2);
+			printf("CAN Code 1: %lld\r\n", (long long int) data->rms->canCode1);
+			printf("CAN Code 2: %lld\r\n", (long long int) data->rms->canCode2);
 			break;
 		case (0xab):
 			data->rms->faultCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
 			data->rms->faultCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
-			printf("Fault Code 1: %lld\r\n", data->rms->faultCode1);
-			printf("Fault Code 2: %lld\r\n", data->rms->faultCode2);
+			printf("Fault Code 1: %lld\r\n", (long long int) data->rms->faultCode1);
+			printf("Fault Code 2: %lld\r\n", (long long int) data->rms->faultCode2);
 			break;
 		case (0xac):
 			data->rms->commandedTorque = (rmsData[0] | (rmsData[1] << 8)) /10;
