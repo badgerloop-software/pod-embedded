@@ -1,6 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "can.h"
 #include "rms.h"
-#include <stdio.h>
 #include "data.h"
 #include "bms.h"
 #define NUM_BYTES 4

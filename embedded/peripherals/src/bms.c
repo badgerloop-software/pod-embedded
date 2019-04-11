@@ -151,7 +151,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 		case 0x80:
 			break;
 		default:
-			printf("BMS CAN command not found 0x%08lx\r\n", id);
+			printf("BMS CAN command not found 0x%08lx\r\n", (long unsigned int) id);
 			return 0;
 	}
 	return 1;
