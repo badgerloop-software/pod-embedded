@@ -129,22 +129,20 @@ void buildStateMachine(void) {
             stopped, crawl, postRun, safeToApproach, preFault, runFault, postFault
     };
     
-    // This is the new API
     initPowerOff(powerOff);
     initIdle(idle);
     initReadyForPumpdown(readyForPumpdown);
     initPumpdown(pumpdown);
     initReadyForLaunch(readyForLaunch);
-    // TODO replace old way of creating states
-	initState(propulsion, PROPULSION_NAME, propulsionAction, 1);
-	initState(braking, BRAKING_NAME, brakingAction, 1);
-	initState(stopped, STOPPED_NAME, stoppedAction, 1);
-	initState(crawl, CRAWL_NAME, crawlAction, 1);
-	initState(postRun, POST_RUN_NAME, postRunAction, 1);
-	initState(safeToApproach, SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
-	initState(preFault, PRE_RUN_FAULT_NAME, preFaultAction, 1);
-	initState(runFault, RUN_FAULT_NAME, runFaultAction, 1);
-	initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 1);
+	initPropulsion(propulsion);
+    initBraking(braking);
+    initStopped(stopped);
+    initCrawl(crawl);
+    initPostRun(postRun);
+    initSafeToApproach(safeToApproach);
+    initPreFault(preFault);
+    initRunFault(runFault);
+    initPostFault(postFault);
 }
 
 /***
@@ -252,5 +250,102 @@ static int initReadyForLaunch(state_t *ready) {
     initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
     addTransition(ready, toPropulsion);
     addTransition(ready, toRunFault);
+    return 0;
+}
+
+static int initPropulsion(state_t *propulsion) {
+    stateTransition_t *toBraking, *toRunFault;
+
+    initState(propulsion, PROPULSION_NAME, propulsionAction, 2);
+
+    initTransition(toBraking, findState(BRAKING_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    addTransition(propulsion, toBraking);
+    addTransition(propulsion, toRunFault);
+
+    return 0;
+}
+
+static int initBraking(state_t *braking) {
+    stateTransition *toCrawl, *toStopped, *toRunFault;
+
+    initState(braking, BRAKING_NAME, brakingAction, 3);
+
+    initTransition(toCrawl, findState(CRAWL_NAME), NULL);
+    initTransition(toStopped, findState(STOPPED_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    addTransition(braking, toCrawl);
+    addTransition(braking, toStopped);
+    addTransition(braking, toRunFault);
+
+    return 0;
+}
+
+static int initCrawl(state_t *crawl) {
+    stateTransition_t *toStopped, *toRunFault, *toBraking;
+
+    initState(crawl, CRAWL_NAME, crawlAction, 3);
+
+    initTransition(toStopped, findState(STOPPED_NAME), NULL);
+    initTransition(toBraking, findState(BRAKING_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    addTransition(crawl, toStopped);
+    addTransition(crawl, toRunFault);
+    addTransition(crawl, toBraking);
+    
+    return 0;
+}
+
+static int initStopped(state_t *stopped) {
+    stateTransition_t *toPostRun, *toCrawl, *toRunFault;
+
+    initState(stopped, STOPPED_NAME, stoppedAction, 3);
+
+    initTransition(toPostRun, findState(POST_RUN_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    initTransition(toCrawl, findState(CRAWL_NAME), NULL);
+    addTransition(stopped, toPostRun);
+    addTransition(stopped, toCrawl);
+    addTransition(stopped, toRunFault);
+
+    return 0;
+}
+
+static int initPostRun(state_t *postRun) {
+    stateTransition_t *toSafeToApproach, *toPostFault;
+    
+    initState(postRun, POST_RUN_NAME, postRunAction, 2);
+
+    initTransition(toSafeToApproach, findState(SAFE_TO_APPROACH_NAME), NULL);
+    initTransition(toPostFault, findState(POST_RUN_FAULT_NAME), NULL);
+    addTransition(postRun, toSafeToApproach);
+    addTransition(postRun, toPostFault);
+
+    return 0;
+}
+
+static int initSafeToApproach(state_t *safeToApproach) {
+    stateTransition_t *toPostFault;
+
+    initState(safeToApproach, SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
+    
+    initTransition(toPostFault, findState(POST_RUN_FAULT_NAME), NULL);
+    addTransition(safeToApproach, toPostFault);
+
+    return 0;
+}
+
+static int initPreFault(state_t *preFault) {
+    initState(preFault, PRE_RUN_FAULT_NAME, preFaultAction, 0);
+    return 0;
+}
+
+static int initRunFault(state_t *runFault) {
+    initState(runFault, RUN_FAULT_NAME, runFaultAction, 0);
+    return 0;
+}
+
+static int initPostFault(state_t *postFault) {
+    initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 0);
     return 0;
 }
