@@ -66,8 +66,8 @@ typedef struct state_t {
 
 typedef struct stateMachine_t {
 	state_t *currState;
-	state_t **allStates;
     char *  overrideStateName;
+	state_t *allStates[NUM_STATES];
 } stateMachine_t;
 
 #endif
