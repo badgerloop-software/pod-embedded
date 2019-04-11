@@ -58,8 +58,9 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 	bms_t *bms = data->bms;
 	switch(id) {
 		case 0x6B0:
-			printf("ID: 0x%3lx\r\n", id);
-			printf("Data: %d, %d, %d, %d, %d, %d, %d, %d\r\n", data[0],
+			printf("ID: 0x%3lx\r\n", (long unsigned int) id);
+			printf("Data: %d, %d, %d, %d, %d, %d, %d\r\n", data[0], data[1], data[2], 
+			data[3], data[4], data[5], data[6]);
 			bms->packCurrent = msg[1] | msg[0] << 8;
 			bms->packCurrent /= 10;
 			bms->packVoltage = msg[3] | msg[2] << 8;
@@ -150,9 +151,8 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 		case 0x80:
 			break;
 		default:
-			return 0;
 			printf("BMS CAN command not found 0x%08lx\r\n", id);
-
+			return 0;
 	}
 	return 1;
 }
