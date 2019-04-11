@@ -5,29 +5,29 @@
 #include "can.h"
 #include "data.h"
 
-extern data_t data;
+extern data_t *data;
 
 void bmsInit() {
-	data.bms = malloc(sizeof(bms_t));  // FIXME: data.bms = malloc(sizeof(bms_t));
+	data->bms = malloc(sizeof(bms_t));  // FIXME: data->bms = malloc(sizeof(bms_t));
 	printf("initialize_bms\r\n");
-	data.bms->packCurrent = 0;
-	data.bms->packVoltage = 0;
-	data.bms->packDCL = 0;
-	data.bms->packCCL = 0;
-	data.bms->packResistance = 0;
-	data.bms->packHealth = 0;
-	data.bms->packOpenVoltage = 0;
-	data.bms->packCycles = 0;
-	data.bms->packAh = 0;
-	data.bms->inputVoltage = 0;
-	data.bms->Soc = 0;
-	data.bms->relayStatus = 0;
-	data.bms->highTemp = 0;
-	data.bms->lowTemp = 0;
-	data.bms->cellMaxVoltage = 0;
-	data.bms->cellMinVoltage = 0;
-	data.bms->maxCells = 0;
-	data.bms->numCells = 0;
+	data->bms->packCurrent = 0;
+	data->bms->packVoltage = 0;
+	data->bms->packDCL = 0;
+	data->bms->packCCL = 0;
+	data->bms->packResistance = 0;
+	data->bms->packHealth = 0;
+	data->bms->packOpenVoltage = 0;
+	data->bms->packCycles = 0;
+	data->bms->packAh = 0;
+	data->bms->inputVoltage = 0;
+	data->bms->Soc = 0;
+	data->bms->relayStatus = 0;
+	data->bms->highTemp = 0;
+	data->bms->lowTemp = 0;
+	data->bms->cellMaxVoltage = 0;
+	data->bms->cellMinVoltage = 0;
+	data->bms->maxCells = 0;
+	data->bms->numCells = 0;
 	//bmsClearFaults();
 }
 
@@ -55,7 +55,7 @@ int bmsClearFaults(void){
   */
 int bmsParseMsg(uint32_t id, uint8_t *msg) {
 	//printf("Recieved bms message\r\n");
-	bms_t *bms = data.bms;
+	bms_t *bms = data->bms;
 	switch(id) {
 		case 0x6B0:
 			//printf("ID: 0x%3lx\r\n", id);
@@ -154,11 +154,11 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 			//printf("BMS CAN command not found 0x%08lx\r\n", id);
 
 	}
-	return 0;
+	return 1;
 }
 
 void bmsDump () {
-    bms_t *bms = data.bms;
+    bms_t *bms = data->bms;
     printf("---BMS DATA---\n");
     printf("\tPack Current      = %f\n", bms->packCurrent);
     printf("\tPack Voltage      = %f\n", bms->packVoltage);

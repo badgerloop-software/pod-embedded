@@ -104,9 +104,35 @@ void *TCPLoop(void *arg){
 			data->flags->emergencyBrake = 1;
 		}
 
+		if(!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake off
+		}
+		if(!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake on
+		}
+		if(!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn sec brake off
+		}
+		if(!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO turn sec brake on
+		}
+
+		if(!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE)){
+			// TODO turn hv on
+		}
+
+		if(!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE)){
+			// TODO turn hv off
+		}
+
 		
-		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
+		
+		// HEARTBEAT
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
+			// Send acknowledge packet back
+			send(new_socket, (char*) "pong1" , strlen("pong1") , 0 ); 
+		}
+
 	}
 	
 }
