@@ -59,8 +59,8 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 	switch(id) {
 		case 0x6B0:
 			printf("ID: 0x%3lx\r\n", (long unsigned int) id);
-			printf("Data: %d, %d, %d, %d, %d, %d, %d\r\n", data[0], data[1], data[2], 
-			data[3], data[4], data[5], data[6]);
+			printf("Data: %d, %d, %d, %d, %d, %d, %d\r\n", msg[0], msg[1], msg[2], 
+			msg[3], msg[4], msg[5], msg[6]);
 			bms->packCurrent = msg[1] | msg[0] << 8;
 			bms->packCurrent /= 10;
 			bms->packVoltage = msg[3] | msg[2] << 8;
@@ -83,8 +83,8 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 
 			break;
 		case 0x653:
-			printf("ID: 0x%3lx\r\n", id);
-			bms->relayStatus = data[1] | data[0] << 8;
+			printf("ID: 0x%3lx\r\n", (long unsigned int) id);
+			bms->relayStatus = msg[1] | msg[0] << 8;
 			bms->relayStatus = msg[0];
 			bms->inputVoltage = msg[2] | (msg[3] << 8);
 			bms->inputVoltage /= 10;
@@ -95,9 +95,9 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 
 			bms->packCCL = msg[0] | (msg[1] << 8);
 			bms->packDCL = msg[2] | (msg[3] << 8);
-			bms->cellMaxVoltage = data[4] | (data[5] << 8);
+			bms->cellMaxVoltage = msg[4] | (msg[5] << 8);
 			bms->cellMaxVoltage /= 10000;
-			bms->cellMinVoltage = data[6] | (data[7] << 8);
+			bms->cellMinVoltage = msg[6] | (msg[7] << 8);
 			bms->cellMinVoltage /= 10000;
 			printf("DCL %d\r\n", bms->packDCL);
 			printf("Cell Min V:  %d, Cell Max V: %d\r\n", bms->cellMinVoltage, bms->cellMaxVoltage);
@@ -109,7 +109,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 			bms->cellAvgVoltage /= 1000;
 			bms->cellMaxVoltage /= 1000;
 			bms->cellMinVoltage /= 1000;
-			bms->maxCells = data[6];
+			bms->maxCells = msg[6];
 			bms->numCells = msg[7];
 
 			printf("Num Cells %d\r\n", bms->numCells);
