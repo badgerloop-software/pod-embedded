@@ -8,10 +8,15 @@ void rx_test(struct can_frame *can_mesg) {
     if (NEW_CAN_MESSAGE) {
         int status = read_can_message(can_mesg);    // Checks for a CAN message
         if(!status){
-            printf("ID: %#X || ", (long unsigned int) can_mesg->can_id);
+            printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
             printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
             
             int rms_parse = rms_parser(can_mesg->can_id, can_mesg->data);
+            
+            if(rms_parse){
+                printf("RMS Data parsed successfully\n");
+            }
+            
         }
         NEW_CAN_MESSAGE = false;
     }
