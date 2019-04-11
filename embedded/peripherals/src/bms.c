@@ -7,30 +7,6 @@
 
 extern data_t *data;
 
-void bmsInit() {
-	data->bms = malloc(sizeof(bms_t));  // FIXME: data->bms = malloc(sizeof(bms_t));
-	printf("initialize_bms\r\n");
-	data->bms->packCurrent = 0;
-	data->bms->packVoltage = 0;
-	data->bms->packDCL = 0;
-	data->bms->packCCL = 0;
-	data->bms->packResistance = 0;
-	data->bms->packHealth = 0;
-	data->bms->packOpenVoltage = 0;
-	data->bms->packCycles = 0;
-	data->bms->packAh = 0;
-	data->bms->inputVoltage = 0;
-	data->bms->Soc = 0;
-	data->bms->relayStatus = 0;
-	data->bms->highTemp = 0;
-	data->bms->lowTemp = 0;
-	data->bms->cellMaxVoltage = 0;
-	data->bms->cellMinVoltage = 0;
-	data->bms->maxCells = 0;
-	data->bms->numCells = 0;
-	//bmsClearFaults();
-}
-
 int bmsClearFaults(void){
 
 	uint16_t can_id = 0x7e3;

@@ -114,8 +114,6 @@ int main() {
     
     
     initCan();
-    rms_init();
-    bmsInit();
     
     struct can_frame can_mesg;
     //uint8_t data[NUM_BYTES] = {0xDE, 0xAD, 0xBE, 0xEF};
