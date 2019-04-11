@@ -133,10 +133,9 @@ void buildStateMachine(void) {
     initPowerOff(powerOff);
     initIdle(idle);
     initReadyForPumpdown(readyForPumpdown);
-
+    initPumpdown(pumpdown);
+    initReadyForLaunch(readyForLaunch);
     // TODO replace old way of creating states
-	initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 1);
-	initState(readyForLaunch, READY_NAME, readyForLaunchAction, 1);
 	initState(propulsion, PROPULSION_NAME, propulsionAction, 1);
 	initState(braking, BRAKING_NAME, brakingAction, 1);
 	initState(stopped, STOPPED_NAME, stoppedAction, 1);
@@ -229,5 +228,29 @@ static int initReadyForPumpdown(state_t *readyForPumpdown) {
     initTransition(toPreFault, findStaet(PRE_RUN_FAULT_NAME), NULL);
     addTransition(readyForPumpdown, toPumpdown);
     addTransition(readyForPumpdown, toPreFault);
+    return 0;
+}
+
+static int initPumpdown(state_t *pumpdown) {
+    stateTransition_t *toReadyForLaunch, *toPreFault;
+
+    initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 2);
+
+    initTransition(toReadyForLaunch, findState(READY_NAME), NULL);
+    initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL);
+    addTransition(pumpdown, toReadyForLaunch);
+    addTransition(pumpdown, toPreFault);
+    return 0;
+}
+
+static int initReadyForLaunch(state_t *ready) {
+    stateTransition_t *toPropulsion, *toRunFault;
+
+    initState(ready, READY_NAME, readyForLaunchAction, 2);
+
+    initTransition(toPropulsion, findState(PROPULSION_NAME), NULL);
+    initTransition(toRunFault, findState(RUN_FAULT_NAME), NULL);
+    addTransition(ready, toPropulsion);
+    addTransition(ready, toRunFault);
     return 0;
 }
