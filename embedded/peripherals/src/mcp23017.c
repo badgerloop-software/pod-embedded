@@ -5,16 +5,15 @@
 #include <math.h>
 #include "i2c.h"
 
-static const char MCP_ADRESS_DEFAULT = 0x21; // default address for GPIO extender
 static const char IODIRA = 0x00; // Port A direction address
 static const char IODIRB = 0x01; // Port B direction address
 static const char GPIOA = 0x12; // Port A state address
 static const char GPIOB = 0x13; // Port B state address
 
-void setupMCP(i2c_settings * i2c) {
+void setupMCP(i2c_settings * i2c, char mcp_address) {
 
   i2c->bus = 2;
-  i2c->address = MCP_ADRESS_DEFAULT;
+  i2c->address = mcp_address;
   i2c->openMode = O_RDWR;
 
   if (i2c_begin(i2c) == -1) {
