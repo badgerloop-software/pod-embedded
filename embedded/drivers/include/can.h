@@ -17,9 +17,9 @@ extern volatile bool NEW_CAN_MESSAGE;
 
 int initCan();
 
-int readCanMsg(struct can_frame *can_mesg);
+int canRead(struct can_frame *can_mesg);
 
-int sendCanMsg(uint32_t id, uint8_t *data, uint8_t size);
+int canSend(uint32_t id, uint8_t *data, uint8_t size);
 
 /* Potential ideas for a future API */
 // bool start_can_read();

@@ -22,7 +22,7 @@ int bmsClearFaults(void){
 	TxData[6] = 0x00;
 	TxData[7] = 0x00;
 
-	sendCanMsg(can_id, TxData, length);
+	canSend(can_id, TxData, length);
 
 	return 0;
 }
