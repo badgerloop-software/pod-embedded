@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define CAN_INTF "can0"
+#define CAN_INTF "vcan0"
 
 extern volatile bool NEW_CAN_MESSAGE;
 
