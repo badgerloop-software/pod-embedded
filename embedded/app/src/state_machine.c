@@ -94,8 +94,11 @@ void runStateMachine(void) {
     if (stateMachine.overrideStateName != NULL) {
         state_t *tempState = findState(stateMachine.overrideStateName);
         /* TODO We also need to execute a transition if it exists here */
-        if (tempState != NULL)
+        if (tempState != NULL) {
+            stateTransition_t *trans = findTransition(tempState, stateMachine.overrideStateName);
+            if (trans != NULL) trans->action();
             stateMachine.currState = tempState;
+        }
         stateMachine.overrideStateName = NULL;
     }
 
