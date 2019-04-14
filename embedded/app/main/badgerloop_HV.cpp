@@ -15,10 +15,18 @@ data_t *data;
 int init() {
 	// 1. init all drivers
     
-
+    init_can();
 
 	// 2. init all peripherals
+    
+    /* FIXME: Uncomment following once they are pushed into master
+    SetupImu();
+    setupMCP();
+
+    ***/
 	
+
+    // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { return 1; }
 	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))         == NULL) { return 1; }
 	if ((data->motion = (motion_t *)malloc(sizeof(motion_t)))                == NULL) { return 1; }
@@ -95,7 +103,7 @@ int init() {
 	
 	data->state = 0;
 	
-	
+	buildStateMachine();
 	SetupHVTelemetry((char *) "192.168.1.112", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
@@ -111,7 +119,8 @@ int main() {
 	}
 
 	while(1) {
-		usleep(100000);
+		runStateMachine();
+        usleep(100000);
 		// Control loop
 	}
     return 0;
