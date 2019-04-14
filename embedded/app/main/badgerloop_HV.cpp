@@ -14,7 +14,9 @@ data_t *data;
 
 int init() {
 	// 1. init all drivers
-	
+    
+
+
 	// 2. init all peripherals
 	
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { return 1; }

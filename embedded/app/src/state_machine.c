@@ -146,6 +146,8 @@ void buildStateMachine(void) {
     initPreFault(preFault);
     initRunFault(runFault);
     initPostFault(postFault);
+
+    stateMachine.currState = powerOff;
 }
 
 /***
