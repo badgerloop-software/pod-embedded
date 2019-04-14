@@ -8,20 +8,19 @@
 #include "i2c.h"
 #include "mcp23017.h"
 
-void setupMCP(i2c_settings * i2c, char mcpAddress) {
+int setupMCP(i2c_settings * i2c, char mcpAddress) {
+    i2c->bus = 2;
+    i2c->deviceAddress = mcpAddress;
+    i2c->openMode = O_RDWR;
+    if (i2c_begin(i2c) == -1) {
+        fprintf(stderr, "Could not open i2c bus.\n");
+        return -1;
+    }
 
-  i2c->bus = 2;
-  i2c->deviceAddress = mcpAddress;
-  i2c->openMode = O_RDWR;
-
-  if (i2c_begin(i2c) == -1) {
-    fprintf(stderr, "Could not open i2c bus.\n");
-    return;
-  }
-
-  // Set IODIRA/B to make all pins configured as output
-  write_data_i2c(i2c, IODIRA, 0x00);
-  write_data_i2c(i2c, IODIRB, 0x00);
+    // Set IODIRA/B to make all pins configured as output
+    write_data_i2c(i2c, IODIRA, 0x00);
+    write_data_i2c(i2c, IODIRB, 0x00);
+ 
 }
 
 // helper method for getting data from a specific address
@@ -71,9 +70,11 @@ int setState(i2c_settings * i2c, uint8_t pin, bool val) {
         fprintf(stderr, "setState: Invalid pin number\n");
         return -1;
     }
-    
+    if (getDir(i2c, pin) != 0) {
+        fprintf(stderr, "setState: Only can set value on an output\n");
+        return -1;
+    }
     char address = getGpioBank(pin);
-
     uint8_t currentState = getState(i2c, pin);
     if (val == currentState) { // no changes to be made
         return 0;

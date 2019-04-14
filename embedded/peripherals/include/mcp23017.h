@@ -32,7 +32,7 @@ static const char IODIRB    = 0x01;
 static const char GPIOA     = 0x12;
 static const char GPIOB     = 0x13;
 
-void setupMCP(i2c_settings *i2c, char mcpAddress);
+int setupMCP(i2c_settings *i2c, char mcpAddress);
 
 int getState(i2c_settings *i2c, uint8_t pin);
 
