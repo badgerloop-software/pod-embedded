@@ -4,13 +4,16 @@
 #include <unistd.h>
 #include <time.h>
 
-#include "can.h"
-#include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data.h"
 
+extern "C" 
+{
+    #include "can.h"
+    #include "state_machine.h"
+}
 
 data_t *data;
 

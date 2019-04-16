@@ -27,7 +27,7 @@
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
 
-void buildStateMachine();
+void buildStateMachine(void);
 
 void runStateMachine();
 
