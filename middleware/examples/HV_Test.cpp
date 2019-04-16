@@ -11,7 +11,7 @@
 
 extern "C" 
 {
-    #include "can.h"
+    #include "can_devices.h"
 }
 
 data_t *data;
@@ -19,7 +19,7 @@ data_t *data;
 int init() {
 	// 1. init all drivers
     
-    initCan();
+    SetupCanDevices();
 	
     // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }
