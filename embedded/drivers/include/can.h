@@ -11,15 +11,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define CAN_INTF "can0"
+#define CAN_INTF "vcan0"
 
 extern volatile bool NEW_CAN_MESSAGE;
 
-int init_can();
+int initCan();
 
-int read_can_message(struct can_frame *can_mesg);
+int canRead(struct can_frame *can_mesg);
 
-int send_can_msg(uint32_t id, uint8_t *data, uint8_t size);
+int canSend(uint32_t id, uint8_t *data, uint8_t size);
 
 /* Potential ideas for a future API */
 // bool start_can_read();

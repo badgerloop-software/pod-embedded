@@ -1,40 +1,66 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "can.h"
 #include <stdint.h>
 #include "rms.h"
 #include "data.h"
 
 extern data_t *data;
 
-/* RMS Init Function:
- *      Creates RMS data struct
- *      Sets each value = 0
- */
+/* The following send functions are a series of cryptic steps
+ * that just magically make the RMS (Motor Controller) work. 
+ * If you question them too hard you may burst into flames (along with the motor
+ * controller, so dont do it). The important part is that they 
+ * are sent at the proper time and in the listed order. Timing information
+ * will be coming a little later */
 
-// DO NOT NEED TO CALL FROM HV MAIN
-// ONLY FROM THE CAN_TEST EXAMPLE
-void rms_init() {
-	data->rms->igbtTemp = 0;
-	data->rms->gateDriverBoardTemp = 0;
-	data->rms->controlBoardTemp = 0;
-	data->rms->motorTemp = 0;
-	data->rms->motorSpeed = 0;
-	data->rms->phaseACurrent = 0;
-	data->rms->phaseBCurrent = 0;
-	data->rms->phaseCCurrent = 0;	
-	data->rms->dcBusVoltage=0;
-	//rms->output_voltage_peak = 0;
-	data->rms->lvVoltage = 0;
-	data->rms->canCode1 = 0;
-	data->rms->canCode2 = 0;
-	data->rms->faultCode1 = 0;
-	data->rms->faultCode2 = 0;
-	data->rms->commandedTorque = 0;
-	data->rms->actualTorque = 0;
-	data->rms->relayState = 0;	
-	data->rms->electricalFreq = 0;
-	data->rms->dcBusCurrent = 0;
-	data->rms->outputVoltageLn = 0;
+/* TODO figure out if heartbeat values may just be torque */
+/* 1 */
+int rmsEnHeartbeat() {
+    uint8_t payload[] = {0x92, 0x0, 0x1, 0x0, 0x1, 0x0, 0x0, 0x0};
+    return canSend(RMS_HB_ID, payload, 8);
+}
+
+/* 2 */
+int rmsClrFaults() {
+    uint8_t payload[] = {0x14, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0};
+    return canSend(RMS_CLR_FAULTS_ID, payload, 8);
+}
+
+/* 3 */
+int rmsInvDis() {
+    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+    return canSend(RMS_INV_DIS_ID, payload, 8);
+}
+
+/* 4 */
+int rmsInvEn() {
+    uint8_t payload[] = {0x64, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    return canSend(RMS_INV_EN_ID, payload, 8);
+}
+
+/* 5 */
+int rmsInvForward20() {
+    uint8_t payload[] = {0xC8, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    return canSend(RMS_INV_FW_20_ID, payload, 8);
+}
+
+/* 6 */
+int rmsInvForward30() {
+    uint8_t payload[] = {0x2C, 0x1, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    return canSend(RMS_INV_FW_30_ID, payload, 8);
+}
+
+/* 7 */
+int rmsCmdNoTorque() {
+    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0};
+    return canSend(RMS_CMD_0_NM_ID, payload, 8);
+}
+
+/* 8 */
+int rmsDischarge() {
+    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x2, 0x0, 0x0};
+    return canSend(RMS_INV_DISCHARGE_ID, payload, 8);
 }
 
 /* RMS CAN Parser Function
@@ -71,7 +97,8 @@ int rms_parser(uint32_t id, uint8_t *rmsData){
 			data->rms->phaseACurrent = (rmsData[0] | (rmsData[1] << 8)) / 10; // Phase A current
 			data->rms->dcBusCurrent = (rmsData[6] | (rmsData[7] << 8)) / 10; //DC Bus current
 			printf("Phase A Current: %d\r\n", data->rms->phaseACurrent);
-			printf("Phase B Current: %d\r\n", data->rms->phaseBCurrent);
+			printf("DC Bus Current: %d\r\n", data->rms->dcBusCurrent);
+            printf("Phase B Current: %d\r\n", data->rms->phaseBCurrent); //FIXME This isnt actually being read in?
 			break;
 		case (0xa7):
 			data->rms->dcBusVoltage = (rmsData[0] | (rmsData[1] << 8))/10; //DC Bus voltage
