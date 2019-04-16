@@ -11,7 +11,7 @@
 
 extern "C" 
 {
-    #include "can.h"
+    #include "can_devices.h"
     #include "state_machine.h"
 }
 
@@ -20,7 +20,7 @@ data_t *data;
 int init() {
 	// 1. init all drivers
     
-    initCan();
+    SetupCANDevices();
 	
     // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }
@@ -105,7 +105,7 @@ int init() {
 	data->state = 0;
 	
 	buildStateMachine();
-    SetupHVTelemetry((char *) "192.168.1.112", 33333);
+    SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
     return 0;	

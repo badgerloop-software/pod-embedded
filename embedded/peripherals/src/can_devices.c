@@ -21,16 +21,16 @@ void SetupCANDevices(){
 
 void rx_recv(struct can_frame *can_mesg){
 		if(!canRead(can_mesg)){ // Checks for a CAN message
-			printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
-			printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
+		//	printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
+		//	printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
 			bool validRMSMesg = false;
 			if(rms_parser(can_mesg->can_id, can_mesg->data)){
-				printf("RMS Data parsed successfully\n");
+		//		printf("RMS Data parsed successfully\n");
 				validRMSMesg = true;
 			}
 	   
 			if(!validRMSMesg && bmsParseMsg(can_mesg->can_id, can_mesg->data)){
-				printf("BMS Data parsed successfully\n");
+		//		printf("BMS Data parsed successfully\n");
 				bmsDump();
 			
 		}
