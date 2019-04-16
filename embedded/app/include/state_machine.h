@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 
-#define NUM_STATES              14
+#define NUM_STATES              15
 
 #define PRE_RUN_FAULT_NAME      "preFault"
 #define POST_RUN_FAULT_NAME     "postFault"
