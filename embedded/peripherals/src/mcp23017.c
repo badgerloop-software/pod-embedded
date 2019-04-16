@@ -35,7 +35,7 @@ static uint8_t getFromAddress(i2c_settings * i2c, char address, uint8_t pin) {
 /* TODO temp function, going to replace with a faster solution by using a 0x<Bank><pin> encoding later */
 static uint8_t makeRelativeToBank(uint8_t pin) {
     /* If its in bank B, we need to shif the numbering convention */
-    if (pin > (NUM_PINS >> 1)) {
+    if (pin >= (NUM_PINS >> 1)) {
         pin -= (NUM_PINS >> 1);
     }
     return pin;
