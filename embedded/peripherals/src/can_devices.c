@@ -6,6 +6,7 @@
 #include "can.h"
 #include "bms.h"
 #include "rms.h"
+#include "can_devices.h"
 
 //Global Variables
 pthread_t CANThread;
