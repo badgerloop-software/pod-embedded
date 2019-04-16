@@ -9,11 +9,13 @@
 
 #include "data.h"
 #include "HVTCPSocket.h"
+#include "state_machine.h"
 
 
 pthread_t HVTCPThread;
 
 extern data_t *data;
+extern stateMachine_t stateMachine;
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
@@ -125,7 +127,10 @@ void *TCPLoop(void *arg){
 			// TODO turn hv off
 		}
 
-		
+		if(!strncmp(buffer,"override", 8)){
+			fprintf("Override received for state: %s\n", buffer+9);
+			strncpy(stateMachine.overrideStateName, buffer+9, strlen(buffer+9));
+		}
 		
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){

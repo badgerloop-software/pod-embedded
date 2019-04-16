@@ -148,6 +148,13 @@ void buildStateMachine(void) {
     initPostFault(postFault);
 
     stateMachine.currState = powerOff;
+    
+    stateMachine.overrideStateName = malloc(21) // Longest state name is "readyForPropulsion" -- 18 char
+    
+    if(stateMachine.overrideStateName == NULL){
+        fprintf(stderr, "Malloc error -- state machine override state machine name\n");
+        exit(1);
+    }
 }
 
 /***
