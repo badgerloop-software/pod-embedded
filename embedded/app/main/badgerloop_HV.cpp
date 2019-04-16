@@ -118,6 +118,8 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
+    
+    printf("Here\n");
 
 	while(1) {
 		runStateMachine();
