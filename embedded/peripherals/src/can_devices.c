@@ -31,7 +31,7 @@ void rx_recv(struct can_frame *can_mesg){
 	   
 			if(!validRMSMesg && bmsParseMsg(can_mesg->can_id, can_mesg->data)){
 		//		printf("BMS Data parsed successfully\n");
-				bmsDump();
+		//		bmsDump();
 			
 		}
 		
