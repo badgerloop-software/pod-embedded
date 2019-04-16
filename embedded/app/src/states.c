@@ -63,8 +63,8 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	return data->motion->accel < MAX_STOPPED_ACCEL && 
-        (time(NULL) - data->timers->lastRetro) > 15;
+    // TODO Check this with all three retro timers?
+	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
 }
 
 
@@ -140,8 +140,8 @@ stateTransition_t * propulsionAction() {
     // Check for nominal values?
     
 
-    if (data->timers->global > MAX_RUN_TIME){
-        
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     return NULL;

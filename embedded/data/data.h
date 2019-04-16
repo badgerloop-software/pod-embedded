@@ -45,6 +45,7 @@ typedef struct timers_t {
     time_t lastRetro1;
     time_t lastRetro2;
     time_t lastRetro3;
+    time_t timeInState;
 } timers_t;
 
 /***
