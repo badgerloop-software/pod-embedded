@@ -108,6 +108,7 @@ static int addTransition(state_t *state, stateTransition_t *trans) {
         return -1;
     }
     state->transitions[i] = trans;
+    return 0;
 }
 
 static int initPowerOff(state_t *powerOff) {
@@ -140,7 +141,7 @@ static int initReadyForPumpdown(state_t *readyForPumpdown) {
     initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 2);
     
     initTransition(toPumpdown, findState(PUMPDOWN_NAME), NULL);
-    initTransition(toPreFault, findStaet(PRE_RUN_FAULT_NAME), NULL);
+    initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL);
     addTransition(readyForPumpdown, toPumpdown);
     addTransition(readyForPumpdown, toPreFault);
     return 0;
@@ -184,7 +185,7 @@ static int initPropulsion(state_t *propulsion) {
 }
 
 static int initBraking(state_t *braking) {
-    stateTransition *toCrawl, *toStopped, *toRunFault;
+    stateTransition_t *toCrawl, *toStopped, *toRunFault;
 
     initState(braking, BRAKING_NAME, brakingAction, 3);
 
