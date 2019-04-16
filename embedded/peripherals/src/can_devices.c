@@ -10,7 +10,7 @@
 //Global Variables
 pthread_t CANThread;
 
-SetupCANDevices(){
+void SetupCANDevices(){
 	initCan();
 	
 	if (pthread_create(&CANThread, NULL, CANLoop, NULL)){
@@ -43,8 +43,9 @@ void *CANLoop(void *arg){
 	(void) arg;
 	
 	
-	 struct can_frame can_mesg;
+	struct can_frame can_mesg;
 	while(1){
 		rx_test(&can_mesg);
+		usleep(50);
 	}
 }

@@ -1,7 +1,7 @@
 #ifndef CANDEVICES_H
 #define CANDEVICES_H
 
-SetupCANDevices();
-
+void SetupCANDevices();
+void *CANLoop(void *arg);
 
 #endif
