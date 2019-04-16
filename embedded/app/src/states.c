@@ -11,6 +11,7 @@
 /* Includes */
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>  
 
 #include "state_machine.h"
 #include "data.h"
@@ -63,7 +64,7 @@ static bool checkPrimPressures(void) {
 
 static bool checkStopped(void) {
 	return data->motion->accel < MAX_STOPPED_ACCEL && 
-        (time() - data->timers->lastRetro) > 15;
+        (time(NULL) - data->timers->lastRetro) > 15;
 }
 
 
@@ -161,7 +162,7 @@ stateTransition_t * stoppedAction() {
     data->state = 7;
     if (!checkBattTemp()) 
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE)
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
 
 
@@ -172,12 +173,12 @@ stateTransition_t * crawlAction() {
     data->state = 8;
     if (!checkBattTemp())
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE)
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->pressures->pv < 13)
+    if (data->pressure->pv < 13)
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
 
-    if (data->motion->position >= (TUBE_LENGTH - 100))
+    if (data->motion->pos >= (TUBE_LENGTH - 100))
         return findTransition(stateMachine.currState, BRAKING_NAME);
     
 	return NULL;
@@ -186,14 +187,14 @@ stateTransition_t * crawlAction() {
 stateTransition_t * postRunAction() {
     data->state = 9;
 	if (!checkBattTemp()) {
-        return findTransition(stateMachine.currState, POST_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
     if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
-        return findTransition(stateMachine.currState, POST_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
-    if (data->bms->packVoltage == 0 && data->ps1 < 30) {
+    if (data->bms->packVoltage == 0 && data->pressure->ps1 < 30) {
         return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
     }
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "can.h"
 #include "state_machine.h"
@@ -20,12 +21,13 @@ int init() {
 	
 
     // Init Data struct
-	if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { return 1; }
+	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }
 	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))         == NULL) { return 1; }
 	if ((data->motion = (motion_t *)malloc(sizeof(motion_t)))                == NULL) { return 1; }
-	if ((data->bms = (bms_t *) malloc(sizeof(bms_t)))     	          	 == NULL) { return 1; }
-	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		         == NULL) { return 1; }
+	if ((data->bms = (bms_t *) malloc(sizeof(bms_t)))     	          		 == NULL) { return 1; }
+	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		       	     == NULL) { return 1; }
 	if ((data->flags = (flags_t *) malloc(sizeof(flags_t)))                  == NULL) { return 1; }
+	if ((data->timers = (timers_t *) malloc(sizeof(timers_t)))               == NULL) { return 1; }
 	
 	// Init pressure values to 0
 	data->pressure->ps1 = 0;
@@ -36,6 +38,7 @@ int init() {
 	data->pressure->sec_ps2 = 0;
 	data->pressure->sec_ps3 = 0;
 	data->pressure->sec_ps4 = 0;
+	data->pressure->pv = 0;
 	
 	// Init motion values to 0
 	data->motion->pos = 0;
@@ -93,6 +96,9 @@ int init() {
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
 	data->flags->emergencyBrake = 0;
+	
+	// Init initial timer
+	data->timers->startTime = time(NULL);
 	
 	data->state = 0;
 	
