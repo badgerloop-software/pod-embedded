@@ -43,6 +43,23 @@ extern stateTransition_t * postFaultAction(void);
 stateMachine_t stateMachine;
 
 /***
+ * findState - Searches all the created states and returns the one with a matching name
+ *
+ * ARGS: char *stateName - Name of the state we are searching for. Check out state_machine.h
+ * 	for options.
+ *
+ * RETURNS: state_t, the found state or NULL if that state doesnt exist
+ */
+state_t *findState(char *stateName) {
+    for (int i = 0; i < NUM_STATES; i++) {
+        if (strcmp(stateMachine.allStates[i]->name, stateName) == 0) {
+            return stateMachine.allStates[i];
+        }
+    }
+    return NULL;
+}
+
+/***
  * initState - fills in the fields of the state_t struct.
  *
  * ARGS: state_t *state - allocated state (malloced most likely),
@@ -76,8 +93,11 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
  */
 static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
     transition = malloc(sizeof(stateTransition_t));
-    if (transition == NULL) return -1;
-    transition->target;
+    if (transition == NULL){
+        return;
+    } 
+    transition->target = target;
+    transition->action = action;
 }
 
 static int addTransition(state_t *state, stateTransition_t *trans) {
@@ -245,24 +265,6 @@ static int initRunFault(state_t *runFault) {
 static int initPostFault(state_t *postFault) {
     initState(postFault, POST_RUN_FAULT_NAME, postFaultAction, 0);
     return 0;
-}
-
-
-/***
- * findState - Searches all the created states and returns the one with a matching name
- *
- * ARGS: char *stateName - Name of the state we are searching for. Check out state_machine.h
- * 	for options.
- *
- * RETURNS: state_t, the found state or NULL if that state doesnt exist
- */
-state_t *findState(char *stateName) {
-    for (int i = 0; i < NUM_STATES; i++) {
-        if (strcmp(stateMachine.allStates[i]->name, stateName) == 0) {
-            return stateMachine.allStates[i];
-        }
-    }
-    return NULL;
 }
 
 /***
