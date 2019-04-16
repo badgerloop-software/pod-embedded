@@ -32,6 +32,14 @@ static uint8_t getFromAddress(i2c_settings * i2c, char address, uint8_t pin) {
 
 	return (dataBuffer[0] >> pin) & 1; // getting the digit corresponding to the pin
 }
+/* TODO temp function, going to replace with a faster solution by using a 0x<Bank><pin> encoding later */
+static uint8_t makeRelativeToBank(uint8_t pin) {
+    /* If its in bank B, we need to shif the numbering convention */
+    if (pin > (NUM_PINS >> 1)) {
+        pin -= (NUM_PINS >> 1);
+    }
+    return pin;
+}
 
 static int validatePin(uint8_t pin) {
     /* Check that we are getting a valid pin */
@@ -62,7 +70,9 @@ int getState(i2c_settings * i2c, uint8_t pin) {
         fprintf(stderr, "Invalid pin input getState\n");
         return -1;
     }
-    return getFromAddress(i2c, getGpioBank(pin), pin);
+    char addr = getGpioBank(pin);
+    pin = makeRelativeToBank(pin);
+    return getFromAddress(i2c, addr, pin);
 }
 
 int setState(i2c_settings * i2c, uint8_t pin, bool val) {
@@ -75,11 +85,13 @@ int setState(i2c_settings * i2c, uint8_t pin, bool val) {
         return -1;
     }
     char address = getGpioBank(pin);
+    
+    
     uint8_t currentState = getState(i2c, pin);
     if (val == currentState) { // no changes to be made
         return 0;
     }
-
+    pin = makeRelativeToBank(pin);
     // uint8_t newState; TODO Discuss
     // TODO: Discuss; right idea but there is a better way!
     if (val == 0) { // change it form 1 to 0
@@ -97,7 +109,9 @@ int getDir(i2c_settings * i2c, uint8_t pin) {
         fprintf(stderr, "Invalid pin\n");
         return -1;
     }
-	return getFromAddress(i2c, getIodirBank(pin), pin);
+    char addr = getIodirBank(pin);
+    pin = makeRelativeToBank(pin);
+	return getFromAddress(i2c, addr, pin);
 }
 
 int setDir(i2c_settings * i2c, uint8_t pin, bool val) {
@@ -106,12 +120,12 @@ int setDir(i2c_settings * i2c, uint8_t pin, bool val) {
     }
     
     char address = getIodirBank(pin);
-
+    
     int currentState = getDir(i2c, pin);
     if (val == currentState) {
         return 0;
     }
-
+    pin = makeRelativeToBank(pin);
     // uint8_t newState; TODO: Discuss
     
     // TODO: Discuss
