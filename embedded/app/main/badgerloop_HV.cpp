@@ -16,14 +16,6 @@ int init() {
 	// 1. init all drivers
     
     init_can();
-
-	// 2. init all peripherals
-    
-    /* FIXME: Uncomment following once they are pushed into master
-    SetupImu();
-    setupMCP();
-
-    ***/
 	
 
     // Init Data struct
