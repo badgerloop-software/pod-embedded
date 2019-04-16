@@ -171,15 +171,18 @@ stateTransition_t * stoppedAction() {
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-    if (!checkBattTemp())
+    if (!checkBattTemp()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE)
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->pressure->pv < 13)
+    }
+    if (data->pressure->pv < 13) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-
-    if (data->motion->pos >= (TUBE_LENGTH - 100))
+    }
+    if (data->motion->pos >= (TUBE_LENGTH - 100)) {
         return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
     
 	return NULL;
 }

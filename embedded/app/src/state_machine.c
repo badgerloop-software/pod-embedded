@@ -112,7 +112,7 @@ static int addTransition(state_t *state, stateTransition_t *trans) {
 }
 
 static int initPowerOff(state_t *powerOff) {
-    stateTransition_t *toIdle, *toPreFault;
+    stateTransition_t *toIdle = NULL, *toPreFault = NULL;
 	
     initState(powerOff, POWER_OFF_NAME, powerOnAction, 2);   
     
@@ -124,7 +124,7 @@ static int initPowerOff(state_t *powerOff) {
 }
 
 static int initIdle(state_t *idle) {
-    stateTransition_t *toReadyForPumpdown, *toPreFault;
+    stateTransition_t *toReadyForPumpdown = NULL, *toPreFault = NULL;
 
     initState(idle, IDLE_NAME, idleAction, 2);
 
@@ -136,7 +136,7 @@ static int initIdle(state_t *idle) {
 }
 
 static int initReadyForPumpdown(state_t *readyForPumpdown) {
-    stateTransition_t *toPumpdown, *toPreFault;
+    stateTransition_t *toPumpdown = NULL, *toPreFault = NULL;
 
     initState(readyForPumpdown, READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 2);
     
@@ -148,7 +148,7 @@ static int initReadyForPumpdown(state_t *readyForPumpdown) {
 }
 
 static int initPumpdown(state_t *pumpdown) {
-    stateTransition_t *toReadyForLaunch, *toPreFault;
+    stateTransition_t *toReadyForLaunch = NULL, *toPreFault = NULL;
 
     initState(pumpdown, PUMPDOWN_NAME, pumpdownAction, 2);
 
@@ -160,7 +160,7 @@ static int initPumpdown(state_t *pumpdown) {
 }
 
 static int initReadyForLaunch(state_t *ready) {
-    stateTransition_t *toPropulsion, *toRunFault;
+    stateTransition_t *toPropulsion = NULL, *toRunFault = NULL;
 
     initState(ready, READY_NAME, readyForLaunchAction, 2);
 
@@ -172,7 +172,7 @@ static int initReadyForLaunch(state_t *ready) {
 }
 
 static int initPropulsion(state_t *propulsion) {
-    stateTransition_t *toBraking, *toRunFault;
+    stateTransition_t *toBraking = NULL, *toRunFault = NULL;
 
     initState(propulsion, PROPULSION_NAME, propulsionAction, 2);
 
@@ -185,7 +185,7 @@ static int initPropulsion(state_t *propulsion) {
 }
 
 static int initBraking(state_t *braking) {
-    stateTransition_t *toCrawl, *toStopped, *toRunFault;
+    stateTransition_t *toCrawl = NULL, *toStopped = NULL, *toRunFault = NULL;
 
     initState(braking, BRAKING_NAME, brakingAction, 3);
 
@@ -200,7 +200,7 @@ static int initBraking(state_t *braking) {
 }
 
 static int initCrawl(state_t *crawl) {
-    stateTransition_t *toStopped, *toRunFault, *toBraking;
+    stateTransition_t *toStopped = NULL, *toRunFault = NULL, *toBraking = NULL;
 
     initState(crawl, CRAWL_NAME, crawlAction, 3);
 
@@ -215,7 +215,7 @@ static int initCrawl(state_t *crawl) {
 }
 
 static int initStopped(state_t *stopped) {
-    stateTransition_t *toPostRun, *toCrawl, *toRunFault;
+    stateTransition_t *toPostRun = NULL, *toCrawl = NULL, *toRunFault = NULL;
 
     initState(stopped, STOPPED_NAME, stoppedAction, 3);
 
@@ -230,7 +230,7 @@ static int initStopped(state_t *stopped) {
 }
 
 static int initPostRun(state_t *postRun) {
-    stateTransition_t *toSafeToApproach, *toPostFault;
+    stateTransition_t *toSafeToApproach = NULL, *toPostFault = NULL;
     
     initState(postRun, POST_RUN_NAME, postRunAction, 2);
 
@@ -243,7 +243,7 @@ static int initPostRun(state_t *postRun) {
 }
 
 static int initSafeToApproach(state_t *safeToApproach) {
-    stateTransition_t *toPostFault;
+    stateTransition_t *toPostFault = NULL;
 
     initState(safeToApproach, SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
     
@@ -328,17 +328,26 @@ void runStateMachine(void) {
  */
 void buildStateMachine(void) {
 	    /* Create all of the states*/
-	state_t *powerOff, *idle, *readyForPumpdown, *pumpdown,
-			*readyForLaunch, *propulsion, *braking, *secondaryBraking,
-			*stopped, *crawl, *rebrake, *postRun, *safeToApproach, *preFault,
-			*runFault, *postFault;
-	state_t **allStates = malloc(NUM_STATES * sizeof(state_t*));
-
-	*(stateMachine.allStates) = (state_t **){
-            powerOff, idle, readyForPumpdown, pumpdown,
-            readyForLaunch, propulsion, braking, secondaryBraking,
-            stopped, crawl, postRun, safeToApproach, preFault, runFault, postFault
-    };
+	state_t *powerOff = NULL, *idle = NULL, *readyForPumpdown = NULL, *pumpdown = NULL,
+			*readyForLaunch = NULL, *propulsion = NULL, *braking = NULL, *secondaryBraking = NULL,
+			*stopped = NULL, *crawl = NULL, *postRun = NULL, *safeToApproach = NULL, *preFault = NULL,
+			*runFault = NULL, *postFault = NULL;
+	stateMachine.allStates[0] = powerOff;
+    stateMachine.allStates[1] = idle; 
+    stateMachine.allStates[2] = readyForPumpdown;
+    stateMachine.allStates[3] = pumpdown,
+    stateMachine.allStates[4] = readyForLaunch;
+    stateMachine.allStates[5] = propulsion;
+    stateMachine.allStates[6] = braking;
+    stateMachine.allStates[7] = secondaryBraking;
+    stateMachine.allStates[8] = stopped;
+    stateMachine.allStates[9] = crawl;
+    stateMachine.allStates[10] = postRun; 
+    stateMachine.allStates[11] = safeToApproach;
+    stateMachine.allStates[12] = preFault;
+    stateMachine.allStates[13] = runFault; 
+    stateMachine.allStates[14] = postFault;
+    
     
     initPowerOff(powerOff);
     initIdle(idle);
