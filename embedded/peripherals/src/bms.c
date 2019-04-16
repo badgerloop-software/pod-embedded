@@ -36,7 +36,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 		case 0x6B0:
 //			printf("ID: 0x%3lx\r\n", (long unsigned int) id);
 //			printf("Data: %d, %d, %d, %d, %d, %d, %d\r\n", msg[0], msg[1], msg[2], 
-			msg[3], msg[4], msg[5], msg[6]);
+//			msg[3], msg[4], msg[5], msg[6]);
 			bms->packCurrent = msg[1] | msg[0] << 8;
 			bms->packCurrent /= 10;
 			bms->packVoltage = msg[3] | msg[2] << 8;
