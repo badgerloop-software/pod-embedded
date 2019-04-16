@@ -333,9 +333,8 @@ void buildStateMachine(void) {
 			*stopped, *crawl, *rebrake, *postRun, *safeToApproach, *preFault,
 			*runFault, *postFault;
 	state_t **allStates = malloc(NUM_STATES * sizeof(state_t*));
-    
-	stateMachine.allStates = 
-    {
+
+	*(stateMachine.allStates) = (state_t **){
             powerOff, idle, readyForPumpdown, pumpdown,
             readyForLaunch, propulsion, braking, secondaryBraking,
             stopped, crawl, postRun, safeToApproach, preFault, runFault, postFault
@@ -360,7 +359,7 @@ void buildStateMachine(void) {
     
     stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
     
-    if(stateMachine.overrideStateName == NULL){
+    if(stateMachine.overrideStateName == NULL) {
         fprintf(stderr, "Malloc error -- state machine override state machine name\n");
         exit(1);
     }

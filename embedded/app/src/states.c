@@ -160,12 +160,12 @@ stateTransition_t * brakingAction() {
 
 stateTransition_t * stoppedAction() {
     data->state = 7;
-    if (!checkBattTemp()) 
+    if (!checkBattTemp()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE)
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-
-
+    }
 	return NULL;
 }
 
