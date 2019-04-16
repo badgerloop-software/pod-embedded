@@ -22,8 +22,6 @@ int init() {
     
     init_can();
 	
-    printf("Hey\n");
-
     // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }
 	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))         == NULL) { return 1; }
@@ -107,11 +105,9 @@ int init() {
 	data->state = 0;
 	
 	buildStateMachine();
-	printf("check 1\n");
     SetupHVTelemetry((char *) "192.168.1.112", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
-    printf("check2\n");
     return 0;	
 }
 
@@ -122,7 +118,6 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    printf("gets to SM3\n");
 
 	while(1) {
 		runStateMachine();

@@ -71,8 +71,8 @@ state_t *findState(char *stateName) {
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTransitions ) {
     static int indexInAllStates = 0;
     int i = 0;
-    printf("INDEXINALLSTATES: %d\n", indexInAllStates);
     state = malloc(sizeof(state_t));
+    
     if (state == NULL) {
         STATE_ERROR();
     }
@@ -81,7 +81,6 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
     strncpy(state->name, name, strlen(name) );
     state->action = action;
     state->numTransitions = numTransitions;
-    printf("NUMTRAN: %d\n", state->numTransitions);
     state->transitions = malloc(numTransitions * (sizeof(stateTransition_t *)));
     for (i = 0; i < numTransitions; i++) {
         state->transitions[i] = malloc(sizeof(stateTransition_t));
@@ -95,25 +94,19 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
  *
  */
 static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
-    printf("ENTER INITTRAN\n");
     transition = malloc(sizeof(stateTransition_t));
     if (transition == NULL){
         return;
     } 
-    printf("malloc initTran\n");
     transition->target = target;
-    printf("target\n");
     transition->action = action;
-    printf("action\n");
 }
 
 static int addTransition(state_t *state, stateTransition_t *trans) {
     int i = 0;
 
-    printf("Num Trans: %d\n", state->numTransitions);
     for (i; i < state->numTransitions; i++);
     
-    printf("I = %d", i);
     if (i >= state->numTransitions) {
         fprintf(stderr, "[WARN] adding too many transitions! Ignoring extra.\n");
         return -1;
@@ -124,13 +117,10 @@ static int addTransition(state_t *state, stateTransition_t *trans) {
 
 static int initPowerOff(state_t *powerOff) {
     stateTransition_t *toIdle = NULL, *toPreFault = NULL;
-	
-    initState(powerOff, POWER_OFF_NAME, powerOnAction, 2);   
+    initState(&powerOff, POWER_OFF_NAME, powerOnAction, 2);   
     initTransition(toIdle, findState(IDLE_NAME), NULL);
     initTransition(toPreFault, findState(PRE_RUN_FAULT_NAME), NULL); 
-    printf("NUM->%d\n", powerOff->numTransitions);
     addTransition(powerOff, toIdle);
-    printf("addTran\n");
     addTransition(powerOff, toPreFault);
     return 0;
 }
@@ -340,45 +330,25 @@ void runStateMachine(void) {
  */
 void buildStateMachine(void) {
 	    /* Create all of the states*/
-	state_t *powerOff = NULL, *idle = NULL, *readyForPumpdown = NULL, *pumpdown = NULL,
-			*readyForLaunch = NULL, *propulsion = NULL, *braking = NULL, *secondaryBraking = NULL,
-			*stopped = NULL, *crawl = NULL, *postRun = NULL, *safeToApproach = NULL, *preFault = NULL,
-			*runFault = NULL, *postFault = NULL;
-	printf("sm1\n");
-    stateMachine.allStates[0] = powerOff;
-    printf("sm2\n");
-    stateMachine.allStates[1] = idle; 
-    stateMachine.allStates[2] = readyForPumpdown;
-    stateMachine.allStates[3] = pumpdown,
-    stateMachine.allStates[4] = readyForLaunch;
-    stateMachine.allStates[5] = propulsion;
-    stateMachine.allStates[6] = braking;
-    stateMachine.allStates[7] = secondaryBraking;
-    stateMachine.allStates[8] = stopped;
-    stateMachine.allStates[9] = crawl;
-    stateMachine.allStates[10] = postRun; 
-    stateMachine.allStates[11] = safeToApproach;
-    stateMachine.allStates[12] = preFault;
-    stateMachine.allStates[13] = runFault; 
-    stateMachine.allStates[14] = postFault;
-    
-    initPowerOff(powerOff);
-    printf("first init\n");
-    initIdle(idle);
-    initReadyForPumpdown(readyForPumpdown);
-    initPumpdown(pumpdown);
-    initReadyForLaunch(readyForLaunch);
-	initPropulsion(propulsion);
-    initBraking(braking);
-    initStopped(stopped);
-    initCrawl(crawl);
-    initPostRun(postRun);
-    initSafeToApproach(safeToApproach);
-    initPreFault(preFault);
-    initRunFault(runFault);
-    initPostFault(postFault);
-    printf("end inits\n");
-    stateMachine.currState = powerOff;
+	state_t powerOff, idle, readyForPumpdown, pumpdown,
+			readyForLaunch,propulsion, braking, secondaryBraking,
+			stopped , crawl , postRun , safeToApproach, preFault,
+			runFault, postFault;
+    initPowerOff(&powerOff);
+    initIdle(&idle);
+    initReadyForPumpdown(&readyForPumpdown);
+    initPumpdown(&pumpdown);
+    initReadyForLaunch(&readyForLaunch);
+	initPropulsion(&propulsion);
+    initBraking(&braking);
+    initStopped(&stopped);
+    initCrawl(&crawl);
+    initPostRun(&postRun);
+    initSafeToApproach(&safeToApproach);
+    initPreFault(&preFault);
+    initRunFault(&runFault);
+    initPostFault(&postFault);
+    stateMachine.currState = stateMachine.allStates[0];
     
     stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
     
