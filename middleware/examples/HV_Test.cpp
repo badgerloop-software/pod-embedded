@@ -19,7 +19,7 @@ data_t *data;
 int init() {
 	// 1. init all drivers
     
-    SetupCanDevices();
+    SetupCANDevices();
 	
     // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }

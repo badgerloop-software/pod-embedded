@@ -19,7 +19,7 @@ void SetupCANDevices(){
 	}
 }
 
-void rx_test(struct can_frame *can_mesg) {
+void rx_recv(struct can_frame *can_mesg){
 		if(!canRead(can_mesg)){ // Checks for a CAN message
 			printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
 			printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
@@ -46,7 +46,7 @@ void *CANLoop(void *arg){
 	
 	struct can_frame can_mesg;
 	while(1){
-		rx_test(&can_mesg);
+		rx_recv(&can_mesg);
 		usleep(50);
 	}
 }
