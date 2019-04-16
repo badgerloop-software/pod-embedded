@@ -18,8 +18,8 @@ int setupMCP(i2c_settings * i2c, char mcpAddress) {
     }
 
     // Set IODIRA/B to make all pins configured as output
-    write_data_i2c(i2c, IODIRA, 0x00);
-    write_data_i2c(i2c, IODIRB, 0x00);
+    if (write_data_i2c(i2c, IODIRA, 0x00) != 0) return -1;
+    if (write_data_i2c(i2c, IODIRB, 0x00) != 0) return -1;
     return 0;
 }
 
