@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "can.h"
 #include "state_machine.h"
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
