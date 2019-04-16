@@ -57,9 +57,9 @@ static int writeToDev(i2c_settings *i2c, char addr, uint8_t pin, bool val) {
         return 0;
     }
     if (val) {
-        ret = write_data_i2c(i2c, addr, currentState | (1 << pin))
+        ret = write_data_i2c(i2c, addr, currentState | (1 << pin));
     } else {
-        ret = write_data_i2c(i2c, addr, currentState & ~(1 << pin))
+        ret = write_data_i2c(i2c, addr, currentState & ~(1 << pin));
     }
     return ret;
 }
