@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <time.h>
 
 /***
  *
@@ -28,8 +29,24 @@ typedef struct data_t {
     struct bms_t      *bms;
     struct rms_t      *rms;
     struct flags_t    *flags;
+    struct timers_t   *timers;
     int state;
 } data_t;
+
+
+/***
+ *
+ * Timers struct -- For making sure that our run happens in a timely manner
+ *
+ */
+
+typedef struct timers_t {
+    time_t startTime;
+    time_t lastRetro1;
+    time_t lastRetro2;
+    time_t lastRetro3;
+    time_t timeInState;
+} timers_t;
 
 /***
  * pressure_t - Pressure data from the braking system
@@ -43,6 +60,7 @@ typedef struct pressure_t {
     uint32_t sec_ps2;
     uint32_t sec_ps3;
     uint32_t sec_ps4;
+    uint32_t pv;
 } pressure_t;
 
 

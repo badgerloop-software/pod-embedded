@@ -11,6 +11,7 @@
 /* Includes */
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>  
 
 #include "state_machine.h"
 #include "data.h"
@@ -62,8 +63,8 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	return data->motion->accel < MAX_STOPPED_ACCEL && 
-        (time() - data->timers->lastRetro) > 15;
+    // TODO Check this with all three retro timers?
+	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
 }
 
 
@@ -79,15 +80,16 @@ static bool checkBattTemp(void) {
  */
 
 stateTransition_t * powerOnAction() {
+    printf("Power on action\n");
     return findTransition(stateMachine.currState, IDLE_NAME);
 }
 
 stateTransition_t * idleAction() {
     // First check for nominal values?
     data->state = 1;
-    if(!checkPrimPressures() || !checkStopped()){
-        STATE_ERROR();
-    }
+   // if(!checkPrimPressures() || !checkStopped()){
+   //     STATE_ERROR();
+   // }
 
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
@@ -139,8 +141,8 @@ stateTransition_t * propulsionAction() {
     // Check for nominal values?
     
 
-    if (data->timers->global > MAX_RUN_TIME){
-        
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     return NULL;
@@ -159,26 +161,29 @@ stateTransition_t * brakingAction() {
 
 stateTransition_t * stoppedAction() {
     data->state = 7;
-    if (!checkBattTemp()) 
+    if (!checkBattTemp()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-
-
+    }
 	return NULL;
 }
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-    if (!checkBattTemp())
+    if (!checkBattTemp()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->cellMinVoltage < MIN_CELL_VOLTAGE)
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (data->pressures->pv < 13)
+    }
+    if (data->pressure->pv < 13) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-
-    if (data->motion->position >= (TUBE_LENGTH - 100))
+    }
+    if (data->motion->pos >= (TUBE_LENGTH - 100)) {
         return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
     
 	return NULL;
 }
@@ -186,14 +191,14 @@ stateTransition_t * crawlAction() {
 stateTransition_t * postRunAction() {
     data->state = 9;
 	if (!checkBattTemp()) {
-        return findTransition(stateMachine.currState, POST_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
     if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
-        return findTransition(stateMachine.currState, POST_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
-    if (data->bms->packVoltage == 0 && data->ps1 < 30) {
+    if (data->bms->packVoltage == 0 && data->pressure->ps1 < 30) {
         return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
     }
 
