@@ -123,7 +123,8 @@ int main() {
 
 	while(1) {
 		runStateMachine();
-        usleep(100000);
+        usleep(10000);
+
 		// Control loop
 	}
     return 0;
