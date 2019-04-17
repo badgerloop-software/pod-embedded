@@ -80,15 +80,16 @@ static bool checkBattTemp(void) {
  */
 
 stateTransition_t * powerOnAction() {
+    printf("Power on action\n");
     return findTransition(stateMachine.currState, IDLE_NAME);
 }
 
 stateTransition_t * idleAction() {
     // First check for nominal values?
     data->state = 1;
-    if(!checkPrimPressures() || !checkStopped()){
-        STATE_ERROR();
-    }
+   // if(!checkPrimPressures() || !checkStopped()){
+   //     STATE_ERROR();
+   // }
 
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
