@@ -94,7 +94,7 @@ int init() {
 	data->state = 0;
 	
 	
-	SetupHVTelemetry((char *) "192.168.1.112", 33333);
+	SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
     return 0;	
@@ -109,7 +109,7 @@ int main() {
 	}
 
 	while(1) {
-		usleep(100000);
+		usleep(10000);
 		// Control loop
 	}
     return 0;
