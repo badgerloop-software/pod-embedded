@@ -49,8 +49,8 @@ FORMAT_SRC = $(addprefix format,$(APP_SRC)) $(addprefix format,$(PERIPHERAL_SRC)
 GCC := gcc
 GPP := g++
 CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
-CFLAGS += -Wall -std=gnu11
-CPFLAGS += -Wall -Wextra -std=c++11
+CFLAGS += -Wall -Wno-deprecated -std=gnu11
+CPFLAGS += -Wall -Wno-deprecated -Wextra -std=c++11
 LDFLAGS += -Llib
 LDLIBS += -lm -lpthread
 
@@ -84,10 +84,10 @@ MAIN_SUPPORT_OBJ: $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(MAIN_OBJ)
 	
 $(EMBD_EXAMPLES): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(EMBD_EXAMPLES_OBJ) $(MDL_EXAMPLES_OBJ)
 	
-$(EX_OUT)/%: $(OBJ_DIR_EXAMPLE)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) 
+$(EX_OUT)/%: $(OBJ_DIR_EXAMPLE)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ)
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	
-$(OUTPUT_DIR)/%: $(OBJ_DIR_MAIN)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) 
+$(OUTPUT_DIR)/%: $(OBJ_DIR_MAIN)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ) 
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 

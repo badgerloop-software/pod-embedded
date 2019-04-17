@@ -3,8 +3,16 @@
 #include <unistd.h>
 #include "LVTelemetry_Loop.h"
 
+
+/* ADD SENSOR INCLUDES HERE */
+extern "C" 
+{
+	#include "imu.h"
+}
+
 int main() {
-	SetupLVTelemetry((char*) "192.168.1.131", 33333);
+	SetupIMU();
+	SetupLVTelemetry((char*) "192.168.1.126", 33333);
 	
 	while(1){
 		usleep(1000000);
