@@ -26,6 +26,7 @@
 #define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
+#define BLANK_NAME              "none"
 
 void buildStateMachine(void);
 

@@ -40,7 +40,7 @@ extern stateTransition_t * postFaultAction(void);
 
 
 
-stateMachine_t stateMachine;
+volatile stateMachine_t stateMachine;
 
 /***
  * findState - Searches all the created states and returns the one with a matching name
@@ -256,7 +256,8 @@ stateTransition_t *findTransition(state_t *srcState, char *targName) {
  */
 void runStateMachine(void) {
     /* The cmd receiver will populate this field if we get an override */
-    if (strcmp(stateMachine.overrideStateName, "none") != 0) {
+    if (strcmp(stateMachine.overrideStateName, BLANK_NAME) != 0) {
+    
         state_t *tempState = findState(stateMachine.overrideStateName);
         /* TODO We also need to execute a transition if it exists here */
         if (tempState != NULL) {
@@ -264,7 +265,7 @@ void runStateMachine(void) {
             if (trans != NULL) trans->action();
             stateMachine.currState = tempState;
         }
-        stateMachine.overrideStateName = NULL;
+        strcpy(stateMachine.overrideStateName, BLANK_NAME);
     }
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();
@@ -320,7 +321,7 @@ void buildStateMachine(void) {
     stateMachine.currState = stateMachine.allStates[0];
 
     stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
-    strcpy(stateMachine.overrideStateName, "none");
+    strcpy(stateMachine.overrideStateName, BLANK_NAME);
     if(stateMachine.overrideStateName == NULL) {
         fprintf(stderr, "Malloc error -- state machine override state machine name\n");
         exit(1);
