@@ -146,6 +146,7 @@ void *HVTelemetryLoop(void *arg){
 			// Repeatedly send the string (not including \0) to the server
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
+			printf("Sent string: %s\n", sb.GetString());
 			usleep(30000);
 		}
 	} 
