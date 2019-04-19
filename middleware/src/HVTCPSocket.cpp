@@ -129,8 +129,8 @@ void *TCPLoop(void *arg){
 
 		if(!strncmp(buffer,"override", 8)){
 			fprintf(stderr, "Override received for state: %s\n", buffer+9);
-			strncpy(stateMachine.overrideStateName, buffer+9, strlen(buffer+9));
-		}
+		    sprintf(stateMachine.overrideStateName, "%s\0", buffer+9);
+        }
 		
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
