@@ -137,7 +137,8 @@ void *TCPLoop(void *arg){
 			// Send acknowledge packet back
 			send(new_socket, (char*) "pong1" , strlen("pong1") , 0 ); 
 		}
-
+		
+		close(new_socket);
 	}
 	
 }
