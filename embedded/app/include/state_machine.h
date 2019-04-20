@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 
-#define NUM_STATES              14
+#define NUM_STATES              15
 
 #define PRE_RUN_FAULT_NAME      "preFault"
 #define POST_RUN_FAULT_NAME     "postFault"
@@ -26,8 +26,9 @@
 #define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
+#define BLANK_NAME              "none"
 
-void buildStateMachine();
+void buildStateMachine(void);
 
 void runStateMachine();
 
@@ -62,12 +63,13 @@ typedef struct state_t {
 	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
     int numTransitions;
+    int transitionCounter;
 } state_t;
 
 typedef struct stateMachine_t {
 	state_t *currState;
-	state_t **allStates;
     char *  overrideStateName;
+	state_t **allStates;
 } stateMachine_t;
 
 #endif

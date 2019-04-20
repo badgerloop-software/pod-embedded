@@ -12,7 +12,6 @@
 extern "C" 
 {
     #include "can_devices.h"
-    #include "state_machine.h"
 }
 
 data_t *data;
@@ -104,7 +103,6 @@ int init() {
 	
 	data->state = 0;
 	
-	buildStateMachine();
     SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
@@ -118,13 +116,9 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    
-    printf("Here\n");
 
 	while(1) {
-		runStateMachine();
-        usleep(10000);
-
+        usleep(100000);
 		// Control loop
 	}
     return 0;

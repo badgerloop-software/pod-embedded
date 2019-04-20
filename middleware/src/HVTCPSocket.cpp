@@ -9,11 +9,13 @@
 
 #include "data.h"
 #include "HVTCPSocket.h"
+#include "state_machine.h"
 
 
 pthread_t HVTCPThread;
 
 extern data_t *data;
+extern stateMachine_t stateMachine;
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
@@ -104,9 +106,38 @@ void *TCPLoop(void *arg){
 			data->flags->emergencyBrake = 1;
 		}
 
+		if(!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake off
+		}
+		if(!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO Turn primary brake on
+		}
+		if(!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE)){
+			// TODO Turn sec brake off
+		}
+		if(!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE)){
+			// TODO turn sec brake on
+		}
+
+		if(!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE)){
+			// TODO turn hv on
+		}
+
+		if(!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE)){
+			// TODO turn hv off
+		}
+
+		if(!strncmp(buffer,"override", 8)){
+			fprintf(stderr, "Override received for state: %s\n", buffer+9);
+			strncpy(stateMachine.overrideStateName, buffer+9, strlen(buffer+9));
+		}
 		
-		// Send acknowledge packet back
-		send(new_socket, (char*) "Received packet!" , strlen("Received packet!") , 0 ); 
+		// HEARTBEAT
+		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
+			// Send acknowledge packet back
+			send(new_socket, (char*) "pong1" , strlen("pong1") , 0 ); 
+		}
+
 	}
 	
 }

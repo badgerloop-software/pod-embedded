@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <time.h>
 
 /***
  *
@@ -28,7 +29,24 @@ typedef struct data_t {
     struct bms_t      *bms;
     struct rms_t      *rms;
     struct flags_t    *flags;
+    struct timers_t   *timers;
+    int state;
 } data_t;
+
+
+/***
+ *
+ * Timers struct -- For making sure that our run happens in a timely manner
+ *
+ */
+
+typedef struct timers_t {
+    time_t startTime;
+    time_t lastRetro1;
+    time_t lastRetro2;
+    time_t lastRetro3;
+    time_t timeInState;
+} timers_t;
 
 /***
  * pressure_t - Pressure data from the braking system
@@ -42,6 +60,7 @@ typedef struct pressure_t {
     uint32_t sec_ps2;
     uint32_t sec_ps3;
     uint32_t sec_ps4;
+    uint32_t pv;
 } pressure_t;
 
 
@@ -56,7 +75,7 @@ typedef struct motion_t {
     float pos;
     float vel;
     float accel;
-    int retro_count;
+    int retroCount;
 } motion_t;
 
 
@@ -92,25 +111,25 @@ typedef struct bms_t {
  * Read in and filled in via CAN from the motor
  */
 typedef struct rms_t {
-    uint16_t igbt_temp;
-    uint16_t gate_driver_board_temp;
-    uint16_t control_board_temp;
-    uint16_t motor_temp;
-    uint16_t motor_speed;
-    uint16_t phase_a_current;
-    uint16_t phase_b_current;
-    uint16_t phase_c_current;
-    uint16_t dc_bus_voltage;
+    uint16_t igbtTemp;
+    uint16_t gateDriverBoardTemp;
+    uint16_t controlBoardTemp;
+    uint16_t motorTemp;
+    uint16_t motorSpeed;
+    uint16_t phaseACurrent;
+    uint16_t phaseBCurrent;
+    uint16_t phaseCCurrent;
+    uint16_t dcBusVoltage;
      //uint16_t output_voltage_peak;
-    uint16_t lv_voltage;
-    uint64_t can_code_1;
-    uint64_t can_code_2;
-    uint64_t fault_code_1;
-    uint64_t fault_code_2;
-    uint16_t commanded_torque;
-    uint16_t actual_torque;
-    uint16_t relay_state;
-    uint16_t  electrical_freq;
-    uint16_t dc_bus_current;
-    uint16_t output_voltage_ln;
+    uint16_t lvVoltage;
+    uint64_t canCode1;
+    uint64_t canCode2;
+    uint64_t faultCode1;
+    uint64_t faultCode2;
+    uint16_t commandedTorque;
+    uint16_t actualTorque;
+    uint16_t relayState;
+    uint16_t  electricalFreq;
+    uint16_t dcBusCurrent;
+    uint16_t outputVoltageLn;
 } rms_t;

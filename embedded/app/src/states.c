@@ -11,33 +11,16 @@
 /* Includes */
 #include <stdio.h>
 #include <stdbool.h>
+#include <time.h>  
 
 #include "state_machine.h"
 #include "data.h"
-
-
-/* Defines */
-
-/* Pressure sensor acceptable limits (in PSI) */
-#define PS1_BOTTOM_LIMIT        1000
-#define PS1_TOP_LIMIT           3000
-#define PS2_BOTTOM_LIMIT        1000
-#define PS2_TOP_LIMIT           3000
-#define PS3_BOTTOM_LIMIT        1000
-#define PS3_TOP_LIMIT           3000
-#define PS4_BOTTOM_LIMIT        0
-#define PS4_TOP_LIMIT           20
-/**/
-
-#define MAX_BATT_TEMP			60	/* Degrees Celcius */
-#define MAX_STOPPED_ACCEL		0.3 /* Limit for qualifying the pod as stopped in m/s */
-
+#include "states.h"
 
 /* Imports/Externs */
 
 extern stateMachine_t stateMachine;
 extern data_t *data;
-int timer;
 static bool checkPrimPressures(void);
 static bool checkStopped(void);
 
@@ -80,7 +63,8 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-	return data->motion->accel < MAX_STOPPED_ACCEL && timer == 0;
+    // TODO Check this with all three retro timers?
+	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
 }
 
 
@@ -96,15 +80,16 @@ static bool checkBattTemp(void) {
  */
 
 stateTransition_t * powerOnAction() {
+    printf("Power on action\n");
     return findTransition(stateMachine.currState, IDLE_NAME);
 }
 
 stateTransition_t * idleAction() {
     // First check for nominal values?
-    
-    if(!checkPrimPressures() || !checkStopped()){
-        STATE_ERROR();
-    }
+    data->state = 1;
+   // if(!checkPrimPressures() || !checkStopped()){
+   //     STATE_ERROR();
+   // }
 
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
@@ -115,7 +100,7 @@ stateTransition_t * idleAction() {
 
 stateTransition_t * readyForPumpdownAction() {
     // First check for nominal values?
-
+    data->state = 2;
     if (!checkPrimPressures() || !checkBattTemp()) {
 	return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
@@ -129,7 +114,7 @@ stateTransition_t * readyForPumpdownAction() {
 
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
-
+    data->state = 3;
     if(data->flags->readyCommand){
 	return findTransition(stateMachine.currState, READY_NAME);
     }
@@ -139,7 +124,7 @@ stateTransition_t * pumpdownAction() {
 
 stateTransition_t * readyForLaunchAction() {
     // First check for nominal values?
-    
+    data->state = 4;
     if(data->flags->propulse){
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
@@ -152,59 +137,95 @@ stateTransition_t * propulsionAction() {
 	// If it's an emergency, shold we trigger braking first then go through the formalities of doing a state transition?
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
-
+    data->state = 5;
     // Check for nominal values?
     
+
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
 
     return NULL;
 }
 
 stateTransition_t * brakingAction() {
+    data->state = 6;
     /* transition to post run */
-    if (data->motion->accel < 0.1) {
-        return findTransition(stateMachine.currState, POST_RUN_NAME); 
+    if (!checkBattTemp()) 
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    if (checkStopped()) {
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
-
     return NULL;
 }
 
 stateTransition_t * stoppedAction() {
+    data->state = 7;
+    if (!checkBattTemp()) {
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
 	return NULL;
 }
 
 stateTransition_t * crawlAction() {
-
+    data->state = 8;
+    if (!checkBattTemp()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    if (data->pressure->pv < 13) {
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    if (data->motion->pos >= (TUBE_LENGTH - 100)) {
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+    
 	return NULL;
 }
 
 stateTransition_t * postRunAction() {
+    data->state = 9;
 	if (!checkBattTemp()) {
-        return NULL;
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
-    if (data->bms->packVoltage == 0 ) {
+    if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
 
+    if (data->bms->packVoltage == 0 && data->pressure->ps1 < 30) {
+        return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
     }
 
     return NULL;
 }
 
 stateTransition_t * safeToApproachAction() {
+    data->state = 10;
 	return NULL;
 }
 
 stateTransition_t * secondaryBrakingAction() {
+    data->state = 14;
 	return NULL;
 }
 
 stateTransition_t * preFaultAction() {
+    data->state = 11;
 	return NULL;
 }
 
 stateTransition_t * runFaultAction() {
+    data->state = 12;
 	return NULL;
 }
 
 stateTransition_t * postFaultAction() {
+    data->state = 13;
 	return NULL;
 }
