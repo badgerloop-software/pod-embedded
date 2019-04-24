@@ -1,4 +1,0 @@
-[submodule "pod-dashboard"]
-	path = pod-dashboard
-	url = https://github.com/badgerloop-software/pod-dashboard.git
-	branch = master
