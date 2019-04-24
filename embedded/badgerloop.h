@@ -1,5 +1,0 @@
-
-
-enum STATUS {OK, ERROR};
-
-
