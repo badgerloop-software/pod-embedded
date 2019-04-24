@@ -5,21 +5,22 @@
 
 #include "LVTelemetry_Loop.h"
 #include "LVTCPSocket.h"
-
 /* ADD SENSOR INCLUDES HERE */
 extern "C" 
 {
 	#include "imu.h"
+	#include "badgerloop.h"
+	#include "NCD9830DBR2G.h"
 }
 
 int init() {
 	// Init all peripherals
-	SetupIMU();
-	
+	//SetupIMU();
+	initPressureSensors();
 	// Start telemetry services
-	SetupLVTelemetry((char *) "192.168.1.112", 33333);
-	SetupLVTCPServer();
-
+	//SetupLVTelemetry((char *) "192.168.1.112", 33333);
+	//SetupLVTCPServer();
+	
     return 0;	
 }
 
@@ -30,8 +31,10 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-
+	uint8_t data = 10;
 	while(1) {
+		readPressureSensor(ADC_1, &data);
+		printf("READING: %d\n", data);
 		usleep(100000);
 		// Control loop
 	}
