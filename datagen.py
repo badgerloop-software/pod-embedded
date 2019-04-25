@@ -2,7 +2,7 @@
 
 import json
 
-DATA_JSON_FILENAME = "data.json"
+DATA_JSON_FILENAME = "datagen.json"
 DATA_HEADER_FILENAME = "testdata.h"
 
 def load_schema():
@@ -11,6 +11,14 @@ def load_schema():
         schema = json.load(f)
     return schema
 
+def search_schema(src, target):
+    if type(val) != dict:
+        return src == target
+
+    for key, val in src.items():
+        search_schema(val, target)
+    
+        
 def build_data_struct(subStructNames):
     masterData = []
     for name in subStructNames:
@@ -55,14 +63,29 @@ def build_header(deps):
 def slap_a_comment_on_that_bad_boy():
     return "/***\n*\n* Describe this struct here\n*\n***/\n\n"
 
+def build_limits(limits):
+    limitStr = "/***\n*Limits for the state machine\n***/\n"
+    for name,data in limits.items():
+        limitStr += "#define {}_MIN {}\n".format(name, data["min"]))
+        limitStr += "#define {}_MAX {}\n".format(name, data["max"]))
+    limitStr += "\n\n"
+    return limitStr
+
 def main():
     schema = load_schema()
+    dataHStr = ""
     print(schema)
-    dataHStr = build_header(schema["dependencies"])
-    dataHStr += build_data_struct(schema["data"].keys())
+    defines = ""
+    includes = ""
+    structs = ""
+
+    includes += build_header(schema["dependencies"]) 
+    structs += build_data_struct(schema["data"].keys())
     for key, val in schema["data"].items():
-        dataHStr += slap_a_comment_on_that_bad_boy()
-        dataHStr += build_struct(key, val)
+        structs += slap_a_comment_on_that_bad_boy()
+        structs += build_struct(key, val)
+
+    # List in the order you want it added to the final file
     build_data_h(dataHStr)
 #    print(dataHStr)
     return
