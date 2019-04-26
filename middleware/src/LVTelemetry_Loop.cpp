@@ -60,6 +60,13 @@ void *LVTelemetryLoop(void *arg)
 			Value packet_id;
 			packet_id.SetUint64(packetCount++);
 			
+			// TIME
+			Value age;
+			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+				std::chrono::system_clock::now().time_since_epoch()
+			);
+			age.SetUint64(ms.count());
+			
 			// STOPPING DISTANCE
 			Value stopDistance;
 			stopDistance.SetNull();
@@ -121,6 +128,7 @@ void *LVTelemetryLoop(void *arg)
 			
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
+			document.AddMember("time", age, document.GetAllocator());
 			document.AddMember("motion", motionDoc, document.GetAllocator());
 			document.AddMember("battery", batteryDoc, document.GetAllocator());
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
