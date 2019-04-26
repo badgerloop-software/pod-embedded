@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <pthread.h>
 #include <stdint.h>
+#include <chrono>
+#include <ctime>
 #include "PracticalSocket.h"
 #include "LVTelemetry_Loop.h"
 #include "document.h"

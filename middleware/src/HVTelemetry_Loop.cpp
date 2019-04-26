@@ -2,6 +2,8 @@
 #include <unistd.h>
 #include <cstdio>
 #include <pthread.h>
+#include <chrono>
+#include <ctime>
 #include "PracticalSocket.h"
 #include "HVTelemetry_Loop.h"
 #include "document.h"
