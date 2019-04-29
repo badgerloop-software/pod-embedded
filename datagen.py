@@ -14,11 +14,14 @@ def load_schema():
 def search_schema(src, target):
     if type(val) != dict:
         return src == target
-
+    
     for key, val in src.items():
         search_schema(val, target)
     
-        
+    
+def test_search():
+    
+
 def build_data_struct(subStructNames):
     masterData = []
     for name in subStructNames:
@@ -66,8 +69,8 @@ def slap_a_comment_on_that_bad_boy():
 def build_limits(limits):
     limitStr = "/***\n*Limits for the state machine\n***/\n"
     for name,data in limits.items():
-        limitStr += "#define {}_MIN {}\n".format(name, data["min"]))
-        limitStr += "#define {}_MAX {}\n".format(name, data["max"]))
+        limitStr += "#define {}_MIN {}\n".format(name, data["min"])
+        limitStr += "#define {}_MAX {}\n".format(name, data["max"])
     limitStr += "\n\n"
     return limitStr
 

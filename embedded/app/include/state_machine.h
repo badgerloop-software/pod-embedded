@@ -37,35 +37,67 @@ typedef struct stateTransition_t stateTransition_t;
 typedef struct stateMachine_t stateMachine_t;
 
 /*
-* The state machine is a directed graph. Each edge is a transition
+* The state machine is a directed graph. Each edge is a transition, and each
+* state is a node.
+*
 * The state_t handles the nodes and stateTransition_t is an edge
 *
+*/
+
+/* struct: stateTransition_t
+ * 
+ * fields:
+ *      target = A pointer to the state that this transition leads to
+ *      
+ *      action = A pointer to a function that the state transition will execute
+ *               when it transitions. This is where the work of the transition takes
+ *               place
  */
 
 typedef struct stateTransition_t {
 	state_t *target;
-	bool (*action)(); //TODO: Any particular reason you're using a bool pointer here rather that void?
+	bool (*action)(); 
 } stateTransition_t;
+
 
 /* 	struct: state_t
 *  	
 * 	fields:
-*		action      = The thing that the state does. If it should transition it returns
-*			        a pointer to the transiton, otherwise NULL
+*		action          = The thing that the state does. If it should transition it returns
+*			              a pointer to the transiton, otherwise NULL
 *		
-*		name        = The name of the state
-*		
-*		transitions = A list of all transitions exiting the state
+*		name            = The name of the state
+*	
+*		transitions     = A list of all transitions exiting the state
+*       
+*       numTransitions  = The number of transitions leading out of this state
+*       
+*       transitionCounter = Used in the initialization of the state only, its a
+*                           way of appending the next transition to the end of the list
+*
 */
 
 typedef struct state_t {
 	stateTransition_t *(*action)();
-	char *name; // FIXME Thinking about switching this to a number
+	char *name; 
 	stateTransition_t **transitions;
     int numTransitions;
     int transitionCounter;
 } state_t;
 
+
+/* struct: stateMachine_t
+ *
+ * fields:
+ *      currState   = The state that the state machine is in
+ *      
+ *      overrideStateName = Set by the server if it receives an 
+ *                          override command, this will be checked 
+ *                          and used to manually transition
+ *
+ *      allStates   = A list of all the possible states the state 
+ *                    machine can go into
+ */
 typedef struct stateMachine_t {
 	state_t *currState;
     char *  overrideStateName;
