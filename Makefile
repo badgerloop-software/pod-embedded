@@ -1,121 +1,71 @@
-DRIVERS = drivers
-PERIPHERALS = peripherals
-EMBD_EXAMPLES = tests
+# Because I guess paths in Makefiles are black magic:
+EZRA :=
+WAS	 := $(EZRA) $(EZRA)
+HERE := $(shell find -name "src")
 
-DRIVER_SRC_DIR = embedded/drivers/src
-PERIPHERAL_SRC_DIR = embedded/peripherals/src
-EMBD_EXAMPLES_SRC_DIR = embedded/examples
-MIDDLEWARE_SRC_DIR = middleware/src
-MIDDLEWARE_EX_DIR = middleware/examples
-APP_SRC_DIR = embedded/app/src
-MAIN_SRC_DIR = embedded/app/main
+VPATH := $(subst $(WAS),:,$(HERE))
+VPATH += :./embedded/app/main/:./embedded/examples/:./middleware/examples/
 
-OUTPUT_DIR := out
-OBJ_DIR = $(OUTPUT_DIR)/obj
-OBJ_DIR_DRIVER = $(OUTPUT_DIR)/obj
-OBJ_DIR_PERIPHERAL = $(OUTPUT_DIR)/obj
-OBJ_DIR_EXAMPLE = $(OUTPUT_DIR)/obj/tests
-OBJ_DIR_MDL = $(OUTPUT_DIR)/obj
-OBJ_DIR_MDL_EXAMPLE = $(OUTPUT_DIR)/obj/tests
-OBJ_DIR_APP = $(OUTPUT_DIR)/obj
-OBJ_DIR_MAIN = $(OUTPUT_DIR)/obj/main
+# Code and Includes (I know, my grep game is weak)
+ALL_C	:= $(shell find -name "*.c")
+ALL_CPP := $(shell find -name "*.cpp")
 
 
-DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
-PERIPHERAL_SRC = $(wildcard $(PERIPHERAL_SRC_DIR)/*.c)
-EMBD_EXAMPLES_SRC = $(wildcard $(EMBD_EXAMPLES_SRC_DIR)/*.c)
-MDL_SRC = $(wildcard $(MIDDLEWARE_SRC_DIR)/*.cpp)
-MDL_EXAMPLES_SRC = $(wildcard $(MIDDLEWARE_EX_DIR)/*.cpp)
-APP_SRC = $(wildcard $(APP_SRC_DIR)/*.c)
-MAIN_SRC = $(wildcard $(MAIN_SRC_DIR)/*.cpp)
 
-DRIVER_OBJ := $(DRIVER_SRC:$(DRIVER_SRC_DIR)/%.c=$(OBJ_DIR_DRIVER)/%.o)
-PERIPHERAL_OBJ := $(PERIPHERAL_SRC:$(PERIPHERAL_SRC_DIR)/%.c=$(OBJ_DIR_PERIPHERAL)/%.o)
-EMBD_EXAMPLES_OBJ := $(EMBD_EXAMPLES_SRC:$(EMBD_EXAMPLES_SRC_DIR)/%.c=$(OBJ_DIR_EXAMPLE)/%.o)
-MDL_OBJ := $(MDL_SRC:$(MIDDLEWARE_SRC_DIR)/%.cpp=$(OBJ_DIR_MDL)/%.o)
-MDL_EXAMPLES_OBJ := $(MDL_EXAMPLES_SRC:$(MIDDLEWARE_EX_DIR)/%.cpp=$(OBJ_DIR_MDL_EXAMPLE)/%.o)
-APP_OBJ := $(APP_SRC:$(APP_SRC_DIR)/%.c=$(OBJ_DIR_APP)/%.o)
-MAIN_OBJ := $(MAIN_SRC:$(MAIN_SRC_DIR)/%.cpp=$(OBJ_DIR_MAIN)/%.o)
+ALL_SRC		:= $(shell find | grep "src" | grep "\.c")
+ALL_C_SRC	:= $(shell find | grep "src" | grep "\.c" | grep -v "\.cpp")
+ALL_CPP_SRC := $(shell find | grep "src" | grep "\.c" | grep "\.cpp")
 
-MAIN_OBJ_D = $(wildcard $(OBJ_DIR_MAIN)/*.o)
-MAIN_MAKE := $(MAIN_OBJ_D:$(OBJ_DIR_MAIN)/%.o=$(OUTPUT_DIR)/%)
+ALL_C_EX	:= $(shell find | grep "examples" | grep "\.c" | grep -v "\.cpp")
+ALL_CPP_EX  := $(shell find | grep "examples" | grep "\.c" | grep "\.cpp")
 
-EX_OUT := out
-EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
-EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
+INCLUDE_DIRS := $(shell find -name "include")
 
-FORMAT_SRC = $(addprefix format,$(APP_SRC)) $(addprefix format,$(PERIPHERAL_SRC)) $(addprefix format, $(DRIVER_SRC))
+# Compiler options
+GCC	   	:= gcc
+GPP	   	:= g++
+IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
+WFLAGSS	:= -Wall -Wno-deprecated -Wextra 
+CFLAGS 	:= -std=gnu11
+CPFLAGS := -std=c++11
+LDFLAGS := -Llib
+LDLIBS 	:= -lm -lpthread
 
-GCC := gcc
-GPP := g++
-CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
-CFLAGS += -Wall -Wno-deprecated -std=gnu11
-CPFLAGS += -Wall -Wno-deprecated -Wextra -std=c++11
-LDFLAGS += -Llib
-LDLIBS += -lm -lpthread
-
-.PHONY: all clean tests
-
-all: main_tgts
-	make main_tgts
-	
-main_tgts: directories MAIN_SUPPORT_OBJ $(MAIN_MAKE)
-
-examples: examples_make
-	make examples_make
-
-examples_make: example_directories $(EMBD_EXAMPLES) $(EMBD_EXAMPLES_MAKE)
-
-directories: ${OBJ_DIR} ${OBJ_DIR_MAIN}
-
-example_directories: ${OBJ_DIR_EXAMPLE} ${OBJ_DIR_MAIN}
-
-${OBJ_DIR}:
-	mkdir -p ${OBJ_DIR}
-	
-${OBJ_DIR_EXAMPLE}:
-	mkdir -p ${OBJ_DIR_EXAMPLE}
-	
-${OBJ_DIR_MAIN}:
-	mkdir -p ${OBJ_DIR_MAIN}
-	
-MAIN_SUPPORT_OBJ: $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(MAIN_OBJ)
-
-	
-$(EMBD_EXAMPLES): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(EMBD_EXAMPLES_OBJ) $(MDL_EXAMPLES_OBJ)
-	
-$(EX_OUT)/%: $(OBJ_DIR_EXAMPLE)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ)
-	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	
-$(OUTPUT_DIR)/%: $(OBJ_DIR_MAIN)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ) 
-	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
+# Output Control
+OUTPUT_DIR 	:= out
+HV_MAIN		:= badgerloop_hv
+LV_MAIN		:= badgerloop_lv
+OBJ_DIR	   	:= $(OUTPUT_DIR)/obj
+ALL_OBJ	   	:= $(shell find -name "*.c*" -type f -exec basename {} \;)
+ALL_OBJ	   	:= $(ALL_OBJ:%.c=%.o)
+ALL_OBJ		:= $(addprefix $(OBJ_DIR)/, $(ALL_OBJ:%.cpp=%.o))
 
 
-$(OBJ_DIR_DRIVER)/%.o: $(DRIVER_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_PERIPHERAL)/%.o: $(PERIPHERAL_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-		
-$(OBJ_DIR_EXAMPLE)/%.o: $(EMBD_EXAMPLES_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+# Examples
+.PHONY: all scan clean $(HV_MAIN) $(LV_MAIN)
 
-$(OBJ_DIR_MDL)/%.o: $(MIDDLEWARE_SRC_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_MDL_EXAMPLE)/%.o: $(MIDDLEWARE_EX_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_APP)/%.o: $(APP_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_MAIN)/%.o: $(MAIN_SRC_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
+test: 
+	echo $(VPATH)
 
-$(FORMAT_SRC): 
-	clang-format -style=llvm $(@:format%=%) > $(@:format%=%).log
+all: $(HV_MAIN) $(LV_MAIN)
 
-format: $(FORMAT_SRC)
+$(HV_MAIN): $(ALL_OBJ)
+	$(GPP) -o $@ $(ALL_OBJ)
+
+$(LV_MAIN): $(ALL_OBJ)
+	$(GPP) -o $@ $(ALL_OBJ)
+
+out/obj/%.o: %.c | $(OBJ_DIR)
+	$(GCC) -c $(CFLAGS) $(IFLAGS) $(WFLAGS) $(LDFLAGS $(LDLIBS) $< -o $@
+
+out/obj/%.o: %.cpp | $(OBJ_DIR)
+	$(GPP) -c $(CPFLAGS) $(IFLAGS) $(WFLAGS) $(LDFLAGS) $(LDLIBS) $< -o $@
+
+$(OBJ_DIR): $(OUTPUT_DIR)
+	mkdir $(OBJ_DIR)
+
+$(OUTPUT_DIR):
+	mkdir $(OUTPUT_DIR)
 
 scan: 
 	scan-build make > scan_build_out.log
