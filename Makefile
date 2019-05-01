@@ -1,11 +1,11 @@
-VPATH := $(shell find -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
+VPATH := $(shell find . -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
 
 # Code and Includes (I know, shell commands everywhere! Works though)
-ALL_SRC	:= $(shell find -name "src" -exec ls {} \;)
-ALL_EX	:= $(shell find -name "examples" -exec ls {} \; | grep ".c")
+ALL_SRC	:= $(shell find . -name "src" -exec ls {} \;)
+ALL_EX	:= $(shell find . -name "examples" -exec ls {} \; | grep ".c")
 
 # Should find all our include directories
-INCLUDE_DIRS := $(shell find -name "include") ./middleware/include/jsonlib
+INCLUDE_DIRS := $(shell find . -name "include") ./middleware/include/jsonlib
 
 # Compiler options
 GCC	   	:= gcc
