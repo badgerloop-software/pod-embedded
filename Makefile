@@ -1,6 +1,4 @@
-SRC_DIRS := $(shell find -name "src")
-
-VPATH := $(SRC_DIRS) ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
+VPATH := $(shell find -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
 
 # Code and Includes (I know, shell commands everywhere! Works though)
 ALL_SRC	:= $(shell find -name "src" -exec ls {} \;)
@@ -28,14 +26,15 @@ HV_MAIN		:= badgerloop_HV
 LV_MAIN		:= badgerloop_LV
 
 TARGETS		:= $(addprefix $(OUTPUT_DIR)/, $(HV_MAIN) $(LV_MAIN))
+EXAMPLES	:= $(addprefix $(EX_OUT_DIR)/,$(basename $(ALL_EX)))
 
 # Each Example obj should have a main(); so it has to be linked into its own executable
 GEN_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_SRC))))
 EX_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_EX))))
 
-EXAMPLES	:= $(addprefix $(EX_OUT_DIR)/,$(basename $(ALL_EX)))
-
 .PHONY: all examples clean
+# .SEC keeps intermediates, so make doesnt automatically clean .o files
+.SECONDARY:
 
 all: $(TARGETS)
 
@@ -45,7 +44,7 @@ $(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(EX_OUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o | $(EX_OUT_DIR)
-	-$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 out/obj/%.o: %.c | $(OBJ_DIR)
 	$(GCC) -c $(CFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
@@ -53,10 +52,10 @@ out/obj/%.o: %.c | $(OBJ_DIR)
 out/obj/%.o: %.cpp | $(OBJ_DIR)
 	$(GPP) -c $(CPFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
 
-$(OBJ_DIR): $(OUTPUT_DIR)
+$(OBJ_DIR): | $(OUTPUT_DIR)
 	mkdir $(OBJ_DIR)
 
-$(EX_OUT_DIR): $(OUTPUT_DIR)
+$(EX_OUT_DIR): | $(OUTPUT_DIR)
 	mkdir $(EX_OUT_DIR)
 
 $(OUTPUT_DIR):
