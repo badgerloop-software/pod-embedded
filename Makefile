@@ -1,31 +1,19 @@
-# Because I guess paths in Makefiles are black magic:
-EZRA :=
-WAS	 := $(EZRA) $(EZRA)
-HERE := $(shell find -name "src")
+SRC_DIRS := $(shell find -name "src")
 
-VPATH := $(subst $(WAS),:,$(HERE))
-VPATH += :./embedded/app/main/:./embedded/examples/:./middleware/examples/
+VPATH := $(SRC_DIRS) ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
 
-# Code and Includes (I know, my grep game is weak)
-ALL_C	:= $(shell find -name "*.c")
-ALL_CPP := $(shell find -name "*.cpp")
+# Code and Includes (I know, shell commands everywhere! Works though)
+ALL_SRC	:= $(shell find -name "src" -exec ls {} \;)
+ALL_EX	:= $(shell find -name "examples" -exec ls {} \; | grep ".c")
 
-
-
-ALL_SRC		:= $(shell find | grep "src" | grep "\.c")
-ALL_C_SRC	:= $(shell find | grep "src" | grep "\.c" | grep -v "\.cpp")
-ALL_CPP_SRC := $(shell find | grep "src" | grep "\.c" | grep "\.cpp")
-
-ALL_C_EX	:= $(shell find | grep "examples" | grep "\.c" | grep -v "\.cpp")
-ALL_CPP_EX  := $(shell find | grep "examples" | grep "\.c" | grep "\.cpp")
-
-INCLUDE_DIRS := $(shell find -name "include")
+# Should find all our include directories
+INCLUDE_DIRS := $(shell find -name "include") ./middleware/include/jsonlib
 
 # Compiler options
 GCC	   	:= gcc
 GPP	   	:= g++
 IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
-WFLAGSS	:= -Wall -Wno-deprecated -Wextra 
+WFLAGS	:= -Wall -Wno-deprecated -Wextra 
 CFLAGS 	:= -std=gnu11
 CPFLAGS := -std=c++11
 LDFLAGS := -Llib
@@ -33,42 +21,47 @@ LDLIBS 	:= -lm -lpthread
 
 # Output Control
 OUTPUT_DIR 	:= out
-HV_MAIN		:= badgerloop_hv
-LV_MAIN		:= badgerloop_lv
 OBJ_DIR	   	:= $(OUTPUT_DIR)/obj
-ALL_OBJ	   	:= $(shell find -name "*.c*" -type f -exec basename {} \;)
-ALL_OBJ	   	:= $(ALL_OBJ:%.c=%.o)
-ALL_OBJ		:= $(addprefix $(OBJ_DIR)/, $(ALL_OBJ:%.cpp=%.o))
+EX_OUT_DIR	:= $(OUTPUT_DIR)/tests
 
+HV_MAIN		:= badgerloop_HV
+LV_MAIN		:= badgerloop_LV
 
-# Examples
-.PHONY: all scan clean $(HV_MAIN) $(LV_MAIN)
+TARGETS		:= $(addprefix $(OUTPUT_DIR)/, $(HV_MAIN) $(LV_MAIN))
 
-test: 
-	echo $(VPATH)
+# Each Example obj should have a main(); so it has to be linked into its own executable
+GEN_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_SRC))))
+EX_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_EX))))
 
-all: $(HV_MAIN) $(LV_MAIN)
+EXAMPLES	:= $(addprefix $(EX_OUT_DIR)/,$(basename $(ALL_EX)))
 
-$(HV_MAIN): $(ALL_OBJ)
-	$(GPP) -o $@ $(ALL_OBJ)
+.PHONY: all examples clean
 
-$(LV_MAIN): $(ALL_OBJ)
-	$(GPP) -o $@ $(ALL_OBJ)
+all: $(TARGETS)
+
+examples: $(EXAMPLES)
+
+$(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
+	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+$(EX_OUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o | $(EX_OUT_DIR)
+	-$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 out/obj/%.o: %.c | $(OBJ_DIR)
-	$(GCC) -c $(CFLAGS) $(IFLAGS) $(WFLAGS) $(LDFLAGS $(LDLIBS) $< -o $@
+	$(GCC) -c $(CFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
 
 out/obj/%.o: %.cpp | $(OBJ_DIR)
-	$(GPP) -c $(CPFLAGS) $(IFLAGS) $(WFLAGS) $(LDFLAGS) $(LDLIBS) $< -o $@
+	$(GPP) -c $(CPFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
 
 $(OBJ_DIR): $(OUTPUT_DIR)
 	mkdir $(OBJ_DIR)
 
+$(EX_OUT_DIR): $(OUTPUT_DIR)
+	mkdir $(EX_OUT_DIR)
+
 $(OUTPUT_DIR):
 	mkdir $(OUTPUT_DIR)
 
-scan: 
-	scan-build make > scan_build_out.log
-	
 clean:
-	rm -rf $(OUTPUT_DIR)
+	-rm -rf $(OUTPUT_DIR)
+  
