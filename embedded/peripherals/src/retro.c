@@ -14,23 +14,41 @@
 #define TIMEOUT 1000	/* 1 second */
 #define BUF_LEN 256
 
-static pthread_t thread;
+static pthread_t retroThreads[3];
 
 static int onTapeStrip (int retroNum);
-static int waitForStrip (int retroNum);
+static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
 
 extern data_t *data;
 static time_t *retroTimers[3];
+
 int initRetro() {
+
+	int i = 0;
+
 	retroTimers[RETRO_1] = &(data->timers->lastRetro1);
 	retroTimers[RETRO_2] = &(data->timers->lastRetro2);
 	retroTimers[RETRO_3] = &(data->timers->lastRetro3);
+/*
 	bbGpioExport(RETRO_1_PIN);
 	bbGpioSetDir(RETRO_1_PIN, IN_DIR);
 	bbGpioSetEdge(RETRO_1_PIN, FALLING_EDGE);
 	waitForStrip(RETRO_1);
-	//int ret = pthread_create( &thread, NULL, waitForStrip, RETRO_1);
+*/
+	for (i = 0; i < NUM_RETROS; i++) {
+		// TODO Not going to initialize garbage GPIO Pins, but this is where it will be
+		bbGpioExport(getPin(i));
+		bbGpioSetDir(getPin(i), IN_DIR);
+		bbGpioSetEdge(getPin(i), FALLING_EDGE);
+		pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i);
+	}
+
+/* Delete this in production to let threads run in background */
+	for (i = 0; i < NUM_RETROS; i++) {
+		pthread_join(retroThreads[i], NULL);
+	}
+
 	return 0;
 }
 
@@ -51,21 +69,17 @@ static int onTapeStrip(int retroNum) {
    Not sure which would be faster, currently leaning towards three threads becasue
    of the sensitivity of what it will be measuring
    */
-int waitForStrip(int retroNum) {
+void *waitForStrip(void *num) {
+	int retroNum = (int) num;
 	int gpioFd = bbGpioFdOpen(getPin(retroNum));
-	struct pollfd fds[2];
-	int nfds = 2;
+	struct pollfd fds[1];
+	int nfds = 1;
 	int ret, len;
 	char buf[BUF_LEN];
-	printf("Starting loop\n");
 	while (1) {
 		memset((void *)fds, 0, sizeof(fds));
-
-		fds[0].fd = STDIN_FILENO;
-		fds[0].events = POLLIN;
-
-		fds[1].fd = gpioFd;
-		fds[1].events = POLLPRI;
+		fds[0].fd = gpioFd;
+		fds[0].events = POLLPRI;
 
 		ret = poll(fds, nfds, TIMEOUT);
 
@@ -75,23 +89,16 @@ int waitForStrip(int retroNum) {
 
 		if (ret == 0) {
 			/* If nothing is detected */
-			printf("Retro Count = %d", data->motion->retroCount);
-			//			printf(".");
+			printf("Retro Count = %d\n", data->motion->retroCount);
 		}
 
-		if (fds[1].revents & POLLPRI) {
-			lseek(fds[1].fd, 0, SEEK_SET);
-			len = read(fds[1].fd, buf, BUF_LEN);
+		if (fds[0].revents & POLLPRI) {
+			lseek(fds[0].fd, 0, SEEK_SET);
+			len = read(fds[0].fd, buf, BUF_LEN);
 			onTapeStrip(retroNum);
 		}
-
-		if (fds[0].revents & POLLIN) {
-			(void) read(fds[0].fd, buf, 1);
-		}
-		fflush(stdout);
 	}
-	printf("ending\n");
-	return 0;
+	return NULL;
 }
 
 static int getPin(int retroNum) {

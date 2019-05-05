@@ -1,6 +1,8 @@
 #ifndef __RETRO_H__
 #define __RETRO_H__
 
+#define NUM_RETROS		1		// TODO change to 3 when the rest are plugged in
+
 #define RETRO_1_PIN 	66		/* Temp pin, not the PCB one */
 #define RETRO_2_PIN		67
 #define RETRO_3_PIN		68
