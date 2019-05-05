@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 #include <pthread.h>
 #include <bbgpio.h>
 #include <poll.h>
 
 #define TIMEOUT 1000	/* 1 second */
-
+#define BUF_LEN 256
 static pthread_t thread;
 static int onTapeStrip (void);
 static int waitForStrip (void);
@@ -19,6 +23,7 @@ int initRetro() {
 
 int onTapeStrip() {
 	printf("TAPE STRIP DETECTED\n");
+	return 0;
 }
 
 
@@ -27,30 +32,30 @@ int waitForStrip() {
 	struct pollfd fds[2];
 	int nfds = 2;
 	int ret, len, gpioFd;
-	
 	gpioFd = bbGpioFdOpen(gpio);
+	char buf[BUF_LEN];
 
 	while (1) {
-		memset((void *)fdset, 0, sizeof(fdset));
-		fdset[0].fd = STDIN_FILENO;
-		fdset[0].events = POLLIN;
+		memset((void *)fds, 0, sizeof(fds));
+		fds[0].fd = STDIN_FILENO;
+		fds[0].events = POLLIN;
 
-		fdset[1].fd = gpioFd;
-		fdset[1].events = POLLPRI;
+		fds[1].fd = gpioFd;
+		fds[1].events = POLLPRI;
 
 		ret = poll(fds, nfds, TIMEOUT);
 
 		if (ret < 0) {
 			printf("\npoll() failed!\n");
 		}
-		
+
 		if (ret == 0) {
 			printf(".");
 		}
 
 		if (fds[1].revents & POLLPRI) {
-			lseek(fdset[1].fd, 0, SEEK_SET);
-			len = read(fdset[1].fd, buf, BUFF_LEN);
+			lseek(fds[1].fd, 0, SEEK_SET);
+			len = read(fds[1].fd, buf, BUF_LEN);
 			printf("\npoll() GPIO %d int occurred\n", gpio);
 		}
 
@@ -59,5 +64,5 @@ int waitForStrip() {
 		}
 		fflush(stdout);
 	}
-
+	return 0;
 }
