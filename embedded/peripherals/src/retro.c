@@ -6,33 +6,37 @@
 #include <errno.h>
 #include <pthread.h>
 #include <bbgpio.h>
+#include <retro.h>
 #include <poll.h>
 
 #define TIMEOUT 1000	/* 1 second */
 #define BUF_LEN 256
+
 static pthread_t thread;
 static int onTapeStrip (void);
-static int waitForStrip (void);
+static int waitForStrip (int gpioFd);
 
 
 int initRetro() {
-	waitForStrip();
-	//int ret = pthread_create( &thread, NULL, waitForStrip, NULL);
+	bbGpioExport(RETRO_PIN);
+	bbGpioSetDir(RETRO_PIN, IN_DIR);
+	bbGpioSetEdge(RETRO_PIN, FALLING_EDGE);
+	int fd = bbGpioFdOpen(RETRO_PIN);
+	waitForStrip(fd);
+	//int ret = pthread_create( &thread, NULL, waitForStrip, fd);
 	return 0;
 }
 
 int onTapeStrip() {
-	printf("TAPE STRIP DETECTED\n");
+	printf("\nTAPE STRIP DETECTED\n");
 	return 0;
 }
 
 
-int waitForStrip() {
-	int gpio = 66;
+int waitForStrip(int gpioFd) {
 	struct pollfd fds[2];
 	int nfds = 2;
-	int ret, len, gpioFd;
-	gpioFd = bbGpioFdOpen(gpio);
+	int ret, len;
 	char buf[BUF_LEN];
 
 	while (1) {
@@ -56,7 +60,7 @@ int waitForStrip() {
 		if (fds[1].revents & POLLPRI) {
 			lseek(fds[1].fd, 0, SEEK_SET);
 			len = read(fds[1].fd, buf, BUF_LEN);
-			printf("\npoll() GPIO %d int occurred\n", gpio);
+			onTapeStrip();
 		}
 
 		if (fds[0].revents & POLLIN) {

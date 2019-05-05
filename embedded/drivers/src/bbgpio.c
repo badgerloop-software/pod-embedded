@@ -149,10 +149,10 @@ char * bbGpioGetDir(unsigned int gpio) {
 	read(fd, &firstCharOfDir, 1);
 	close(fd);
 
-	if (firstCharOfDir == DIR_OUT[0]) {
-		return DIR_OUT;
-	} else if (firstCharOfDir == DIR_IN[0]) {
-		return DIR_IN;
+	if (firstCharOfDir == OUT_DIR[0]) {
+		return OUT_DIR;
+	} else if (firstCharOfDir == IN_DIR[0]) {
+		return IN_DIR;
 	} else {
 		fprintf(stderr, "Unexpected direction, returning error\n");
 		return "error";

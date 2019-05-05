@@ -7,8 +7,8 @@
 #define FALLING_EDGE "falling"
 #define BOTH_EDGE	 "both"
 
-#define DIR_OUT		 "out"
-#define DIR_IN		 "in"
+#define OUT_DIR		 "out"
+#define IN_DIR		 "in"
 
 int bbGetAbsPinNum(unsigned int bank, unsigned int num);
 
