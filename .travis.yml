@@ -1,5 +1,5 @@
 language: c
 compiler: gcc
-script: ./embedded/examples/setupCAN.sh && make examples && make
+script: sudo modprobe vcan && ./embedded/examples/setupCAN.sh && make examples && make
 git:
   submodules: false
