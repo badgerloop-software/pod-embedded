@@ -2,6 +2,9 @@ language: c
 compiler: gcc
 python:
   - "3.6"
+before_install:
+- sudo apt-get update
+- sudo apt-get install python3
 install:
   - git clone https://github.com/linux-can/can-utils.git
   - cd can-utils
@@ -11,6 +14,6 @@ install:
   - sudo make install 
   - sudo cp cangen /bin/ && sudo cp candump /bin/
   - cd ..
-script: sudo modprobe vcan && ./embedded/examples/setupCAN.sh && make examples VIRTUAL=1 && make VIRTUAL=1 && ./out/tests/can_test && python ./embedded/examples/sims/rms.py
+script: sudo modprobe vcan && ./embedded/examples/setupCAN.sh && make examples VIRTUAL=1 && make VIRTUAL=1 && ./out/tests/can_test && python3 ./embedded/examples/sims/rms.py
 git:
   submodules: false
