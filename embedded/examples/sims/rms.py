@@ -62,7 +62,7 @@ def main():
     intf = findIntf()
     mesgs = buildMesgs()
     c = 0
-    while c < 3:
+    while c < 50:
         for mesg in mesgs:
             mesg.send(intf)
         c = c + 1
