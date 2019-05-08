@@ -9,6 +9,6 @@ install:
   - sudo make install 
   - sudo cp cangen /bin/ && sudo cp candump /bin/
   - cd ..
-script: sudo modprobe vcan && ./embedded/examples/setupCAN.sh && make examples && make && ./out/tests/can_test
+script: sudo modprobe vcan && ./embedded/examples/setupCAN.sh && make examples VIRTUAL=1 && make VIRTUAL=1 && ./out/tests/can_test
 git:
   submodules: false
