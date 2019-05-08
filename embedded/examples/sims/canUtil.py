@@ -40,7 +40,7 @@ class CAN_Mesg:
         return self.__str__()
 
     def send(self, intf):
-        sp.run("cansend {} {}".format(intf, self), shell=True)
+        sp.check_output("cansend {} {}".format(intf, self), shell=True)
 
 def findIntf():
     intf = "NONE"
