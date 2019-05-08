@@ -1,5 +1,5 @@
 language: c
 compiler: gcc
-script: make examples && make
+script: ./embedded/examples/setupCAN.sh && make examples && make
 git:
   submodules: false
