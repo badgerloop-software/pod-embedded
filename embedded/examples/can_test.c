@@ -119,13 +119,15 @@ int main() {
     data->flags->emergencyBrake = 0;
     
     data->state = 0;
-
+    
     initCan();
     struct can_frame can_mesg;
     txTest();   // test RMS Commands
-    while (1) {
+    int testCnt = 0;
+    while (testCnt < 100) {
           rx_test(&can_mesg);
   //      usleep(500000); // Able to edit freq of control here
+          testCnt += 1;
     }
     return 0;
 }
