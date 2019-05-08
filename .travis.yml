@@ -1,10 +1,10 @@
 language: c
 compiler: gcc
 python:
-  - "3.6"
+  - "3.4"
 before_install:
 - sudo apt-get update
-- sudo apt-get install python3.6
+- sudo apt-get install python3
 install:
   - git clone https://github.com/linux-can/can-utils.git
   - cd can-utils
