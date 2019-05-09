@@ -5,8 +5,9 @@
 #include "rms.h"
 #include "data.h"
 #include "bms.h"
-#define NUM_BYTES 4
 
+#define NUM_BYTES 4
+#define TEST_LEN 10
 data_t *data;
 int msgRecv = 0;
 
@@ -44,7 +45,7 @@ void txTest() {
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
     
     if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { return 1; }
     if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))     == NULL) { return 1; }
@@ -125,9 +126,9 @@ int main() {
     initCan();
     struct can_frame can_mesg;
     txTest();   // test RMS Commands
-    printf("---Begin 30 second CAN test---\n");
+    printf("---Begin %d second CAN test---\n", TEST_LEN);
     unsigned long currTime = (unsigned long) time(NULL);
-    int timeout = 30 + currTime;
+    int timeout = TEST_LEN + currTime;
     while (currTime < timeout) {
           rx_test(&can_mesg);
   //      usleep(500000); // Able to edit freq of control here
