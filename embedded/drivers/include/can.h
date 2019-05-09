@@ -11,7 +11,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define CAN_INTF "can0"
+#ifdef USE_VCAN
+ #define CAN_INTF "vcan0"
+#else
+ #define CAN_INTF "can0"
+#endif
 
 extern volatile bool NEW_CAN_MESSAGE;
 

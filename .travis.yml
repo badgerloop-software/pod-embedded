@@ -1,5 +1,19 @@
 language: c
 compiler: gcc
-script: make examples && make
+python:
+  - "3.4"
+before_install:
+- sudo apt-get update
+- sudo apt-get install python3
+install:
+  - git clone https://github.com/linux-can/can-utils.git
+  - cd can-utils
+  - ./autogen.sh
+  - ./configure
+  - make
+  - sudo make install 
+  - sudo cp cangen /bin/ && sudo cp candump /bin/
+  - cd ..
+script: ./deploy.sh
 git:
   submodules: false
