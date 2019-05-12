@@ -21,36 +21,45 @@
 
 extern stateMachine_t stateMachine;
 extern data_t *data;
-static bool checkPrimPressures(void);
+static bool checkPrerunPressures(void);
 static bool checkStopped(void);
 
 extern stateTransition_t *findTransition(state_t *currState, char *name);
 
 /***
- * checkPrimPressures - Compares the readings from the pressure sensors on
+ * checkPrerunPressures - Compares the readings from the pressure sensors on
  * the primary brakes agaainst expected values. Applicable only for pre-braking
  * pressures
  *
  * RETURNS: true if everything is ok, false if there is an issue
  */
 
-static bool checkPrimPressures(void) {
-    if (data->pressure->ps1 < PS1_BOTTOM_LIMIT || data->pressure->ps1 > PS1_TOP_LIMIT) {
+static bool checkPrerunPressures(void) {
+    if (data->pressure->ps1 < PS1_BOTTOM_LIMIT_PRE || data->pressure->ps1 > PS1_TOP_LIMIT_PRE) {
         fprintf(stderr, "PS1 pressure failing\n");
         return false;
     }
-    if (data->pressure->ps2 < PS2_BOTTOM_LIMIT || data->pressure->ps2 > PS2_TOP_LIMIT) {
+    if (data->pressure->ps2 < PS2_BOTTOM_LIMIT_PRE || data->pressure->ps2 > PS2_TOP_LIMIT_PRE) {
         fprintf(stderr, "PS2 pressure failing\n");
         return false;
     }
-    if (data->pressure->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
+    if (data->pressure->ps3 < PS3_BOTTOM_LIMIT_PRE || data->pressure->ps3 > PS3_TOP_LIMIT_PRE) {
         fprintf(stderr, "PS3 pressure failing\n");
         return false;
     }
-    if (data->pressure->ps4 < PS4_BOTTOM_LIMIT || data->pressure->ps4 > PS4_TOP_LIMIT) {
-        fprintf(stderr, "PS4 pressure failing\n");
+    if (data->pressure->sec_ps1 < SEC_PS1_BOTTOM_LIMIT_PRE || data->pressure->sec_ps1 > SEC_PS1_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary PS1 pressure failing\n");
         return false;
     }
+    if (data->pressure->sec_ps2 < SEC_PS2_BOTTOM_LIMIT_PRE || data->pressure->sec_ps2 > SEC_PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary PS2 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->sec_ps3 < SEC_PS3_BOTTOM_LIMIT || data->pressure->sec_ps3 > SEC_PS3_TOP_LIMIT) {
+        fprintf(stderr, "Secondary PS3 pressure failing\n");
+        return false;
+    }
+    
 
     return true;
 }
@@ -195,15 +204,15 @@ static bool checkRunRMS(void){
         printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
         return false;
     }
-    if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_IDLE){
+    if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
         printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
         return false;
     }
-    if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_PRERUN){
+    if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
         printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
         return false;
     }
-    if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PRE){
+    if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PROPULSION){
         printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
         return false;
     }
@@ -215,26 +224,28 @@ static bool checkRunRMS(void){
         printf("LV Voltage Failure: %i\n", data->rms->lvVoltage);
         return false;
     }
-    if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_PRE){
+    if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_RUN){
         printf("CMD Torque Failure: %i\n", data->rms->commandedTorque);
         return false;
     }
-    if(data->rms->actualTorque < ACTUAL_TORQUE_MIN || data->rms->actualTorque > ACTUAL_TORQUE_MAX_PRE){
+    if(data->rms->actualTorque < ACTUAL_TORQUE_MIN || data->rms->actualTorque > ACTUAL_TORQUE_MAX_RUN){
         printf("Actual Torque Failure: %i\n", data->rms->actualTorque);
         return false;
     }
-    if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PUMPDOWN){
+    if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PROP){
         printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
         return false;
     }
-    if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_IDLE){
+    if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_PROPULSION){
         printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
         return false;
     }
-    if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
+    if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
         printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
         return false;
     }
+    
+    return true;
 }
 
 /***
@@ -268,24 +279,24 @@ stateTransition_t * idleAction() {
     data->state = 1;
     
     // CHECK PRESSURE
-    if(!checkPrimPressures(){
-        STATE_ERROR();
+    if(!checkPrerunPressures(){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkPrerunBattery()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     if(!checkPrerunRMS()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // TRANSITION CRITERIA
@@ -301,24 +312,24 @@ stateTransition_t * readyForPumpdownAction() {
     data->state = 2;
 
     // CHECK PRESSURE
-    if(!checkPrimPressures(){
-        STATE_ERROR();
+    if(!checkPrerunPressures(){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkPrerunBattery()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     if(!checkPrerunRMS()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
 
     if (data->flags->pumpDown){
@@ -333,24 +344,24 @@ stateTransition_t * pumpdownAction() {
     data->state = 3;
     
     // CHECK PRESSURE
-    if(!checkPrimPressures(){
-        STATE_ERROR();
+    if(!checkPrerunPressures(){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkPrerunBattery()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     if(!checkPrerunRMS()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
     
@@ -365,7 +376,46 @@ stateTransition_t * readyForLaunchAction() {
     data->state = 4;
     
      // CHECK PRESSURE
-    if(!checkPrimPressures(){
+    if(!checkPrerunPressures(){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    if(!checkPrerunRMS()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+
+    if(data->flags->propulse){
+        // Init initial timer
+        data->timers->startTime = time(NULL);
+        return findTransition(stateMachine.currState, PROPULSION_NAME);
+    }
+
+    return NULL;
+}
+
+stateTransition_t * propulsionAction() {
+    data->state = 5;
+    
+    // CHECK FOR EMERGENCY BRAKE
+    if(data->flags->emergencyBrake){
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+    
+    // CHECK FAULT CRITERIA
+    // CHECK PRESSURE
+    if(!checkPrerunPressures(){
         STATE_ERROR();
     }
     
@@ -384,25 +434,7 @@ stateTransition_t * readyForLaunchAction() {
     if(!checkPrerunRMS()){
         STATE_ERROR();
     }
-
-    if(data->flags->propulse){
-        return findTransition(stateMachine.currState, PROPULSION_NAME);
-    }
-
-    return NULL;
-}
-
-stateTransition_t * propulsionAction() {
-    if(data->flags->emergencyBrake){
-        return findTransition(stateMachine.currState, BRAKING_NAME);
-    }
     
-    
-    
-    data->state = 5;
-    // Check for nominal values?
-    
-
     if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }

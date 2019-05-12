@@ -3,18 +3,42 @@
 
 
 /* Pressure sensor acceptable limits (in PSI) */
-#define PS1_BOTTOM_LIMIT        1000
-#define PS1_TOP_LIMIT           3000
-#define PS2_BOTTOM_LIMIT        150
-#define PS2_TOP_LIMIT           275
-#define PS3_BOTTOM_LIMIT        1000
-#define PS3_TOP_LIMIT           3000
-#define PS4_BOTTOM_LIMIT        0
-#define PS4_TOP_LIMIT           20
+#define PS1_BOTTOM_LIMIT_PRE        	1000
+#define PS1_BOTTOM_LIMIT_CRAWLPOST  	0
+#define PS1_TOP_LIMIT_PRE          		3000
+#define PS1_TOP_LIMIT_CRAWLPOST     	20
 
-#define PS1_BOTTOM_LIMIT_CRAWLPOSTRUN 0
-#define PS2_BOTTOM_LIMIT_CRAWLPOSTRUN 0
-#define PS3_BOTTOM_LIMIT_CRAWLPOSTRUN 0
+#define PS2_BOTTOM_LIMIT_PRE        	150
+#define PS2_BOTTOM_LIMIT_CRAWLPOST  	0
+#define PS2_TOP_LIMIT_PRE           	275
+#define PS2_TOP_LIMIT_CRAWLPOST     	20
+
+
+#define PS3_BOTTOM_LIMIT_PRE        	0
+#define PS3_BOTTOM_LIMIT_BRAKING		150
+#define PS3_BOTTOM_LIMIT_CRAWLPOST		0
+#define PS3_TOP_LIMIT_PRE           	0
+#define PS3_TOP_LIMIT_BRAKING			275
+#define PS3_TOP_LIMIT_CRAWLPOST			20
+
+
+#define SEC_PS1_BOTTOM_LIMIT_PRE		1000
+#define SEC_PS1_BOTTOM_LIMIT_CRAWLPOST	0
+#define SEC_PS1_TOP_LIMIT_PRE			3000
+#define SEC_PS1_TOP_LIMIT_CRAWLPOST		20
+
+
+#define SEC_PS2_BOTTOM_LIMIT_PRE		150
+#define SEC_PS2_BOTTOM_LIMIT_CRAWLPOST	0
+#define SEC_PS2_TOP_LIMIT_PRE			275
+#define SEC_PS2_TOP_LIMIT_CRAWLPOST		20
+
+
+#define SEC_PS3_BOTTOM_LIMIT			0
+#define SEC_PS3_TOP_LIMIT				20
+
+
+
 
 /* Battery Acceptable Limits */
 #define MAX_BATT_TEMP_PRERUN		33	/* Degrees Celcius */
