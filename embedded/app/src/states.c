@@ -85,10 +85,6 @@ static bool checkPrerunRMS(){
         printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
         return false;
     }
-    if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
-        printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
-        return false;
-    }
     if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_IDLE){
         printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
         return false;
@@ -118,7 +114,8 @@ static bool checkPrerunRMS(){
         return false;
     }
     
-    if(data->state == 1){
+    // IDLE
+    if(data->state == 1 || data->state == 2){
         if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_IDLE){
             printf("DC Bus Current Idle Failure: %i\n", data->rms->dcBusCurrent);
             return false;
@@ -127,9 +124,15 @@ static bool checkPrerunRMS(){
             printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
             return false;
         }
+        if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
+            printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+            return false;
+        }
     }
-    else if(data->state == 2){
-        if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_IDLE){
+    
+    // READY PUMPDOWN SPECIFIC
+    else if(data->state == 3){
+        if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PUMPDOWN){
             printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
             return false;
         }
@@ -137,14 +140,38 @@ static bool checkPrerunRMS(){
             printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
             return false;
         }
+        if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
+            printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+            return false;
+        }
     }
-    else if(data->state == 3){
+    // PUMPDOWN SPECIFIC
+    else if(data->state == 4){
         if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PUMPDOWN){
             printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
             return false;
         }
         if(data->rms->motorSpeed < MIN_RPM_PUMPDOWN || data->rms->motorSpeed > MAX_RPM_PUMPDOWN){
             printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+            return false;
+        }
+        if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
+            printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+            return false;
+        }
+    }
+    // PRE-PROPULSE SPECIFIC
+    else if(data->state == 5){
+        if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PUMPDOWN){
+            printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+            return false;
+        }
+        if(data->rms->motorSpeed < MIN_RPM_PUMPDOWN || data->rms->motorSpeed > MAX_RPM_PUMPDOWN){
+            printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+            return false;
+        }
+        if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
+            printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
             return false;
         }
     }
@@ -278,8 +305,29 @@ stateTransition_t * pumpdownAction() {
 }
 
 stateTransition_t * readyForLaunchAction() {
-    // First check for nominal values?
     data->state = 4;
+    
+     // CHECK PRESSURE
+    if(!checkPrimPressures(){
+        STATE_ERROR();
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        STATE_ERROR();
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        STATE_ERROR();
+    }
+    
+    if(!checkPrerunRMS()){
+        STATE_ERROR();
+    }
+
     if(data->flags->propulse){
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
@@ -289,9 +337,11 @@ stateTransition_t * readyForLaunchAction() {
 
 stateTransition_t * propulsionAction() {
     if(data->flags->emergencyBrake){
-	// If it's an emergency, shold we trigger braking first then go through the formalities of doing a state transition?
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
+    
+    
+    
     data->state = 5;
     // Check for nominal values?
     
