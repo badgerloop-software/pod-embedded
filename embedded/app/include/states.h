@@ -1,6 +1,10 @@
 #ifndef STATES_H
 #define STATES_H
 
+/* Motion */
+
+#define RETRO_COUNT_MAX 15
+
 
 /* Pressure sensor acceptable limits (in PSI) */
 #define PS1_BOTTOM_LIMIT_PRE        	1000

@@ -199,6 +199,31 @@ static bool checkPrerunRMS(){
     return true;
 }
 
+static bool checkRunBattery(void){
+    if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
+        printf("Temp too high: %i\n", data->bms->highTemp);
+        return false;
+    }
+    if(data->bms->packCurrent > MAX_BATT_CURRENT_MOVING){
+        printf("Pack Current too high: %f\n", data->bms->packCurrent);
+        return false;
+    }
+    if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
+        printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+        return false;
+    }
+    if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
+        printf("Pack Voltage Error: %f\n", data->packVoltage);
+        return false;
+    }
+    if(data->bms->Soc < MIN_SOC_RUN){
+        printf("SOC is less than expected: %i", data->bms->Soc);
+        return false;
+    }
+    
+    return true;
+}
+
 static bool checkRunRMS(void){
     if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_RUN){
         printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
@@ -414,30 +439,31 @@ stateTransition_t * propulsionAction() {
     }
     
     // CHECK FAULT CRITERIA
-    // CHECK PRESSURE
+    // CHECK PRESSURE -- PreRun function still valid here
     if(!checkPrerunPressures(){
-        STATE_ERROR();
-    }
-    
-    // CHECK STOPPED (MOTION)
-    if(!checkStopped()){
-        STATE_ERROR();
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
-    if(!checkPrerunBattery()){
-        STATE_ERROR();
+    if(!checkRunBattery()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
-    if(!checkPrerunRMS()){
-        STATE_ERROR();
+    if(!checkRunRMS()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
     if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
+    
+    // CHECK TRANSITION CRITERIA
+    if(data->motion->retroCount >= RETRO_COUNT_MAX){
+        return findTransition(stateMachine.currState, BRAKING_NAME); 
+    }
+    // TODO will the IMU/timer logic be handled in the retro driver or do we do it here?
 
     return NULL;
 }
