@@ -97,10 +97,6 @@ static bool checkPrerunRMS(){
         printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
         return false;
     }
-    if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_IDLE){
-        printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
-        return false;
-    }
     if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PRE){
         printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
         return false;
@@ -127,10 +123,28 @@ static bool checkPrerunRMS(){
             printf("DC Bus Current Idle Failure: %i\n", data->rms->dcBusCurrent);
             return false;
         }
+        if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_IDLE){
+            printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+            return false;
+        }
     }
     else if(data->state == 2){
+        if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_IDLE){
+            printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+            return false;
+        }
+        if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_IDLE){
+            printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+            return false;
+        }
+    }
+    else if(data->state == 3){
         if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PUMPDOWN){
             printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+            return false;
+        }
+        if(data->rms->motorSpeed < MIN_RPM_PUMPDOWN || data->rms->motorSpeed > MAX_RPM_PUMPDOWN){
+            printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
             return false;
         }
     }
@@ -233,6 +247,29 @@ stateTransition_t * readyForPumpdownAction() {
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
     data->state = 3;
+    
+    // CHECK PRESSURE
+    if(!checkPrimPressures(){
+        STATE_ERROR();
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        STATE_ERROR();
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        STATE_ERROR();
+    }
+    
+    if(!checkPrerunRMS()){
+        STATE_ERROR();
+    }
+    
+    
     if(data->flags->readyCommand){
 	return findTransition(stateMachine.currState, READY_NAME);
     }
