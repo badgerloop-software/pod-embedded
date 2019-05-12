@@ -35,25 +35,50 @@ extern stateTransition_t *findTransition(state_t *currState, char *name);
  */
 
 static bool checkPrimPressures(void) {
-    bool noProblem = true;
     if (data->pressure->ps1 < PS1_BOTTOM_LIMIT || data->pressure->ps1 > PS1_TOP_LIMIT) {
-        fprintf(stderr, "Tank pressure failing\n");
-        noProblem = false;
+        fprintf(stderr, "PS1 pressure failing\n");
+        return false;
     }
     if (data->pressure->ps2 < PS2_BOTTOM_LIMIT || data->pressure->ps2 > PS2_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
+        fprintf(stderr, "PS2 pressure failing\n");
+        return false;
     }
     if (data->pressure->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
+        fprintf(stderr, "PS3 pressure failing\n");
+        return false;
     }
     if (data->pressure->ps4 < PS4_BOTTOM_LIMIT || data->pressure->ps4 > PS4_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
+        fprintf(stderr, "PS4 pressure failing\n");
+        return false;
     }
 
-    return noProblem;
+    return true;
+}
+
+static bool checkPrerunBattery(void){
+    if(data->bms->highTemp > MAX_BATT_TEMP_PRERUN){
+        printf("Temp too high: %i\n", data->bms->highTemp);
+        return false;
+    }
+    if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
+        printf("Pack Current too high: %f\n", data->bms->packCurrent);
+        return false;
+    }
+    if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
+        printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+        return false;
+    }
+    if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_PRERUN){
+        printf("Pack Voltage Error: %f\n", data->packVoltage);
+        return false;
+    }
+    if(data->bms->Soc < MIN_SOC_PRERUN){
+        printf("SOC is less than expected: %i", data->bms->Soc);
+        return false;
+    }
+    
+    
+    return true;
 }
 
 /***
@@ -63,7 +88,6 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-    // TODO Check this with all three retro timers?
 	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
 }
 
@@ -85,24 +109,54 @@ stateTransition_t * powerOnAction() {
 }
 
 stateTransition_t * idleAction() {
-    // First check for nominal values?
     data->state = 1;
-   // if(!checkPrimPressures() || !checkStopped()){
-   //     STATE_ERROR();
-   // }
-
+    
+    // CHECK PRESSURE
+    if(!checkPrimPressures(){
+        STATE_ERROR();
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        STATE_ERROR();
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        STATE_ERROR();
+    }
+    
+    if(data->)
+    
+    // TRANSITION CRITERIA
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
     }
+    
 
     return NULL;
 }
 
 stateTransition_t * readyForPumpdownAction() {
-    // First check for nominal values?
     data->state = 2;
-    if (!checkPrimPressures() || !checkBattTemp()) {
-	return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+
+    // CHECK PRESSURE
+    if(!checkPrimPressures(){
+        STATE_ERROR();
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        STATE_ERROR();
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        STATE_ERROR();
     }
 
     if (data->flags->pumpDown){
