@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>  
-#include <cmath>
+#include <math.h>
 
 #include "state_machine.h"
 #include "data.h"
@@ -386,7 +386,7 @@ static bool checkBrakingRMS(void){
  */
 
 static bool checkStopped(void) {
-	return abs(data->motion->vel) < MAX_STOPPED_VEL &&  (time(NULL) - data->timers->lastRetro) > 15;
+	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (time(NULL) - data->timers->lastRetro) > 15;
 }
 
 /***
