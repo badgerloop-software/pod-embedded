@@ -9,7 +9,7 @@
 
 extern data_t *data;
 
-bool checkPrerunRMS(){
+bool checkPrerunRMS(void){
 	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_PRERUN){
 		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
 		return false;
