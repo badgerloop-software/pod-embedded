@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>  
-#include <cstdlib>
+#include <cmath>
 
 #include "state_machine.h"
 #include "data.h"
