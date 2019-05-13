@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>  
+#include <cstdlib>
 
 #include "state_machine.h"
 #include "data.h"
@@ -273,6 +274,111 @@ static bool checkRunRMS(void){
     return true;
 }
 
+static bool checkBrakingPressure(void) {
+    if (data->pressure->ps1 < PS1_BOTTOM_LIMIT_PRE || data->pressure->ps1 > PS1_TOP_LIMIT_PRE) {
+        fprintf(stderr, "PS1 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->ps2 < PS2_BOTTOM_LIMIT_PRE || data->pressure->ps2 > PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "PS2 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->ps3 < PS3_BOTTOM_LIMIT_BRAKING || data->pressure->ps3 > PS3_TOP_LIMIT_BRAKING) {
+        fprintf(stderr, "PS3 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->sec_ps1 < SEC_PS1_BOTTOM_LIMIT_PRE || data->pressure->sec_ps1 > SEC_PS1_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary PS1 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->sec_ps2 < SEC_PS2_BOTTOM_LIMIT_PRE || data->pressure->sec_ps2 > SEC_PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary PS2 pressure failing\n");
+        return false;
+    }
+    if (data->pressure->sec_ps3 < SEC_PS3_BOTTOM_LIMIT || data->pressure->sec_ps3 > SEC_PS3_TOP_LIMIT) {
+        fprintf(stderr, "Secondary PS3 pressure failing\n");
+        return false;
+    }
+    
+
+    return true;
+}
+
+static bool checkBrakingBattery(void){
+    if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
+        printf("Temp too high: %i\n", data->bms->highTemp);
+        return false;
+    }
+    if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
+        printf("Pack Current too high: %f\n", data->bms->packCurrent);
+        return false;
+    }
+    if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
+        printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+        return false;
+    }
+    if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
+        printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+        return false;
+    }
+    if(data->bms->Soc < MIN_SOC_RUN){
+        printf("SOC is less than expected: %i", data->bms->Soc);
+        return false;
+    }
+    
+    return true;
+}
+
+static bool checkBrakingRMS(void){
+    if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_RUN){
+        printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+        return false;
+    }
+    if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
+        printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+        return false;
+    }
+    if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
+        printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
+        return false;
+    }
+    if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
+        printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
+        return false;
+    }
+    if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_CURRENT_MAX_BRAKING){
+        printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+        return false;
+    }
+    if(data->rms->lvVoltage < LV_VOLTAGE_MIN || data->rms->lvVoltage > LV_VOLTAGE_MAX){
+        printf("LV Voltage Failure: %i\n", data->rms->lvVoltage);
+        return false;
+    }
+    if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_POST){
+        printf("CMD Torque Failure: %i\n", data->rms->commandedTorque);
+        return false;
+    }
+    if(data->rms->actualTorque < ACTUAL_TORQUE_MIN_BRAKING || data->rms->actualTorque > ACTUAL_TORQUE_MAX_BRAKING){
+        printf("Actual Torque Failure: %i\n", data->rms->actualTorque);
+        return false;
+    }
+    if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_PROP){
+        printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+        return false;
+    }
+    if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_PROPULSION){
+        printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+        return false;
+    }
+    if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
+        printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+        return false;
+    }
+    
+    return true;
+}
+
+
 /***
  * checkStopped - checks a variety of values to make sure the pod is stopped.
  *
@@ -280,7 +386,7 @@ static bool checkRunRMS(void){
  */
 
 static bool checkStopped(void) {
-	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
+	return abs(data->motion->vel) < MAX_STOPPED_VEL &&  (time(NULL) - data->timers->lastRetro) > 15;
 }
 
 /***
@@ -466,12 +572,37 @@ stateTransition_t * propulsionAction() {
 
 stateTransition_t * brakingAction() {
     data->state = 6;
-    /* transition to post run */
-//    if (!checkBattTemp()) 
-//        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-//    if (checkStopped()) {
-//        return findTransition(stateMachine.currState, POST_RUN_NAME);
-//    }
+    
+    // TODO Do we differenciate between primary and secondary braking systems?
+    // TODO Add logic to handle switches / actuate both
+    
+    // CHECK FAULT CRITERIA
+    // CHECK PRESSURE -- PreRun function still valid here
+    if(!checkBrakingPressures()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkBrakingBattery()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if(!checkBrakingRMS()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    // CHECK TRANSITION CRITERIA
+    if(checkStopped()){
+        return findTransition(stateMachine.currState, STOPPED_NAME);
+    }
+    
+    
     return NULL;
 }
 

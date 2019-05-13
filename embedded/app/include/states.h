@@ -132,7 +132,7 @@
 #define ACTUAL_TORQUE_MAX_CRAWL		40
 #define ACTUAL_TORQUE_MAX_POST		20
 
-#define MAX_STOPPED_ACCEL		0.3 /* Limit for qualifying the pod as stopped in m/s */
+#define MAX_STOPPED_VEL				0.3 /* Limit for qualifying the pod as stopped in m/s */
 
 
 
