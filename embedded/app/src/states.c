@@ -78,7 +78,7 @@ static bool checkPrerunBattery(void){
         return false;
     }
     if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_PRERUN){
-        printf("Pack Voltage Error: %i\n", data->bms->packVoltage);
+        printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
         return false;
     }
     if(data->bms->Soc < MIN_SOC_PRERUN){
@@ -205,7 +205,7 @@ static bool checkRunBattery(void){
         return false;
     }
     if(data->bms->packCurrent > MAX_BATT_CURRENT_MOVING){
-        printf("Pack Current too high: %i\n", data->bms->packCurrent);
+        printf("Pack Current too high: %f\n", data->bms->packCurrent);
         return false;
     }
     if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
@@ -213,7 +213,7 @@ static bool checkRunBattery(void){
         return false;
     }
     if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
-        printf("Pack Voltage Error: %i\n", data->packVoltage);
+        printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
         return false;
     }
     if(data->bms->Soc < MIN_SOC_RUN){
@@ -436,7 +436,7 @@ stateTransition_t * propulsionAction() {
     
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
-    if(!checkPrerunPressures(){
+    if(!checkPrerunPressures()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
