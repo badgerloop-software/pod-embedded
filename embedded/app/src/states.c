@@ -274,7 +274,7 @@ static bool checkRunRMS(void){
     return true;
 }
 
-static bool checkBrakingPressure(void) {
+static bool checkBrakingPressures(void) {
     if (data->pressure->ps1 < PS1_BOTTOM_LIMIT_PRE || data->pressure->ps1 > PS1_TOP_LIMIT_PRE) {
         fprintf(stderr, "PS1 pressure failing\n");
         return false;
