@@ -168,7 +168,7 @@ bool checkRunRMS(void){
 	return true;
 }
 
-static bool checkBrakingRMS(void){
+bool checkBrakingRMS(void){
 	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_RUN){
 		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
 		return false;
