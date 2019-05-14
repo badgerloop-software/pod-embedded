@@ -1,124 +1,71 @@
-DRIVERS = drivers
-PERIPHERALS = peripherals
-EMBD_EXAMPLES = tests
+VPATH := $(shell find . -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
 
-DRIVER_SRC_DIR = embedded/drivers/src
-PERIPHERAL_SRC_DIR = embedded/peripherals/src
-EMBD_EXAMPLES_SRC_DIR = embedded/examples
-MIDDLEWARE_SRC_DIR = middleware/src
-MIDDLEWARE_EX_DIR = middleware/examples
-APP_SRC_DIR = embedded/app/src
-MAIN_SRC_DIR = embedded/app/main
+# Code and Includes (I know, shell commands everywhere! Works though)
+ALL_SRC	:= $(shell find . -name "src" -exec ls {} \;)
+ALL_EX	:= $(shell find . -name "examples" -exec ls {} \; | grep ".c")
 
-OUTPUT_DIR := out
-OBJ_DIR = $(OUTPUT_DIR)/obj
-OBJ_DIR_DRIVER = $(OUTPUT_DIR)/obj
-OBJ_DIR_PERIPHERAL = $(OUTPUT_DIR)/obj
-OBJ_DIR_EXAMPLE = $(OUTPUT_DIR)/obj/tests
-OBJ_DIR_MDL = $(OUTPUT_DIR)/obj
-OBJ_DIR_MDL_EXAMPLE = $(OUTPUT_DIR)/obj/tests
-OBJ_DIR_APP = $(OUTPUT_DIR)/obj
-OBJ_DIR_MAIN = $(OUTPUT_DIR)/obj/main
+# Should find all our include directories
+INCLUDE_DIRS := $(shell find . -name "include") ./middleware/include/jsonlib
 
+# Add specific flags that allow our examples to be run with hardware-out-of-the-loop
+ifdef VIRTUAL
+USE_VCAN := USE_VCAN
+endif
 
-DRIVER_SRC = $(wildcard $(DRIVER_SRC_DIR)/*.c)
-PERIPHERAL_SRC = $(wildcard $(PERIPHERAL_SRC_DIR)/*.c)
-EMBD_EXAMPLES_SRC = $(wildcard $(EMBD_EXAMPLES_SRC_DIR)/*.c)
-MDL_SRC = $(wildcard $(MIDDLEWARE_SRC_DIR)/*.cpp)
-MDL_EXAMPLES_SRC = $(wildcard $(MIDDLEWARE_EX_DIR)/*.cpp)
-APP_SRC = $(wildcard $(APP_SRC_DIR)/*.c)
-MAIN_SRC = $(wildcard $(MAIN_SRC_DIR)/*.cpp)
+# Compiler options
+GCC	   	:= gcc
+GPP	   	:= g++
+IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
+WFLAGS	:= -Wall -Wno-deprecated -Wextra 
+CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN))
+CPFLAGS := -std=c++11
+LDFLAGS := -Llib
+LDLIBS 	:= -lm -lpthread
 
-DRIVER_OBJ := $(DRIVER_SRC:$(DRIVER_SRC_DIR)/%.c=$(OBJ_DIR_DRIVER)/%.o)
-PERIPHERAL_OBJ := $(PERIPHERAL_SRC:$(PERIPHERAL_SRC_DIR)/%.c=$(OBJ_DIR_PERIPHERAL)/%.o)
-EMBD_EXAMPLES_OBJ := $(EMBD_EXAMPLES_SRC:$(EMBD_EXAMPLES_SRC_DIR)/%.c=$(OBJ_DIR_EXAMPLE)/%.o)
-MDL_OBJ := $(MDL_SRC:$(MIDDLEWARE_SRC_DIR)/%.cpp=$(OBJ_DIR_MDL)/%.o)
-MDL_EXAMPLES_OBJ := $(MDL_EXAMPLES_SRC:$(MIDDLEWARE_EX_DIR)/%.cpp=$(OBJ_DIR_MDL_EXAMPLE)/%.o)
-APP_OBJ := $(APP_SRC:$(APP_SRC_DIR)/%.c=$(OBJ_DIR_APP)/%.o)
-MAIN_OBJ := $(MAIN_SRC:$(MAIN_SRC_DIR)/%.cpp=$(OBJ_DIR_MAIN)/%.o)
+# Output Control
+OUTPUT_DIR 	:= out
+OBJ_DIR	   	:= $(OUTPUT_DIR)/obj
+EX_OUT_DIR	:= $(OUTPUT_DIR)/tests
 
-MAIN_OBJ_D = $(wildcard $(OBJ_DIR_MAIN)/*.o)
-MAIN_MAKE := $(MAIN_OBJ_D:$(OBJ_DIR_MAIN)/%.o=$(OUTPUT_DIR)/%)
+HV_MAIN		:= badgerloop_HV
+LV_MAIN		:= badgerloop_LV
 
-EX_OUT := out
-EMBD_EX_OBJ_D = $(wildcard $(OBJ_DIR_EXAMPLE)/*.o)
-EMBD_EXAMPLES_MAKE := $(EMBD_EX_OBJ_D:$(OBJ_DIR_EXAMPLE)/%.o=$(EX_OUT)/%)
+TARGETS		:= $(addprefix $(OUTPUT_DIR)/, $(HV_MAIN) $(LV_MAIN))
+EXAMPLES	:= $(addprefix $(EX_OUT_DIR)/,$(basename $(ALL_EX)))
 
-FORMAT_SRC = $(addprefix format,$(APP_SRC)) $(addprefix format,$(PERIPHERAL_SRC)) $(addprefix format, $(DRIVER_SRC))
+# Each Example obj should have a main(); so it has to be linked into its own executable
+GEN_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_SRC))))
+EX_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_EX))))
 
-GCC := gcc
-GPP := g++
-CPPFLAGS += -Iembedded/drivers/include -Iembedded/peripherals/include -Imiddleware/include -Imiddleware/include/jsonlib -Iembedded/data -Iembedded/app/include
-CFLAGS += -Wall -Wno-deprecated -std=gnu11
-CPFLAGS += -Wall -Wno-deprecated -Wextra -std=c++11
-LDFLAGS += -Llib
-LDLIBS += -lm -lpthread
+.PHONY: all examples clean
+# .SEC keeps intermediates, so make doesnt automatically clean .o files
+.SECONDARY:
 
-.PHONY: all clean tests
+all: $(TARGETS)
 
-all: main_tgts
-	make main_tgts
-	
-main_tgts: directories MAIN_SUPPORT_OBJ $(MAIN_MAKE)
+examples: $(EXAMPLES)
 
-examples: examples_make
-	make examples_make
-
-examples_make: example_directories $(EMBD_EXAMPLES) $(EMBD_EXAMPLES_MAKE)
-
-directories: ${OBJ_DIR} ${OBJ_DIR_MAIN}
-
-example_directories: ${OBJ_DIR_EXAMPLE} ${OBJ_DIR_MAIN}
-
-${OBJ_DIR}:
-	mkdir -p ${OBJ_DIR}
-	
-${OBJ_DIR_EXAMPLE}:
-	mkdir -p ${OBJ_DIR_EXAMPLE}
-	
-${OBJ_DIR_MAIN}:
-	mkdir -p ${OBJ_DIR_MAIN}
-	
-MAIN_SUPPORT_OBJ: $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(MAIN_OBJ)
-
-	
-$(EMBD_EXAMPLES): $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(EMBD_EXAMPLES_OBJ) $(MDL_EXAMPLES_OBJ)
-	
-$(EX_OUT)/%: $(OBJ_DIR_EXAMPLE)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ)
-	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	
-$(OUTPUT_DIR)/%: $(OBJ_DIR_MAIN)/%.o $(DRIVER_OBJ) $(PERIPHERAL_OBJ) $(MDL_OBJ) $(APP_OBJ) 
+$(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
+$(EX_OUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o | $(EX_OUT_DIR)
+	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-$(OBJ_DIR_DRIVER)/%.o: $(DRIVER_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_PERIPHERAL)/%.o: $(PERIPHERAL_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-		
-$(OBJ_DIR_EXAMPLE)/%.o: $(EMBD_EXAMPLES_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+out/obj/%.o: %.c | $(OBJ_DIR)
+	$(GCC) -c $(CFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
 
-$(OBJ_DIR_MDL)/%.o: $(MIDDLEWARE_SRC_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_MDL_EXAMPLE)/%.o: $(MIDDLEWARE_EX_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_APP)/%.o: $(APP_SRC_DIR)/%.c
-	$(GCC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-	
-$(OBJ_DIR_MAIN)/%.o: $(MAIN_SRC_DIR)/%.cpp
-	$(GPP) $(CPPFLAGS) $(CPFLAGS) -c $< -o $@
+out/obj/%.o: %.cpp | $(OBJ_DIR)
+	$(GPP) -c $(CPFLAGS) $(IFLAGS) $(WFLAGS) $< -o $@
 
-$(FORMAT_SRC): 
-	clang-format -style=llvm $(@:format%=%) > $(@:format%=%).log
+$(OBJ_DIR): | $(OUTPUT_DIR)
+	mkdir $(OBJ_DIR)
 
-format: $(FORMAT_SRC)
+$(EX_OUT_DIR): | $(OUTPUT_DIR)
+	mkdir $(EX_OUT_DIR)
 
-scan: 
-	scan-build make > scan_build_out.log
-	
+$(OUTPUT_DIR):
+	mkdir $(OUTPUT_DIR)
+
 clean:
-	rm -rf $(OUTPUT_DIR)
+	-rm -rf $(OUTPUT_DIR)
+  
