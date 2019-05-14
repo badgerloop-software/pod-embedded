@@ -76,3 +76,33 @@ bool checkBrakingPressures(void) {
 
 	return true;
 }
+
+bool checkCrawlPostrunPressures(void) {
+	if (data->pressure->ps1 < PS1_BOTTOM_LIMIT_CRAWLPOST || data->pressure->ps1 > PS1_TOP_LIMIT_CRAWLPOST) {
+		fprintf(stderr, "PS1 pressure failing\n");
+		return false;
+	}
+	if (data->pressure->ps2 < PS2_BOTTOM_LIMIT_CRAWLPOST || data->pressure->ps2 > PS2_TOP_LIMIT_CRAWLPOST) {
+		fprintf(stderr, "PS2 pressure failing\n");
+		return false;
+	}
+	if (data->pressure->ps3 < PS3_BOTTOM_LIMIT_CRAWLPOST || data->pressure->ps3 > PS3_TOP_LIMIT_CRAWLPOST) {
+		fprintf(stderr, "PS3 pressure failing\n");
+		return false;
+	}
+	if (data->pressure->sec_ps1 < SEC_PS1_BOTTOM_LIMIT_CRAWLPOST || data->pressure->sec_ps1 > SEC_PS1_TOP_LIMIT_CRAWLPOST) {
+		fprintf(stderr, "Secondary PS1 pressure failing\n");
+		return false;
+	}
+	if (data->pressure->sec_ps2 < SEC_PS2_BOTTOM_LIMIT_CRAWLPOST || data->pressure->sec_ps2 > SEC_PS2_TOP_LIMIT_CRAWLPOST) {
+		fprintf(stderr, "Secondary PS2 pressure failing\n");
+		return false;
+	}
+	if (data->pressure->sec_ps3 < SEC_PS3_BOTTOM_LIMIT || data->pressure->sec_ps3 > SEC_PS3_TOP_LIMIT) {
+		fprintf(stderr, "Secondary PS3 pressure failing\n");
+		return false;
+	}
+	
+
+	return true;
+}

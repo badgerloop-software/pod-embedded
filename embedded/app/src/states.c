@@ -261,7 +261,7 @@ stateTransition_t * stoppedAction() {
     
     // CHECK FAULT CRITERIA
     
-    if(!checkBrakingPressures()){
+    if(!checkBrakingPressures()){ // Still unchanged
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
@@ -272,35 +272,53 @@ stateTransition_t * stoppedAction() {
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
-    if(!checkBrakingRMS()){ // Still unchanged
+    if(!checkStoppedRMS()){ // Still unchanged
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
+    
     
     if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
     // CHECK TRANSITION CRITERIA
-    if(checkStopped()){
-        return findTransition(stateMachine.currState, STOPPED_NAME);
+    if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
+    }
+    else{
+        return findTransition(stateMachine.currState, CRAWL_NAME);
     }
 	return NULL;
 }
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-//    if (!checkBattTemp()){
-//        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-//    }
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    if(!checkCrawlPostrunPressures()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->pressure->pv < 13) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkCrawlBattery()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->motion->pos >= (TUBE_LENGTH - 100)) {
+    
+    if(!checkCrawlRMS()){ // Still unchanged
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    // CHECK TRANSITION CRITERIA
+    if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
+
     
 	return NULL;
 }
@@ -308,13 +326,23 @@ stateTransition_t * crawlAction() {
 stateTransition_t * postRunAction() {
     data->state = 9;
     
-    if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
+    if(!checkCrawlPostrunPressures()){ 
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-
-    if (data->bms->packVoltage == 0 && data->pressure->ps1 < 30) {
-        return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPostrunBattery()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
+    
+    if(!checkPostRMS()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    // TODO CHECK TRANSITION CRITERIA
+
 
     return NULL;
 }

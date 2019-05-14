@@ -156,7 +156,7 @@ bool checkRunRMS(void){
 		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
 		return false;
 	}
-	if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_PROPULSION){
+	if(data->rms->motorSpeed < MIN_RPM_PROPULSION || data->rms->motorSpeed > MAX_RPM_PROPULSION){
 		printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
 		return false;
 	}
@@ -205,7 +205,7 @@ bool checkBrakingRMS(void){
 		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
 		return false;
 	}
-	if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_PROPULSION){
+	if(data->rms->motorSpeed < MIN_RPM_PROPULSION || data->rms->motorSpeed > MAX_RPM_PROPULSION){
 		printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
 		return false;
 	}
@@ -216,3 +216,151 @@ bool checkBrakingRMS(void){
 	
 	return true;
 }
+
+bool checkStoppedRMS(void){
+	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+		return false;
+	}
+	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		return false;
+	}
+	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
+		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
+		return false;
+	}
+	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
+		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
+		return false;
+	}
+	if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_CURRENT_MAX_BRAKING){
+		printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+		return false;
+	}
+	if(data->rms->lvVoltage < LV_VOLTAGE_MIN || data->rms->lvVoltage > LV_VOLTAGE_MAX){
+		printf("LV Voltage Failure: %i\n", data->rms->lvVoltage);
+		return false;
+	}
+	if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_POST){
+		printf("CMD Torque Failure: %i\n", data->rms->commandedTorque);
+		return false;
+	}
+	if(data->rms->actualTorque < ACTUAL_TORQUE_MIN || data->rms->actualTorque > ACTUAL_TORQUE_MAX_STOPPED){
+		printf("Actual Torque Failure: %i\n", data->rms->actualTorque);
+		return false;
+	}
+	if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_POST){
+		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+		return false;
+	}
+	if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_POST){
+		printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+		return false;
+	}
+	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+		return false;
+	}
+	
+	return true;
+}
+
+bool checkCrawlRMS(void){
+	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+		return false;
+	}
+	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		return false;
+	}
+	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
+		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
+		return false;
+	}
+	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_CRAWL){
+		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
+		return false;
+	}
+	if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_CURRENT_MAX_CRAWL){
+		printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+		return false;
+	}
+	if(data->rms->lvVoltage < LV_VOLTAGE_MIN || data->rms->lvVoltage > LV_VOLTAGE_MAX){
+		printf("LV Voltage Failure: %i\n", data->rms->lvVoltage);
+		return false;
+	}
+	if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_CRAWL){
+		printf("CMD Torque Failure: %i\n", data->rms->commandedTorque);
+		return false;
+	}
+	if(data->rms->actualTorque < ACTUAL_TORQUE_MIN || data->rms->actualTorque > ACTUAL_TORQUE_MAX_CRAWL){
+		printf("Actual Torque Failure: %i\n", data->rms->actualTorque);
+		return false;
+	}
+	if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_CRAWL){
+		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+		return false;
+	}
+	if(data->rms->motorSpeed < MIN_RPM_PROPULSION || data->rms->motorSpeed > MAX_RPM_CRAWL){
+		printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+		return false;
+	}
+	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+		return false;
+	}
+	
+	return true;
+}
+
+bool checkPostRMS(void){
+	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+		return false;
+	}
+	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		return false;
+	}
+	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
+		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
+		return false;
+	}
+	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
+		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
+		return false;
+	}
+	if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_CURRENT_MAX_POST){
+		printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+		return false;
+	}
+	if(data->rms->lvVoltage < LV_VOLTAGE_MIN || data->rms->lvVoltage > LV_VOLTAGE_MAX){
+		printf("LV Voltage Failure: %i\n", data->rms->lvVoltage);
+		return false;
+	}
+	if(data->rms->commandedTorque < CMD_TORQUE_MIN || data->rms->commandedTorque > CMD_TORQUE_MAX_POST){
+		printf("CMD Torque Failure: %i\n", data->rms->commandedTorque);
+		return false;
+	}
+	if(data->rms->actualTorque < ACTUAL_TORQUE_MIN || data->rms->actualTorque > ACTUAL_TORQUE_MAX_POST){
+		printf("Actual Torque Failure: %i\n", data->rms->actualTorque);
+		return false;
+	}
+	if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_POST){
+		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+		return false;
+	}
+	if(data->rms->motorSpeed < MIN_RPM_POST || data->rms->motorSpeed > MAX_RPM_POST){
+		printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
+		return false;
+	}
+	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_POSTRUN){
+		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+		return false;
+	}
+	
+	return true;
+}
+
