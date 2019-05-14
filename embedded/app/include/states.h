@@ -136,7 +136,8 @@
 
 
 
-#define TUBE_LENGTH             3800    /*in ft //FIXME I could be wrong on this on haha */
+#define TUBE_LENGTH             1158    /*in m //FIXME I could be wrong on this on haha */
+#define MIN_DISTANCE_TO_END		30		/*in m //FIXME Confirm how far from the end of the tube we need to stop */
 
 #define MAX_RUN_TIME            30  /* in seconds, TODO get the real number */
 
