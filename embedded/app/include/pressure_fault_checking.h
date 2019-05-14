@@ -3,5 +3,6 @@
 
 bool checkPrerunPressures(void);
 bool checkBrakingPressures(void);
+bool checkCrawlPostrunPressures(void);
 
 #endif
