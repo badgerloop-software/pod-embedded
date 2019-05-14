@@ -1,3 +1,12 @@
+/***
+ *  Filename: bms_fault_checking.c
+ *
+ *  Summary: Checks to make sure recorded battery values are within limits
+ *	at all points during the different states. Information about specific 
+ *	values can be found in the "states.h" file
+ *
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>

@@ -1,3 +1,12 @@
+/***
+ *  Filename: pressure_fault_checking.c
+ *
+ *  Summary: Checks to make sure recorded pressures are within limits
+ *	at all points during the different states. Information about specific 
+ *	values can be found in the "states.h" file
+ *
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
@@ -8,14 +17,6 @@
 #include "pressure_fault_checking.h"
 
 extern data_t *data;
-
-/***
- * checkPrerunPressures - Compares the readings from the pressure sensors on
- * the primary brakes agaainst expected values. Applicable only for pre-braking
- * pressures
- *
- * RETURNS: true if everything is ok, false if there is an issue
- */
 
 bool checkPrerunPressures(void) {
 	if (data->pressure->ps1 < PS1_BOTTOM_LIMIT_PRE || data->pressure->ps1 > PS1_TOP_LIMIT_PRE) {
