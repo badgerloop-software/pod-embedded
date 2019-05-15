@@ -89,7 +89,8 @@ void *LVTCPLoop(void *arg){
 			// Send acknowledge packet back
 			send(new_socket, (char*) "pong2" , strlen("pong2") , 0 ); 
 		}
-
+		
+		close(new_socket);
 	}
 	
 }
