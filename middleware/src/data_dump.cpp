@@ -33,7 +33,7 @@ char* currentDateTime() {
 	// for more information about date/time format
 	strftime(buf, sizeof(buf), "%Y-%m-%d%X", &tstruct);
 
-	return buf.c_str();
+	return buf;
 }
 
 
@@ -55,11 +55,12 @@ void *DataLoop(void *arg){
 		return;
 	}
 	
-	fprintf(fp, "")
-	
 	
 	while(1){
 		fp = fopen (dir,"w");
+		
+		
+		fclose(fp);
 	}
 		
 }
