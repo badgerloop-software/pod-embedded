@@ -3,6 +3,8 @@
 
 #define NUM_RETROS		1		// TODO change to 3 when the rest are plugged in
 
+#define RETRO_DELAY		2
+
 #define RETRO_1_PIN 	66		/* Temp pin, not the PCB one */
 #define RETRO_2_PIN		67
 #define RETRO_3_PIN		68
@@ -12,6 +14,6 @@
 #define RETRO_2			1
 #define RETRO_3			2
 
-int initRetro(void);
+int initRetros(void);
 
 #endif

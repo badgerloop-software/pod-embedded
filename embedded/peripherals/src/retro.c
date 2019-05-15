@@ -11,7 +11,7 @@
 #include <time.h>
 #include <data.h>
 
-#define TIMEOUT 1000	/* 1 second */
+#define TIMEOUT 100	/* 1 second */
 #define BUF_LEN 256
 
 static pthread_t retroThreads[3];
@@ -21,9 +21,9 @@ static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
 
 extern data_t *data;
-static time_t *retroTimers[3];
+static struct timeval *retroTimers[3];
 
-int initRetro() {
+int initRetros() {
 
 	int i = 0;
 
@@ -54,10 +54,21 @@ int initRetro() {
 
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
-	unsigned long currTime = (unsigned long) time(NULL);
-	printf("TIME: %lu\n", (unsigned long) *retroTimers[retroNum]);
-	if ((currTime - (unsigned long) *retroTimers[retroNum]) > 3) {
-		*retroTimers[retroNum] = currTime;
+	struct timeval currTime;
+	gettimeofday(&currTime, NULL);
+
+	printf("TIME: %llu\n", (uint64_t) retroTimers[retroNum]->tv_usec);
+	printf("Other time: %llu\n", (uint64_t) currTime.tv_usec);
+	/* Prevent Y2K all over again! No rollovers here ;) */
+	if (currTime.tv_usec < retroTimers[retroNum]->tv_usec) {
+		printf("We rolled over so we'll take the extra strip\n");
+		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
+		data->motion->retroCount++;
+		return 0;
+	}
+
+	if ((currTime.tv_usec - (uint64_t) retroTimers[retroNum]->tv_usec) > RETRO_DELAY) {
+		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
 		data->motion->retroCount++;
 		printf("VALID STRIP\n");
 	}

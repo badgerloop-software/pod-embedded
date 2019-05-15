@@ -41,11 +41,11 @@ typedef struct data_t {
  */
 
 typedef struct timers_t {
-    time_t startTime;
-    time_t lastRetro1;
-    time_t lastRetro2;
-    time_t lastRetro3;
-    time_t timeInState;
+    struct timeval startTime;
+    struct timeval lastRetro1;
+    struct timeval lastRetro2;
+    struct timeval lastRetro3;
+    struct timeval timeInState;
 } timers_t;
 
 /***
