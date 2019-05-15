@@ -18,7 +18,7 @@
 #define IDLE_NAME               "idle"
 #define PUMPDOWN_NAME           "pumpdown"
 #define READY_FOR_PUMPDOWN_NAME "readyForPumpdown"
-#define READY_NAME              "ready"
+#define READY_NAME              "readyForPropulsion"
 #define PROPULSION_NAME         "propulsion"
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"

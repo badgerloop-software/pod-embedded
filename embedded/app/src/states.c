@@ -12,49 +12,23 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>  
+#include <math.h>
 
 #include "state_machine.h"
 #include "data.h"
 #include "states.h"
 
+#include "bms_fault_checking.h"
+#include "rms_fault_checking.h"
+#include "pressure_fault_checking.h"
+
 /* Imports/Externs */
 
 extern stateMachine_t stateMachine;
 extern data_t *data;
-static bool checkPrimPressures(void);
-static bool checkStopped(void);
 
 extern stateTransition_t *findTransition(state_t *currState, char *name);
 
-/***
- * checkPrimPressures - Compares the readings from the pressure sensors on
- * the primary brakes agaainst expected values. Applicable only for pre-braking
- * pressures
- *
- * RETURNS: true if everything is ok, false if there is an issue
- */
-
-static bool checkPrimPressures(void) {
-    bool noProblem = true;
-    if (data->pressure->ps1 < PS1_BOTTOM_LIMIT || data->pressure->ps1 > PS1_TOP_LIMIT) {
-        fprintf(stderr, "Tank pressure failing\n");
-        noProblem = false;
-    }
-    if (data->pressure->ps2 < PS2_BOTTOM_LIMIT || data->pressure->ps2 > PS2_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
-    }
-    if (data->pressure->ps3 < PS3_BOTTOM_LIMIT || data->pressure->ps3 > PS3_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
-    }
-    if (data->pressure->ps4 < PS4_BOTTOM_LIMIT || data->pressure->ps4 > PS4_TOP_LIMIT) {
-        fprintf(stderr, "Line pressure failing\n");
-        noProblem = false;
-    }
-
-    return noProblem;
-}
 
 /***
  * checkStopped - checks a variety of values to make sure the pod is stopped.
@@ -63,14 +37,9 @@ static bool checkPrimPressures(void) {
  */
 
 static bool checkStopped(void) {
-    // TODO Check this with all three retro timers?
-	return data->motion->accel < MAX_STOPPED_ACCEL &&  (time(NULL) - data->timers->lastRetro1) > 15;
+	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (time(NULL) - data->timers->lastRetro) > 15;
 }
 
-
-static bool checkBattTemp(void) {
-    return data->bms->highTemp < MAX_BATT_TEMP; 
-}
 /***
  * Actions for all the states.
  * They perform transition and error condition
@@ -85,24 +54,60 @@ stateTransition_t * powerOnAction() {
 }
 
 stateTransition_t * idleAction() {
-    // First check for nominal values?
     data->state = 1;
-   // if(!checkPrimPressures() || !checkStopped()){
-   //     STATE_ERROR();
-   // }
-
+    
+    // CHECK PRESSURE
+    if(!checkPrerunPressures()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    if(!checkPrerunRMS()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TRANSITION CRITERIA
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
     }
+    
 
     return NULL;
 }
 
 stateTransition_t * readyForPumpdownAction() {
-    // First check for nominal values?
     data->state = 2;
-    if (!checkPrimPressures() || !checkBattTemp()) {
-	return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+
+    // CHECK PRESSURE
+    if(!checkPrerunPressures()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    if(!checkPrerunRMS()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
 
     if (data->flags->pumpDown){
@@ -115,6 +120,29 @@ stateTransition_t * readyForPumpdownAction() {
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
     data->state = 3;
+    
+    // CHECK PRESSURE
+    if(!checkPrerunPressures()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    if(!checkPrerunRMS()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    
     if(data->flags->readyCommand){
 	return findTransition(stateMachine.currState, READY_NAME);
     }
@@ -123,9 +151,32 @@ stateTransition_t * pumpdownAction() {
 }
 
 stateTransition_t * readyForLaunchAction() {
-    // First check for nominal values?
     data->state = 4;
+    
+     // CHECK PRESSURE
+    if(!checkPrerunPressures()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // CHECK STOPPED (MOTION)
+    if(!checkStopped()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPrerunBattery()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+    
+    if(!checkPrerunRMS()){
+        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+    }
+
     if(data->flags->propulse){
+        // Init initial timer
+        data->timers->startTime = time(NULL);
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
 
@@ -133,74 +184,165 @@ stateTransition_t * readyForLaunchAction() {
 }
 
 stateTransition_t * propulsionAction() {
+    data->state = 5;
+    
+    // CHECK FOR EMERGENCY BRAKE
     if(data->flags->emergencyBrake){
-	// If it's an emergency, shold we trigger braking first then go through the formalities of doing a state transition?
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
-    data->state = 5;
-    // Check for nominal values?
     
-
+    // CHECK FAULT CRITERIA
+    // CHECK PRESSURE -- PreRun function still valid here
+    if(!checkPrerunPressures()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkRunBattery()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if(!checkRunRMS()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
     if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
+    
+    // CHECK TRANSITION CRITERIA
+    if(data->motion->retroCount >= RETRO_COUNT_MAX){
+        return findTransition(stateMachine.currState, BRAKING_NAME); 
+    }
+    // TODO will the IMU/timer logic be handled in the retro driver or do we do it here?
 
     return NULL;
 }
 
 stateTransition_t * brakingAction() {
     data->state = 6;
-    /* transition to post run */
-    if (!checkBattTemp()) 
+    
+    // TODO Do we differenciate between primary and secondary braking systems?
+    // TODO Add logic to handle switches / actuate both
+    
+    // CHECK FAULT CRITERIA
+    if(!checkBrakingPressures()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    if (checkStopped()) {
-        return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkBrakingBattery()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if(!checkBrakingRMS()){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    
+    // CHECK TRANSITION CRITERIA
+    if(checkStopped()){
+        return findTransition(stateMachine.currState, STOPPED_NAME);
+    }
+    
+    
     return NULL;
 }
 
 stateTransition_t * stoppedAction() {
     data->state = 7;
-    if (!checkBattTemp()) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    // CHECK FAULT CRITERIA
+    
+    if(!checkBrakingPressures()){ // Still unchanged
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkBrakingBattery()){ // Still unchanged
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    if(!checkStoppedRMS()){ // Still unchanged
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    // CHECK TRANSITION CRITERIA
+    if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
+    }
+    else{
+        return findTransition(stateMachine.currState, CRAWL_NAME);
     }
 	return NULL;
 }
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-    if (!checkBattTemp()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    if(!checkCrawlPostrunPressures()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkCrawlBattery()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->pressure->pv < 13) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    
+    if(!checkCrawlRMS()){ // Still unchanged
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    if (data->motion->pos >= (TUBE_LENGTH - 100)) {
+    
+    
+    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+    }
+    
+    // CHECK TRANSITION CRITERIA
+    if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
+
     
 	return NULL;
 }
 
 stateTransition_t * postRunAction() {
     data->state = 9;
-	if (!checkBattTemp()) {
+    
+    if(!checkCrawlPostrunPressures()){ 
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
-    if (data->timers->timeInState >= 30 && data->bms->packVoltage > 0) {
+    // TODO check LV Power
+    // TODO check LV Temp
+    
+    if(!checkPostrunBattery()){ 
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-
-    if (data->bms->packVoltage == 0 && data->pressure->ps1 < 30) {
-        return findTransition(stateMachine.currState, SAFE_TO_APPROACH_NAME);
+    
+    if(!checkPostRMS()){ 
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
+    
+    // TODO CHECK TRANSITION CRITERIA
+
 
     return NULL;
 }
@@ -211,21 +353,25 @@ stateTransition_t * safeToApproachAction() {
 }
 
 stateTransition_t * secondaryBrakingAction() {
+    //TODO
     data->state = 14;
 	return NULL;
 }
 
 stateTransition_t * preFaultAction() {
+    //TODO
     data->state = 11;
 	return NULL;
 }
 
 stateTransition_t * runFaultAction() {
+    //TODO
     data->state = 12;
 	return NULL;
 }
 
 stateTransition_t * postFaultAction() {
+    //TODO
     data->state = 13;
 	return NULL;
 }

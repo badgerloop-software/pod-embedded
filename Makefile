@@ -16,7 +16,7 @@ endif
 GCC	   	:= gcc
 GPP	   	:= g++
 IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
-WFLAGS	:= -Wall -Wno-deprecated -Wextra 
+WFLAGS	:= -Wall -Wno-deprecated -Wextra -Wtype-limits
 CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN))
 CPFLAGS := -std=c++11
 LDFLAGS := -Llib
