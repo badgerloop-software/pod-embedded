@@ -5,9 +5,11 @@
 #include "rms.h"
 #include "data.h"
 #include "bms.h"
-#define NUM_BYTES 4
 
+#define NUM_BYTES 4
+#define TEST_LEN 10
 data_t *data;
+int msgRecv = 0;
 
 void rx_test(struct can_frame *can_mesg) {
         if(!canRead(can_mesg)){ // Checks for a CAN message
@@ -17,13 +19,14 @@ void rx_test(struct can_frame *can_mesg) {
             if(rms_parser(can_mesg->can_id, can_mesg->data)){
                 printf("RMS Data parsed successfully\n");
                 validRMSMesg = true;
+                msgRecv = 1;
             }
        
             if(!validRMSMesg && bmsParseMsg(can_mesg->can_id, can_mesg->data)){
                 printf("BMS Data parsed successfully\n");
                 bmsDump();
-            
-        }
+                msgRecv = 1;
+            }
         
         NEW_CAN_MESSAGE = false;
     }
@@ -42,7 +45,7 @@ void txTest() {
 
 
 
-int main() {
+int main(int argc, char *argv[]) {
     
     if ((data = (data_t *) malloc(sizeof(data_t)))		                 == NULL) { return 1; }
     if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))     == NULL) { return 1; }
@@ -119,13 +122,19 @@ int main() {
     data->flags->emergencyBrake = 0;
     
     data->state = 0;
-
+    
     initCan();
     struct can_frame can_mesg;
     txTest();   // test RMS Commands
-    while (1) {
+    printf("---Begin %d second CAN test---\n", TEST_LEN);
+    unsigned long currTime = (unsigned long) time(NULL);
+    int timeout = TEST_LEN + currTime;
+    while (currTime < timeout) {
           rx_test(&can_mesg);
   //      usleep(500000); // Able to edit freq of control here
+          currTime = (unsigned long) time(NULL);
     }
+    printf("---End CAN Test---\n");
+    if (msgRecv != 1) exit(-1);
     return 0;
 }

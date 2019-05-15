@@ -7,12 +7,17 @@ ALL_EX	:= $(shell find . -name "examples" -exec ls {} \; | grep ".c")
 # Should find all our include directories
 INCLUDE_DIRS := $(shell find . -name "include") ./middleware/include/jsonlib
 
+# Add specific flags that allow our examples to be run with hardware-out-of-the-loop
+ifdef VIRTUAL
+USE_VCAN := USE_VCAN
+endif
+
 # Compiler options
 GCC	   	:= gcc
 GPP	   	:= g++
 IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
-WFLAGS	:= -Wall -Wno-deprecated -Wextra -fdiagnostics-color=always
-CFLAGS 	:= -std=gnu11
+WFLAGS	:= -Wall -Wno-deprecated -Wextra -Wtype-limits
+CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN))
 CPFLAGS := -std=c++11
 LDFLAGS := -Llib
 LDLIBS 	:= -lm -lpthread
@@ -63,4 +68,4 @@ $(OUTPUT_DIR):
 
 clean:
 	-rm -rf $(OUTPUT_DIR)
-  
+
