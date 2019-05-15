@@ -10,7 +10,6 @@
 #include "data_dump.h"
 #include "data.h"
 
-
 pthread_t dataDumpThread;
 
 extern data_t *data;
@@ -25,7 +24,7 @@ void SetupDataDump(){
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
-const std::string currentDateTime() {
+char* currentDateTime() {
 	time_t     now = time(0);
 	struct tm  tstruct;
 	char       buf[80];
@@ -34,7 +33,7 @@ const std::string currentDateTime() {
 	// for more information about date/time format
 	strftime(buf, sizeof(buf), "%Y-%m-%d%X", &tstruct);
 
-	return buf;
+	return buf.c_str();
 }
 
 
@@ -46,15 +45,17 @@ void *DataLoop(void *arg){
 	FILE *fp;
 	
 	char dir[64];
-	std::string timestamp = currentDateTime();
+	char* timestamp = currentDateTime();
 	
-	sprintf(dir, "logs/%s.csv", timestamp.c_str());
+	sprintf(dir, "logs/%s.csv", timestamp);
 	
 	fp = fopen (dir,"w");
 	if (fp == NULL){
 		printf("Unable to open file\n");
 		return;
 	}
+	
+	fprintf(fp, "")
 	
 	
 	while(1){
