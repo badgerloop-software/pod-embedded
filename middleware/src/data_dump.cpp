@@ -24,16 +24,13 @@ void SetupDataDump(){
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
-char* currentDateTime() {
+void currentDateTime(char *buf) {
 	time_t     now = time(0);
 	struct tm  tstruct;
-	char       buf[80];
 	tstruct = *localtime(&now);
 	// Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
 	// for more information about date/time format
 	strftime(buf, sizeof(buf), "%Y-%m-%d%X", &tstruct);
-
-	return buf;
 }
 
 
@@ -44,15 +41,16 @@ void *DataLoop(void *arg){
 	
 	FILE *fp;
 	
-	char dir[64];
-	char* timestamp = currentDateTime();
+	char dir[128];
+	char timestamp[80];
+	currentDateTime(timestamp);
 	
 	sprintf(dir, "logs/%s.csv", timestamp);
 	
 	fp = fopen (dir,"w");
 	if (fp == NULL){
 		printf("Unable to open file\n");
-		return;
+		return NULL;
 	}
 	
 	
