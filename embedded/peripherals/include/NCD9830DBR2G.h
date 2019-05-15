@@ -11,7 +11,7 @@
 /* The i2c message builder for this device */
 #define SD_BIT       0x1 << 7
 #define PD_BITS      0x1 << 2
-#define CHANNEL(num) num << 6
+#define CHANNEL(num) num << 4
 
 #define CHANNEL_0    0x0
 #define CHANNEL_1    0x4

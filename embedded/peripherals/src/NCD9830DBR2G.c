@@ -30,7 +30,7 @@ static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data);
 STATUS readPressureSensor(int sensor, uint8_t *data) {
     /* Need to establish a mapping from the sensors to the channels */
     /* Not sure what that is now, but when its known this will be filled in */
-    if (readChannel(sensor, 0, data) == ERROR) {
+    if (readChannel(sensor, CHANNEL_7, data) == ERROR) {
         fprintf(stderr, "Error reading the pressure sensor: %d\n", sensor);
         return ERROR;
     }

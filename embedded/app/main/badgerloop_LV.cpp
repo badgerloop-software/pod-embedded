@@ -31,10 +31,10 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-	uint8_t data = 10;
+	uint8_t data[5] = {0};
 	while(1) {
-		readPressureSensor(ADC_1, &data);
-		printf("READING: %d\n", data);
+		readPressureSensor(ADC_1, data);
+		printf("READING: %d\n", data[0]);
 		usleep(100000);
 		// Control loop
 	}
