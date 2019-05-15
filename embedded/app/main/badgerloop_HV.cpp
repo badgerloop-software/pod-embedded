@@ -6,6 +6,7 @@
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
+#include "data_dump.h"
 #include "data.h"
 
 extern "C" 
@@ -104,6 +105,8 @@ int init() {
     SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
+	SetupDataDump();
+	
     return 0;	
 }
 
