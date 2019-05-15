@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <bbgpio.h>
 #include <retro.h>
@@ -11,10 +12,12 @@
 #include <time.h>
 #include <data.h>
 
-#define TIMEOUT 100	/* 1 second */
+#define TIMEOUT 100	/* 1 second, bump higher in production */
 #define BUF_LEN 256
+#define SAFETY_CONSTANT 2
 
 static pthread_t retroThreads[3];
+static bool shouldQuit = false;
 
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
@@ -23,63 +26,76 @@ static int getPin(int retroNum);
 extern data_t *data;
 static struct timeval *retroTimers[3];
 
+/***
+  * initRetros - configures the GPIO pins for the retro reflective sensors
+  *  and kicks off a thread for each
+  *
+ ***/
 int initRetros() {
-
 	int i = 0;
-
 	retroTimers[RETRO_1] = &(data->timers->lastRetro1);
 	retroTimers[RETRO_2] = &(data->timers->lastRetro2);
 	retroTimers[RETRO_3] = &(data->timers->lastRetro3);
-/*
-	bbGpioExport(RETRO_1_PIN);
-	bbGpioSetDir(RETRO_1_PIN, IN_DIR);
-	bbGpioSetEdge(RETRO_1_PIN, FALLING_EDGE);
-	waitForStrip(RETRO_1);
-*/
-	for (i = 0; i < NUM_RETROS; i++) {
-		// TODO Not going to initialize garbage GPIO Pins, but this is where it will be
-		bbGpioExport(getPin(i));
-		bbGpioSetDir(getPin(i), IN_DIR);
-		bbGpioSetEdge(getPin(i), FALLING_EDGE);
-		pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i);
-	}
 
-/* Delete this in production to let threads run in background */
 	for (i = 0; i < NUM_RETROS; i++) {
-		pthread_join(retroThreads[i], NULL);
+		if (bbGpioExport(getPin(i)) != 0) return -1;
+		if (bbGpioSetDir(getPin(i), IN_DIR) != 0) return -1;
+		if (bbGpioSetEdge(getPin(i), FALLING_EDGE) != 0) return -1;
+		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i) != 0)
+			return -1;
 	}
-
 	return 0;
 }
 
+/***
+ * joinRetroThreads - signals to all threads that they should stop
+ *  and then blocks until they do.
+ *
+***/
+int joinRetroThreads() {
+	int i = 0;
+	shouldQuit = true;
+	for (i = 0; i < NUM_RETROS; i++) {
+		pthread_join(retroThreads[i], NULL);
+	}
+	return 0;
+}
+
+/* Returns delay in uS */
+static uint64_t getDelay() {
+	return 1000000 * (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / data->motion->vel));
+}
+
+uint64_t masterDelay = 0;
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
 	struct timeval currTime;
 	gettimeofday(&currTime, NULL);
-
-	printf("TIME: %llu\n", (uint64_t) retroTimers[retroNum]->tv_usec);
-	printf("Other time: %llu\n", (uint64_t) currTime.tv_usec);
-	/* Prevent Y2K all over again! No rollovers here ;) */
+	if (masterDelay == 0) masterDelay = getDelay();
+	printf("DELAY at current VEL %llu\n", masterDelay);
+	/* No rollovers here ;) */
 	if (currTime.tv_usec < retroTimers[retroNum]->tv_usec) {
-		printf("We rolled over so we'll take the extra strip\n");
 		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
 		data->motion->retroCount++;
 		return 0;
 	}
 
-	if ((currTime.tv_usec - (uint64_t) retroTimers[retroNum]->tv_usec) > RETRO_DELAY) {
+	/* Check if it has delayed long enough (in uS) to accept another strip */
+	if ((currTime.tv_usec - (uint64_t) retroTimers[retroNum]->tv_usec) > masterDelay) {
 		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
 		data->motion->retroCount++;
-		printf("VALID STRIP\n");
 	}
-	printf("\nTAPE STRIP DETECTED\n");
 	return 0;
 }
 
-/* TODO Debatting having this poll on 3 FDs or just having three FDs poll seperately
-   Not sure which would be faster, currently leaning towards three threads becasue
-   of the sensitivity of what it will be measuring
-   */
+/***
+  * waitForStrip - Run by each retro sensor thread, it polls the file
+  *  that holds the value of the retro. If it changes then it will call onTapeStrip
+  *  otherwise it repeats.
+  *
+  * input:
+  *		void *num - an identifier for which retro is running the thread
+  ***/
 void *waitForStrip(void *num) {
 	int retroNum = (int) num;
 	int gpioFd = bbGpioFdOpen(getPin(retroNum));
@@ -88,6 +104,7 @@ void *waitForStrip(void *num) {
 	int ret, len;
 	char buf[BUF_LEN];
 	while (1) {
+		if (shouldQuit) break;
 		memset((void *)fds, 0, sizeof(fds));
 		fds[0].fd = gpioFd;
 		fds[0].events = POLLPRI;
