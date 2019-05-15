@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <time.h>
 
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
@@ -98,9 +97,6 @@ int init() {
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
 	data->flags->emergencyBrake = 0;
-	
-	// Init initial timer
-	data->timers->startTime = time(NULL);
 	
 	data->state = 0;
 	
