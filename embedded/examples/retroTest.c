@@ -20,10 +20,24 @@ static void initTest() {
 
 }
 
+static void setSpeed(float vel) {
+	data->motion->vel = vel;
+}
+
 int main() {
 	initTest();
+	setSpeed(0);
+
 	initRetros();
-	while (1);
-	//	sleep(100);
-//	joinRetroThreads();
+	sleep(5);
+	printf("Bumping speed to 500 in/s\n");
+	setSpeed(500);
+	sleep(5);
+	printf("Bumping speed to 1000 in/s\n");
+	setSpeed(1000);
+	sleep(5);
+	printf("Hitting max speed of 3168 in/s\n");
+	setSpeed(3168);
+	sleep(5);
+	joinRetroThreads();
 }

@@ -12,7 +12,7 @@
 #include <time.h>
 #include <data.h>
 
-#define TIMEOUT 10	/* 1 second, bump higher in production */
+#define TIMEOUT 100	/* 1 second, bump higher in production */
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
 
@@ -22,7 +22,6 @@ static bool shouldQuit = false;
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
-static inline uint64_t getuSTimestamp();
 static inline uint64_t convertTouS(struct timespec *currTime);
 
 extern data_t *data;
@@ -69,7 +68,7 @@ static inline uint64_t convertTouS(struct timespec *currTime) {
 
 /* Returns delay in uS */
 static uint64_t getDelay() {
-	return 1000000 * 1;//(SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / data->motion->vel));
+	return (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / (.01 + data->motion->vel)));
 }
 
 uint64_t masterDelay = 0;
@@ -123,7 +122,7 @@ void *waitForStrip(void *num) {
 
 		if (ret == 0) {
 			/* If nothing is detected */
-			printf("Retro Count = %d\n", data->motion->retroCount);
+			/*printf("Retro Count = %d\n", data->motion->retroCount);*/
 		}
 
 		if (fds[0].revents & POLLPRI) {
