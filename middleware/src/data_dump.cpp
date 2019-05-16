@@ -45,7 +45,7 @@ void *DataLoop(void *arg){
 	char timestamp[80];
 	currentDateTime(timestamp);
 	
-	sprintf(dir, "logs/%s.csv", timestamp);
+	sprintf(dir, "../logs/%s.csv", timestamp);
 	
 	fp = fopen (dir,"w");
 	if (fp == NULL){
@@ -55,13 +55,27 @@ void *DataLoop(void *arg){
 	
 	fprintf(fp, "FRP,FPD,FRC,FP,FEB,TST,TLR,TLR1,TLR2,TLR3,Pps1,Pps2,Pps3,Sps1,Sps2,Sps3,pv,pos,vel,accel,retC,pCurr,pVol,pDCL,pCCL,pRes,pHealth,pOV,pC,pAH,iV,Soc,hiT,loT,cMax,cMin,cAvg,mCells,nCells,igbtTemp,GDBT,CBT,mT,mS,paC,pbC,pcC,dcbV,lvV,cc1,cc2,fC1,fC2,cT,aT,rS,eF,dcbC,oVL\n");
 	
-	
 	while(1){
-		fp = fopen (dir,"w");
 		
-		fprintf(fp, "%i,%i,%i,%i,%i,%ld,%ld,%ld,%ld,%ld,%u,%u,%u,%u,%u,%u,%u,%f,%f,%f,%i,%f,%f,%hu,%hx,%hu,%hu,%f,%hu,%hu,%f,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%lu,%lu,%lu,%lu,%hu,%hu,%hu,%hu,%hu,%hu\n", data->flags->readyPump, data->flags->pumpDown, data->flags->readyCommand, data->flags->propulse, data->flags->emergencyBrake, data->timers->startTime, data->timers->lastRetro, data->timers->lastRetro1, data->timers->lastRetro2, data->timers->lastRetro3, data->pressure->ps1, data->pressure->ps2, data->pressure->ps3, data->pressure->sec_ps1, data->pressure->sec_ps2, data->pressure->sec_ps3, data->pressure->pv, data->motion->pos, data->motion->vel, data->motion->accel, data->motion->retroCount, data->bms->packCurrent, data->bms->packVoltage, data->bms->packDCL, data->bms->packCCL, data->bms->packResistance, data->bms->packHealth, data->bms->packOpenVoltage, data->bms->packCycles, data->bms->packAh, data->bms->inputVoltage, data->bms->Soc, data->bms->relayStatus, data->bms->highTemp, data->bms->lowTemp, data->bms->cellMaxVoltage, data->bms->cellMinVoltage, data->bms->cellAvgVoltage, data->bms->maxCells, data->bms->numCells, data->rms->igbtTemp, data->rms->gateDriverBoardTemp, data->rms->controlBoardTemp, data->rms->motorTemp, data->rms->motorSpeed, data->rms->phaseACurrent, data->rms->phaseBCurrent, data->rms->phaseCCurrent, data->rms->dcBusVoltage, data->rms->lvVoltage, data->rms->canCode1, data->rms->canCode2, data->rms->faultCode1, data->rms->faultCode2, data->rms->commandedTorque, data->rms->actualTorque, data->rms->relayState, data->rms->electricalFreq, data->rms->dcBusCurrent, data->rms->outputVoltageLn);
+		// FLAGS
+		fprintf(fp, "%i,%i,%i,%i,%i,", data->flags->readyPump, data->flags->pumpDown, data->flags->readyCommand, data->flags->propulse, data->flags->emergencyBrake);
 		
-		fclose(fp);
+		// TIMERS
+		fprintf(fp, "%ld,%ld,%ld,%ld,%ld,", data->timers->startTime, data->timers->lastRetro, data->timers->lastRetro1, data->timers->lastRetro2, data->timers->lastRetro3);
+		
+		// PRESSURE
+		fprintf(fp, "%u,%u,%u,%u,%u,%u,%u,", data->pressure->ps1, data->pressure->ps2, data->pressure->ps3, data->pressure->sec_ps1, data->pressure->sec_ps2, data->pressure->sec_ps3, data->pressure->pv);
+		
+		// MOTION
+		fprintf(fp, "%f,%f,%f,%i,", data->motion->pos, data->motion->vel, data->motion->accel, data->motion->retroCount);
+		
+		// BMS
+		fprintf(fp, "%f,%f,%hu,%hx,%hu,%hu,%f,%hu,%hu,%f,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,", data->bms->packCurrent, data->bms->packVoltage, data->bms->packDCL, data->bms->packCCL, data->bms->packResistance, data->bms->packHealth, data->bms->packOpenVoltage, data->bms->packCycles, data->bms->packAh, data->bms->inputVoltage, data->bms->Soc, data->bms->relayStatus, data->bms->highTemp, data->bms->lowTemp, data->bms->cellMaxVoltage, data->bms->cellMinVoltage, data->bms->cellAvgVoltage, data->bms->maxCells, data->bms->numCells);
+		
+		// RMS
+		fprintf(fp, "%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%lu,%lu,%lu,%lu,%hu,%hu,%hu,%hu,%hu,%hu\n", data->rms->igbtTemp, data->rms->gateDriverBoardTemp, data->rms->controlBoardTemp, data->rms->motorTemp, data->rms->motorSpeed, data->rms->phaseACurrent, data->rms->phaseBCurrent, data->rms->phaseCCurrent, data->rms->dcBusVoltage, data->rms->lvVoltage, data->rms->canCode1, data->rms->canCode2, data->rms->faultCode1, data->rms->faultCode2, data->rms->commandedTorque, data->rms->actualTorque, data->rms->relayState, data->rms->electricalFreq, data->rms->dcBusCurrent, data->rms->outputVoltageLn);
+		
+		fflush(fp);
 		
 		usleep(30000);
 	}
