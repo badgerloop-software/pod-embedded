@@ -45,7 +45,7 @@ void *DataLoop(void *arg){
 	char timestamp[80];
 	currentDateTime(timestamp);
 	
-	sprintf(dir, "../%s.csv", timestamp);
+	sprintf(dir, "../data_logs/%s.csv", timestamp);
 	
 	fp = fopen (dir,"w");
 	if (fp == NULL){
