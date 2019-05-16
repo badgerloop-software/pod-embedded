@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <time.h>
-
+#include <sys/time.h>
 /***
  *
  * Flags structure - 
@@ -41,11 +41,12 @@ typedef struct data_t {
  */
 
 typedef struct timers_t {
-    struct timeval startTime;
-    struct timeval lastRetro1;
-    struct timeval lastRetro2;
-    struct timeval lastRetro3;
-    struct timeval timeInState;
+    struct timespec startTime;
+    struct timespec lastRetro;
+	struct timespec lastRetro1;
+    struct timespec lastRetro2;
+    struct timespec lastRetro3;
+    struct timespec timeInState;
 } timers_t;
 
 /***

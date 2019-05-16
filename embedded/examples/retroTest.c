@@ -13,11 +13,9 @@ static void initTest() {
 	data->motion->vel = 3168.0;	/* 3168.0 in/s == 180 mph */
 	data->timers = malloc(sizeof(timers_t));
 
-
-	gettimeofday(&(data->timers->lastRetro1), NULL);
-	gettimeofday(&(data->timers->lastRetro2), NULL);
-	gettimeofday(&(data->timers->lastRetro3), NULL);
-
+	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro1);
+	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro2);
+	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro3);
 	data->motion->retroCount = 0;
 
 }
@@ -25,6 +23,7 @@ static void initTest() {
 int main() {
 	initTest();
 	initRetros();
-	sleep(100);
-	joinRetroThreads();
+	while (1);
+	//	sleep(100);
+//	joinRetroThreads();
 }

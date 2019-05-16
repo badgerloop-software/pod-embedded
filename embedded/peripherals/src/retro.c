@@ -12,7 +12,7 @@
 #include <time.h>
 #include <data.h>
 
-#define TIMEOUT 100	/* 1 second, bump higher in production */
+#define TIMEOUT 10	/* 1 second, bump higher in production */
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
 
@@ -22,9 +22,11 @@ static bool shouldQuit = false;
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
+static inline uint64_t getuSTimestamp();
+static inline uint64_t convertTouS(struct timespec *currTime);
 
 extern data_t *data;
-static struct timeval *retroTimers[3];
+static struct timespec *retroTimers[3];
 
 /***
   * initRetros - configures the GPIO pins for the retro reflective sensors
@@ -40,7 +42,7 @@ int initRetros() {
 	for (i = 0; i < NUM_RETROS; i++) {
 		if (bbGpioExport(getPin(i)) != 0) return -1;
 		if (bbGpioSetDir(getPin(i), IN_DIR) != 0) return -1;
-		if (bbGpioSetEdge(getPin(i), FALLING_EDGE) != 0) return -1;
+		if (bbGpioSetEdge(getPin(i), RISING_EDGE) != 0) return -1;
 		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i) != 0)
 			return -1;
 	}
@@ -61,28 +63,32 @@ int joinRetroThreads() {
 	return 0;
 }
 
+static inline uint64_t convertTouS(struct timespec *currTime) {
+	return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
+}
+
 /* Returns delay in uS */
 static uint64_t getDelay() {
-	return 1000000 * (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / data->motion->vel));
+	return 1000000 * 1;//(SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / data->motion->vel));
 }
 
 uint64_t masterDelay = 0;
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
-	struct timeval currTime;
-	gettimeofday(&currTime, NULL);
+	struct timespec stamp;
+	clock_gettime(CLOCK_MONOTONIC, &stamp);
+	uint64_t currTime = convertTouS(&stamp);
+	uint64_t retroTime = convertTouS(retroTimers[retroNum]); // we will cache this;
 	if (masterDelay == 0) masterDelay = getDelay();
-	printf("DELAY at current VEL %llu\n", masterDelay);
 	/* No rollovers here ;) */
-	if (currTime.tv_usec < retroTimers[retroNum]->tv_usec) {
-		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
+	if (currTime < retroTime) {
+		*retroTimers[retroNum] = stamp;
 		data->motion->retroCount++;
 		return 0;
 	}
-
 	/* Check if it has delayed long enough (in uS) to accept another strip */
-	if ((currTime.tv_usec - (uint64_t) retroTimers[retroNum]->tv_usec) > masterDelay) {
-		retroTimers[retroNum]->tv_usec = currTime.tv_usec;
+	if ((currTime - retroTime) > masterDelay) {
+		*retroTimers[retroNum] = stamp;
 		data->motion->retroCount++;
 	}
 	return 0;

@@ -7,7 +7,7 @@
 #define WIDTH_TAPE_STRIP 4 /* 4 inches */
 #define TOTAL_STRIPS	41
 
-#define RETRO_1_PIN 	66
+#define RETRO_1_PIN 	26 //66
 #define RETRO_2_PIN		67
 #define RETRO_3_PIN		68
 
