@@ -85,7 +85,7 @@ static int onTapeStrip(int retroNum) {
   * input:
   *		void *num - an identifier for which retro is running the thread
   ***/
-void *waitForStrip(void *num) {
+static void *waitForStrip(void *num) {
 	int retroNum = (int) num;
 	int gpioFd = bbGpioFdOpen(getPin(retroNum));
 	struct pollfd fds[1];
