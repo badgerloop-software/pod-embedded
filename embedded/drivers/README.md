@@ -1,5 +1,5 @@
 # Drivers
-*Developers: Ezra Boley, Rohan Daruwala
+*Developers: Ezra Boley, Rohan Daruwala*
 
 ### Platform:
 BeagleBone Black
