@@ -1,9 +1,29 @@
 #include <stdint.h>
 #include <time.h>
-#include <sys/time.h>
+#include <retro.h>
+
+static inline uint64_t convertTouS(struct timespec *currTime) {
+    return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
+}
+
+static inline uint64_t getuSTimestamp() {
+    struct timespec _temp;
+    clock_gettime(CLOCK_MONOTONIC, &_temp);
+    uint64_t _tempTs = convertTouS(&_temp);
+    return _tempTs;
+}
+
+static inline uint64_t getSTimestamp() {
+    struct timespec temp;
+    clock_gettime(CLOCK_MONOTONIC, &temp);
+    return (uint64_t) (temp.tv_sec);
+}
+
+
+
 /***
  *
- * Flags structure - 
+ * Flags structure -
  *
  */
 
@@ -41,12 +61,10 @@ typedef struct data_t {
  */
 
 typedef struct timers_t {
-    struct timespec startTime;
-    struct timespec lastRetro;
-	struct timespec lastRetro1;
-    struct timespec lastRetro2;
-    struct timespec lastRetro3;
-    struct timespec timeInState;
+    uint64_t startTime;
+    uint64_t lastRetro;
+	uint64_t lastRetros[NUM_RETROS];
+    uint64_t timeInState;
 } timers_t;
 
 /***

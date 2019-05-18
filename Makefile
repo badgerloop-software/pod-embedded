@@ -1,4 +1,4 @@
-VPATH := $(shell find . -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/ 
+VPATH := $(shell find . -name "src") ./embedded/app/main/ ./embedded/examples/ ./middleware/examples/
 
 # Code and Includes (I know, shell commands everywhere! Works though)
 ALL_SRC	:= $(shell find . -name "src" -exec ls {} \;)
@@ -16,7 +16,7 @@ endif
 GCC	   	:= gcc
 GPP	   	:= g++
 IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
-WFLAGS	:= -Wall -Wno-deprecated -Wextra -Wtype-limits
+WFLAGS	:= -Wall -Wno-deprecated -Wextra -Wtype-limits -fdiagnostics-color
 CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN))
 CPFLAGS := -std=c++11
 LDFLAGS := -Llib

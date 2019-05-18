@@ -22,10 +22,8 @@ static bool shouldQuit = false;
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
-static inline uint64_t convertTouS(struct timespec *currTime);
 
 extern data_t *data;
-static struct timespec *retroTimers[3];
 
 /***
   * initRetros - configures the GPIO pins for the retro reflective sensors
@@ -34,9 +32,6 @@ static struct timespec *retroTimers[3];
  ***/
 int initRetros() {
 	int i = 0;
-	retroTimers[RETRO_1] = &(data->timers->lastRetro1);
-	retroTimers[RETRO_2] = &(data->timers->lastRetro2);
-	retroTimers[RETRO_3] = &(data->timers->lastRetro3);
 
 	for (i = 0; i < NUM_RETROS; i++) {
 		if (bbGpioExport(getPin(i)) != 0) return -1;
@@ -62,13 +57,9 @@ int joinRetroThreads() {
 	return 0;
 }
 
-static inline uint64_t convertTouS(struct timespec *currTime) {
-	return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
-}
-
 /* Returns delay in uS */
-static uint64_t getDelay() {
-	return (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / (.01 + data->motion->vel)));
+static inline uint64_t getDelay() {
+	return 1000000 * (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / (1 + data->motion->vel)));
 }
 
 uint64_t masterDelay = 0;
@@ -77,17 +68,13 @@ static int onTapeStrip(int retroNum) {
 	struct timespec stamp;
 	clock_gettime(CLOCK_MONOTONIC, &stamp);
 	uint64_t currTime = convertTouS(&stamp);
-	uint64_t retroTime = convertTouS(retroTimers[retroNum]); // we will cache this;
+
 	if (masterDelay == 0) masterDelay = getDelay();
-	/* No rollovers here ;) */
-	if (currTime < retroTime) {
-		*retroTimers[retroNum] = stamp;
-		data->motion->retroCount++;
-		return 0;
-	}
+
 	/* Check if it has delayed long enough (in uS) to accept another strip */
-	if ((currTime - retroTime) > masterDelay) {
-		*retroTimers[retroNum] = stamp;
+	if (((currTime - data->timers->lastRetros[retroNum]) > masterDelay) ||
+			(currTime < data->timers->lastRetros[retroNum])) {
+		data->timers->lastRetros[retroNum] = currTime;
 		data->motion->retroCount++;
 	}
 	return 0;

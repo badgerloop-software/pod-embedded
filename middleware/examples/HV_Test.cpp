@@ -100,7 +100,7 @@ int init() {
 	data->flags->emergencyBrake = 0;
 
 	// Init initial timer
-	clock_gettime(CLOCK_MONOTONIC, &data->timers->startTime);
+	data->timers->startTime = getuSTimestamp();
 
 	data->state = 0;
 

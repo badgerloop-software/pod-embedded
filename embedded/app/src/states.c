@@ -37,9 +37,7 @@ extern stateTransition_t *findTransition(state_t *currState, char *name);
  */
 
 static bool checkStopped(void) {
-	struct timespec currTime;
-	clock_gettime(CLOCK_MONOTONIC, &currTime);
-	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (currTime.tv_sec - data->timers->lastRetro.tv_sec) > 15;
+	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > 15000000;
 }
 
 /***
@@ -178,7 +176,7 @@ stateTransition_t * readyForLaunchAction() {
 
     if(data->flags->propulse){
         // Init initial timer
-        clock_gettime(CLOCK_MONOTONIC, &data->timers->startTime);
+		data->timers->startTime = getuSTimestamp();
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
 
@@ -209,12 +207,10 @@ stateTransition_t * propulsionAction() {
     if(!checkRunRMS()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-	struct timespec tempTime;
-    clock_gettime(CLOCK_MONOTONIC, &tempTime);
-    if (tempTime.tv_sec - data->timers->startTime.tv_sec > MAX_RUN_TIME){
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // CHECK TRANSITION CRITERIA
     if(data->motion->retroCount >= RETRO_COUNT_MAX){
         return findTransition(stateMachine.currState, BRAKING_NAME); 
@@ -226,42 +222,39 @@ stateTransition_t * propulsionAction() {
 
 stateTransition_t * brakingAction() {
     data->state = 6;
-   	struct timespec tempTime; 
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
-    
+
     // CHECK FAULT CRITERIA
     if(!checkBrakingPressures()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
-    
+
     if(!checkBrakingBattery()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     if(!checkBrakingRMS()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-   	
-   	clock_gettime(CLOCK_MONOTONIC, &tempTime);
-    if (tempTime.tv_sec - data->timers->startTime.tv_sec > MAX_RUN_TIME){
+
+    if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // CHECK TRANSITION CRITERIA
     if(checkStopped()){
         return findTransition(stateMachine.currState, STOPPED_NAME);
     }
-    
-    
+
+
     return NULL;
 }
 
 stateTransition_t * stoppedAction() {
-    struct timespec tempTime;
 	data->state = 7;
     
     // CHECK FAULT CRITERIA
@@ -281,8 +274,8 @@ stateTransition_t * stoppedAction() {
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
-    clock_gettime(CLOCK_MONOTONIC, &tempTime);
-    if (tempTime.tv_sec - data->timers->startTime.tv_sec > MAX_RUN_TIME){
+	// FIXME FIX ALL TIME CHECKS!
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
@@ -298,12 +291,11 @@ stateTransition_t * stoppedAction() {
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-    struct timespec tempTime;
-    
-    if(!checkCrawlPostrunPressures()){ 
+
+    if(!checkCrawlPostrunPressures()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
 
@@ -316,7 +308,7 @@ stateTransition_t * crawlAction() {
     }
 
     clock_gettime(CLOCK_MONOTONIC, &tempTime);
-    if (tempTime.tv_sec - data->timers->startTime.tv_sec > MAX_RUN_TIME){
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
@@ -331,18 +323,18 @@ stateTransition_t * crawlAction() {
 
 stateTransition_t * postRunAction() {
     data->state = 9;
-    
-    if(!checkCrawlPostrunPressures()){ 
+
+    if(!checkCrawlPostrunPressures()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
-    
-    if(!checkPostrunBattery()){ 
+
+    if(!checkPostrunBattery()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     if(!checkPostRMS()){ 
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
