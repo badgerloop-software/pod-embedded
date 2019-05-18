@@ -12,6 +12,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 language: c
 compiler: gcc-6
+sudo: require
 python:
   - "3.4"
   
@@ -29,6 +30,9 @@ install:
   - sudo make install 
   - sudo cp cangen /bin/ && sudo cp candump /bin/
   - cd ..
-script: ./deploy.sh
+script: 
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - ./deploy.sh
 git:
   submodules: false
