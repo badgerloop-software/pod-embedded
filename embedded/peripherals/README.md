@@ -1,11 +1,11 @@
 # Peripherals
+*Developers: Ezra Boley, Rohan Daruwala*
+
+### Platform:
+BeagleBone Black
 
 ## XSens MTi-1 IMU Firmware for BeagleBone Black
 *Developer: Rohan Daruwala*
-
-### Platform: 
-	BeagleBone Black
-	
 	
 ### How it works:
 	
@@ -17,7 +17,7 @@ SetupIMU();
 	
 Next, you can pull data by using any of the following functions:
 
-```
+```C
 void getDeltaVData(float *fData);
 float getDeltaVX();
 float getDeltaVY();
@@ -44,34 +44,31 @@ This currently assumes that you are running on the I2C-2 bus (Meaning that senso
 
 
 ## Retroreflective Sensor API for Beaglebone Black
-*Developer: Ezra Boley
-
-### Platform:
-    BeagleBone Black
+*Developer: Ezra Boley*
 
 ### How it works:
 
-    All that needs to be run is:
-    ```C
-    int initRetros();
-    ```
+All that needs to be run is:
+```C
+int initRetros();
+```
 
-    Then a number of threads will be kicked off based on how many retro
-    reflective sensors are configured in `peripherals/include/retro.h`.
+Then a number of threads will be kicked off based on how many retro
+reflective sensors are configured in `peripherals/include/retro.h`.
 
-    After that if there is a need to stop listening for interrupts on those
-    pins, the retro sensors have their own join function:
+After that if there is a need to stop listening for interrupts on those
+pins, the retro sensors have their own join function:
 
-    ```C
-    int joinRetroThreads();
-    ```
+```C
+int joinRetroThreads();
+```
 
-    This will signal all of the threads that they should stop and then block
+This will signal all of the threads that they should stop and then block
     until that is the case.
 
 
 ### Notes:
 
-    To use the BeagleBones sysfs gpio interface, the calling program must be run
+To use the BeagleBones sysfs gpio interface, the calling program must be run
     with sudo permissions.
 
