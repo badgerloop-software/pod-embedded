@@ -1,10 +1,25 @@
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 language: c
-compiler: gcc-4.6
+compiler: gcc
 python:
   - "3.4"
+  
 before_install:
-- sudo apt-get update
-- sudo apt-get install python3
+    - eval "${MATRIX_EVAL}"
+    - sudo apt-get update
+    - sudo apt-get install python3
+    
 install:
   - git clone https://github.com/linux-can/can-utils.git
   - cd can-utils
