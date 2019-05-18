@@ -307,7 +307,6 @@ stateTransition_t * crawlAction() {
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
-    clock_gettime(CLOCK_MONOTONIC, &tempTime);
     if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
