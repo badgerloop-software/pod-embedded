@@ -37,7 +37,7 @@ extern stateTransition_t *findTransition(state_t *currState, char *name);
  */
 
 static bool checkStopped(void) {
-	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > 15000000;
+	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > TIME_SINCE_LAST_RETRO;
 }
 
 /***

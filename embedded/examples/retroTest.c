@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
 #include <bbgpio.h>
 #include <retro.h>
 #include <data.h>
-#include <sys/time.h>
 
 extern data_t *data;
 

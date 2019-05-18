@@ -2,6 +2,8 @@
 #include <time.h>
 #include <retro.h>
 
+#define TIME_SINCE_LAST_RETRO 15000000
+
 static inline uint64_t convertTouS(struct timespec *currTime) {
     return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
 }
@@ -64,7 +66,6 @@ typedef struct timers_t {
     uint64_t startTime;
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
-    uint64_t timeInState;
 } timers_t;
 
 /***
