@@ -32,15 +32,15 @@ pod/
  |--embedded/
  |  |--app/          
  |  |   |--main/         /* Contains the two main source files, one for each module */
- |  |   |--src/          /* General application source code (mostly the state machine)
+ |  |   |--src/          /* General application source code (mostly the state machine) */
  |  |   |--include/      /* Headers for application code */
  |  |
  |  |--drivers/
- |  |  |--src/           /* Protocol specific functions (e.g. CAN or I2C)
+ |  |  |--src/           /* Protocol specific functions (e.g. CAN or I2C) */
  |  |  |--include/       /* Headers defining our low level API */
  |  |
  |  |--peripherals/     
- |  |  |--src/           /* Device specific functions (e.g. for the Battery Management System)
+ |  |  |--src/           /* Device specific functions (e.g. for the Battery Management System) */
  |  |  |--include/       /* Headers defining our device level API */
  |  |
  |  |--examples/         /* Tests and utilities for using both low level and device drivers */
