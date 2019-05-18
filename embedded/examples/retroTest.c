@@ -12,12 +12,9 @@ static void initTest() {
 	data->motion = malloc(sizeof(motion_t));
 	data->motion->vel = 3168.0;	/* 3168.0 in/s == 180 mph */
 	data->timers = malloc(sizeof(timers_t));
-
-	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro1);
-	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro2);
-	clock_gettime(CLOCK_MONOTONIC, &data->timers->lastRetro3);
+    int i = 0;
+	for (i = 0; i < NUM_RETROS; i++) data->timers->lastRetros[i] = getuSTimestamp();
 	data->motion->retroCount = 0;
-
 }
 
 static void setSpeed(float vel) {

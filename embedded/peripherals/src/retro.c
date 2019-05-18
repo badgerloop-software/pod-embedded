@@ -15,6 +15,8 @@
 #define TIMEOUT 100	/* 1 second, bump higher in production */
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
+#define SEC_TO_USEC     1000000
+#define CONST_TERM      SAFETY_CONSTANT * SEC_TO_USEC
 
 static pthread_t retroThreads[3];
 static bool shouldQuit = false;
@@ -59,20 +61,15 @@ int joinRetroThreads() {
 
 /* Returns delay in uS */
 static inline uint64_t getDelay() {
-	return 1000000 * (SAFETY_CONSTANT * (WIDTH_TAPE_STRIP / (1 + data->motion->vel)));
+	return CONST_TERM * (WIDTH_TAPE_STRIP / ( .1 + data->motion->vel));
 }
 
-uint64_t masterDelay = 0;
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
-	struct timespec stamp;
-	clock_gettime(CLOCK_MONOTONIC, &stamp);
-	uint64_t currTime = convertTouS(&stamp);
 
-	if (masterDelay == 0) masterDelay = getDelay();
-
+	uint64_t currTime = getuSTimestamp();
 	/* Check if it has delayed long enough (in uS) to accept another strip */
-	if (((currTime - data->timers->lastRetros[retroNum]) > masterDelay) ||
+	if (((currTime - data->timers->lastRetros[retroNum]) > getDelay()) ||
 			(currTime < data->timers->lastRetros[retroNum])) {
 		data->timers->lastRetros[retroNum] = currTime;
 		data->motion->retroCount++;
@@ -93,7 +90,7 @@ void *waitForStrip(void *num) {
 	int gpioFd = bbGpioFdOpen(getPin(retroNum));
 	struct pollfd fds[1];
 	int nfds = 1;
-	int ret, len;
+	int ret;
 	char buf[BUF_LEN];
 	while (1) {
 		if (shouldQuit) break;
@@ -114,7 +111,7 @@ void *waitForStrip(void *num) {
 
 		if (fds[0].revents & POLLPRI) {
 			lseek(fds[0].fd, 0, SEEK_SET);
-			len = read(fds[0].fd, buf, BUF_LEN);
+			read(fds[0].fd, buf, BUF_LEN);
 			onTapeStrip(retroNum);
 		}
 	}
