@@ -11,7 +11,7 @@
 /* Includes */
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>  
+#include <time.h>
 #include <math.h>
 
 #include "state_machine.h"
@@ -37,7 +37,7 @@ extern stateTransition_t *findTransition(state_t *currState, char *name);
  */
 
 static bool checkStopped(void) {
-	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (time(NULL) - data->timers->lastRetro) > 15;
+	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > TIME_SINCE_LAST_RETRO;
 }
 
 /***
@@ -165,18 +165,18 @@ stateTransition_t * readyForLaunchAction() {
     
     // TODO check LV Power
     // TODO check LV Temp
-    
-    if(!checkPrerunBattery()){
+
+	if(!checkPrerunBattery()){
         return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
-    
+
     if(!checkPrerunRMS()){
         return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
 
     if(data->flags->propulse){
         // Init initial timer
-        data->timers->startTime = time(NULL);
+		data->timers->startTime = getuSTimestamp();
         return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
 
@@ -207,11 +207,10 @@ stateTransition_t * propulsionAction() {
     if(!checkRunRMS()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
-    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // CHECK TRANSITION CRITERIA
     if(data->motion->retroCount >= RETRO_COUNT_MAX){
         return findTransition(stateMachine.currState, BRAKING_NAME); 
@@ -223,41 +222,40 @@ stateTransition_t * propulsionAction() {
 
 stateTransition_t * brakingAction() {
     data->state = 6;
-    
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
-    
+
     // CHECK FAULT CRITERIA
     if(!checkBrakingPressures()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
-    
+
     if(!checkBrakingBattery()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     if(!checkBrakingRMS()){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
-    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+
+    if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-    
+
     // CHECK TRANSITION CRITERIA
     if(checkStopped()){
         return findTransition(stateMachine.currState, STOPPED_NAME);
     }
-    
-    
+
+
     return NULL;
 }
 
 stateTransition_t * stoppedAction() {
-    data->state = 7;
+	data->state = 7;
     
     // CHECK FAULT CRITERIA
     
@@ -276,8 +274,8 @@ stateTransition_t * stoppedAction() {
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
-    
-    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+	// FIXME FIX ALL TIME CHECKS!
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
     
@@ -293,50 +291,49 @@ stateTransition_t * stoppedAction() {
 
 stateTransition_t * crawlAction() {
     data->state = 8;
-    
-    if(!checkCrawlPostrunPressures()){ 
+
+    if(!checkCrawlPostrunPressures()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
-    
-    if(!checkCrawlBattery()){ 
+
+    if(!checkCrawlBattery()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     if(!checkCrawlRMS()){ // Still unchanged
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
-    
-    if (time(NULL) - data->timers->startTime > MAX_RUN_TIME){
+
+    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     // CHECK TRANSITION CRITERIA
     if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 
-    
+
 	return NULL;
 }
 
 stateTransition_t * postRunAction() {
     data->state = 9;
-    
-    if(!checkCrawlPostrunPressures()){ 
+
+    if(!checkCrawlPostrunPressures()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     // TODO check LV Power
     // TODO check LV Temp
-    
-    if(!checkPostrunBattery()){ 
+
+    if(!checkPostrunBattery()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
+
     if(!checkPostRMS()){ 
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
