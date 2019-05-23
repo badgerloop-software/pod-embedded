@@ -4,23 +4,15 @@
 
 #define TIME_SINCE_LAST_RETRO 15000000
 
-static inline uint64_t convertTouS(struct timespec *currTime) {
-    return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
-}
-
-static inline uint64_t getuSTimestamp() {
-    struct timespec _temp;
-    clock_gettime(CLOCK_MONOTONIC, &_temp);
-    uint64_t _tempTs = convertTouS(&_temp);
-    return _tempTs;
-}
-
-static inline uint64_t getSTimestamp() {
-    struct timespec temp;
-    clock_gettime(CLOCK_MONOTONIC, &temp);
-    return (uint64_t) (temp.tv_sec);
-}
-
+/* Functions for initializing the entire struct, and individual parts of it */
+int initData(void);
+int initMetaData(void);
+int initPressureData(void);
+int initMotionData(void);
+int initBmsData(void);
+int initRmsData(void);
+int initFlagData(void);
+int initTimerData(void);
 
 
 /***
@@ -67,6 +59,26 @@ typedef struct timers_t {
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
 } timers_t;
+
+
+static inline uint64_t convertTouS(struct timespec *currTime) {
+    return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
+}
+
+static inline uint64_t getuSTimestamp() {
+    struct timespec _temp;
+    clock_gettime(CLOCK_MONOTONIC, &_temp);
+    uint64_t _tempTs = convertTouS(&_temp);
+    return _tempTs;
+}
+
+static inline uint64_t getSTimestamp() {
+    struct timespec temp;
+    clock_gettime(CLOCK_MONOTONIC, &temp);
+    return (uint64_t) (temp.tv_sec);
+}
+
+
 
 /***
  * pressure_t - Pressure data from the braking system
@@ -152,4 +164,7 @@ typedef struct rms_t {
     uint16_t  electricalFreq;
     uint16_t dcBusCurrent;
     uint16_t outputVoltageLn;
+	uint16_t VSMCode;
+
+	uint16_t keyMode;
 } rms_t;
