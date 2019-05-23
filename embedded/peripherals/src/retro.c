@@ -66,14 +66,15 @@ static inline uint64_t getDelay() {
 
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
-
+    printf("Tape strip detected on retro: %d\n", retroNum);
 	uint64_t currTime = getuSTimestamp();
 	/* Check if it has delayed long enough (in uS) to accept another strip */
 	if (((currTime - data->timers->lastRetros[retroNum]) > getDelay()) ||
 			(currTime < data->timers->lastRetros[retroNum])) {
 		data->timers->lastRetros[retroNum] = currTime;
-		data->motion->retroCount++;
-	}
+        data->motion->retroCount++;
+        printf("New count: %d\n", data->motion->retroCount);
+    }
 	return 0;
 }
 
