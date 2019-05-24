@@ -5,6 +5,9 @@
 #include "rms.h"
 #include "data.h"
 
+/* Uncomment define for additional prints in the parser */
+/*#define DEBUG_RMS*/
+
 extern data_t *data;
 
 /* The following send functions are a series of cryptic steps
@@ -63,84 +66,147 @@ int rmsDischarge() {
     return canSend(RMS_INV_DISCHARGE_ID, payload, 8);
 }
 
+int rmsWriteEeprom(uint16_t addr, uint16_t val) {
+    uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x1, 0x0,
+        val & 0xff, (val >> 8), 0x0, 0x0};
+    return canSend(RMS_EEPROM_SEND_ID, payload, 8);
+}
+
+int rmsReadEeprom(uint16_t addr) {
+    uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x0, 0x0,
+        0x0, 0x0, 0x0, 0x0};
+    return canSend(RMS_EEPROM_SEND_ID, payload, 8);
+}
+
+static uint16_t convRmsDataFormat(uint8_t byte1, uint8_t byte2) {
+    return byte1 | (byte2 << 8);
+}
+
+int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
+    /* Eeprom message */
+ #ifdef DEBUG_RMS
+    int i = 0;
+    printf("Message: 0xC2:");
+    for (i = 0; i < 8; i++) printf(" %#X", rmsData[i]);
+    printf("\n");
+#endif
+    uint16_t paramAddr = convRmsDataFormat(rmsData[0], rmsData[1]);
+    if (paramAddr == 0) {
+        fprintf(stderr, "RMS did not recognize that message\n");
+        return -1;
+    }
+    if (paramAddr != filter) return -1;
+
+    if (write && !rmsData[WR_SUCCESS_BIT]) {
+        fprintf(stderr, "Write failed\n");
+        return -1;
+    } else if (write) {
+        return 0;
+    }
+
+    return convRmsDataFormat(rmsData[4], rmsData[5]);
+}
+
 /* RMS CAN Parser Function
  *      Based on the CAN ID passed, parsing out the data bytes into
  *      their respective values in the RMS data struct
  */
-int rms_parser(uint32_t id, uint8_t *rmsData){
+int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
+    if (filter != 0 && filter != id) {
+        return 1;
+    }
 	switch(id){
-		case (0xa0):
+        case (0xc2):
+           case (0xa0):
 			data->rms->igbtTemp = (rmsData[0] | (rmsData[1] <<8)) / 10; //Deg C
 			data->rms->gateDriverBoardTemp = (rmsData[6] | (rmsData[7] << 8)) / 10; //Deg C
-			printf("IGBT: %d\r\n", data->rms->igbtTemp);
+#ifdef DEBUG_RMS
+            printf("IGBT: %d\r\n", data->rms->igbtTemp);
 			printf("Gate Driver Board Temp: %d\r\n", data->rms->gateDriverBoardTemp);
-			break;
+#endif
+            break;
 		case (0xa1):
 			data->rms->controlBoardTemp = (rmsData[0] | (rmsData[1] << 8)) / 10; // Deg C
-			printf("Control Board Temp: %d\r\n", data->rms->controlBoardTemp);
-			break;
+#ifdef DEBUG_RMS
+            printf("Control Board Temp: %d\r\n", data->rms->controlBoardTemp);
+#endif
+            break;
 		case (0xa2):
 			data->rms->motorTemp = (rmsData[4] | (rmsData[5] << 8)) / 10; //Deg C
-			printf("Motor Temp: %d\r\n", data->rms->motorTemp);
-			break;
+#ifdef DEBUG_RMS
+            printf("Motor Temp: %d\r\n", data->rms->motorTemp);
+#endif
+            break;
 		case (0xa3):
 			break;
-		case (0xa4): 
+		case (0xa4):
 			break;
 		case (0xa5):
 			data->rms->motorSpeed = (rmsData[2] | (rmsData[3] << 8)); // RPM
 			data->rms->electricalFreq = (rmsData[4] | (rmsData[5] << 8 )) / 10; //electrical frequency Hz
-			printf("Motor Speed: %d\r\n", data->rms->motorSpeed);
+#ifdef DEBUG_RMS
+            printf("Motor Speed: %d\r\n", data->rms->motorSpeed);
 			printf("Elect. Freq: %d\r\n", data->rms->electricalFreq);
-			break;
+#endif
+            break;
 		case (0xa6):
 			data->rms->phaseACurrent = (rmsData[0] | (rmsData[1] << 8)) / 10; // Phase A current
 			data->rms->dcBusCurrent = (rmsData[6] | (rmsData[7] << 8)) / 10; //DC Bus current
-			printf("Phase A Current: %d\r\n", data->rms->phaseACurrent);
+#ifdef DEBUG_RMS
+            printf("Phase A Current: %d\r\n", data->rms->phaseACurrent);
 			printf("DC Bus Current: %d\r\n", data->rms->dcBusCurrent);
             printf("Phase B Current: %d\r\n", data->rms->phaseBCurrent); //FIXME This isnt actually being read in?
-			break;
+#endif
+            break;
 		case (0xa7):
 			data->rms->dcBusVoltage = (rmsData[0] | (rmsData[1] << 8))/10; //DC Bus voltage
 			data->rms->outputVoltageLn = (rmsData[2] | (rmsData[3] << 8)) / 10; //Voltage line to netural 
-			printf("DC Bus Voltage: %d\r\n", data->rms->dcBusVoltage);
+#ifdef DEBUG_RMS
+            printf("DC Bus Voltage: %d\r\n", data->rms->dcBusVoltage);
 			printf("Output Voltage line: %d\r\n", data->rms->outputVoltageLn);
-			break;
+#endif
+            break;
 		case (0xa8):
 			break;
 		case (0xa9):
 			data->rms->lvVoltage = (rmsData[6] | (rmsData[7] << 8)) / 100;
-			printf("LV Voltage: %d\r\n", data->rms->lvVoltage);
-			break;
+#ifdef DEBUG_RMS
+            printf("LV Voltage: %d\r\n", data->rms->lvVoltage);
+#endif
+            break;
 
 		case (0xaa):
 			data->rms->canCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
 			data->rms->canCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
-			printf("CAN Code 1: %lld\r\n", (long long int) data->rms->canCode1);
+#ifdef DEBUG_RMS
+            printf("CAN Code 1: %lld\r\n", (long long int) data->rms->canCode1);
 			printf("CAN Code 2: %lld\r\n", (long long int) data->rms->canCode2);
-			break;
+#endif
+            break;
 		case (0xab):
 			data->rms->faultCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
 			data->rms->faultCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
-			printf("Fault Code 1: %lld\r\n", (long long int) data->rms->faultCode1);
+#ifdef DEBUG_RMS
+            printf("Fault Code 1: %lld\r\n", (long long int) data->rms->faultCode1);
 			printf("Fault Code 2: %lld\r\n", (long long int) data->rms->faultCode2);
-			break;
+#endif
+            break;
 		case (0xac):
 			data->rms->commandedTorque = (rmsData[0] | (rmsData[1] << 8)) /10;
 			data->rms->actualTorque = (rmsData[2] | (rmsData[3] << 8)) / 10;
-			printf("Commanded Torque: %d\r\n", data->rms->commandedTorque);
+#ifdef DEBUG_RMS
+            printf("Commanded Torque: %d\r\n", data->rms->commandedTorque);
 			printf("Actual Torque: %d\r\n", data->rms->actualTorque);
-			break;
+#endif
+            break;
 		case (0xad):
 			break;
 		case (0xae):
 			break;
-		case (0xaf): 
+		case (0xaf):
 			break;
-		default: 
-			printf("Unknown RMS CAN ID: %lx\r\n", (long unsigned int) id);
-			return 0;
+		default:
+			return 1;
 	}
-	return 1;
-
+	return 0;
 }
