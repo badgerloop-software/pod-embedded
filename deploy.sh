@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo modprobe vcan
-./embedded/examples/setupCAN.sh
+./embedded/utils/setupCAN.sh
 make examples VIRTUAL=1
 make VIRTUAL=1
 python3 ./embedded/examples/sims/rms.py &
