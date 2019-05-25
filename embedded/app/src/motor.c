@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rms.h>
+#include <pthread.h>
+#include <semaphore.h>
 
 /***
  * The high level interface for the motor
@@ -12,9 +14,8 @@
 static uint16_t TORQUE = 0;
 static bool     MOTOR_IS_ON = false;
 static pthread_mutex_t torqueLock, motorLock;
+static sem_t hbSem;
 static pthread_t hbLoop;
-/* TODO add a mutex for torque */
-
 
 static void motorHeartbeatLoop(void);
 
@@ -25,6 +26,10 @@ int initMotor() {
     }
     if (pthread_mutex_init(&motorLock, NULL) != 0) {
         fprintf(stderr, "Failed to init motor mutex\n");
+        return 1;
+    }
+    if (sem_init(&hbSem, 0, 0) != NULL) {
+        fprintf(stderr, "Failed to init motor heartbeat semaphore\n");
         return 1;
     }
 
@@ -79,8 +84,16 @@ int startMotor() {
 int stopMotor() {
     setTorque(0);
     
+    /* we dont want to both command the inverter + torque
+     * right after disabling it here because it's mid HB message */
+    sem_wait(&hbSem);
+    setMotorIsOn(false);
+    sem_post(&hbSem);
+
+    /* Unsure if there needs to be a delay inbetween these commands */
     rmsCmdNoTorque();
-    
+    rmsDischarge();        
+    rmsInvDis();
 }
 
 void idleMotor() {
@@ -89,9 +102,14 @@ void idleMotor() {
 
 static void motorHeartbeatLoop() {
     while(1) {
+        sem_wait(&hbSem);
         if (getMotorIsOn()) {
             rmsSendHbMsg(getTorque());
+        } else {
+            rmsIdleHb();
         }
+        sem_post(&hbSem);
         usleep(HB_PERIOD);
     }
 }
+
