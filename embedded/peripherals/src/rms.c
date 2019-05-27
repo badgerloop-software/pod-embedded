@@ -66,6 +66,11 @@ int rmsDischarge() {
     return canSend(RMS_INV_DISCHARGE_ID, payload, 8);
 }
 
+int rmsIdleHb() {
+    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0};
+    return canSend(RMS_HB_ID, payload, 8);
+}
+
 int rmsWriteEeprom(uint16_t addr, uint16_t val) {
     uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x1, 0x0,
         val & 0xff, (val >> 8), 0x0, 0x0};
@@ -106,6 +111,13 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
 
     return convRmsDataFormat(rmsData[4], rmsData[5]);
 }
+int rmsSendHbMsg(uint16_t torque) {
+    uint8_t payload[] = {torque & 0xff, torque >> 8, 0x0, 0x0, 
+        0x1, 0x1, 0x0, 0x0};
+    
+    return canSend(RMS_HB_ID, payload, 8);
+}
+
 
 /* RMS CAN Parser Function
  *      Based on the CAN ID passed, parsing out the data bytes into
