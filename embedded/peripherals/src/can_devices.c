@@ -13,7 +13,8 @@ pthread_t CANThread;
 
 void SetupCANDevices(){
 	initCan();
-	if (pthread_create(&CANThread, NULL, CANLoop, NULL)){
+	initMotor();
+    if (pthread_create(&CANThread, NULL, CANLoop, NULL)){
 		fprintf(stderr, "Error creating CAN thread\n");
 	}
 }

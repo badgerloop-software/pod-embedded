@@ -10,10 +10,11 @@
 
 
 #define NUM_STATES              15
+#define FAULT                   "fault"
 
-#define PRE_RUN_FAULT_NAME      "preFault"
-#define POST_RUN_FAULT_NAME     "postFault"
-#define RUN_FAULT_NAME          "runFault"
+#define PRE_RUN_FAULT_NAME      FAULT"Pre"
+#define POST_RUN_FAULT_NAME     FAULT"Post"
+#define RUN_FAULT_NAME          FAULT"Run"
 #define POWER_OFF_NAME          "powerOff"
 #define IDLE_NAME               "idle"
 #define PUMPDOWN_NAME           "pumpdown"
@@ -44,7 +45,7 @@ typedef struct stateMachine_t stateMachine_t;
 
 typedef struct stateTransition_t {
 	state_t *target;
-	bool (*action)(); //TODO: Any particular reason you're using a bool pointer here rather that void?
+	int (*action)(); //TODO: Any particular reason you're using a bool pointer here rather that void?
 } stateTransition_t;
 
 /* 	struct: state_t

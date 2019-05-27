@@ -52,7 +52,6 @@ examples: $(EXAMPLES)
 utils: $(UTILS)
 
 $(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
-	echo $(UTILS)
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(EX_OUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o | $(EX_OUT_DIR)

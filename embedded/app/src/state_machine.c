@@ -11,16 +11,15 @@
 #include "badgerloop.h"
 #include "data.h"
 #include "state_machine.h"
+#include <transitions.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTrans);
-static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() );
+static void initTransition(stateTransition_t *transition, state_t *target, int (*action)() );
 
-
-extern data_t *data;
 
 extern stateTransition_t * powerOnAction(void);
 extern stateTransition_t * idleAction(void);
@@ -48,7 +47,7 @@ volatile stateMachine_t stateMachine;
  * ARGS: char *stateName - Name of the state we are searching for. Check out state_machine.h
  * 	for options.
  *
- * RETURNS: state_t, the found state or NULL if that state doesnt exist
+ * RETURNS: state_t *, the found state or NULL if that state doesnt exist
  */
 state_t *findState(char *stateName) {
     for (int i = 0; i < NUM_STATES; i++) {
@@ -59,6 +58,28 @@ state_t *findState(char *stateName) {
     }
     return NULL;
 }
+
+
+/***
+ * findFaultState - Looks through a states transitions and finds its
+ *  appropriate fault state
+ *
+ * ARGS state_t *state - The state whose transitions will be searched
+ *
+ * RETURNS state_t * - A pointer to the fault state
+ */
+
+static state_t * findFaultState(state_t *state) {
+    int i = 0;
+    for (i = 0; i < state->numTransitions; i++) {
+        if (strncmp(state->transitions[i]->target->name, FAULT, 5)) {
+            return state->transitions[i]->target;
+        }
+    }
+    fprintf(stderr, "This state has no fault? Needs to be fixed\n");
+    return NULL;    /* This should never happen, every state can fault */
+}
+
 
 /***
  * initState - fills in the fields of the state_t struct.
@@ -88,22 +109,19 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
     }
     stateMachine.allStates[indexInAllStates++] = state; 
 }
-bool genericAction() {
-    return 1;
-}
+
+
 /***
  * initTransition - populates a transition struct
  *
  */
-static void initTransition(stateTransition_t *transition, state_t *target, bool (*action)() ) {
+static void initTransition(stateTransition_t *transition, state_t *target, int (*action)() ) {
 //    transition = malloc(sizeof(stateTransition_t));
     if (transition == NULL){
         return;
     }
     transition->target = target;
-    transition->action = genericAction;
-    
-    //transition->action = action;
+    transition->action = action;
 }
 
 static int addTransition(char *stateName, stateTransition_t *trans) {
@@ -118,8 +136,8 @@ static int addTransition(char *stateName, stateTransition_t *trans) {
 }
 
 static int initPowerOff(state_t *powerOff) {
-    initTransition(powerOff->transitions[0], findState(IDLE_NAME), NULL);
-    initTransition(powerOff->transitions[1], findState(PRE_RUN_FAULT_NAME), NULL); 
+    initTransition(powerOff->transitions[0], findState(IDLE_NAME), genTranAction);
+    initTransition(powerOff->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction); 
     addTransition(POWER_OFF_NAME, powerOff->transitions[0]);
     addTransition(POWER_OFF_NAME, powerOff->transitions[1]);
     return 0;
@@ -127,8 +145,8 @@ static int initPowerOff(state_t *powerOff) {
 
 static int initIdle(state_t *idle) {
 
-    initTransition(idle->transitions[0], findState(READY_FOR_PUMPDOWN_NAME), NULL);
-    initTransition(idle->transitions[1], findState(PRE_RUN_FAULT_NAME), NULL);
+    initTransition(idle->transitions[0], findState(READY_FOR_PUMPDOWN_NAME), genTranAction);
+    initTransition(idle->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
     addTransition(IDLE_NAME, idle->transitions[0]);
     addTransition(IDLE_NAME, idle->transitions[1]);
     return 0;
@@ -136,8 +154,8 @@ static int initIdle(state_t *idle) {
 
 static int initReadyForPumpdown(state_t *readyForPumpdown) {
 
-    initTransition(readyForPumpdown->transitions[0], findState(PUMPDOWN_NAME), NULL);
-    initTransition(readyForPumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), NULL);
+    initTransition(readyForPumpdown->transitions[0], findState(PUMPDOWN_NAME), genTranAction);
+    initTransition(readyForPumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
     addTransition(READY_FOR_PUMPDOWN_NAME, readyForPumpdown->transitions[0]);
     addTransition(READY_FOR_PUMPDOWN_NAME, readyForPumpdown->transitions[1]);
     return 0;
@@ -145,8 +163,8 @@ static int initReadyForPumpdown(state_t *readyForPumpdown) {
 
 static int initPumpdown(state_t *pumpdown) {
 
-    initTransition(pumpdown->transitions[0], findState(READY_NAME), NULL);
-    initTransition(pumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), NULL);
+    initTransition(pumpdown->transitions[0], findState(READY_NAME), genTranAction);
+    initTransition(pumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
     addTransition(PUMPDOWN_NAME, pumpdown->transitions[0]);
     addTransition(PUMPDOWN_NAME, pumpdown->transitions[1]);
     return 0;
@@ -154,8 +172,8 @@ static int initPumpdown(state_t *pumpdown) {
 
 static int initReadyForLaunch(state_t *ready) {
 
-    initTransition(ready->transitions[0], findState(PROPULSION_NAME), NULL);
-    initTransition(ready->transitions[1], findState(RUN_FAULT_NAME), NULL);
+    initTransition(ready->transitions[0], findState(PROPULSION_NAME), toPropulsion);
+    initTransition(ready->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(READY_NAME, ready->transitions[0]);
     addTransition(READY_NAME, ready->transitions[1]);
     return 0;
@@ -163,8 +181,8 @@ static int initReadyForLaunch(state_t *ready) {
 
 static int initPropulsion(state_t *propulsion) {
 
-    initTransition(propulsion->transitions[0], findState(BRAKING_NAME), NULL);
-    initTransition(propulsion->transitions[1], findState(RUN_FAULT_NAME), NULL);
+    initTransition(propulsion->transitions[0], findState(BRAKING_NAME), toBraking);
+    initTransition(propulsion->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(PROPULSION_NAME, propulsion->transitions[0]);
     addTransition(PROPULSION_NAME, propulsion->transitions[1]);
 
@@ -173,9 +191,9 @@ static int initPropulsion(state_t *propulsion) {
 
 static int initBraking(state_t *braking) {
 
-    initTransition(braking->transitions[0], findState(CRAWL_NAME), NULL);
-    initTransition(braking->transitions[1], findState(STOPPED_NAME), NULL);
-    initTransition(braking->transitions[2], findState(RUN_FAULT_NAME), NULL);
+    initTransition(braking->transitions[0], findState(CRAWL_NAME), toCrawl);
+    initTransition(braking->transitions[1], findState(STOPPED_NAME), genTranAction);
+    initTransition(braking->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(BRAKING_NAME, braking->transitions[0]);
     addTransition(BRAKING_NAME, braking->transitions[1]);
     addTransition(BRAKING_NAME, braking->transitions[2]);
@@ -185,9 +203,9 @@ static int initBraking(state_t *braking) {
 
 static int initCrawl(state_t *crawl) {
 
-    initTransition(crawl->transitions[0], findState(STOPPED_NAME), NULL);
-    initTransition(crawl->transitions[1], findState(BRAKING_NAME), NULL);
-    initTransition(crawl->transitions[2], findState(RUN_FAULT_NAME), NULL);
+    initTransition(crawl->transitions[0], findState(STOPPED_NAME), genTranAction);
+    initTransition(crawl->transitions[1], findState(BRAKING_NAME), toBraking);
+    initTransition(crawl->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(CRAWL_NAME, crawl->transitions[0]);
     addTransition(CRAWL_NAME, crawl->transitions[1]);
     addTransition(CRAWL_NAME, crawl->transitions[2]);
@@ -198,9 +216,9 @@ static int initCrawl(state_t *crawl) {
 static int initStopped(state_t *stopped) {
 
 
-    initTransition(stopped->transitions[0], findState(POST_RUN_NAME), NULL);
-    initTransition(stopped->transitions[1], findState(RUN_FAULT_NAME), NULL);
-    initTransition(stopped->transitions[2], findState(CRAWL_NAME), NULL);
+    initTransition(stopped->transitions[0], findState(POST_RUN_NAME), genTranAction);
+    initTransition(stopped->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(stopped->transitions[2], findState(CRAWL_NAME), toCrawl);
     addTransition(STOPPED_NAME, stopped->transitions[0]);
     addTransition(STOPPED_NAME, stopped->transitions[1]);
     addTransition(STOPPED_NAME, stopped->transitions[2]);
@@ -209,20 +227,19 @@ static int initStopped(state_t *stopped) {
 }
 
 static int initPostRun(state_t *postRun) {
-    initTransition(postRun->transitions[0], findState(SAFE_TO_APPROACH_NAME), NULL);
-    initTransition(postRun->transitions[1], findState(POST_RUN_FAULT_NAME), NULL);
+    initTransition(postRun->transitions[0], findState(SAFE_TO_APPROACH_NAME), genTranAction);
+    initTransition(postRun->transitions[1], findState(POST_RUN_FAULT_NAME), genTranAction);
     addTransition(POST_RUN_NAME, postRun->transitions[0]);
     addTransition(POST_RUN_NAME, postRun->transitions[1]);
     return 0;
 }
 
 static int initSafeToApproach(state_t *safeToApproach) {
-    
-    initTransition(safeToApproach->transitions[0], findState(POST_RUN_FAULT_NAME), NULL);
+    initTransition(safeToApproach->transitions[0], findState(POST_RUN_FAULT_NAME), genTranAction);
     addTransition(SAFE_TO_APPROACH_NAME, safeToApproach->transitions[0]);
-
     return 0;
 }
+
 /***
  * findTransition - Looks through a passed in states list of transitions
  * 	and identifies the one that leads to a specified target
@@ -270,8 +287,10 @@ void runStateMachine(void) {
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();
     if (transition != NULL) {
-        transition->action();
-		stateMachine.currState = transition->target;
+        if (transition->action() == 0) 
+            stateMachine.currState = transition->target;
+        else 
+            stateMachine.currState = findFaultState(&stateMachine.currState);
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #define TIME_SINCE_LAST_RETRO 15000000
 
+
 /* Functions for initializing the entire struct, and individual parts of it */
 int initData(void);
 int initMetaData(void);
@@ -168,3 +169,6 @@ typedef struct rms_t {
 
 	uint16_t keyMode;
 } rms_t;
+
+
+extern data_t *data;
