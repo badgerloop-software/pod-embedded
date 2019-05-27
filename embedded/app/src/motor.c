@@ -4,6 +4,8 @@
 #include <rms.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <motor.h>
+#include <unistd.h>
 
 /***
  * The high level interface for the motor
@@ -20,7 +22,7 @@ static sem_t hbSem;
 static pthread_t hbLoop;
 static bool JOIN_HB_THREAD = false;
 
-static void motorHeartbeatLoop(void);
+static void *motorHeartbeatLoop(void *);
 
 /* Create the semaphores and mutexes for thread sensitive operations
  *  and creates the HB loop that just waits for the motor to be started 
@@ -34,7 +36,7 @@ int initMotor() {
         fprintf(stderr, "Failed to init motor mutex\n");
         return 1;
     }
-    if (sem_init(&hbSem, 0, 0) != NULL) {
+    if (sem_init(&hbSem, 0, 0) != 0) {
         fprintf(stderr, "Failed to init motor heartbeat semaphore\n");
         return 1;
     }
@@ -44,7 +46,7 @@ int initMotor() {
     JOIN_HB_THREAD = false; /* Set true to stop the motor thread */
 
     /* Spawn a thread to do heartbeats here */
-    if (pthread_create(&hbLoop, NULL, &motorHeartbeatLoop, NULL) != 0) {
+    if (pthread_create(&hbLoop, NULL, motorHeartbeatLoop, NULL) != 0) {
         fprintf(stderr, "Failed to init motor heartbeat thread\n");
         return 1;
     }
@@ -120,9 +122,9 @@ void idleMotor() {
 /* Run in its own thread, this sends required hbs to the motor 
  *  every HB_PERIOD uS
  */
-static void motorHeartbeatLoop() {
+static void *motorHeartbeatLoop(void *unusedParam) {
     while(1) {
-        if (JOIN_HB_THREAD) return;
+        if (JOIN_HB_THREAD) return NULL;
         sem_wait(&hbSem);
         if (getMotorIsOn()) {
             if (rmsSendHbMsg(getTorque()) != 0) {
@@ -136,5 +138,6 @@ static void motorHeartbeatLoop() {
         sem_post(&hbSem);
         usleep(HB_PERIOD);
     }
+    return NULL;
 }
 
