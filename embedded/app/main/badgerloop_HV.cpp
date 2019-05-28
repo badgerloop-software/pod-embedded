@@ -11,6 +11,8 @@
 
 extern "C" 
 {
+    #include "hv_iox.h"
+    #include "proc_iox.h"
     #include "data.h"
     #include "can_devices.h"
     #include "state_machine.h"
@@ -21,8 +23,9 @@ data_t *data;
 int init() {
 	/* Init all drivers */
     SetupCANDevices();
+    initProcIox();
+    initHVIox();
     
-
     /* Init Data struct */
     initData();
 

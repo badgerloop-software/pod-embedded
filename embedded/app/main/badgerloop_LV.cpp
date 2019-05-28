@@ -9,13 +9,17 @@
 /* ADD SENSOR INCLUDES HERE */
 extern "C" 
 {
+    #include "lv_iox.h"
+    #include "proc_iox.h"
 	#include "imu.h"
 }
 
 int init() {
 	// Init all peripherals
 	SetupIMU();
-	
+    initLVIox();
+    initProcIox();
+
 	// Start telemetry services
 	SetupLVTelemetry((char *) "192.168.1.112", 33333);
 	SetupLVTCPServer();

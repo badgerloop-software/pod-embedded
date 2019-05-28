@@ -32,7 +32,6 @@ extern stateTransition_t * stoppedAction(void);
 extern stateTransition_t * crawlAction(void);
 extern stateTransition_t * postRunAction(void);
 extern stateTransition_t * safeToApproachAction(void);
-extern stateTransition_t * secondaryBrakingAction(void);
 extern stateTransition_t * preFaultAction(void);
 extern stateTransition_t * runFaultAction(void);
 extern stateTransition_t * postFaultAction(void);
@@ -290,7 +289,7 @@ void runStateMachine(void) {
         if (transition->action() == 0) 
             stateMachine.currState = transition->target;
         else 
-            stateMachine.currState = findFaultState(&stateMachine.currState);
+            stateMachine.currState = findFaultState(stateMachine.currState);
 	}
 }
 

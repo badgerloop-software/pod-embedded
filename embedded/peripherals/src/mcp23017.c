@@ -26,6 +26,7 @@ int clearSettingsMCP(i2c_settings * i2c) {
     if (write_data_i2c(i2c, IODIRB, 0xFF) != 0) return -1;
     if (write_data_i2c(i2c, GPIOA, 0x00) != 0) return -1;
     if (write_data_i2c(i2c, GPIOB, 0x00) != 0) return -1;
+    return 0;
 }
 
 // helper method for getting data from a specific address

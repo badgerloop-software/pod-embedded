@@ -7,6 +7,7 @@
 #include "bms.h"
 #include "rms.h"
 #include "can_devices.h"
+#include "motor.h"
 
 //Global Variables
 pthread_t CANThread;
