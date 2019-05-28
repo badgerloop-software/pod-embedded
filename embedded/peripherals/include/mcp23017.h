@@ -23,6 +23,9 @@
 #define MCP_GPIOB_6 14
 #define MCP_GPIOB_7 15
 
+#define MCP_DIR_IN  1
+#define MCP_DIR_OUT 0
+
 static const int  NUM_PINS  = 16;
 static const char IODIR     = 0x00;
 static const char GPIO      = 0x12;
@@ -33,6 +36,8 @@ static const char GPIOA     = 0x12;
 static const char GPIOB     = 0x13;
 
 int setupMCP(i2c_settings *i2c, char mcpAddress);
+
+int clearSettingsMCP(i2c_settings *i2c);
 
 int getState(i2c_settings *i2c, uint8_t pin);
 
