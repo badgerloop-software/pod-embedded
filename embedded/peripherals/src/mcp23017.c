@@ -9,14 +9,21 @@
 #include "mcp23017.h"
 
 int setupMCP(i2c_settings * i2c, char mcpAddress) {
+    uint8_t flush[1];
     i2c->bus = 2;
     i2c->deviceAddress = mcpAddress;
     i2c->openMode = O_RDWR;
+    
     if (i2c_begin(i2c) == -1) {
         fprintf(stderr, "Could not open i2c bus.\n");
         return -1;
     }
-
+	
+    /* check if there actually is a device there */
+    if (read_i2c(i2c, flush, 1) != 0) {
+        return -1;   
+    }
+    
     return 0;
 }
 
