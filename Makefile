@@ -16,7 +16,7 @@ endif
 # Add a define for debugging prints in various places. Can be customized for
 # whichever components are wanted
 ifdef DEBUG
-DEBUG_MODE := DEBUG_RETRO DEBUG_RMS
+DEBUG_MODE := DEBUG_RETRO DEBUG_RMS DEBUG_BMS
 endif
 
 # Compiler options

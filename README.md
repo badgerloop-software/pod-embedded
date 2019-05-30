@@ -7,7 +7,7 @@ The master repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-There are currently two sets of targets:
+There are currently 3 sets of targets:
 
 1) Making the main programs (`badgerloop_LV` and `badgerloop_HV`), placed in the `out/` folder
 
@@ -15,10 +15,24 @@ There are currently two sets of targets:
 make
 ```
 
+The main target can also be executed in a special debug mode, adding useful
+print outs from various modules. Any of the following targets can also take
+advantage of the added debug functionality. To build in debug mode, run:
+
+```
+make DEBUG=1
+```
+
 2) Making the examples, placed into the `out/tests` folder
 
 ```
 make examples
+```
+
+3) Making utilities for showcasing various parts of the pod's functionality
+
+```
+make utils
 ```
 
 ### Adding Tests
