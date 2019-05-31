@@ -24,7 +24,7 @@
 #define SAFETY_CONSTANT 2
 #define SEC_TO_USEC     1000000
 #define VOTE_BUFFER     200000
-#define VOTE_RESET_TIME 150000  /* Hard coded for max speed, approx algo should be (DIST_BTWN_STRIPS / (2 * SPEED_FTPS)) */
+#define VOTE_RESET_TIME 3000000  /* Hard coded for max speed, approx algo should be (DIST_BTWN_STRIPS / (2 * SPEED_FTPS)) */
 #define CONST_TERM      SAFETY_CONSTANT * SEC_TO_USEC
 
 static pthread_t retroThreads[3];
@@ -70,7 +70,7 @@ int joinRetroThreads() {
 
 /* Returns delay in uS */
 static inline uint64_t getDelay() {
-    return CONST_TERM * (WIDTH_TAPE_STRIP / ( .1 + data->motion->vel));
+    return (CONST_TERM * WIDTH_TAPE_STRIP) / ( .1 + data->motion->vel);
 }
 
 /* voteOnCandidate - the candidate is the most recent retro detected and the
@@ -90,7 +90,7 @@ static int voteOnCandidate(int retroNum) {
     uint64_t otherRetro1 = data->timers->lastRetros[(retroNum + 1) % NUM_RETROS];
     uint64_t otherRetro2 = data->timers->lastRetros[(retroNum + 2) % NUM_RETROS];
     uint64_t candidate   = data->timers->lastRetros[retroNum];
-   
+
     return (((candidate - otherRetro1) <= VOTE_BUFFER || 
         (candidate - otherRetro2) <= VOTE_BUFFER) && candidate > (data->timers->lastRetro + VOTE_RESET_TIME));
 }
@@ -100,8 +100,9 @@ static int onTapeStrip(int retroNum) {
     DBG_RETRO_PRINTF("Tape strip detected on retro %d\n", retroNum);
 	uint64_t currTime = getuSTimestamp();
     uint64_t delay = getDelay();
-    DBG_RETRO_PRINTF("Current delay: %lu\n", delay);
-    
+    DBG_RETRO_PRINTF("Current delay: %llu\n", delay);
+
+
 	/* Check if it has delayed long enough (in uS) to accept another strip */
 	if (((currTime - data->timers->lastRetros[retroNum]) > delay) ||
 			(currTime < data->timers->lastRetros[retroNum])) {
@@ -113,6 +114,12 @@ static int onTapeStrip(int retroNum) {
         }
         DBG_RETRO_PRINTF("New count: %d\n", data->motion->retroCount);
     }
+
+
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 0, data->timers->lastRetros[0]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 1, data->timers->lastRetros[1]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 2, data->timers->lastRetros[2]);
+
 	return 0;
 }
 

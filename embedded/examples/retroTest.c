@@ -24,10 +24,12 @@ static void setSpeed(float vel) {
 
 int main() {
 	initTest();
-	setSpeed(0);
+	setSpeed(500);
 
 	initRetros();
-	sleep(5);
+while(1);
+   
+    sleep(5);
 	printf("Bumping speed to 500 in/s\n");
 	setSpeed(500);
 	sleep(5);
