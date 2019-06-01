@@ -12,10 +12,19 @@
 #include <time.h>
 #include <data.h>
 
+#ifdef DEBUG_RETRO
+#define DBG_RETRO_PRINTF(args...) printf(args)
+#else
+#define DBG_RETRO_PRINTF(args...)
+#endif
+
+
 #define TIMEOUT 100	/* 1 second, bump higher in production */
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
 #define SEC_TO_USEC     1000000
+#define VOTE_BUFFER     200000
+#define VOTE_RESET_TIME 3000000  /* Hard coded for max speed, approx algo should be (DIST_BTWN_STRIPS / (2 * SPEED_FTPS)) */
 #define CONST_TERM      SAFETY_CONSTANT * SEC_TO_USEC
 
 static pthread_t retroThreads[3];
@@ -61,19 +70,56 @@ int joinRetroThreads() {
 
 /* Returns delay in uS */
 static inline uint64_t getDelay() {
-	return CONST_TERM * (WIDTH_TAPE_STRIP / ( .1 + data->motion->vel));
+    return (CONST_TERM * WIDTH_TAPE_STRIP) / ( .1 + data->motion->vel);
+}
+
+/* voteOnCandidate - the candidate is the most recent retro detected and the
+ * vote is to determine if the count should be changed. 
+ *
+ *  The basic methodology is as follows:
+ *      1. Get timestamps for all three retros
+ *      2. Check against both other retros to see if any timestamps are close
+ *          enough together that they occurred for the same strip
+ *      3. Make sure the last passing vote hasn't occurred within a set delay
+ *      (so we don't double count a strip)
+ *      4. If conditions 2 and 3 are true, then we have travelled 100 ft, and
+ *      return true to signal an increment.
+ * */
+static int voteOnCandidate(int retroNum) {
+    /* Grab the other two retro timestamps to simplify comparisons */
+    uint64_t otherRetro1 = data->timers->lastRetros[(retroNum + 1) % NUM_RETROS];
+    uint64_t otherRetro2 = data->timers->lastRetros[(retroNum + 2) % NUM_RETROS];
+    uint64_t candidate   = data->timers->lastRetros[retroNum];
+
+    return (((candidate - otherRetro1) <= VOTE_BUFFER || 
+        (candidate - otherRetro2) <= VOTE_BUFFER) && candidate > (data->timers->lastRetro + VOTE_RESET_TIME));
 }
 
 /* Not voting yet! */
 static int onTapeStrip(int retroNum) {
-
+    DBG_RETRO_PRINTF("Tape strip detected on retro %d\n", retroNum);
 	uint64_t currTime = getuSTimestamp();
+    uint64_t delay = getDelay();
+    DBG_RETRO_PRINTF("Current delay: %llu\n", delay);
+
+
 	/* Check if it has delayed long enough (in uS) to accept another strip */
-	if (((currTime - data->timers->lastRetros[retroNum]) > getDelay()) ||
+	if (((currTime - data->timers->lastRetros[retroNum]) > delay) ||
 			(currTime < data->timers->lastRetros[retroNum])) {
 		data->timers->lastRetros[retroNum] = currTime;
-		data->motion->retroCount++;
-	}
+        if (voteOnCandidate(retroNum)) {
+            DBG_RETRO_PRINTF("Vote pass: incrementing count\n");
+            data->timers->lastRetro = currTime;
+            data->motion->retroCount++;
+        }
+        DBG_RETRO_PRINTF("New count: %d\n", data->motion->retroCount);
+    }
+
+
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 0, data->timers->lastRetros[0]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 1, data->timers->lastRetros[1]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 2, data->timers->lastRetros[2]);
+
 	return 0;
 }
 
@@ -101,12 +147,11 @@ static void *waitForStrip(void *num) {
 		ret = poll(fds, nfds, TIMEOUT);
 
 		if (ret < 0) {
-			printf("\npoll() failed!\n");
+			fprintf(stderr,"\npoll() failed!\n");
 		}
 
 		if (ret == 0) {
 			/* If nothing is detected */
-			/*printf("Retro Count = %d\n", data->motion->retroCount);*/
 		}
 
 		if (fds[0].revents & POLLPRI) {

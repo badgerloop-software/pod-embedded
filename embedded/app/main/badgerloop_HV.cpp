@@ -47,7 +47,7 @@ int main() {
 	/* Create the big data structures to house pod data */
 	
 	if (init() == 1) {
-		printf("Error in initialization! Exiting...\r\n");
+		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
     
