@@ -11,15 +11,15 @@
 #define PRES_VESL   CHANNEL_6
 
 
-int readPrimaryTank(void);
+double readPrimaryTank(void);
 
-int readPrimaryLine(void);
+double readPrimaryLine(void);
 
-int readPrimaryActuator(void);
+double readPrimaryActuator(void);
 
-int readSecTank(void);
+double readSecTank(void);
 
-int readSecLine(void);
+double readSecLine(void);
 
-int readSecActuate(void);
+double readSecActuate(void);
 
