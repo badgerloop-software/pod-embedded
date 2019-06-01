@@ -18,6 +18,10 @@ int initProcIox() {
     return 0;
 }
 
+i2c_settings getProcIoxDev() {
+	return iox;
+}
+
 static int setupIox() {
     /* Debug pins, set B1 high for optional testing */
     setDir(&iox, MCP_GPIOB_0, MCP_DIR_OUT);
