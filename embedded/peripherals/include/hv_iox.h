@@ -2,8 +2,11 @@
 #define __HV_IOX_H__
 
 #include <mcp23017.h>
+#include <i2c.h>
 
 int initHVIox(void);
+
+i2c_settings getHVIoxDev(void);
 
 int isHVIndicatorEnabled(void);
 
@@ -25,6 +28,6 @@ int getBMSStatus(void);
 
 int isEStopOn(void);
 
-int getMasterSwFeedback(void); 
+int getMasterSwFeedback(void);
 
 #endif

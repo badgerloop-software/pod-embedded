@@ -14,6 +14,8 @@
 
 int initProcIox(void);
 
+i2c_settings getProcIoxDev(void);
+
 int procIoxLedSet(int led, bool val);
 
 #endif

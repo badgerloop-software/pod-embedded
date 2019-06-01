@@ -6,7 +6,7 @@
 #include <proc_iox.h>
 #include <hv_iox.h>
 
-#define HV_IO_ADDR   0x21
+#define HV_IO_ADDR   	0x24
 #define HV_IND_EN       MCP_GPIOB_0
 #define MCU_LATCH       MCP_GPIOB_1
 #define BMS_MULTI_IN    MCP_GPIOB_2
@@ -29,6 +29,10 @@ int initHVIox() {
     clearSettingsMCP(&iox);
     setupIox();
     return 0;
+}
+
+i2c_settings getHVIoxDev() {
+	return iox;
 }
 
 /***
