@@ -6,6 +6,7 @@
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
+#include "data_dump.h"
 #include "data.h"
 
 extern "C" 
@@ -104,6 +105,8 @@ int init() {
     SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
+	SetupDataDump();
+	
     return 0;	
 }
 
@@ -111,7 +114,7 @@ int main() {
 	/* Create the big data structures to house pod data */
 	
 	if (init() == 1) {
-		printf("Error in initialization! Exiting...\r\n");
+		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
     
