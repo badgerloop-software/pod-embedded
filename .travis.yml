@@ -1,10 +1,26 @@
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
 language: c
-compiler: gcc
+compiler: gcc-6
+sudo: require
 python:
   - "3.4"
+  
 before_install:
-- sudo apt-get update
-- sudo apt-get install python3
+    - eval "${MATRIX_EVAL}"
+    - sudo apt-get update
+    - sudo apt-get install python3
+    
 install:
   - git clone https://github.com/linux-can/can-utils.git
   - cd can-utils
@@ -14,6 +30,9 @@ install:
   - sudo make install 
   - sudo cp cangen /bin/ && sudo cp candump /bin/
   - cd ..
-script: ./deploy.sh
+script: 
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - ./deploy.sh
 git:
   submodules: false

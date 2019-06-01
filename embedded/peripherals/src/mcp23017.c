@@ -24,7 +24,7 @@ int setupMCP(i2c_settings * i2c, char mcpAddress) {
 }
 
 // helper method for getting data from a specific address
-static uint8_t getFromAddress(i2c_settings * i2c, char address, uint8_t pin) {
+static uint8_t getFromAddress(i2c_settings * i2c, char address) {
 	write_byte_i2c(i2c, address);
 
 	uint8_t dataBuffer[1];
@@ -41,6 +41,10 @@ static uint8_t makeRelativeToBank(uint8_t pin) {
     return pin;
 }
 
+static int getAllStates(i2c_settings *i2c, uint8_t address) {
+    return (getFromAddress(i2c, address));
+}
+
 static int validatePin(uint8_t pin) {
     /* Check that we are getting a valid pin */
     if (pin >= NUM_PINS) {
@@ -49,13 +53,13 @@ static int validatePin(uint8_t pin) {
     return 0;
 }
 
-static int writeToDev(i2c_settings *i2c, char addr, uint8_t currentState, uint8_t pin, bool val) {
+static int writeToDev(i2c_settings *i2c, char addr, uint8_t pin, bool val) {
     int ret;
     pin = makeRelativeToBank(pin);
     if (val) {
-        ret = write_data_i2c(i2c, addr, currentState | (1 << pin));
+        ret = write_data_i2c(i2c, addr, getAllStates(i2c, addr) | (1 << pin));
     } else {
-        ret = write_data_i2c(i2c, addr, currentState & ~(1 << pin));
+        ret = write_data_i2c(i2c, addr, getAllStates(i2c, addr) & ~(1 << pin));
     }
     return ret;
 }
@@ -83,8 +87,10 @@ int getState(i2c_settings * i2c, uint8_t pin) {
     }
     char addr = getGpioBank(pin);
     pin = makeRelativeToBank(pin);
-    return (getFromAddress(i2c, addr, pin) >> pin) & 1;
+    return (getFromAddress(i2c, addr) >> pin) & 1;
 }
+
+
 
 int setState(i2c_settings * i2c, uint8_t pin, bool val) {
     if (validatePin(pin) == -1) {
@@ -95,30 +101,12 @@ int setState(i2c_settings * i2c, uint8_t pin, bool val) {
         fprintf(stderr, "setState: Only can set value on an output\n");
         return -1;
     }
-    char address = getGpioBank(pin);
+    uint8_t address = getGpioBank(pin);
     int currentState = getState(i2c, pin);
     if (val == currentState) {
         return 0;
     }
-
-	return writeToDev(i2c, address, currentState, pin, val);
-	/* TODO Discuss
-    uint8_t currentState = getState(i2c, pin);
-    if (val == currentState) { // no changes to be made
-        return 0;
-    }
-    pin = makeRelativeToBank(pin);
-    // uint8_t newState; TODO Discuss
-    // TODO: Discuss; right idea but there is a better way!
-    if (val == 0) { // change it form 1 to 0
-	    write_data_i2c(i2c, address, currentState - pow(2, pin));
-    } else if (val == 1) { // change it from 0 to 1
-	    write_data_i2c(i2c, address, currentState + pow(2, pin));
-    } else {
-        fprintf(stderr, "Invalid val arg setState");
-    }
-    return 0;
-    */
+	return writeToDev(i2c, address, pin, val);
 }
 
 int getDir(i2c_settings * i2c, uint8_t pin) {
@@ -128,7 +116,7 @@ int getDir(i2c_settings * i2c, uint8_t pin) {
     }
     char addr = getIodirBank(pin);
     pin = makeRelativeToBank(pin);
-	return (getFromAddress(i2c, addr, pin) >> pin) & 1;
+	return (getFromAddress(i2c, addr) >> pin) & 1;
 }
 
 int setDir(i2c_settings * i2c, uint8_t pin, bool val) {
@@ -140,7 +128,7 @@ int setDir(i2c_settings * i2c, uint8_t pin, bool val) {
     if (val == currentState) {
         return 0;
     }
-    return writeToDev(i2c, address, currentState, pin, val);
+    return writeToDev(i2c, address, pin, val);
   /*// TODO: Discuss
     if (val == 0) { // change it form 1 to 0
 	    write_data_i2c(i2c, address, currentState - pow(2, pin));

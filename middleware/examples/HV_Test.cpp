@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data.h"
 
-extern "C" 
+extern "C"
 {
     #include "can_devices.h"
 }
@@ -18,9 +19,9 @@ data_t *data;
 
 int init() {
 	// 1. init all drivers
-    
+
     SetupCANDevices();
-	
+
     // Init Data struct
 	if ((data = (data_t *) malloc(sizeof(data_t)))		                 	 == NULL) { return 1; }
 	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))         == NULL) { return 1; }
@@ -29,7 +30,7 @@ int init() {
 	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		       	     == NULL) { return 1; }
 	if ((data->flags = (flags_t *) malloc(sizeof(flags_t)))                  == NULL) { return 1; }
 	if ((data->timers = (timers_t *) malloc(sizeof(timers_t)))               == NULL) { return 1; }
-	
+
 	// Init pressure values to 0
 	data->pressure->ps1 = 0;
 	data->pressure->ps2 = 0;
@@ -40,13 +41,13 @@ int init() {
 	data->pressure->sec_ps3 = 0;
 	data->pressure->sec_ps4 = 0;
 	data->pressure->pv = 0;
-	
+
 	// Init motion values to 0
 	data->motion->pos = 0;
 	data->motion->vel = 0;
 	data->motion->accel = 0;
 	data->motion->retroCount = 0;
-	
+
 	// Init bms values to 0
 	data->bms->packCurrent = 0;
 	data->bms->packVoltage = 0;
@@ -67,7 +68,7 @@ int init() {
 	data->bms->cellAvgVoltage = 0;
 	data->bms->maxCells = 0;
 	data->bms->numCells = 0;
-	
+
 	// Init rms values to 0
 	data->rms->igbtTemp = 0;
 	data->rms->gateDriverBoardTemp = 0;
@@ -90,28 +91,28 @@ int init() {
 	data->rms->electricalFreq = 0;
 	data->rms->dcBusCurrent = 0;
 	data->rms->outputVoltageLn = 0;
-	
+
 	// Init flags values to 0
 	data->flags->readyPump = 0;
 	data->flags->pumpDown = 0;
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
 	data->flags->emergencyBrake = 0;
-	
+
 	// Init initial timer
-	data->timers->startTime = time(NULL);
-	
+	data->timers->startTime = getuSTimestamp();
+
 	data->state = 0;
-	
+
     SetupHVTelemetry((char *) "192.168.1.126", 33333);
 	SetupHVTCPServer();
-	SetupHVTelemRecv();	
-    return 0;	
+	SetupHVTelemRecv();
+    return 0;
 }
 
 int main() {
 	/* Create the big data structures to house pod data */
-	
+
 	if (init() == 1) {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
