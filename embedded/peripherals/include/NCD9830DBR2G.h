@@ -22,7 +22,16 @@
 #define CHANNEL_6    0x3
 #define CHANNEL_7    0x7
 
-STATUS readPressureSensor(int sensor, uint8_t *data);
+#define PS_TANK    CHANNEL_0
+#define PS_LINE    CHANNEL_1
+#define PS_ACTUATE CHANNEL_2
+
+#define BS_TANK    CHANNEL_3
+#define BS_LINE    CHANNEL_4
+#define BS_ACTUATE CHANNEL_5
+
+#define PRES_VESL   CHANNEL_6
+STATUS readPressureSensor(int sensor, uint8_t channel, uint8_t *data);
 STATUS initPressureSensors(void);
 
 
