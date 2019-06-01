@@ -4,11 +4,12 @@
 #define PS_LINE     CHANNEL_1
 #define PS_ACTUATE  CHANNEL_2
 
-#define BS_TANK     CHANNEL_5
-#define BS_LINE     CHANNEL_6
-#define BS_ACTUATE  CHANNEL_7
-
 #define PRES_VESL   CHANNEL_4
+
+#define BS_TANK     CHANNEL_5
+#define BS_LINE     CHANNEL_7
+#define BS_ACTUATE  CHANNEL_6
+
 
 double readPrimaryTank(void);
 
