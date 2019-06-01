@@ -33,7 +33,6 @@ int main() {
 	}
 	uint8_t data[5] = {0};
 	while(1) {
-		readPressureSensor(ADC_1, data);
 		printf("READING: %d\n", data[0]);
 		usleep(100000);
 		// Control loop

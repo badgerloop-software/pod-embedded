@@ -27,10 +27,8 @@ i2c_settings *presSens[2];
 static STATUS selectChannel(uint8_t devNum, uint8_t channel);
 static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data);
 
-STATUS readPressureSensor(int sensor, uint8_t *data) {
-    /* Need to establish a mapping from the sensors to the channels */
-    /* Not sure what that is now, but when its known this will be filled in */
-    if (readChannel(sensor, CHANNEL_7, data) == ERROR) {
+STATUS readPressureSensor(int sensor, uint8_t channel, uint8_t *data) {
+    if (readChannel(sensor, channel, data) == ERROR) {
         fprintf(stderr, "Error reading the pressure sensor: %d\n", sensor);
         return ERROR;
     }
@@ -66,13 +64,13 @@ static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
 
 STATUS initPressureSensors() {
 	presSens[0] = &presSens1;
-	presSens[1] = &presSens2;
+/*	presSens[1] = &presSens2; */
 
     if (i2c_begin(&presSens1) == ERROR) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
         return ERROR;
     }
-/* NOT ON THE BUS RN
+/* NOT ON THE BUS
     if (i2c_begin(presSens2) == ERROR) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 2.\n");
 	}
