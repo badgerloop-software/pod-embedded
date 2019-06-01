@@ -25,7 +25,7 @@ int init() {
     SetupCANDevices();
     initProcIox();
     initHVIox();
-    
+    initMotor();   
     /* Init Data struct */
     initData();
 
