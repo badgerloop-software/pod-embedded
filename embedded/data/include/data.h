@@ -85,14 +85,12 @@ static inline uint64_t getSTimestamp() {
  * pressure_t - Pressure data from the braking system
  */
 typedef struct pressure_t {
-    uint32_t ps1;
-    uint32_t ps2;
-    uint32_t ps3;
-    uint32_t ps4;
-    uint32_t sec_ps1;
-    uint32_t sec_ps2;
-    uint32_t sec_ps3;
-    uint32_t sec_ps4;
+    uint32_t primTank;
+    uint32_t primLine;
+    uint32_t primAct;
+    uint32_t secTank;
+    uint32_t secLine;
+    uint32_t secAct;
     uint32_t pv;
 } pressure_t;
 

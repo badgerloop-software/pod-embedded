@@ -10,7 +10,6 @@
 
 #define PRES_VESL   CHANNEL_6
 
-
 double readPrimaryTank(void);
 
 double readPrimaryLine(void);
