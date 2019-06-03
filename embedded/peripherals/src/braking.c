@@ -3,9 +3,21 @@
 #include <braking.h>
 #include <data.h>
 #include <stdio.h>
+#include <lv_iox.h>
+
 
 #define VOLTAGE_SCALING(x) ( ((((x / 256) * 5) - 0.5) / 4) * 2000)
 #define CURRENT_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 500)
+
+void brakePrimary() {
+    solenoidSet(
+}
+
+void brakeSecondary() {
+    return;
+}
+
+void 
 
 //Voltage
 double readPrimaryTank() {

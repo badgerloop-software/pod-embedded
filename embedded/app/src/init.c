@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <data.h>
 
-extern data_t *data;
-
 int initData() {
     if (initMetaData() != 0) {
         fprintf(stderr, "Failed to init meta data\n");

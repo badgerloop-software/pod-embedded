@@ -6,6 +6,7 @@
 #include <semaphore.h>
 #include <motor.h>
 #include <unistd.h>
+#include <hv_iox.h>
 
 /***
  * The high level interface for the motor
@@ -89,9 +90,16 @@ bool getMotorIsOn() {
 }
 
 int startMotor() {
+    static bool isMCULatched = false;
+    if (!isMCULatched) {
+        setMCULatch(true);
+        usleep(500000);  //FIXME Not sure what to make this, .5 s for now
+        setMCULatch(false);
+        isMCULatched = true;
+    }
     if (rmsEnHeartbeat() != 0) return 1;
     if (rmsClrFaults() != 0) return 1;
-    if (rmsInvEn() != 0) return 1;
+    if (rmsInvDis() != 0) return 1;
     idleMotor();
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
     setMotorIsOn(true);

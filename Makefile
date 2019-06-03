@@ -7,7 +7,7 @@ ALL_UTL	:= $(shell find . -name "utils" -exec ls {} \; | grep ".c")
 
 # Should find all our include directories
 INCLUDE_DIRS := $(shell find . -name "include") ./middleware/include/jsonlib
-
+ALL_H   := $(shell find . -name "include" -exec ls {} \; | grep ".h")
 # Add specific flags that allow our examples to be run with hardware-out-of-the-loop
 ifdef VIRTUAL
 USE_VCAN := USE_VCAN
@@ -58,7 +58,6 @@ examples: $(EXAMPLES)
 utils: $(UTILS)
 
 $(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
-	echo $(UTILS)
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(EX_OUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o | $(EX_OUT_DIR)
