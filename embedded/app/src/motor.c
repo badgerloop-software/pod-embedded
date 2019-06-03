@@ -99,7 +99,7 @@ int startMotor() {
     }
     if (rmsEnHeartbeat() != 0) return 1;
     if (rmsClrFaults() != 0) return 1;
-    if (rmsInvEn() != 0) return 1;
+    if (rmsInvDis() != 0) return 1;
     idleMotor();
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
     setMotorIsOn(true);
