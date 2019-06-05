@@ -9,7 +9,7 @@
 #define CURRENT_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 500)
 
 #define RING_SIZE  10
-#define LOOP_PERIOD 50000
+#define LOOP_PERIOD 100000
 
 static double avgDouble(double *arr, int size);
 
@@ -56,6 +56,7 @@ void *pressureMonitor() {
 #ifdef DEBUG_PRES
         showPressures();
 #endif
+        i += 1;
         usleep(LOOP_PERIOD);
     }
 
