@@ -1,4 +1,3 @@
-#include <badgerloop.h>
 #include <NCD9830DBR2G.h>
 #include <braking.h>
 #include <data.h>
@@ -17,6 +16,12 @@ static double avgDouble(double *arr, int size);
 static pthread_t presMonThread;
 
 int initPressureMonitor() {
+
+    if (initPressureSensors() != 0) {
+        fprintf(stderr, "Failed to init ADCs\n");
+        return (-1);
+    }
+    
     if (pthread_create(&presMonThread, NULL, (void *)(pressureMonitor), NULL) != 0) {
         fprintf(stderr, "Failed to init pressure monitor\n");
         return (-1);
@@ -57,6 +62,10 @@ void *pressureMonitor() {
     return NULL;
 }
 
+int joinPressureMonitor() {
+    return pthread_join(presMonThread, NULL);
+}
+
 static double avgDouble(double *arr, int size) {
     int i = 0; 
     double sum = 0;
@@ -95,7 +104,7 @@ void brakePrimaryRelease() {
 //Voltage
 double readPrimaryTank() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_TANK, data) != OK)
+    if (readPressureSensor(ADC_0, PS_TANK, data) != 0)
         return -1;
 
     return (VOLTAGE_SCALING(data[0]));
@@ -104,7 +113,7 @@ double readPrimaryTank() {
 //Current
 double readPrimaryLine() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_LINE, data) != OK)
+    if (readPressureSensor(ADC_0, PS_LINE, data) != 0)
         return -1;
     return ( CURRENT_SCALING(data[0]) );
 }
@@ -112,7 +121,7 @@ double readPrimaryLine() {
 //Current
 double readPrimaryActuator() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_ACTUATE, data) != OK) {
+    if (readPressureSensor(ADC_0, PS_ACTUATE, data) != 0) {
         return -1;
     }
     return ( CURRENT_SCALING(data[0]) );

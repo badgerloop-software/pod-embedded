@@ -8,7 +8,6 @@
  *
  ***/
 
-#include "badgerloop.h"
 #include "data.h"
 #include "state_machine.h"
 #include <transitions.h>

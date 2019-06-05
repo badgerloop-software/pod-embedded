@@ -7,10 +7,10 @@
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data_dump.h"
-#include "motor.h"
 
 extern "C" 
 {
+    #include "motor.h"
     #include "hv_iox.h"
     #include "proc_iox.h"
     #include "data.h"

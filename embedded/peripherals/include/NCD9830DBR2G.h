@@ -1,7 +1,6 @@
 #ifndef __NCD98_H__
 #define __NCD98_H__
 
-#include "badgerloop.h"
 #include <stdint.h>
 #define ADC_0  0x0
 #define ADC_1  0x1
@@ -26,13 +25,13 @@
 #define PS_LINE    CHANNEL_1
 #define PS_ACTUATE CHANNEL_2
 
-#define BS_TANK    CHANNEL_3
-#define BS_LINE    CHANNEL_4
-#define BS_ACTUATE CHANNEL_5
+#define SEC_TANK    CHANNEL_3
+#define SEC_LINE    CHANNEL_4
+#define SEC_ACTUATE CHANNEL_5
 
 #define PRES_VESL   CHANNEL_6
-STATUS readPressureSensor(int sensor, uint8_t channel, uint8_t *data);
-STATUS initPressureSensors(void);
+int readPressureSensor(int sensor, uint8_t channel, uint8_t *data);
+int initPressureSensors(void);
 
 
 #endif

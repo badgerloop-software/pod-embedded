@@ -11,8 +11,7 @@ extern "C"
     #include "lv_iox.h"
     #include "proc_iox.h"
 	#include "imu.h"
-	#include "badgerloop.h"
-	#include "NCD9830DBR2G.h"
+	#include "braking.h"
 }
 
 int init() {
@@ -20,8 +19,8 @@ int init() {
 	SetupIMU();
     initLVIox();
     initProcIox();
-	initPressureSensors();
-	// Start telemetry services
+	initPressureMonitor();
+    // Start telemetry services
 	//SetupLVTelemetry((char *) "192.168.1.112", 33333);
 	//SetupLVTCPServer();
 	

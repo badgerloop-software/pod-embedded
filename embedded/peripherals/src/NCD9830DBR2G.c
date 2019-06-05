@@ -2,7 +2,6 @@
  *  Driver for an 8 bit, 8 channel ADC controlled over i2c
  */
 
-#include <badgerloop.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "NCD9830DBR2G.h"
@@ -24,56 +23,56 @@ i2c_settings adc1 = {
 
 i2c_settings *adcs[2];
 
-static STATUS selectChannel(uint8_t devNum, uint8_t channel);
-static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data);
+static int selectChannel(uint8_t devNum, uint8_t channel);
+static int readChannel(uint8_t devNum, uint8_t channel, uint8_t *data);
 
-STATUS readPressureSensor(int sensor, uint8_t channel, uint8_t *data) {
-    if (readChannel(sensor, channel, data) == ERROR) {
-        fprintf(stderr, "Error reading the pressure sensor: %d\n", sensor);
-        return ERROR;
+int readPressureSensor(int sensor, uint8_t channel, uint8_t *data) {
+    if (readChannel(sensor, channel, data) == -1) {
+        fprintf(stderr, "-1 reading the pressure sensor: %d\n", sensor);
+        return -1;
     }
-    return OK;
+    return 0;
 }
 
 
-static STATUS selectChannel(uint8_t devNum, uint8_t channel) {
+static int selectChannel(uint8_t devNum, uint8_t channel) {
     if (channel > 7) {
         fprintf(stderr, "Invalid channel, must be 0-7.\n");
-        return ERROR;
+        return -1;
     }
 
     uint8_t cmdByte = 0;
     cmdByte = SD_BIT | CHANNEL(channel) | PD_BITS;
 
-    if (write_byte_i2c(adcs[devNum], cmdByte) == ERROR) {
+    if (write_byte_i2c(adcs[devNum], cmdByte) != 0) {
         fprintf(stderr, "Failed to write channel select byte: %#x\n", cmdByte);
-        return ERROR;
+        return -1;
     }
 
-    return OK;
+    return 0;
 }
 
-static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
+static int readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
    selectChannel(devNum, channel);
-   if (read_i2c((i2c_settings *)adcs[devNum], data, 1) == ERROR) {
+   if (read_i2c((i2c_settings *)adcs[devNum], data, 1) != 0) {
        fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
-       return ERROR;
+       return -1;
    }
-   return OK;
+   return 0;
 }
 
-STATUS initPressureSensors() {
+int initPressureSensors() {
 	adcs[0] = &adc0;
 /*	adcs[1] = &adc1; */
 
-    if (i2c_begin(&adc0) == ERROR) {
+    if (i2c_begin(&adc0) != 0) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
-        return ERROR;
+        return -1;
     }
 /* NOT ON THE BUS
-    if (i2c_begin(presSens1) == ERROR) {
+    if (i2c_begin(presSens1) != 0) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 2.\n");
 	}
 */
-	return OK;
+	return 0;
 }
