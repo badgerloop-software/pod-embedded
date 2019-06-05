@@ -47,14 +47,12 @@ int initMetaData() {
 }
 
 int initPressureData() {
-    data->pressure->ps1 = 0;
-	data->pressure->ps2 = 0;
-	data->pressure->ps3 = 0;
-	data->pressure->ps4 = 0;
-	data->pressure->sec_ps1 = 0;
-	data->pressure->sec_ps2 = 0;
-	data->pressure->sec_ps3 = 0;
-	data->pressure->sec_ps4 = 0;
+    data->pressure->primTank = 0;
+	data->pressure->primLine = 0;
+	data->pressure->primAct  = 0;
+	data->pressure->secTank  = 0;
+	data->pressure->secLine  = 0;
+	data->pressure->secAct   = 0;
 	data->pressure->pv = 0;
     return 0;
 }

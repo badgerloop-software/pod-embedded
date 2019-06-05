@@ -11,9 +11,9 @@
 #define CURRENT_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 500)
 
 #define RING_SIZE  10
-static double avgDouble(double *arr, int size) {
+static double avgDouble(double *arr, int size);
 int initPressureMonitor() {
-    
+    return 0;
 }
 
 void *pressureMonitor() {
@@ -36,9 +36,9 @@ void *pressureMonitor() {
         secLineRing[i % RING_SIZE]  = readSecLine();
         secActRing[i % RING_SIZE]   = readSecActuator();
 
-        data->pressures->primTank = avgDouble(primTankRing, RING_SIZE);
-        data->pressures->primLine = avgDouble(primLineRing, RING_SIZE);
-        data->pressures->primAct  = avgDouble(primActRing,  RING_SIZE); 
+        data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
+        data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
+        data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE); 
     }
 
     return NULL;

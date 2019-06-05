@@ -20,5 +20,9 @@ double readSecTank(void);
 
 double readSecLine(void);
 
-double readSecActuate(void);
+double readSecActuator(void);
+
+void *pressureMonitor(void);
+
+int initPressureMonitor(void);
 
