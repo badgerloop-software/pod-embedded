@@ -64,7 +64,7 @@ void *DataLoop(void *arg){
 		fprintf(fp, "%ld,%ld,%ld,%ld,%ld,", data->timers->startTime, data->timers->lastRetro, data->timers->lastRetros[0], data->timers->lastRetros[1], data->timers->lastRetros[2]);
 		
 		// PRESSURE
-		fprintf(fp, "%u,%u,%u,%u,%u,%u,%u,", data->pressure->ps1, data->pressure->ps2, data->pressure->ps3, data->pressure->sec_ps1, data->pressure->sec_ps2, data->pressure->sec_ps3, data->pressure->pv);
+		fprintf(fp, "%u,%u,%u,%u,%u,%u,%u,", data->pressure->primTank, data->pressure->primLine, data->pressure->primAct, data->pressure->secTank, data->pressure->secLine, data->pressure->secAct, data->pressure->pv);
 		
 		// MOTION
 		fprintf(fp, "%f,%f,%f,%i,", data->motion->pos, data->motion->vel, data->motion->accel, data->motion->retroCount);

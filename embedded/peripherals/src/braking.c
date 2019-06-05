@@ -6,13 +6,21 @@
 #include <lv_iox.h>
 #include <pthread.h>
 
-
 #define VOLTAGE_SCALING(x) ( ((((x / 256) * 5) - 0.5) / 4) * 2000)
 #define CURRENT_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 500)
 
 #define RING_SIZE  10
+#define LOOP_PERIOD 50000
+
 static double avgDouble(double *arr, int size);
+
+static pthread_t presMonThread;
+
 int initPressureMonitor() {
+    if (pthread_create(&presMonThread, NULL, (void *)(pressureMonitor), NULL) != 0) {
+        fprintf(stderr, "Failed to init pressure monitor\n");
+        return (-1);
+    }
     return 0;
 }
 
@@ -39,6 +47,11 @@ void *pressureMonitor() {
         data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
         data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
         data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE); 
+    
+#ifdef DEBUG_PRES
+        showPressures();
+#endif
+        usleep(LOOP_PERIOD);
     }
 
     return NULL;
@@ -82,7 +95,7 @@ void brakePrimaryRelease() {
 //Voltage
 double readPrimaryTank() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_1, PS_TANK, data) != OK)
+    if (readPressureSensor(ADC_0, PS_TANK, data) != OK)
         return -1;
 
     return (VOLTAGE_SCALING(data[0]));
@@ -91,16 +104,15 @@ double readPrimaryTank() {
 //Current
 double readPrimaryLine() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_1, PS_LINE, data) != OK)
+    if (readPressureSensor(ADC_0, PS_LINE, data) != OK)
         return -1;
-//    return data[0];
     return ( CURRENT_SCALING(data[0]) );
 }
 
 //Current
 double readPrimaryActuator() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_1, PS_ACTUATE, data) != OK) {
+    if (readPressureSensor(ADC_0, PS_ACTUATE, data) != OK) {
         return -1;
     }
     return ( CURRENT_SCALING(data[0]) );
@@ -124,4 +136,17 @@ double readSecActuator() {
 /* Damn I dont know how to spell vessel */
 double readPressureVessel() {
     return 0;
+}
+
+void showPressures() {
+    printf("======PRESSURE READINGS======\n");
+    printf("---Primary System---\n");
+    printf("Primary Tank: %f psi\n", data->pressure->primTank);
+    printf("Primary Line: %f psi\n", data->pressure->primLine);
+    printf("Primary Actuator: %f psi\n", data->pressure->primAct);
+    printf("---Secondary System---\n");
+    printf("Secondary Tank: %f psi\n", data->pressure->secTank);
+    printf("Secondary Line: %f psi\n", data->pressure->secLine);
+    printf("Secondary Actuator: %f psi\n\n", data->pressure->secAct);
+    printf("Pressure Vessel: %f psi\n", data->pressure->pv);
 }

@@ -8,21 +8,21 @@
 #include "NCD9830DBR2G.h"
 #include "i2c.h"
 
-i2c_settings presSens1 = {
+i2c_settings adc0    = {
+    .fd              =   0,
+    .bus             =   2,
+    .deviceAddress   =   NCD9830_ADR0,
+    .openMode        =   O_RDWR
+};
+
+i2c_settings adc1 = {
     .fd              =   0,
     .bus             =   2,
     .deviceAddress   =   NCD9830_ADR1,
     .openMode        =   O_RDWR
 };
 
-i2c_settings presSens2 = {
-    .fd              =   0,
-    .bus             =   2,
-    .deviceAddress   =   NCD9830_ADR2,
-    .openMode        =   O_RDWR
-};
-
-i2c_settings *presSens[2];
+i2c_settings *adcs[2];
 
 static STATUS selectChannel(uint8_t devNum, uint8_t channel);
 static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data);
@@ -45,7 +45,7 @@ static STATUS selectChannel(uint8_t devNum, uint8_t channel) {
     uint8_t cmdByte = 0;
     cmdByte = SD_BIT | CHANNEL(channel) | PD_BITS;
 
-    if (write_byte_i2c(presSens[devNum], cmdByte) == ERROR) {
+    if (write_byte_i2c(adcs[devNum], cmdByte) == ERROR) {
         fprintf(stderr, "Failed to write channel select byte: %#x\n", cmdByte);
         return ERROR;
     }
@@ -55,7 +55,7 @@ static STATUS selectChannel(uint8_t devNum, uint8_t channel) {
 
 static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
    selectChannel(devNum, channel);
-   if (read_i2c((i2c_settings *)presSens[devNum], data, 1) == ERROR) {
+   if (read_i2c((i2c_settings *)adcs[devNum], data, 1) == ERROR) {
        fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
        return ERROR;
    }
@@ -63,15 +63,15 @@ static STATUS readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
 }
 
 STATUS initPressureSensors() {
-	presSens[0] = &presSens1;
-/*	presSens[1] = &presSens2; */
+	adcs[0] = &adc0;
+/*	adcs[1] = &adc1; */
 
-    if (i2c_begin(&presSens1) == ERROR) {
+    if (i2c_begin(&adc0) == ERROR) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
         return ERROR;
     }
 /* NOT ON THE BUS
-    if (i2c_begin(presSens2) == ERROR) {
+    if (i2c_begin(presSens1) == ERROR) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 2.\n");
 	}
 */

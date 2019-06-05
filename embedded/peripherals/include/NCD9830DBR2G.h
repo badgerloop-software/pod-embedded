@@ -3,10 +3,10 @@
 
 #include "badgerloop.h"
 #include <stdint.h>
-#define ADC_1  0x0
-#define ADC_2  0x1
-#define NCD9830_ADR1 0x48   /* This is the base */
-#define NCD9830_ADR2 0x49   /* Could be wrong */
+#define ADC_0  0x0
+#define ADC_1  0x1
+#define NCD9830_ADR0 0x48   /* This is the base */
+#define NCD9830_ADR1 0x49   /* Could be wrong */
 
 /* The i2c message builder for this device */
 #define SD_BIT       0x1 << 7
