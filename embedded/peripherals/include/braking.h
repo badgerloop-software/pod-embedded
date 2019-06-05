@@ -27,3 +27,6 @@ void *pressureMonitor(void);
 int initPressureMonitor(void);
 
 void showPressures(void);
+
+int joinPressureMonitor(void);
+
