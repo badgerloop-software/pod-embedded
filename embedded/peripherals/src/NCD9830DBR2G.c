@@ -14,12 +14,12 @@ i2c_settings adc0    = {
     .openMode        =   O_RDWR
 };
 
-i2c_settings adc1 = {
-    .fd              =   0,
-    .bus             =   2,
-    .deviceAddress   =   NCD9830_ADR1,
-    .openMode        =   O_RDWR
-};
+/*i2c_settings adc1 = {*/
+/*    .fd              =   0,*/
+/*    .bus             =   2,*/
+/*    .deviceAddress   =   NCD9830_ADR1,*/
+/*    .openMode        =   O_RDWR*/
+/*};*/
 
 i2c_settings *adcs[2];
 
@@ -63,13 +63,14 @@ static int readChannel(uint8_t devNum, uint8_t channel, uint8_t *data) {
 
 int initPressureSensors() {
 	adcs[0] = &adc0;
-/*	adcs[1] = &adc1; */
 
     if (i2c_begin(&adc0) != 0) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
         return -1;
     }
-/* NOT ON THE BUS
+
+/*	adcs[1] = &adc1; 
+    NOT ON THE BUS
     if (i2c_begin(presSens1) != 0) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 2.\n");
 	}
