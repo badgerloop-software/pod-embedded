@@ -28,6 +28,7 @@ typedef struct flags_t {
     int readyCommand;
     int propulse;
     int emergencyBrake;
+    int shouldStop;
 } flags_t;
 
 

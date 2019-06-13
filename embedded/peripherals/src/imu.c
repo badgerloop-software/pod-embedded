@@ -32,6 +32,10 @@ void SetupIMU(){
 	if (pthread_create(&IMUThread, NULL, IMULoop, NULL)){
 		fprintf(stderr, "Error creating IMU thread\n");
 	}
+    
+    data->posX = 0;
+    data->posY = 0;
+    data->posZ = 0;
 
 	//Set all IMU structure values to zero
 	data->dVx = 0;
@@ -51,7 +55,7 @@ void *IMULoop(void *arg){
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
 	int i;
-
+    
 	while (1){
 		
 		i = 0;
@@ -96,6 +100,8 @@ void *IMULoop(void *arg){
 		}
 
 		//IMU Time Increment (10 ms)
+        data->posX += data->dVx * 0.01;
+        data->posY += data->dVy * 0.01;
 		usleep(10000);
 	}
 	free(i2c);
@@ -117,6 +123,28 @@ void getAccelData(float *fData){
 	fData[1] = data->accelY;
 	fData[2] = data->accelZ;
 	sem_post(&data->mutex);
+}
+
+void getPosData(float *fData) {
+	sem_wait(&data->mutex);
+    fData[0] = data->posX;
+    fData[1] = data->posY;
+    fData[2] = data->posZ;
+	sem_post(&data->mutex);
+}
+
+float getPosX() {
+	sem_wait(&data->mutex);
+	float ret = data->posX;
+    sem_post(&data->mutex);
+    return ret;
+}
+
+float getPosY() {
+	sem_wait(&data->mutex);
+    float ret = data->posY;
+	sem_post(&data->mutex);
+    return ret;
 }
 
 float getDeltaVX(){
