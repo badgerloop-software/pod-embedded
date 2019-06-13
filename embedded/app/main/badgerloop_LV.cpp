@@ -16,14 +16,13 @@ extern "C"
 
 int init() {
 	// Init all peripherals
-	SetupIMU();
-    initLVIox();
-    initProcIox();
+    SetupIMU();
+    initProcIox(true);
+    initLVIox(true);
 	initPressureMonitor();
     // Start telemetry services
 	//SetupLVTelemetry((char *) "192.168.1.112", 33333);
 	//SetupLVTCPServer();
-	
     return 0;	
 }
 
@@ -34,9 +33,7 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-	uint8_t data[5] = {0};
 	while(1) {
-		printf("READING: %d\n", data[0]);
 		usleep(100000);
 		// Control loop
 	}

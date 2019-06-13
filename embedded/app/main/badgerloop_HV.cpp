@@ -23,8 +23,8 @@ data_t *data;
 int init() {
 	/* Init all drivers */
     SetupCANDevices();
-    initProcIox();
-    initHVIox();
+    initProcIox(true);
+    initHVIox(true);
     initMotor();   
     /* Init Data struct */
     initData();

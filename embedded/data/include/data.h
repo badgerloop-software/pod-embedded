@@ -14,7 +14,7 @@ int initBmsData(void);
 int initRmsData(void);
 int initFlagData(void);
 int initTimerData(void);
-
+int isEarlyInit(void);
 
 /***
  *

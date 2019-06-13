@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <data.h>
 #include <i2c.h>
 #include <mcp23017.h>
@@ -7,27 +8,16 @@
 #include <hv_iox.h>
 
 #define HV_IO_ADDR   	0x24
-#define HV_IND_EN       MCP_GPIOB_0
-#define MCU_LATCH       MCP_GPIOB_1
-#define BMS_MULTI_IN    MCP_GPIOB_2
-
-#define IMD_STAT_FDBK   MCP_GPIOA_7
-#define INRT_STAT_FDBK  MCP_GPIOA_6
-#define HV_EN_FDBK      MCP_GPIOA_5
-#define MCU_HV_EN       MCP_GPIOA_4
-#define PS_FDBK         MCP_GPIOA_3
-#define BMS_STAT_FDBK   MCP_GPIOA_2
-#define E_STOP_FDBK     MCP_GPIOA_1
-#define MSTR_SW_FDBK    MCP_GPIOA_0
-
 
 static i2c_settings iox;
 static int setupIox(void);
 
-int initHVIox() {
-    setupMCP(&iox, HV_IO_ADDR);
-    clearSettingsMCP(&iox);
-    setupIox();
+int initHVIox(bool hardStart) {
+    if (setupMCP(&iox, HV_IO_ADDR) != 0) return -1;
+    if (hardStart) {
+        if (clearSettingsMCP(&iox) != 0) return -1;
+        if (setupIox() != 0) return -1; 
+    }
     return 0;
 }
 
