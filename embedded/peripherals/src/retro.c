@@ -109,6 +109,7 @@ static int onTapeStrip(int retroNum) {
 		data->timers->lastRetros[retroNum] = currTime;
         if (voteOnCandidate(retroNum)) {
             DBG_RETRO_PRINTF("Vote pass: incrementing count\n");
+            data->timers->oldRetro = data->timers->lastRetro;
             data->timers->lastRetro = currTime;
             data->motion->retroCount++;
         }

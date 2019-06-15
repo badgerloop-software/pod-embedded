@@ -39,6 +39,9 @@ void getPosData(float *fData);
 float getPosX();
 float getPosY();
 
+void setPosX(float val);
+void setPosY(float val);
+
 void getDeltaVData(float *fData);
 float getDeltaVX();
 float getDeltaVY();

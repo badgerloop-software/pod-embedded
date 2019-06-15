@@ -54,10 +54,12 @@ typedef struct data_t {
  *
  * Timers struct -- For making sure that our run happens in a timely manner
  *
+ * Assumed to be uS
  */
 
 typedef struct timers_t {
     uint64_t startTime;
+    uint64_t oldRetro;
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
 } timers_t;
@@ -103,7 +105,8 @@ typedef struct pressure_t {
  *
  * Fields are fairly self explanatory, assumed positive X direction (because the
  * pod only travels in one direction)
- *
+ *  
+ * All values should be assumed metric (m, m/s, m/s/s)
  */
 typedef struct motion_t {
     float pos;
@@ -111,7 +114,6 @@ typedef struct motion_t {
     float accel;
     int retroCount;
 } motion_t;
-
 
 /***
  * bms_t - All of the data collected about the battery system

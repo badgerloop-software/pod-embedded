@@ -100,9 +100,11 @@ void *IMULoop(void *arg){
 		}
 
 		//IMU Time Increment (10 ms)
+        sem_wait(&data->mutex);
         data->posX += data->dVx * 0.01;
         data->posY += data->dVy * 0.01;
-		usleep(10000);
+		sem_post(&data->mutex);
+        usleep(10000);
 	}
 	free(i2c);
 	free(data);
@@ -140,11 +142,23 @@ float getPosX() {
     return ret;
 }
 
+void setPosX(float val) {
+    sem_wait(&data->mutex);
+    data->posX = val;
+    sem_post(&data->mutex);
+}
+
 float getPosY() {
 	sem_wait(&data->mutex);
     float ret = data->posY;
 	sem_post(&data->mutex);
     return ret;
+}
+
+void setPosY(float val) {
+    sem_wait(&data->mutex);
+    data->posY = val;
+    sem_post(&data->mutex);
 }
 
 float getDeltaVX(){
