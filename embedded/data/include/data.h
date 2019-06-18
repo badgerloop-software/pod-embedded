@@ -3,7 +3,9 @@
 #include <retro.h>
 
 #define TIME_SINCE_LAST_RETRO 15000000
-
+#define FILTER_NONE     0
+#define FILTER_ROLLING  1
+#define FILTER_EXP      2
 
 /* Functions for initializing the entire struct, and individual parts of it */
 int initData(void);
