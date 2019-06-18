@@ -14,6 +14,25 @@
 #define TOTAL_RUN_TIME 30   /* s */
 #define EXPECTED_DECEL 9.8  /* m/s/s */
 
+/* Just for test */
+#define X_DIR   0
+#define Y_DIR   1
+#define Z_DIR   2
+
+/* Change this to change which direction the IMU thinks is right */
+#define CURR_DIR X_DIR
+
+struct dirFn_t {
+    float (*getPos)(void);   
+    void  (*setPos)(float val);
+};
+
+static struct dirFn_t imuDirFn[] {
+    {getPosX, setPosX},
+    {getPosY, setPosY},
+    {getPosZ, setPosZ}
+};
+
 #define WINDOW_SIZE    2
 
 static pthread_t navThread;
@@ -56,9 +75,21 @@ void showNavData() {
             data->motion->pos, data->motion->vel, data->motion->accel);
 }
 
+void csvFormatHeader() {
+    printf("posx,posy,posz,velx,vely,velz,accelx,accely,accelz,pos,vel,accel\n");   
+}
+
+void csvFormatShow() {
+    printf("%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f\n", 
+           getPosX(), getPosY(), getPosZ(), 
+           getDeltaX(), getDeltaY(), getDeltaZ(), 
+           getAccelX(), getAccelY(), getAccelZ(),
+           data->motion->pos, data->motion->vel, data->motion->accel);
+}
+
 static inline float accelFromRetro(float currVel) {
    return (currVel - data->motion->vel) / 
-       USEC_TO_SEC(data->timers->lastRetro - USEC_TO_SEC(data->timers->oldRetro)); 
+       USEC_TO_SEC(data->timers->lastRetro - data->timers->oldRetro); 
 }
 
 
@@ -115,7 +146,7 @@ void filterMotion(int filterType) {
     data->motion->pos = pos;
     data->motion->vel = vel;
     data->motion->accel = accel;
-    setPosX(data->motion->pos);
+    imuDirFn[CURR_DIR].setPos(data->motion->pos);
 }
 
 
@@ -124,25 +155,28 @@ void filterMotion(int filterType) {
  *      2. Are we going in X or Y plane
  */
 void navLoop(void *unused) {
-    static int lastRetroCount = 0;
-   
-    if (lastRetroCount != data->motion->retroCount) {
-        updateRawMotionData();
-        filterMotion(FILTER_NONE);
-    }
+    int lastRetroCount = 0;
+    csvFormatHeader();
+    while (1) {
+        if (lastRetroCount != data->motion->retroCount) {
+            updateRawMotionData();
+            filterMotion(FILTER_NONE);
+        }
     
-    if ((getPosX() - data->motion->pos) > STRIP_DISTANCE * 2) {
+        if ((imuDirFn[CURR_DIR].getPos() - data->motion->pos) > STRIP_DISTANCE * 2) {
             /* If it is that different, we likely missed a strip */
             fprintf(stderr, "MISSED A TAPESTRIP\n"); //FIXME All we do rn is notify, to be adjusted in test
-    }
+        }
     
-    if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {
-        printf("Hit time limit\n");
-        data->flags->shouldStop = true;
+        if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {
+            printf("Hit time limit\n");
+            data->flags->shouldStop = true;
+        }
+
+
+        lastRetroCount = data->motion->retroCount;
+    /*    showNavData();   */
+    /*    csvFormatShow(); */
+        usleep(10000);  /* Runs at 10ms */
     }
-
-
-    lastRetroCount = data->motion->retroCount;
-/*    showNavData(); */
-    usleep(10000);  /* Runs at 10ms */
 }
