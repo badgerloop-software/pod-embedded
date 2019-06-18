@@ -15,6 +15,11 @@ int initRmsData(void);
 int initFlagData(void);
 int initTimerData(void);
 
+/* Filters */
+float rollingAvgFloat(float *vals, int windowSize);
+int rollingAvgInt(int *vals, int windowSize);
+float expFilterFloat(float currVal, float prevVal, float weight);
+int expFilterInt(int currVal, int prevVal, float weight);
 
 /***
  *

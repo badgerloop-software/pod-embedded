@@ -12,13 +12,36 @@
 #define TOTAL_RUN_TIME 30   /* s */
 #define EXPECTED_DECEL 9.8  /* m/s/s */
 
-static pthread_t navThread;
+#define WINDOW_SIZE    10
 
+static pthread_t navThread;
+static pthread_mutex_t lock;
 static void navLoop(void *arg);
 
+static rawMotion_t rawData;
 
 void initNav() {
 
+    rawData.pos.size    = WINDOW_SIZE;
+    rawData.pos.head    = 0;
+    rawData.pos.data    = (float) malloc(sizeof(float) * rawData.pos.size);
+    if (rawData.pos.data == NULL) fprintf(stderr, "Nav data malloc fail\n");
+
+    rawData.vel.size    = WINDOW_SIZE;
+    rawData.vel.head    = 0;
+    rawData.vel.data    = (float) malloc(sizeof(float) * rawData.vel.size);
+    if (rawData.vel.data == NULL) fprintf(stderr, "Nav data malloc fail\n");
+
+    rawData.accel.size  = WINDOW_SIZE;
+    rawData.accel.head  = 0;
+    rawData.accel.data  = (float) malloc(sizeof(float) * rawData.accel.size);
+    if (rawData.accel.data == NULL) fprintf(stderr, "Nav data malloc fail\n");
+
+
+    if (pthread_mutex_init(&lock, NULL) != 0) {
+        fprintf(stderr, "Error creating nav mutex\n");
+    }
+    
     if (pthread_create(&navThread, NULL, navLoop, NULL) != 0) {
         fprintf(stderr, "Error creating nav thread\n");
     }
@@ -47,13 +70,18 @@ void updateMotionData() {
     pos = data->motion->retroCount * STRIP_DISTANCE;
     vel = velFromRetro(pos);
     accel = accelFromRetro(vel);
-
     /* note: we want to reset xsens pos. too, stop drift*/
-    setPosX(data->motion->pos = pos);
-    data->motion->vel = vel;  /* Would be interesting to see diff w/IMU */
-    data->motion->accel = accel;
+    pthread_mutex_lock(&lock);
+    insertRing(&rawData.pos, pos);
+    insertRing(&rawData.vel, vel);
+    insertRing(&rawData.accel, accel);  /* Would be interesting to see diff w/IMU */
+    pthread_mutex_unlock(&lock);
 }
 
+static void insertRing(rawMotionNode_t *node, float val) {
+    node.data[node.head] = val;
+    node.head = (node.head + 1) % node.size
+}
 
 /* TODO Open Qs
  *      1. Find out how bad drift is

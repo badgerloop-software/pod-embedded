@@ -18,17 +18,16 @@ extern "C"
     #include "state_machine.h"
 }
 
-data_t *data;
-
 int init() {
-	/* Init all drivers */
+    /* Init Data struct */
+    initData();
+
+    /* Init all drivers */
     SetupCANDevices();
     initProcIox();
     initHVIox();
     initMotor();   
-    /* Init Data struct */
-    initData();
-
+    
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
 

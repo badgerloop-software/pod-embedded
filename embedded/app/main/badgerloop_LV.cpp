@@ -12,15 +12,20 @@ extern "C"
     #include "lv_iox.h"
     #include "proc_iox.h"
 	#include "imu.h"
+    #include <data.h>
 }
 
 int init() {
-	// Init all peripherals
+
+    /* Init Data */
+    initData();
+
+	/* Init all peripherals */
 	SetupIMU();
     initLVIox();
     initProcIox();
 
-	// Start telemetry services
+	/* Init telemetry services */
 	SetupLVTelemetry((char *) "192.168.1.112", 33333);
 	SetupLVTCPServer();
 
@@ -28,7 +33,6 @@ int init() {
 }
 
 int main() {
-	/* Create the big data structures to house pod data */
 	
 	if (init() == 1) {
 		printf("Error in initialization! Exiting...\r\n");

@@ -3,9 +3,11 @@
 #include <mcp23017.h>
 #include <proc_iox.h>
 #include <i2c.h>
+#include <data.h>
 
 int main() {
-	initHVIox();
+	initData();
+    initHVIox();
 	i2c_settings iox = getHVIoxDev();
 	printf("---Showing HV IOX---\n");
 	for (int i = 0; i < 16; i++) {

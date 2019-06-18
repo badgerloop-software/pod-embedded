@@ -12,9 +12,9 @@
 #include "i2c.h"
 
 //Global Variables
-IMU_data * data;
-i2c_settings * i2c;
-pthread_t IMUThread;
+static IMU_data * data;
+static i2c_settings * i2c;
+static pthread_t IMUThread;
 
 void SetupIMU(){
 	i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
@@ -103,7 +103,8 @@ void *IMULoop(void *arg){
         sem_wait(&data->mutex);
         data->posX += data->dVx * 0.01;
         data->posY += data->dVy * 0.01;
-		sem_post(&data->mutex);
+		data->posZ += data->dVz * 0.01;
+        sem_post(&data->mutex);
         usleep(10000);
 	}
 	free(i2c);
@@ -158,6 +159,19 @@ float getPosY() {
 void setPosY(float val) {
     sem_wait(&data->mutex);
     data->posY = val;
+    sem_post(&data->mutex);
+}
+
+float getPosZ() {
+    sem_wait(&data->mutex);
+    float ret = data->posZ;
+    sem_post(&data->mutex);
+    return ret;
+}
+
+void setPosZ(float val) {
+    sem_wait(&data->mutex);
+    data->posZ = val;
     sem_post(&data->mutex);
 }
 

@@ -6,16 +6,15 @@
 #include <retro.h>
 #include <data.h>
 
-extern data_t *data;
-
 static void initTest() {
-	data = malloc(sizeof(data_t));
+    initData();
+	/*data = malloc(sizeof(data_t));
 	data->motion = malloc(sizeof(motion_t));
-	data->motion->vel = 3168.0;	/* 3168.0 in/s == 180 mph */
+	data->motion->vel = 3168.0;	 //3168.0 in/s == 180 mph
 	data->timers = malloc(sizeof(timers_t));
     int i = 0;
 	for (i = 0; i < NUM_RETROS; i++) data->timers->lastRetros[i] = getuSTimestamp();
-	data->motion->retroCount = 0;
+	data->motion->retroCount = 0;*/
 }
 
 static void setSpeed(float vel) {
