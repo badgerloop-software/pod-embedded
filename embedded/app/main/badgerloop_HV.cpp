@@ -10,6 +10,7 @@
 
 extern "C" 
 {
+    #include "motor.h"
     #include "hv_iox.h"
     #include "motor.h"
     #include "proc_iox.h"
@@ -24,8 +25,8 @@ int init() {
 
     /* Init all drivers */
     SetupCANDevices();
-    initProcIox();
-    initHVIox();
+    initProcIox(true);
+    initHVIox(true);
     initMotor();   
     
     /* Allocate needed memory for state machine and create graph */

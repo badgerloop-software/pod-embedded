@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <data.h>
 #include <i2c.h>
+#include <stdbool.h>
 #include <mcp23017.h>
 #include <proc_iox.h>
 
@@ -10,11 +11,16 @@
 static i2c_settings iox;
 static int setupIox();
 
-
-int initProcIox() {
-    setupMCP(&iox, PROC_IO_ADDR);
-    clearSettingsMCP(&iox);
-    setupIox();
+/* Initializes the processor board io expander.
+ * Can do so either 'hard' or 'soft' with hard being
+ * a complete reset and soft just restarting I2C communication
+ */
+int initProcIox(bool hardStart) {
+    if (setupMCP(&iox, PROC_IO_ADDR) != 0) return -1;
+    if (hardStart) {
+        if (clearSettingsMCP(&iox) != 0) return -1;
+        if (setupIox() != 0) return -1;
+    }
     return 0;
 }
 
@@ -64,3 +70,12 @@ int procIoxLedSet(int led, bool val) {
     return setState(&iox, led, val);
 }
 
+int earlyInitPinGet() {
+    setDir(&iox, EARLY_INIT_PIN, MCP_DIR_IN);
+    return getState(&iox, EARLY_INIT_PIN);
+}
+
+int earlyInitPinSet(bool val) {
+    setDir(&iox, EARLY_INIT_PIN, MCP_DIR_OUT);
+    return setState(&iox, EARLY_INIT_PIN, val);
+}

@@ -12,10 +12,16 @@
 #define SW_DEBUG_PIN_0 MCP_GPIOB_0
 #define SW_DEBUG_PIN_1 MCP_GPIOB_1
 
-int initProcIox(void);
+#define EARLY_INIT_PIN MCP_GPIOA_0
+
+int initProcIox(bool hardStart);
 
 i2c_settings getProcIoxDev(void);
 
 int procIoxLedSet(int led, bool val);
+
+int earlyInitPinGet(void);
+
+int earlyInitPinSet(bool val);
 
 #endif

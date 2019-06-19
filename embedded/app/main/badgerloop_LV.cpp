@@ -5,11 +5,11 @@
 
 #include "LVTelemetry_Loop.h"
 #include "LVTCPSocket.h"
-
 /* ADD SENSOR INCLUDES HERE */
-extern "C" 
+extern "C"
 {
     #include "lv_iox.h"
+    #include "braking.h"
     #include "proc_iox.h"
 	#include "imu.h"
     #include <data.h>
@@ -29,16 +29,15 @@ int init() {
 	SetupLVTelemetry((char *) "192.168.1.112", 33333);
 	SetupLVTCPServer();
 
-    return 0;	
+    return 0;
 }
 
 int main() {
-	
+
 	if (init() == 1) {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-
 	while(1) {
 		usleep(100000);
 		// Control loop

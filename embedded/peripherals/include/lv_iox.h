@@ -18,7 +18,7 @@
 #define LIM_SWITCH_2 MCP_GPIOA_2
 #define LIM_SWITCH_3 MCP_GPIOA_3
 
-int initLVIox(void);
+int initLVIox(bool hardStart);
 
 int limSwitchGet(int limSwitch);
 
