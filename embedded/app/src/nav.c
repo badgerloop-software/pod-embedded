@@ -27,7 +27,8 @@ struct dirFn_t {
     void  (*setPos)(float val);
 };
 
-static struct dirFn_t imuDirFn[] {
+static struct dirFn_t imuDirFn[] =
+{
     {getPosX, setPosX},
     {getPosY, setPosY},
     {getPosZ, setPosZ}
@@ -82,7 +83,7 @@ void csvFormatHeader() {
 void csvFormatShow() {
     printf("%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f\n", 
            getPosX(), getPosY(), getPosZ(), 
-           getDeltaX(), getDeltaY(), getDeltaZ(), 
+           getDeltaVX(), getDeltaVY(), getDeltaVZ(), 
            getAccelX(), getAccelY(), getAccelZ(),
            data->motion->pos, data->motion->vel, data->motion->accel);
 }

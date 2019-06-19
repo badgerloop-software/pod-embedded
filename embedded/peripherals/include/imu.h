@@ -38,9 +38,11 @@ void *IMULoop(void *arg);
 void getPosData(float *fData);
 float getPosX();
 float getPosY();
+float getPosZ();
 
 void setPosX(float val);
 void setPosY(float val);
+void setPosZ(float val);
 
 void getDeltaVData(float *fData);
 float getDeltaVX();
