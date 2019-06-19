@@ -22,8 +22,8 @@ int init() {
 
 	/* Init all peripherals */
 	SetupIMU();
-    initLVIox();
-    initProcIox();
+    initLVIox(true);
+    initProcIox(true);
 
 	/* Init telemetry services */
 	SetupLVTelemetry((char *) "192.168.1.112", 33333);

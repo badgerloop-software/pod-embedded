@@ -7,14 +7,14 @@
 
 int main() {
 	initData();
-    initHVIox();
+    initHVIox(false);
 	i2c_settings iox = getHVIoxDev();
 	printf("---Showing HV IOX---\n");
 	for (int i = 0; i < 16; i++) {
 		printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
 	}
 
-	initProcIox();
+	initProcIox(true);
 	iox = getProcIoxDev();
 	printf("--Showing Proc IOX--\n");
 	for (int i = 0; i < 16; i++) {
