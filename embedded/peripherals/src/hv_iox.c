@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <data.h>
 #include <i2c.h>
@@ -7,6 +8,7 @@
 #include <hv_iox.h>
 
 #define HV_IO_ADDR   	0x24
+
 #define HV_IND_EN       MCP_GPIOB_0
 #define MCU_LATCH       MCP_GPIOB_1
 #define BMS_MULTI_IN    MCP_GPIOB_2
@@ -82,7 +84,13 @@ int isHVEnabled() {
 }
 
 int isMCUHVEnabled() {
+    setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
     return getState(&iox, MCU_HV_EN);
+}
+
+int emergencyDisableMCU() {
+    setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
+    return setState(&iox, MCU_HV_EN, true);
 }
 
 int getPsStatus() {

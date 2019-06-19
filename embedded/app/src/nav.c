@@ -65,11 +65,13 @@ void initNav() {
     if (pthread_mutex_init(&lock, NULL) != 0) {
         fprintf(stderr, "Error creating nav mutex\n");
     }
-    
-    if (pthread_create(&navThread, NULL, navLoop, NULL) != 0) {
+
+    if (pthread_create(&navThread, NULL, (void *)(navLoop), NULL) != 0) {
         fprintf(stderr, "Error creating nav thread\n");
     }
 }
+
+
 
 void showNavData() {
     printf("Pos: %0.5f ; Vel: %0.5f ; Accel%0.5f\n", 
@@ -89,13 +91,13 @@ void csvFormatShow() {
 }
 
 static inline float accelFromRetro(float currVel) {
-   return (currVel - data->motion->vel) / 
+   return (currVel - data->motion->vel) /
        USEC_TO_SEC(data->timers->lastRetro - data->timers->oldRetro); 
 }
 
 
 static inline float velFromRetro(float currPos) {
-   return (currPos - data->motion->pos) / 
+   return (currPos - data->motion->pos) /
        USEC_TO_SEC(data->timers->lastRetro - data->timers->oldRetro); // ft/uS
 }
 

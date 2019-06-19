@@ -26,7 +26,6 @@
 /* Imports/Externs */
 
 extern stateMachine_t stateMachine;
-extern data_t *data;
 
 extern stateTransition_t *findTransition(state_t *currState, char *name);
 
@@ -254,8 +253,8 @@ stateTransition_t * propulsionAction() {
     }
 
     // CHECK TRANSITION CRITERIA
-    if(data->motion->retroCount >= RETRO_COUNT_MAX){
-        return findTransition(stateMachine.currState, BRAKING_NAME); 
+    if(data->flags->shouldStop){
+        return findTransition(stateMachine.currState, BRAKING_NAME);
     }
     // TODO will the IMU/timer logic be handled in the retro driver or do we do it here?
 
@@ -355,12 +354,12 @@ stateTransition_t * crawlAction() {
     data->state = 8;
  /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
 
@@ -384,11 +383,9 @@ stateTransition_t * crawlAction() {
     }
 
     // CHECK TRANSITION CRITERIA
-    if(data->motion->pos <= TUBE_LENGTH - MIN_DISTANCE_TO_END){
+    if(data->flags->shouldStop){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
-
-
 	return NULL;
 }
 
@@ -416,12 +413,12 @@ stateTransition_t * postRunAction() {
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
 
-    if(!checkPostRMS()){ 
+    if(!checkPostRMS()){
         return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
     }
-    
-    // TODO CHECK TRANSITION CRITERIA
 
+    // TODO CHECK TRANSITION CRITERIA
+    
 
     return NULL;
 }
