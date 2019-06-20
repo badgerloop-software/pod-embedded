@@ -8,7 +8,7 @@
 #include <nav.h>
 
 #define FEET_TO_METERS(x) ((x) * 0.3048)
-#define USEC_TO_SEC(x)    ((x) / 100000)
+#define USEC_TO_SEC(x)    ((x) / 1000000)
 #define STRIP_DISTANCE FEET_TO_METERS(100) /*m*/
 #define TOTAL_DISTANCE FEET_TO_METERS(1000) /*m, not real TODO change*/
 #define TOTAL_RUN_TIME 30   /* s */
@@ -71,8 +71,6 @@ void initNav() {
     }
 }
 
-
-
 void showNavData() {
     printf("Pos: %0.5f ; Vel: %0.5f ; Accel%0.5f\n", 
             data->motion->pos, data->motion->vel, data->motion->accel);
@@ -90,15 +88,16 @@ void csvFormatShow() {
            data->motion->pos, data->motion->vel, data->motion->accel);
 }
 
+/* Returns m/s/s */
 static inline float accelFromRetro(float currVel) {
    return (currVel - data->motion->vel) /
-       USEC_TO_SEC(data->timers->lastRetro - data->timers->oldRetro); 
+       USEC_TO_SEC((float)data->timers->lastRetro - (float)data->timers->oldRetro); 
 }
 
-
+/* Returns m/s */
 static inline float velFromRetro(float currPos) {
    return (currPos - data->motion->pos) /
-       USEC_TO_SEC(data->timers->lastRetro - data->timers->oldRetro); // ft/uS
+       USEC_TO_SEC((float)data->timers->lastRetro - (float)data->timers->oldRetro); 
 }
 
 
