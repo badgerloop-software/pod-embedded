@@ -18,7 +18,7 @@
 #define DBG_RETRO_PRINTF(args...)
 #endif
 
-
+#define SPURIOUS_BLOCK_TIMEOUT 500000
 #define TIMEOUT 100	/* 1 second, bump higher in production */
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
@@ -28,13 +28,15 @@
 #define CONST_TERM      SAFETY_CONSTANT * SEC_TO_USEC
 
 static pthread_t retroThreads[3];
+static pthread_t spuriousThread;
 static bool shouldQuit = false;
+static bool blockInts  = true;
 
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
+static void * blockSpuriousInts(uint64_t timeout);
 
-extern data_t *data;
 
 /***
   * initRetros - configures the GPIO pins for the retro reflective sensors
@@ -51,6 +53,8 @@ int initRetros() {
 		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i) != 0)
 			return -1;
 	}
+    if (pthread_create(&spuriousThread, NULL, blockSpuriousInts, SPURIOUS_BLOCK_TIMEOUT) != 0)
+        return -1;
 	return 0;
 }
 
@@ -139,6 +143,7 @@ static void *waitForStrip(void *num) {
 	int nfds = 1;
 	int ret;
 	char buf[BUF_LEN];
+	
 	while (1) {
 		if (shouldQuit) break;
 		memset((void *)fds, 0, sizeof(fds));
@@ -158,6 +163,12 @@ static void *waitForStrip(void *num) {
 		if (fds[0].revents & POLLPRI) {
 			lseek(fds[0].fd, 0, SEEK_SET);
 			read(fds[0].fd, buf, BUF_LEN);
+            /* Not sure why yet, but when we enable BBB GPIO Ints, it always immediately
+               takes an interrupt. This is annoying, and so eventually we might figure out why,
+               but until then we are just going to block all of them for a fixed interval
+               to get the interrupts out of the system. */
+            if (blockInts)
+                continue;
 			onTapeStrip(retroNum);
 		}
 	}
@@ -177,4 +188,11 @@ static int getPin(int retroNum) {
 			return -1;
 	}
 	return -1;	/* Will never get here */
+}
+
+static void *blockSpuriousInts(uint64_t timeout) {
+	blockInts = true;
+    usleep(timeout);
+    blockInts = false;
+    return NULL;
 }
