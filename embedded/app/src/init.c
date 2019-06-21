@@ -1,8 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <data.h>
+#include <fcntl.h>
+#include <i2c.h>
+#include <proc_iox.h>
 
-extern data_t *data;
+
+/* Checks whether or not the hardware has been initialized,
+ * and therefor needs to be set to default values. It should
+ * only be set to default values if the system hasn't been initialized
+ *
+ * Returns:
+ *      1 if it has been hard initialized since boot,
+ *      0 if this is the first time running since boot,
+ *      -1 if there is an error checking its status
+ */
+int isEarlyInit() {
+    if (initProcIox(false) != 0) return -1;
+    if (earlyInitPinGet() == 0) {
+        if (earlyInitPinSet(true) != 0) return -1;
+        return 0;
+    }
+    return 1;
+}
+
+data_t *data;
 
 int initData() {
     if (initMetaData() != 0) {
@@ -49,14 +71,12 @@ int initMetaData() {
 }
 
 int initPressureData() {
-    data->pressure->ps1 = 0;
-	data->pressure->ps2 = 0;
-	data->pressure->ps3 = 0;
-	data->pressure->ps4 = 0;
-	data->pressure->sec_ps1 = 0;
-	data->pressure->sec_ps2 = 0;
-	data->pressure->sec_ps3 = 0;
-	data->pressure->sec_ps4 = 0;
+    data->pressure->primTank = 0;
+	data->pressure->primLine = 0;
+	data->pressure->primAct  = 0;
+	data->pressure->secTank  = 0;
+	data->pressure->secLine  = 0;
+	data->pressure->secAct   = 0;
 	data->pressure->pv = 0;
     return 0;
 }

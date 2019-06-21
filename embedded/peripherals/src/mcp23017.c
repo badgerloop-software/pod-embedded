@@ -9,17 +9,30 @@
 #include "mcp23017.h"
 
 int setupMCP(i2c_settings * i2c, char mcpAddress) {
+    uint8_t flush[1];
     i2c->bus = 2;
     i2c->deviceAddress = mcpAddress;
     i2c->openMode = O_RDWR;
+    
     if (i2c_begin(i2c) == -1) {
         fprintf(stderr, "Could not open i2c bus.\n");
         return -1;
     }
+	
+    /* check if there actually is a device there */
+    if (read_i2c(i2c, flush, 1) != 0) {
+        return -1;   
+    }
+    
+    return 0;
+}
 
-    // Set IODIRA/B to make all pins configured as output
-    if (write_data_i2c(i2c, IODIRA, 0x00) != 0) return -1;
-    if (write_data_i2c(i2c, IODIRB, 0x00) != 0) return -1;
+/* Sets the pins to default state of inputs, at 0 */
+int clearSettingsMCP(i2c_settings * i2c) {
+    if (write_data_i2c(i2c, IODIRA, 0xFF) != 0) return -1;
+    if (write_data_i2c(i2c, IODIRB, 0xFF) != 0) return -1;
+    if (write_data_i2c(i2c, GPIOA, 0x00) != 0) return -1;
+    if (write_data_i2c(i2c, GPIOB, 0x00) != 0) return -1;
     return 0;
 }
 
@@ -129,11 +142,4 @@ int setDir(i2c_settings * i2c, uint8_t pin, bool val) {
         return 0;
     }
     return writeToDev(i2c, address, pin, val);
-  /*// TODO: Discuss
-    if (val == 0) { // change it form 1 to 0
-	    write_data_i2c(i2c, address, currentState - pow(2, pin));
-    } else if (val == 1) { // change it form 0 to 1
-	    write_data_i2c(i2c, address, currentState + pow(2, pin));
-    }
-    */
 }

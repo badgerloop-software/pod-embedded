@@ -22,7 +22,11 @@ typedef struct {
 	float accelX;
 	float accelY;
 	float accelZ;
-	
+
+    float posX;
+    float posY;
+    float posZ;
+
 	// Mutex
 	sem_t mutex;
 	
@@ -30,6 +34,15 @@ typedef struct {
 
 void SetupIMU();
 void *IMULoop(void *arg);
+
+void getPosData(float *fData);
+float getPosX();
+float getPosY();
+float getPosZ();
+
+void setPosX(float val);
+void setPosY(float val);
+void setPosZ(float val);
 
 void getDeltaVData(float *fData);
 float getDeltaVX();
@@ -43,3 +56,4 @@ float getAccelZ();
  
 
 #endif
+

@@ -3,6 +3,9 @@
 #include <retro.h>
 
 #define TIME_SINCE_LAST_RETRO 15000000
+#define FILTER_NONE     0
+#define FILTER_ROLLING  1
+#define FILTER_EXP      2
 
 /* Functions for initializing the entire struct, and individual parts of it */
 int initData(void);
@@ -13,7 +16,13 @@ int initBmsData(void);
 int initRmsData(void);
 int initFlagData(void);
 int initTimerData(void);
+int isEarlyInit(void);
 
+/* Filters */
+float rollingAvgFloat(float *vals, int windowSize);
+int rollingAvgInt(int *vals, int windowSize);
+float expFilterFloat(float currVal, float prevVal, float weight);
+int expFilterInt(int currVal, int prevVal, float weight);
 
 /***
  *
@@ -27,6 +36,7 @@ typedef struct flags_t {
     int readyCommand;
     int propulse;
     int emergencyBrake;
+    int shouldStop;
 } flags_t;
 
 
@@ -52,10 +62,12 @@ typedef struct data_t {
  *
  * Timers struct -- For making sure that our run happens in a timely manner
  *
+ * Assumed to be uS
  */
 
 typedef struct timers_t {
     uint64_t startTime;
+    uint64_t oldRetro;
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
 } timers_t;
@@ -84,15 +96,13 @@ static inline uint64_t getSTimestamp() {
  * pressure_t - Pressure data from the braking system
  */
 typedef struct pressure_t {
-    uint32_t ps1;
-    uint32_t ps2;
-    uint32_t ps3;
-    uint32_t ps4;
-    uint32_t sec_ps1;
-    uint32_t sec_ps2;
-    uint32_t sec_ps3;
-    uint32_t sec_ps4;
-    uint32_t pv;
+    double primTank;
+    double primLine;
+    double primAct;
+    double secTank;
+    double secLine;
+    double secAct;
+    double pv;
 } pressure_t;
 
 
@@ -101,7 +111,8 @@ typedef struct pressure_t {
  *
  * Fields are fairly self explanatory, assumed positive X direction (because the
  * pod only travels in one direction)
- *
+ *  
+ * All values should be assumed metric (m, m/s, m/s/s)
  */
 typedef struct motion_t {
     float pos;
@@ -109,7 +120,6 @@ typedef struct motion_t {
     float accel;
     int retroCount;
 } motion_t;
-
 
 /***
  * bms_t - All of the data collected about the battery system
@@ -168,3 +178,6 @@ typedef struct rms_t {
 
 	uint16_t keyMode;
 } rms_t;
+
+
+extern data_t *data;

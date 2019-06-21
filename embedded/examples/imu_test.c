@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "imu.h"
+#include <data.h>
+
 
 int main() {
-	SetupIMU();
+	initData();
+    SetupIMU();
 	
 	int exampleSwitcher = 0;
 	while(1){
