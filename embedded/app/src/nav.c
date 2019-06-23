@@ -148,7 +148,7 @@ void filterMotion(int filterType) {
     data->motion->pos = pos;
     data->motion->vel = vel;
     data->motion->accel = accel;
-    imuDirFn[CURR_DIR].setPos(data->motion->pos);
+/*    imuDirFn[CURR_DIR].setPos(data->motion->pos);*/
 }
 
 

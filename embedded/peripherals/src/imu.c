@@ -59,7 +59,6 @@ void *IMULoop(void *arg){
 	while (1){
 		
 		i = 0;
-		
 		// Information on data registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_datasheet.pdf
 
 		//Get message length size
@@ -72,7 +71,13 @@ void *IMULoop(void *arg){
 		write_byte_i2c(i2c, DATA_REG);
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
-
+        printf("message size\n");
+        printf("message:\n");
+        for (i = 0; i < messageSize; i++) {
+            printf("%#x ", dataBuffer[i]);
+        }
+        printf("\n");
+        i = 0;
 		while(i < messageSize){
 			//Check delta velocity
 			if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
@@ -89,13 +94,24 @@ void *IMULoop(void *arg){
 				data->dVz = * ((float *) &tempz);
 
 				//Time increment is 10ms, convert deltaV into accel
-				data->accelX = data->dVx / 0.01;
-				data->accelY = data->dVy / 0.01;
-				data->accelZ = data->dVz / 0.01;
+/*				data->accelX = data->dVx / 0.01;*/
+/*				data->accelY = data->dVy / 0.01;*/
+/*				data->accelZ = data->dVz / 0.01;*/
 				sem_post(&data->mutex);
 
 			}
-			
+
+            if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x30 && dataBuffer[i + 2] == 0x0C) {
+                tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
+			    tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
+				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
+                sem_wait(&data->mutex);
+                data->accelX = * ((float *) &tempx);
+                data->accelY = * ((float *) &tempy);
+                data->accelZ = * ((float *) &tempz);
+                sem_post(&data->mutex);
+            }
+
 			i++;
 		}
 
