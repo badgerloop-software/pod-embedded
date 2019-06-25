@@ -7,6 +7,7 @@
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data_dump.h"
+#include "signal.h"
 
 extern "C" 
 {
@@ -43,6 +44,11 @@ int init() {
     return 0;	
 }
 
+void shutdown() {
+    data->flags->shutdown = true;
+    return;
+}
+
 int main() {
 	/* Create the big data structures to house pod data */
 	
@@ -50,7 +56,7 @@ int main() {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    
+    signal(SIGINT, shutdown);
     printf("Here\n");
 
 	while(1) {
