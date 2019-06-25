@@ -1,7 +1,9 @@
+#ifndef __DATA_H__
+#define __DATA_H__
+
 #include <stdint.h>
 #include <time.h>
 #include <retro.h>
-
 #define TIME_SINCE_LAST_RETRO 15000000
 #define FILTER_NONE     0
 #define FILTER_ROLLING  1
@@ -37,6 +39,7 @@ typedef struct flags_t {
     int propulse;
     int emergencyBrake;
     int shouldStop;
+    int shutdown;
 } flags_t;
 
 
@@ -181,3 +184,4 @@ typedef struct rms_t {
 
 
 extern data_t *data;
+#endif
