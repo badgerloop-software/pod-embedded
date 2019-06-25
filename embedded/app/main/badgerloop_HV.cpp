@@ -45,6 +45,7 @@ int init() {
 }
 
 void shutdown() {
+    setTorque(0);   /* Try our best to de-escalate while not overstaying our welcome */
     data->flags->shutdown = true;
     return;
 }
@@ -60,7 +61,12 @@ int main() {
     printf("Here\n");
 
 	while(1) {
-		runStateMachine();
+	    if (data->flags->shutdown) {
+            if (getMotorIsOn())
+                stopMotor();
+            exit(0);
+	    }
+	    runStateMachine();
         usleep(10000);
 
 		// Control loop
