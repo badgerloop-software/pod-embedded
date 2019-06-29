@@ -18,9 +18,8 @@ extern "C"
 
 int init() {
   initData();
-  SetupHVTelemetry((char *) "127.0.0.1", 33333);
-  // Lv Telemetry will seg fault, idk why.  
-  // SetupLVTelemetry((char *) "127.0.0.1", 33335);
+  SetupHVTelemetry((char *) "127.0.0.1", 33333);  
+  SetupLVTelemetry((char *) "127.0.0.1", 33333);
 }
 int main() {
 init();

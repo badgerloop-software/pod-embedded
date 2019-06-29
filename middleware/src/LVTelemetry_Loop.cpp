@@ -83,11 +83,12 @@ void *LVTelemetryLoop(void *arg)
 			
 			// VELOCITY - Change "X" to "Y" if need be
 			Value vel;
-			vel.SetFloat(getDeltaVX());
+			// vel.SetFloat(getDeltaVX());
+	
 			
 			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			accel.SetFloat(getAccelX());
+			// accel.SetFloat(getAccelX());
 				
 			// HIGH TEMP
 			Value tempH;
