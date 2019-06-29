@@ -80,6 +80,33 @@ static double avgDouble(double *arr, int size) {
 }
 
 void brakePrimary() {
+    if (solenoidSet(SOLENOID_0, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_0\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_1, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_1\n");
+        return;
+    }
+}
+
+void brakeSecondary() {
+    if (solenoidSet(SOLENOID_2, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_2\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_3, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_3\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_4, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return;
+    }
+    return;
+}
+
+void brakePrimaryRelease() {
     if (solenoidSet(SOLENOID_0, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return;
@@ -90,22 +117,19 @@ void brakePrimary() {
     }
 }
 
-void brakeSecondary() {
-    return;
-}
-
-void brakePrimaryRelease() {
-    if (solenoidSet(SOLENOID_0, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_0\n");
-        return;
-    }
-    if (solenoidSet(SOLENOID_1, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_1\n");
-        return;
-    }
-}
-
 void brakeSecondaryRelease() {
+    if (solenoidSet(SOLENOID_2, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_2\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_3, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_3\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_4, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return;
+    }
     return;
 }
 

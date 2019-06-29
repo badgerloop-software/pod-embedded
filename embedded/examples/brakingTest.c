@@ -15,6 +15,7 @@ void showBrakingInfo() {
         printf("Limit switch %d: %d\n", i, limSwitchGet(i));
 }
 
+
 int main(int argc, char *argv[]) {
     bool isHard = false;
     if (argc > 1) {
@@ -23,6 +24,27 @@ int main(int argc, char *argv[]) {
     initData();
     initPressureMonitor();
     initLVIox(isHard);
+
+    if (argc > 1) {
+        if (strcmp(argv[1], "-p")) {
+            if (argc > 2) {
+                if (strcmp(argv[2], "on") == 0)
+                    brakePrimary();
+                else if (strcmp(argv[2], "off") == 0)
+                    brakePrimaryRelease();
+
+            }
+        }
+        else if (strcmp(argv[1], "-s") == 0) {
+            if (argc > 2) {
+                if (strcmp(argv[2], "on") == 0)
+                    brakeSecondary();
+                else if (strcmp(argv[2], "off") == 0)
+                    brakeSecondaryRelease();
+            }
+        }
+    }
+
     FOREVER {
         showBrakingInfo();
         usleep(100000);
