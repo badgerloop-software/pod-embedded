@@ -13,6 +13,7 @@
 #define LOOP_PERIOD 100000
 
 static double avgDouble(double *arr, int size);
+double readPressureVessel();
 
 static pthread_t presMonThread;
 
@@ -55,6 +56,8 @@ void *pressureMonitor() {
         data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
         data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
         data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE);
+
+        data->pressure->pv = avgDouble(pvRing, RING_SIZE);
 
 #ifdef DEBUG_PRES
         showPressures();
@@ -177,7 +180,7 @@ double readSecActuator() {
 /* Damn I dont know how to spell vessel */
 double readPressureVessel() {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PRES_VESL) != 0) {
+    if (readPressureSensor(ADC_0, PRES_VESL, data) != 0) {
         return -1;
     }
     return ( CURRENT_50_SCALING(data[0]) );

@@ -7,10 +7,10 @@
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data_dump.h"
-#include "signal.h"
 
 extern "C" 
 {
+    #include <signal.h>
     #include "motor.h"
     #include "hv_iox.h"
     #include "motor.h"
@@ -57,7 +57,7 @@ int main() {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    signal(SIGINT, shutdown);
+/*    signal(SIGINT, shutdown);*/
     printf("Here\n");
 
 	while(1) {

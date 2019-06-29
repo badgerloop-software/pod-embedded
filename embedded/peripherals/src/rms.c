@@ -8,8 +8,8 @@
 /* Uncomment define for additional prints in the parser */
 /*#define DEBUG_RMS*/
 
-#define TORQUE_SCALE(x) ((x) * 10.0)  /* Converts Nm to the value the RMS wants */
-
+#define TORQUE_SCALE_LWR(x) (((x) & 0xFF) * 10.0)  /* Converts Nm to the value the RMS wants */
+#define TORQUE_SCALE_UPR(x) (((x) >> 8) * 10.0)
 /* The following send functions are a series of cryptic steps
  * that just magically make the RMS (Motor Controller) work. 
  * If you question them too hard you may burst into flames (along with the motor
@@ -38,19 +38,19 @@ int rmsInvDis() {
 
 /* 4 */
 int rmsInvEn() {
-    uint8_t payload[] = {TORQUE_SCALE(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     return canSend(RMS_INV_EN_ID, payload, 8);
 }
 
 /* 5 */
 int rmsInvForward20() {
-    uint8_t payload[] = {TORQUE_SCALE(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     return canSend(RMS_INV_FW_20_ID, payload, 8);
 }
 
 /* 6 not even going to bother setting these high ones because I am too scared */
 int rmsInvForward30() {
-    uint8_t payload[] = {TORQUE_SCALE(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     return canSend(RMS_INV_FW_30_ID, payload, 8);
 }
 
@@ -112,7 +112,7 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
     return convRmsDataFormat(rmsData[4], rmsData[5]);
 }
 int rmsSendHbMsg(uint16_t torque) {
-    uint8_t payload[] = {TORQUE_SCALE(torque) & 0xff, TORQUE_SCALE(torque) >> 8, 0x0, 0x0, 
+    uint8_t payload[] = {TORQUE_SCALE_LWR(torque), TORQUE_SCALE_UPR(torque), 0x0, 0x0, 
         0x1, 0x1, 0x0, 0x0};
     
     return canSend(RMS_HB_ID, payload, 8);

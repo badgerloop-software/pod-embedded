@@ -13,9 +13,7 @@
 #define SOLENOID_6  MCP_GPIOB_6
 #define SOLENOID_7  MCP_GPIOB_7
 
-/*#define LIM_SWITCH_0 MCP_GPIOA_0*/
-#define SEC_LIM_SWITCH_1 MCP_GPIOA_1
-/*#define LIM_SWITCH_2 MCP_GPIOA_2*/
+#define SEC_LIM_SWITCH MCP_GPIOA_1
 #define PRIM_LIM_SWITCH MCP_GPIOA_3
 
 int initLVIox(bool hardStart);
