@@ -36,6 +36,6 @@ int main(int argc, char *argv[]) {
     if (sol < 0) return -1;
     int state = whatToDo(argc, argv);
     if (state < 0) return -1;
-    setSolenoid(sol, state);
+    solenoidSet(sol, state);
     return 0;
 }
