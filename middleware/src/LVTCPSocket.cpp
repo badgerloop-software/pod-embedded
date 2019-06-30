@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "LVTCPSocket.h"
+#include "data.h"
 
 pthread_t LVTCPThread;
 
@@ -48,14 +49,14 @@ void *LVTCPLoop(void *arg){
 	address.sin_family = AF_INET; 
 	address.sin_addr.s_addr = INADDR_ANY; 
 	address.sin_port = htons(LV_TCP_PORT_RECV); 
-		
+
 	// Bind Socket
-	if (bind(server_fd, (struct sockaddr *)&address,  
-									 sizeof(address))<0) { 
+	if (bind(server_fd, (struct sockaddr *)&address,
+									 sizeof(address))<0) {
 		fprintf(stderr, "Error binding port\n");
 		exit(EXIT_FAILURE); 
 	}
-	
+
 	// Listen on the server
 	if (listen(server_fd, 3) < 0){ 
 		fprintf(stderr, "Error listening\n");
@@ -84,6 +85,10 @@ void *LVTCPLoop(void *arg){
 			// DO POWER OFF
 		}
 		
+        if (!strncmp(buffer, "brake", MAX_COMMAND_SIZE)) {
+            data->flags->shouldBrake = true;
+        }
+
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
 			// Send acknowledge packet back
@@ -92,5 +97,6 @@ void *LVTCPLoop(void *arg){
 		
 		close(new_socket);
 	}
-	
 }
+
+

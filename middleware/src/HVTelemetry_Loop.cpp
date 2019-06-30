@@ -7,13 +7,18 @@
 #include "PracticalSocket.h"
 #include "HVTelemetry_Loop.h"
 #include "document.h"
-#include "writer.h" 
+#include "writer.h"
 
 #include "data.h"
 
+#define LV_BONE_IP "172.25.2.114"
+#define LV_BONE_PORT 7878
 
 using namespace rapidjson;
 using namespace std;
+
+		// Create socket
+UDPSocket sock;
 
 pthread_t HVTelemThread;
 extern data_t *data;
@@ -43,8 +48,6 @@ void *HVTelemetryLoop(void *arg){
 	uint64_t packetCount = 0;
 
 	try {
-		// Create socket
-		UDPSocket sock;
 		
 		while(1){
 		
@@ -145,9 +148,6 @@ void *HVTelemetryLoop(void *arg){
 			document.AddMember("battery", batteryDoc, document.GetAllocator());
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			document.AddMember("state", state, document.GetAllocator());
-			
-			
-			
 			StringBuffer sb;
 			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too
 			document.Accept(writer);
@@ -158,9 +158,13 @@ void *HVTelemetryLoop(void *arg){
 //			printf("Sent string: %s\n", sb.GetString());
 			usleep(30000);
 		}
-	} 
+	}
 	catch (SocketException &e) {
 		cerr << e.what() << endl;
 		exit(1);
 	}
+}
+
+void sendLVCommand(char *command) {
+    sock.sendTo(command, strlen(command), LV_BONE_IP, LV_BONE_PORT);
 }

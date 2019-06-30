@@ -10,6 +10,7 @@
 
 extern "C" 
 {
+    #include <signal.h>
     #include "motor.h"
     #include "hv_iox.h"
     #include "motor.h"
@@ -43,6 +44,12 @@ int init() {
     return 0;	
 }
 
+void shutdown() {
+    setTorque(0);   /* Try our best to de-escalate while not overstaying our welcome */
+    data->flags->shutdown = true;
+    return;
+}
+
 int main() {
 	/* Create the big data structures to house pod data */
 	
@@ -50,11 +57,19 @@ int main() {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    
+/*    signal(SIGINT, shutdown);*/
     printf("Here\n");
 
 	while(1) {
-		runStateMachine();
+	    if (data->flags->shutdown) {
+            if (getMotorIsOn())
+                stopMotor();
+            exit(0);
+	    }
+	    runStateMachine();
+
+        if (data->flags->shouldBrake)
+            signalLV("brake");
         usleep(10000);
 
 		// Control loop

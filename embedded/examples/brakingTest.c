@@ -27,9 +27,7 @@ int main(int argc, char *argv[]) {
 
     if (argc > 1) {
         if (strcmp(argv[1], "-p") == 0) {
-            printf("here one\n");
             if (argc > 2) {
-                printf("here two\n");
                 if (strcmp(argv[2], "on") == 0)
                     brakePrimary();
                 else if (strcmp(argv[2], "off") == 0)

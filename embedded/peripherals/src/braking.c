@@ -13,6 +13,7 @@
 #define LOOP_PERIOD 100000
 
 static double avgDouble(double *arr, int size);
+double readPressureVessel();
 
 double readPressureVessel(); 
 static pthread_t presMonThread;
@@ -52,7 +53,7 @@ void *pressureMonitor() {
         secActRing[i % RING_SIZE]   = readSecActuator();
 
         pvRing[i % RING_SIZE]       = readPressureVessel();
-        
+
         data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
         data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
         data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE);
@@ -75,7 +76,7 @@ int joinPressureMonitor() {
 }
 
 static double avgDouble(double *arr, int size) {
-    int i = 0; 
+    int i = 0;
     double sum = 0;
     for (i = 0; i < size; i++) {
         sum += arr[i];
@@ -95,10 +96,18 @@ void brakePrimary() {
 }
 
 void brakeSecondary() {
-    if (solenoidSet(SOLENOID_4, 0) != 0);
-    if (solenoidSet(SOLENOID_5, 1) != 0);
-    if (solenoidSet(SOLENOID_6, 1) != 0);
-    
+    if (solenoidSet(SOLENOID_4, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_5, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_5\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_6, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_6\n");
+        return;
+    }
     return;
 }
 
@@ -114,9 +123,18 @@ void brakePrimaryRelease() {
 }
 
 void brakeSecondaryRelease() {
-    if (solenoidSet(SOLENOID_4, 1) != 0) printf("fail\n");
-    if (solenoidSet(SOLENOID_5, 0) != 0);
-    if (solenoidSet(SOLENOID_6, 0) != 0);
+    if (solenoidSet(SOLENOID_4, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_2\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_5, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_3\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_6, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return;
+    }
     return;
 }
 

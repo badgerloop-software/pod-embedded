@@ -47,7 +47,7 @@ int convSolenoid(int num) {
     case 7:
         return SOLENOID_7;
     }
-    return -1; 
+    return -1;
 }
 
 int main(int argc, char *argv[]) {
@@ -61,8 +61,7 @@ int main(int argc, char *argv[]) {
     int state = whatToDo(argc, argv);
     printf("STATE: %d\n", state);
     if (state < 0) return -1;
-   
+
     solenoidSet(sol, state);
     return 0;
 }
-

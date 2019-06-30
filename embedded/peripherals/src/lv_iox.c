@@ -59,10 +59,8 @@ static int setupIox() {
 }
 
 int limSwitchGet(int limSwitch) {
-    if (limSwitch != LIM_SWITCH_0 &&
-            limSwitch != LIM_SWITCH_1 &&
-            limSwitch != LIM_SWITCH_2 &&
-            limSwitch != LIM_SWITCH_3
+    if (limSwitch != PRIM_LIM_SWITCH &&
+            limSwitch != SEC_LIM_SWITCH 
        ) {
         fprintf(stderr, "Invalid Limit Switch\n");
         return -1;
