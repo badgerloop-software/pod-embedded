@@ -40,6 +40,7 @@ int main() {
 	}
 	while(1) {
 		usleep(100000);
+        
 		// Control loop
 	}
     return 0;

@@ -7,6 +7,7 @@
 #include <motor.h>
 #include <unistd.h>
 #include <hv_iox.h>
+#include <data.h>
 
 /***
  * The high level interface for the motor
@@ -120,6 +121,9 @@ int stopMotor() {
     if (rmsCmdNoTorque() != 0) return 1;
     if (rmsDischarge() != 0) return 1;        
     if (rmsInvDis() != 0) return 1;
+   
+    usleep(500000);
+    data->flags->shouldBrake = true;
     return 0;
 }
 

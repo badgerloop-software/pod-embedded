@@ -16,6 +16,7 @@ pthread_t HVTCPThread;
 
 extern data_t *data;
 extern stateMachine_t stateMachine;
+#define LV_TCP_PORT_RECV 7878
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
@@ -141,4 +142,44 @@ void *TCPLoop(void *arg){
 		close(new_socket);
 	}
 	
+}
+
+
+void signalLV(char *cmd) {
+    int srvFd;
+
+    int opt = 1;
+
+    struct sockaddr_in addr;
+    int addrlen = sizeof(addr);
+
+    if((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        fprintf(stderr, "Error signalling\n");
+        exit(1);
+    }
+
+    if (setsockopt(srvFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+                &opt, sizeof(opt))) {
+        fprintf(stderr, "Signal error\n");
+        exit(1);
+    }
+    
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(LV_TCP_PORT_RECV);
+    
+    if (bind(srvFd, (struct sockaddr *)&addr,
+                sizeof(addr)) < 0) {
+        fprintf(stderr, "Error binding\n");
+        exit(1);
+    }
+
+    if (listen(srvFd, 3) < 0) {
+        fprintf(stderr, "Error listening\n");
+        exit(1);
+    }
+
+    send(srvFd, cmd, strlen(cmd), 0);
+
+    close(srvFd);
 }

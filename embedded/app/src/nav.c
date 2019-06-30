@@ -175,7 +175,9 @@ void navLoop(void *unused) {
             data->flags->shouldStop = true;
         }
 
-
+        if (data->flags->shouldBrake) {
+            printf("BRAKE\n");
+        }
         lastRetroCount = data->motion->retroCount;
     /*    showNavData();   */
     /*    csvFormatShow(); */

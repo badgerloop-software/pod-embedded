@@ -9,6 +9,6 @@
 
 void SetupHVTCPServer();
 void *TCPLoop(void *arg);
-
+void signalLV(char *cmd);
 
 #endif

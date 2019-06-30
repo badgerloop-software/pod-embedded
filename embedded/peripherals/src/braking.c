@@ -5,16 +5,17 @@
 #include <lv_iox.h>
 #include <pthread.h>
 
-#define VOLTAGE_2000_SCALING(x) ( ((((x / 256) * 5) - 0.5) / 4) * 2000)
-#define CURRENT_500_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 500)
-#define CURRENT_50_SCALING(x) ( ((((x / 256) * 5) - 0.6) / 2.4) * 50)
+#define VOLTAGE_2000_SCALING(x) ( ((((x / 256.0) * 5.0) - 0.5) / 4.0) * 2000.0)
+#define CURRENT_500_SCALING(x)  ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 500.0)
+#define CURRENT_50_SCALING(x)   ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 50.0)
 
-#define RING_SIZE  10
+#define RING_SIZE  50
 #define LOOP_PERIOD 100000
 
 static double avgDouble(double *arr, int size);
 double readPressureVessel();
 
+double readPressureVessel(); 
 static pthread_t presMonThread;
 
 int initPressureMonitor() {
@@ -56,9 +57,10 @@ void *pressureMonitor() {
         data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
         data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
         data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE);
-
-        data->pressure->pv = avgDouble(pvRing, RING_SIZE);
-
+        data->pressure->secTank  = avgDouble(secTankRing,  RING_SIZE);
+        data->pressure->secLine  = avgDouble(secLineRing,  RING_SIZE);
+        data->pressure->secAct   = avgDouble(secActRing,   RING_SIZE);
+        data->pressure->pv       = avgDouble(pvRing,       RING_SIZE);
 #ifdef DEBUG_PRES
         showPressures();
 #endif
@@ -74,7 +76,7 @@ int joinPressureMonitor() {
 }
 
 static double avgDouble(double *arr, int size) {
-    int i = 0; 
+    int i = 0;
     double sum = 0;
     for (i = 0; i < size; i++) {
         sum += arr[i];
@@ -87,23 +89,23 @@ void brakePrimary() {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return;
     }
-    if (solenoidSet(SOLENOID_1, 1) != 0) {
+    if (solenoidSet(SOLENOID_2, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return;
     }
 }
 
 void brakeSecondary() {
-    if (solenoidSet(SOLENOID_2, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_2\n");
-        return;
-    }
-    if (solenoidSet(SOLENOID_3, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_3\n");
-        return;
-    }
-    if (solenoidSet(SOLENOID_4, 1) != 0) {
+    if (solenoidSet(SOLENOID_4, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_5, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_5\n");
+        return;
+    }
+    if (solenoidSet(SOLENOID_6, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_6\n");
         return;
     }
     return;
@@ -114,35 +116,42 @@ void brakePrimaryRelease() {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return;
     }
-    if (solenoidSet(SOLENOID_1, 0) != 0) {
+    if (solenoidSet(SOLENOID_2, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return;
     }
 }
 
 void brakeSecondaryRelease() {
-    if (solenoidSet(SOLENOID_2, 0) != 0) {
+    if (solenoidSet(SOLENOID_4, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_2\n");
         return;
     }
-    if (solenoidSet(SOLENOID_3, 0) != 0) {
+    if (solenoidSet(SOLENOID_5, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_3\n");
         return;
     }
-    if (solenoidSet(SOLENOID_4, 0) != 0) {
+    if (solenoidSet(SOLENOID_6, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
         return;
     }
     return;
 }
 
+/*VENT*/
+/*
+ *void brakePrimaryVent() {}
+ * 
+ *void brakeSecondaryVent() {}
+ *
+ */
+
 //Voltage
 double readPrimaryTank() {
     uint8_t data[2];
     if (readPressureSensor(ADC_0, PS_TANK, data) != 0)
         return -1;
-
-    return (VOLTAGE_2000_SCALING(data[0]));
+    return (VOLTAGE_2000_SCALING((double) data[0]));
 }
 
 //Current
@@ -150,32 +159,44 @@ double readPrimaryLine() {
     uint8_t data[2];
     if (readPressureSensor(ADC_0, PS_LINE, data) != 0)
         return -1;
-    return ( CURRENT_500_SCALING(data[0]) );
+    return ( CURRENT_500_SCALING((double) data[0]) );
 }
-
 //Current
 double readPrimaryActuator() {
     uint8_t data[2];
     if (readPressureSensor(ADC_0, PS_ACTUATE, data) != 0) {
         return -1;
     }
-    return ( CURRENT_500_SCALING(data[0]) );
+    return ( CURRENT_500_SCALING((double) data[0]) );
 }
+
 
 //Voltage
 double readSecTank() {
-    return -1;
+    uint8_t data[2];
+    if (readPressureSensor(ADC_0, BS_TANK, data) != 0)
+        return -1;
+    return (VOLTAGE_2000_SCALING((double) data[0]));
 }
 
 //Current
 double readSecLine() {
-    return -1;
+    uint8_t data[2];
+    if (readPressureSensor(ADC_0, BS_LINE, data) != 0)
+        return -1;
+    return ( CURRENT_500_SCALING((double) data[0]) );
 }
 
 //Current
 double readSecActuator() {
-    return -1;
+    uint8_t data[2];
+    if (readPressureSensor(ADC_0, BS_ACTUATE, data) != 0) {
+        return -1;
+    }
+  
+    return ( CURRENT_500_SCALING((double) data[0]) );
 }
+
 
 /* Damn I dont know how to spell vessel */
 double readPressureVessel() {
@@ -183,7 +204,7 @@ double readPressureVessel() {
     if (readPressureSensor(ADC_0, PRES_VESL, data) != 0) {
         return -1;
     }
-    return ( CURRENT_50_SCALING(data[0]) );
+    return ( CURRENT_50_SCALING( (double) data[0]) );
 }
 
 void showPressures() {
