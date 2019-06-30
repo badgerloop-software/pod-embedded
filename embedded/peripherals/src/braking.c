@@ -84,34 +84,49 @@ static double avgDouble(double *arr, int size) {
 }
 
 void brakePrimary() {
-    if (solenoidSet(SOLENOID_0, 0) != 0) {
+    if (solenoidSet(SOLENOID_0, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return;
     }
-    if (solenoidSet(SOLENOID_1, 0) != 0) {
+    if (solenoidSet(SOLENOID_2, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return;
     }
 }
 
 void brakeSecondary() {
+    if (solenoidSet(SOLENOID_4, 0) != 0);
+    if (solenoidSet(SOLENOID_5, 1) != 0);
+    if (solenoidSet(SOLENOID_6, 1) != 0);
+    
     return;
 }
 
 void brakePrimaryRelease() {
-    if (solenoidSet(SOLENOID_0, 1) != 0) {
+    if (solenoidSet(SOLENOID_0, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return;
     }
-    if (solenoidSet(SOLENOID_1, 1) != 0) {
+    if (solenoidSet(SOLENOID_2, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return;
     }
 }
 
 void brakeSecondaryRelease() {
+    if (solenoidSet(SOLENOID_4, 1) != 0) printf("fail\n");
+    if (solenoidSet(SOLENOID_5, 0) != 0);
+    if (solenoidSet(SOLENOID_6, 0) != 0);
     return;
 }
+
+/*VENT*/
+/*
+ *void brakePrimaryVent() {}
+ * 
+ *void brakeSecondaryVent() {}
+ *
+ */
 
 //Voltage
 double readPrimaryTank() {
