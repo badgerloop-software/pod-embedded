@@ -3,12 +3,17 @@
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <state_machine.h>
 
 #define PASS 1
 #define FAIL 0
 
 #define WAIT(x) (usleep((x) * 1000000.0))
+
+/* So that we don't have any changes made to the statemachine reverted mid-setup */
+#define FREEZE_SM (sem_wait(&smSem))
+#define UNFREEZE_SM (sem_post(&smSem))
 
 #define PASS_STR "\033[1;32m[PASS]\033[0m "
 #define FAIL_STR "\033[1;31m[FAIL]\033[0m "
@@ -20,22 +25,120 @@
 #define RUN_TEST(x) (x() == PASS \
     ? printf(PASS_STR #x "\n") : printf(FAIL_STR #x " @ state %s\n", getCurrState()->name))
 
-pthread_t smThread;
+static pthread_t smThread;
+static sem_t smSem;
+
+static void genericInit(void);
+static void goToState(char *name);
+
+extern stateMachine_t stateMachine;
 
 /***********************************
+ * Below is a brief summary of every test contained in this module. 
+ *      They should have a description, start state, expected end state, 
+ *      and any other behaviors that should be seen (e.g. emergency brakes actuated)
+ *
  * Test breakdown:
  * test1 - Battery state of charge is too low to run from pumpdown
+ *      Start: pumpdown      Expected: pre-run fault
  * test2 - Battery voltage is too low
+ *      Start: Ready         Expected: pre-run fault
  * test3 - Motor controller is overheating
+ *      Start: Propulsion    Expected: run fault
  * test4 - Missed 5 retro strips in a row
+ *      Start: Propulsion    
  * test5 - Pressure vessel is depressurizing
  * test6 - Behavior on emergency brake assertion
  * test7 - Loss of connection with either module
- * test8 - ...
+ * test8 - Motor is not shutting off
+ * test9 - ...
  *
  ***/
 
-void genericInit() {
+/***
+ * Programming notes for adding tests: 
+ *     - Each test should follow a similar pattern
+ *          1. FREEZE_SM      // Prevents the state machine from running during setup, allowing all setup to happen before running
+ *          2. genericInit()  // Makes generally nominal (not always true but its almost always close) 
+ *          3. <test specific setup>    // This is where the real test portion really happens
+ *          4. UNFREEZE_SM    // Lets the SM run again
+ *          5. WAIT()         // Lets the SM run for a little bit to allow changes to propogate
+ *          6. ASSERT_STATE_IS(<name of expected state>)  // Returns PASS/FAIL based on if the state is where you expect
+ */
+
+/* Battery low */
+static int hvBattSOCLowTest() 
+    {
+    FREEZE_SM;
+    genericInit();
+    goToState(PUMPDOWN_NAME);
+    UNFREEZE_SM;
+    
+    WAIT(1.5);
+    
+    return ASSERT_STATE_IS(PRE_RUN_FAULT_NAME);
+    }
+
+/* Voltage Low, pack and cell */
+static int hvBattLowVoltTest() 
+    {
+    FREEZE_SM;
+    genericInit();
+    data->bms->packVoltage = 200;
+    UNFREEZE_SM;
+    WAIT(1.5);
+    return ASSERT_STATE_IS(RUN_FAULT_NAME);
+    }
+
+static int rmsOverheatTest()
+    {
+    genericInit();
+    return ASSERT_STATE_IS(RUN_FAULT_NAME);
+    }
+
+/* Missed 5 tape strips in a row */
+static int navMissedRetroTest()
+    {
+    genericInit();
+    return ASSERT_STATE_IS(RUN_FAULT_NAME);
+    }
+
+void *stateMachineLoop() 
+    {
+    while(1)
+        {
+        sem_wait(&sem);
+        runStateMachine();
+        sem_post(&sem);
+        WAIT(.2);
+        }
+    return NULL;
+    }
+
+        
+/* Drives the tests */        
+int main() {
+    initData();
+    genericInit();
+    buildStateMachine();
+    if (sem_init(&smSem, 0, 1) != 0) {
+        return -1;   
+    }
+    if (pthread_create(&smThread, NULL, stateMachineLoop, NULL) != 0)
+        return -1;
+    WAIT(1);
+    RUN_TEST(hvBattSOCLowTest);
+    RUN_TEST(hvBattLowVoltTest);
+    RUN_TEST(rmsOverheatTest);
+    RUN_TEST(navMissedRetroTest);
+    
+    sem_destroy(&smSem);
+}
+
+
+/* Helpers for each test */
+
+static void genericInit() {
     
     /* Just remember: pmbrft */
     pressure_t *p = data->pressure;
@@ -114,56 +217,6 @@ void genericInit() {
     r->keyMode          = 0;
 }
 
-/* Battery low */
-static int hvBattSOCLowTest() 
-    {
-    genericInit();    
-    WAIT(1.5);
-    
-    return ASSERT_STATE_IS(PRE_RUN_FAULT_NAME);
-    }
-
-/* Voltage Low, pack and cell */
-static int hvBattLowVoltTest() 
-    {
-    genericInit();
-    data->bms->packVoltage = 200;
-    WAIT(1.5);
-    return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
-
-static int rmsOverheatTest()
-    {
-    genericInit();
-    return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
-
-/* Missed 5 tape strips in a row */
-static int navMissedRetroTest()
-    {
-    genericInit();
-    return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
-
-void *stateMachineLoop() 
-    {
-    while(1)
-        {
-        runStateMachine();
-        WAIT(.2);
-        }
-    return NULL;
-    }
-
-int main() {
-    initData();
-    genericInit();
-    buildStateMachine();
-    if (pthread_create(&smThread, NULL, stateMachineLoop, NULL) != 0)
-        return -1;
-    WAIT(1);
-    RUN_TEST(hvBattSOCLowTest);
-    RUN_TEST(hvBattLowVoltTest);
-    RUN_TEST(rmsOverheatTest);
-    RUN_TEST(navMissedRetroTest);
+static void goToState(char *name) {
+    stateMachine.currState = findState(name);
 }
