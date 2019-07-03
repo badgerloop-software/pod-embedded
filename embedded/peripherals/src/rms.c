@@ -38,8 +38,13 @@ int rmsInvDis() {
 
 /* 4 */
 int rmsInvEn() {
-    uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    uint8_t payload[] = {10/*TORQUE_SCALE_LWR(1)*/, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     return canSend(RMS_INV_EN_ID, payload, 8);
+}
+
+int rmsInvEnNoTorque () {
+		uint8_t payload[] =  {0x0, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+			return canSend(RMS_INV_EN_ID, payload, 8);
 }
 
 /* 5 */
@@ -67,7 +72,7 @@ int rmsDischarge() {
 }
 
 int rmsIdleHb() {
-    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0};
+    uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
     return canSend(RMS_HB_ID, payload, 8);
 }
 
@@ -112,10 +117,11 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
     return convRmsDataFormat(rmsData[4], rmsData[5]);
 }
 int rmsSendHbMsg(uint16_t torque) {
-    uint8_t payload[] = {TORQUE_SCALE_LWR(torque), TORQUE_SCALE_UPR(torque), 0x0, 0x0, 
+	
+	uint8_t payload[] = {20/*TORQUE_SCALE_LWR(torque)*/, 0/*TORQUE_SCALE_UPR(torque)*/, 0x0, 0x0, 
         0x1, 0x1, 0x0, 0x0};
     
-    return canSend(RMS_HB_ID, payload, 8);
+    return canSend(RMS_INV_EN_ID, payload, 8);
 }
 
 

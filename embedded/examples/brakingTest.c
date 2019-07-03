@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     initLVIox(isHard);
 
     if (argc > 1) {
-        if (strcmp(argv[1], "-p")) {
+        if (strcmp(argv[1], "-p") == 0) {
             if (argc > 2) {
                 if (strcmp(argv[2], "on") == 0)
                     brakePrimary();

@@ -7,12 +7,13 @@
 #include <motor.h>
 #include <unistd.h>
 #include <hv_iox.h>
+#include <data.h>
 
 /***
  * The high level interface for the motor
  */
 
-#define HB_PERIOD 300000
+#define HB_PERIOD 10000
 
 static uint16_t TORQUE      = 0;
 static bool     MOTOR_IS_ON = false;
@@ -24,7 +25,7 @@ static pthread_t hbLoop;
 static bool JOIN_HB_THREAD = false;
 
 static void *motorHeartbeatLoop(void *);
-
+extern int rmsInvEnNoTorque();
 /* Create the semaphores and mutexes for thread sensitive operations
  *  and creates the HB loop that just waits for the motor to be started 
 */
@@ -37,7 +38,7 @@ int initMotor() {
         fprintf(stderr, "Failed to init motor mutex\n");
         return 1;
     }
-    if (sem_init(&hbSem, 0, 0) != 0) {
+    if (sem_init(&hbSem, 0, 1) != 0) {
         fprintf(stderr, "Failed to init motor heartbeat semaphore\n");
         return 1;
     }
@@ -93,16 +94,17 @@ int startMotor() {
     static bool isMCULatched = false;
     if (!isMCULatched) {
         setMCULatch(true);
-        usleep(500000);  //FIXME Not sure what to make this, .5 s for now
-        setMCULatch(false);
-        isMCULatched = true;
+/*        usleep(1000000);  //FIXME Not sure what to make this, .5 s for now*/
+/*        setMCULatch(false);*/
+/*        isMCULatched = true;*/
     }
     if (rmsEnHeartbeat() != 0) return 1;
-    if (rmsClrFaults() != 0) return 1;
-    if (rmsInvDis() != 0) return 1;
-    idleMotor();
+	if (rmsClrFaults() != 0) return 1;
+	if (rmsInvDis() != 0) return 1;
+/*	idleMotor();*/
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
-    setMotorIsOn(true);
+    rmsInvEnNoTorque();
+	setMotorIsOn(true);
     return 0;
 }
 
@@ -119,6 +121,9 @@ int stopMotor() {
     if (rmsCmdNoTorque() != 0) return 1;
     if (rmsDischarge() != 0) return 1;        
     if (rmsInvDis() != 0) return 1;
+   
+    usleep(500000);
+    data->flags->shouldBrake = true;
     return 0;
 }
 
@@ -132,13 +137,16 @@ void idleMotor() {
  */
 static void *motorHeartbeatLoop(void *unusedParam) {
     while(1) {
-        if (JOIN_HB_THREAD) return NULL;
-        sem_wait(&hbSem);
+        //if (JOIN_HB_THREAD) return NULL;
+		
+		sem_wait(&hbSem);
         if (getMotorIsOn()) {
-            if (rmsSendHbMsg(getTorque()) != 0) {
+            printf("MOTOR IS ON\n");
+			if (rmsSendHbMsg(getTorque()) != 0) {
                 fprintf(stderr, "Failed to send heartbeat\n");
             }
         } else {
+			printf("IDLE\n");
             if (rmsIdleHb() != 0) {
                 fprintf(stderr, "Failed to send idle heartbeat\n");
             }

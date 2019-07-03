@@ -72,6 +72,11 @@ int isHVEnabled() {
     return getState(&iox, HV_EN_FDBK);
 }
 
+int setMCUHVEnabled(int val) {
+	setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
+	return setState(&iox, MCU_HV_EN, val);
+}
+
 int isMCUHVEnabled() {
     setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
     return getState(&iox, MCU_HV_EN);

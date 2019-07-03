@@ -41,7 +41,11 @@ void SetupIMU(){
 	data->dVx = 0;
 	data->dVy = 0;
 	data->dVz = 0;
-
+    
+    data->velX = 0;
+    data->velY = 0;
+    data->velZ = 0;
+    
 	data->accelX = 0;
 	data->accelY = 0;
 	data->accelZ = 0;
@@ -80,35 +84,46 @@ void *IMULoop(void *arg){
         i = 0;
 		while(i < messageSize){
 			//Check delta velocity
-			if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
-
-				//Load data into 32-bit unsigned integers
-				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
-				tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
-				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
-
-				sem_wait(&data->mutex);
-				//Convert into float values
-				data->dVx = * ((float *) &tempx);
-				data->dVy = * ((float *) &tempy);
-				data->dVz = * ((float *) &tempz);
+            
+	//		if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
+//
+//				//Load data into 32-bit unsigned integers
+//				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
+//				tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
+//				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
+//
+//				sem_wait(&data->mutex);
+//				//Convert into float values
+//				data->dVx = * ((float *) &tempx);
+//				data->dVy = * ((float *) &tempy);
+//				data->dVz = * ((float *) &tempz);
 
 				//Time increment is 10ms, convert deltaV into accel
 /*				data->accelX = data->dVx / 0.01;*/
 /*				data->accelY = data->dVy / 0.01;*/
 /*				data->accelZ = data->dVz / 0.01;*/
-				sem_post(&data->mutex);
+//				sem_post(&data->mutex);
 
-			}
+//			}
 
             if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x30 && dataBuffer[i + 2] == 0x0C) {
                 tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
 			    tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
 				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
                 sem_wait(&data->mutex);
+                
                 data->accelX = * ((float *) &tempx);
                 data->accelY = * ((float *) &tempy);
                 data->accelZ = * ((float *) &tempz);
+                
+                data->velX = data->velX + (data->accelX * 0.01);
+                data->velY = data->velY + (data->accelY * 0.01);
+                data->velZ = data->velZ + (data->accelZ * 0.01);
+                
+                
+                data->posX += (data->velX * 0.01);
+                
+                
                 sem_post(&data->mutex);
             }
 
@@ -117,9 +132,9 @@ void *IMULoop(void *arg){
 
 		//IMU Time Increment (10 ms)
         sem_wait(&data->mutex);
-        data->posX += data->dVx * 0.01;
-        data->posY += data->dVy * 0.01;
-		data->posZ += data->dVz * 0.01;
+        data->posX += data->velX * 0.01;
+        data->posY += data->velY * 0.01;
+		data->posZ += data->velZ * 0.01;
         sem_post(&data->mutex);
         usleep(10000);
 	}
