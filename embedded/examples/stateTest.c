@@ -84,9 +84,9 @@ void genericInit() {
     b->relayStatus      = 0;
     b->highTemp         = 25;
     b->lowTemp          = 20;
-    b->cellMaxVoltage   = 3.2;
-    b->cellMinVoltage   = 3.0;
-    b->cellAvgVoltage   = 3.1;
+    b->cellMaxVoltage   = 3200; /* These three are mV */
+    b->cellMinVoltage   = 3000;
+    b->cellAvgVoltage   = 3100;
     b->maxCells         = 72;
     b->numCells         = 72;
 
@@ -115,7 +115,7 @@ void genericInit() {
 }
 
 /* Battery low */
-static int test1() 
+static int hvBattSOCLowTest() 
     {
     genericInit();    
     WAIT(1.5);
@@ -124,7 +124,7 @@ static int test1()
     }
 
 /* Voltage Low, pack and cell */
-static int test2() 
+static int hvBattLowVoltTest() 
     {
     genericInit();
     data->bms->packVoltage = 200;
@@ -132,14 +132,14 @@ static int test2()
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
-/* Missed 5 tape strips in a row */
-static int test3()
+static int rmsOverheatTest()
     {
     genericInit();
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
-static int test4()
+/* Missed 5 tape strips in a row */
+static int navMissedRetroTest()
     {
     genericInit();
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
@@ -162,8 +162,8 @@ int main() {
     if (pthread_create(&smThread, NULL, stateMachineLoop, NULL) != 0)
         return -1;
     WAIT(1);
-    RUN_TEST(test1);
-    RUN_TEST(test2);
-    RUN_TEST(test3);
-    RUN_TEST(test4);
+    RUN_TEST(hvBattSOCLowTest);
+    RUN_TEST(hvBattLowVoltTest);
+    RUN_TEST(rmsOverheatTest);
+    RUN_TEST(navMissedRetroTest);
 }
