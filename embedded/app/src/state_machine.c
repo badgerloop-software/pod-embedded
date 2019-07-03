@@ -257,6 +257,10 @@ stateTransition_t *findTransition(state_t *srcState, char *targName) {
     return NULL;
 }
 
+state_t *getCurrState(void) {
+    return stateMachine.currState;
+}
+
 /***
  * runStateMachine -
  *		Executes the current states action. A mini control loop

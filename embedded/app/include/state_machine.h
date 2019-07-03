@@ -37,6 +37,10 @@ typedef struct state_t state_t;
 typedef struct stateTransition_t stateTransition_t;
 typedef struct stateMachine_t stateMachine_t;
 
+
+state_t *getCurrState(void);
+
+state_t *findState(char *name);
 /*
 * The state machine is a directed graph. Each edge is a transition
 * The state_t handles the nodes and stateTransition_t is an edge

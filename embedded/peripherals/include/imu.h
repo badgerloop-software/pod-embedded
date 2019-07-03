@@ -17,7 +17,12 @@ typedef struct {
 	float dVx;
 	float dVy;
 	float dVz;
-	
+
+    // Vel
+    float velX;
+    float velY;
+    float velZ;
+
 	//Acceleration (Based off of dV)
 	float accelX;
 	float accelY;

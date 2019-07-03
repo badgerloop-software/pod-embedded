@@ -21,7 +21,7 @@
 #define PS3_BOTTOM_LIMIT_PRE        	0
 #define PS3_BOTTOM_LIMIT_BRAKING		150
 #define PS3_BOTTOM_LIMIT_CRAWLPOST		0
-#define PS3_TOP_LIMIT_PRE           	0
+#define PS3_TOP_LIMIT_PRE           	20
 #define PS3_TOP_LIMIT_BRAKING			275
 #define PS3_TOP_LIMIT_CRAWLPOST			20
 
