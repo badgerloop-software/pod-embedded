@@ -23,12 +23,14 @@
         ? PASS : FAIL)
 
 #define RUN_TEST(x) (x() == PASS \
-    ? printf(PASS_STR #x "\n") : printf(FAIL_STR #x " @ state %s\n", getCurrState()->name))
+    ? printf(PASS_STR #x "\n\n") : printf(FAIL_STR #x " @ state %s\n\n", getCurrState()->name))
+
+#define BANNER(x) (printf("----STARTING %s----\n", (x)))
 
 static pthread_t smThread;
 static sem_t smSem;
 
-static void genericInit(void);
+static void genericInit(char *name);
 static void goToState(char *name);
 
 extern stateMachine_t stateMachine;
@@ -70,11 +72,12 @@ extern stateMachine_t stateMachine;
 static int hvBattSOCLowTest() 
     {
     FREEZE_SM;
-    genericInit();
+    genericInit("High V SOC Low Test");
     goToState(PUMPDOWN_NAME);
+    data->bms->Soc = 50;
     UNFREEZE_SM;
-    
-    WAIT(1.5);
+        
+    WAIT(0.5);
     
     return ASSERT_STATE_IS(PRE_RUN_FAULT_NAME);
     }
@@ -83,23 +86,31 @@ static int hvBattSOCLowTest()
 static int hvBattLowVoltTest() 
     {
     FREEZE_SM;
-    genericInit();
+    genericInit("High V Low Voltage Test");
     data->bms->packVoltage = 200;
+    goToState(PROPULSION_NAME);
     UNFREEZE_SM;
-    WAIT(1.5);
+    WAIT(0.5);
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
 static int rmsOverheatTest()
     {
-    genericInit();
+    FREEZE_SM;
+    genericInit("RMS Overheating Test");
+    data->rms->igbtTemp = 101;
+    goToState(PROPULSION_NAME);
+    UNFREEZE_SM;
+    WAIT(1);
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
 /* Missed 5 tape strips in a row */
 static int navMissedRetroTest()
     {
-    genericInit();
+
+    genericInit("Nav Missed 5 Retro Test");
+
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
@@ -107,9 +118,9 @@ void *stateMachineLoop()
     {
     while(1)
         {
-        sem_wait(&sem);
+        sem_wait(&smSem);
         runStateMachine();
-        sem_post(&sem);
+        sem_post(&smSem);
         WAIT(.2);
         }
     return NULL;
@@ -119,8 +130,8 @@ void *stateMachineLoop()
 /* Drives the tests */        
 int main() {
     initData();
-    genericInit();
     buildStateMachine();
+/*    genericInit();*/
     if (sem_init(&smSem, 0, 1) != 0) {
         return -1;   
     }
@@ -138,8 +149,9 @@ int main() {
 
 /* Helpers for each test */
 
-static void genericInit() {
-    
+static void genericInit(char *name) {
+    BANNER(name);
+    goToState(IDLE_NAME);
     /* Just remember: pmbrft */
     pressure_t *p = data->pressure;
     motion_t   *m = data->motion;
@@ -183,7 +195,7 @@ static void genericInit() {
     b->packCycles       = 0;
     b->packAh           = 0;
     b->inputVoltage     = 0;
-    b->Soc              = 80;
+    b->Soc              = 95;
     b->relayStatus      = 0;
     b->highTemp         = 25;
     b->lowTemp          = 20;
@@ -202,7 +214,7 @@ static void genericInit() {
     r->phaseBCurrent    = 0;
     r->phaseCCurrent    = 0;
     r->dcBusVoltage     = 0;
-    r->lvVoltage        = 0;
+    r->lvVoltage        = 13;
     r->canCode1         = 0;
     r->canCode2         = 0;
     r->faultCode1       = 0;

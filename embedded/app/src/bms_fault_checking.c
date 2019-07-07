@@ -36,7 +36,7 @@ bool checkPrerunBattery(void){
 		return false;
 	}
 	if(data->bms->Soc < MIN_SOC_PRERUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+		printf("SOC is less than expected: %i\n", data->bms->Soc);
 		return false;
 	}
 	

@@ -64,7 +64,7 @@
 #define MIN_SOC_RUN 				75
 #define MIN_SOC_POSTRUN				60
 
-/* RMS Acceptable Limits */
+/* RMS Acceptable Limits FIXME is this too hot?*/
 #define MIN_IGBT_TEMP				10
 #define MAX_IGBT_TEMP_PRERUN		50
 #define MAX_IGBT_TEMP_RUN			100
