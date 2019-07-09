@@ -5,6 +5,7 @@ extern "C"
 #include <retro.h>
 #include <imu.h>
 #include <string.h>
+#include <nav.h>
 }
 #include <LVTelemetry_Loop.h>
 
@@ -20,7 +21,10 @@ int main(int argc, char *argv[])
   SetupIMU();
   initRetros();
   initNav();
-  SetupLVTelemetry((char *)"127.0.0.1", 33333);
-
+  
   joinRetroThreads();
+
+
+  SetupLVTelemetry((char *)"127.0.0.1", 33333);
+  while(1);
 }
