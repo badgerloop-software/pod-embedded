@@ -43,8 +43,11 @@ bool checkPrerunPressures(void) {
 		fprintf(stderr, "Secondary primAct pressure failing\n");
 		return false;
 	}
-	
-
+	if (data->pressure->pv < PV_BOTTOM_LIMIT || data->pressure->pv > PV_TOP_LIMIT) {
+        fprintf(stderr, "Pressure vessel depressurizing\n");
+        return false;
+    }
+    
 	return true;
 }
 
@@ -73,7 +76,11 @@ bool checkBrakingPressures(void) {
 		fprintf(stderr, "Secondary primAct pressure failing\n");
 		return false;
 	}
-	
+	if (data->pressure->pv < PV_BOTTOM_LIMIT || data->pressure->pv > PV_TOP_LIMIT) {
+        fprintf(stderr, "Pressure vessel depressurizing\n");
+        return false;
+    }
+    
 
 	return true;
 }
@@ -103,7 +110,11 @@ bool checkCrawlPostrunPressures(void) {
 		fprintf(stderr, "Secondary primAct pressure failing\n");
 		return false;
 	}
-	
+	if (data->pressure->pv < PV_BOTTOM_LIMIT || data->pressure->pv > PV_TOP_LIMIT) {
+        fprintf(stderr, "Pressure vessel depressurizing\n");
+        return false;
+    }
+    
 
 	return true;
 }

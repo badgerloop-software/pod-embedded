@@ -41,7 +41,8 @@
 #define SEC_PS3_BOTTOM_LIMIT			0
 #define SEC_PS3_TOP_LIMIT				20
 
-
+#define PV_TOP_LIMIT                20
+#define PV_BOTTOM_LIMIT             10
 
 
 /* Battery Acceptable Limits */

@@ -6,8 +6,8 @@
 #include <semaphore.h>
 #include <state_machine.h>
 
-#define PASS 1
-#define FAIL 0
+#define PASS 0
+#define FAIL 1
 
 #define WAIT(x) (usleep((x) * 1000000.0))
 
@@ -32,7 +32,7 @@ static sem_t smSem;
 
 static void genericInit(char *name);
 static void goToState(char *name);
-
+static int checkForChange(char *name);
 extern stateMachine_t stateMachine;
 
 /***********************************
@@ -62,9 +62,11 @@ extern stateMachine_t stateMachine;
  *     - Each test should follow a similar pattern
  *          1. FREEZE_SM      // Prevents the state machine from running during setup, allowing all setup to happen before running
  *          2. genericInit()  // Makes generally nominal (not always true but its almost always close) 
- *          3. <test specific setup>    // This is where the real test portion really happens
  *          4. UNFREEZE_SM    // Lets the SM run again
  *          5. WAIT()         // Lets the SM run for a little bit to allow changes to propogate
+ *          6. <CHECK STATE HASNT CHANGED>  // we dont want any false positives!
+ *          7. <test specific setup>    // This is where the real test portion really happens
+ *          8, WAIT()          // To see if it changes
  *          6. ASSERT_STATE_IS(<name of expected state>)  // Returns PASS/FAIL based on if the state is where you expect
  */
 
@@ -74,9 +76,14 @@ static int hvBattSOCLowTest()
     FREEZE_SM;
     genericInit("High V SOC Low Test");
     goToState(PUMPDOWN_NAME);
-    data->bms->Soc = 50;
     UNFREEZE_SM;
-        
+
+    WAIT(0.5);    
+    
+    if (checkForChange(PUMPDOWN_NAME) != PASS) return FAIL;
+    
+    data->bms->Soc = 50;
+    
     WAIT(0.5);
     
     return ASSERT_STATE_IS(PRE_RUN_FAULT_NAME);
@@ -87,10 +94,16 @@ static int hvBattLowVoltTest()
     {
     FREEZE_SM;
     genericInit("High V Low Voltage Test");
-    data->bms->packVoltage = 200;
     goToState(PROPULSION_NAME);
     UNFREEZE_SM;
     WAIT(0.5);
+    
+    if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
+
+    data->bms->packVoltage = 200;
+
+    WAIT(0.5);
+
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
@@ -98,10 +111,16 @@ static int rmsOverheatTest()
     {
     FREEZE_SM;
     genericInit("RMS Overheating Test");
-    data->rms->igbtTemp = 101;
     goToState(PROPULSION_NAME);
     UNFREEZE_SM;
-    WAIT(1);
+    
+    WAIT(.5);
+   
+    if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
+
+    data->rms->igbtTemp = 150;
+    WAIT(.5);
+
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
@@ -114,6 +133,47 @@ static int navMissedRetroTest()
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
+/* PV depressurizing.*/
+static int pvDepressurizingTest()
+    {
+    char *statesToTest[] = 
+        {
+        PUMPDOWN_NAME,
+        READY_NAME,
+        PROPULSION_NAME,
+        BRAKING_NAME,
+        STOPPED_NAME,
+        CRAWL_NAME,
+        POST_RUN_NAME,
+        NULL
+        };
+    int i = 0;
+    char testName[100];
+
+    for (i = 0; statesToTest[i] != NULL; i++) 
+        {
+        FREEZE_SM;
+        sprintf(testName, "PV Losing Pressure in %s", statesToTest[i]);
+        genericInit(testName);
+        goToState(statesToTest[i]);
+        UNFREEZE_SM;
+        WAIT(.2);
+
+/*        if (checkForChange(statesToTest[i]) == FAIL) return FAIL;*/
+        
+        data->pressure->pv = 5;
+        
+        WAIT(.5);
+        
+        if (ASSERT_STATE_IS(PRE_RUN_FAULT_NAME) != PASS &&
+                ASSERT_STATE_IS(RUN_FAULT_NAME) != PASS &&
+                ASSERT_STATE_IS(POST_RUN_FAULT_NAME) != PASS)
+            return FAIL;
+        printf(PASS_STR"in %s\n",statesToTest[i]);
+        }
+    return PASS;
+    }
+
 void *stateMachineLoop() 
     {
     while(1)
@@ -121,7 +181,7 @@ void *stateMachineLoop()
         sem_wait(&smSem);
         runStateMachine();
         sem_post(&smSem);
-        WAIT(.2);
+        WAIT(.1);
         }
     return NULL;
     }
@@ -142,7 +202,7 @@ int main() {
     RUN_TEST(hvBattLowVoltTest);
     RUN_TEST(rmsOverheatTest);
     RUN_TEST(navMissedRetroTest);
-    
+    RUN_TEST(pvDepressurizingTest);
     sem_destroy(&smSem);
 }
 
@@ -231,4 +291,13 @@ static void genericInit(char *name) {
 
 static void goToState(char *name) {
     stateMachine.currState = findState(name);
+}
+
+static int checkForChange(char *name) {
+    if (ASSERT_STATE_IS(name) != PASS)
+        {
+        fprintf(stderr, "Failed to stay in state: %s\n", name);
+        return FAIL;
+        }
+    return PASS;
 }

@@ -171,7 +171,7 @@ static int initPumpdown(state_t *pumpdown) {
 static int initReadyForLaunch(state_t *ready) {
 
     initTransition(ready->transitions[0], findState(PROPULSION_NAME), toPropulsion);
-    initTransition(ready->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(ready->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
     addTransition(READY_NAME, ready->transitions[0]);
     addTransition(READY_NAME, ready->transitions[1]);
     return 0;
