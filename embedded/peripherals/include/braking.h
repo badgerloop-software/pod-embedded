@@ -31,3 +31,11 @@ void showPressures(void);
 
 int joinPressureMonitor(void);
 
+void brakePrimary(void);
+
+void brakeSecondary(void);
+
+void brakePrimaryRelease(void);
+
+void brakeSecondaryRelease(void);
+

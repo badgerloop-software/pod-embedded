@@ -45,4 +45,6 @@ int isEStopOn(void);
 
 int getMasterSwFeedback(void);
 
+int setMCUHVEnabled(int val);
+
 #endif
