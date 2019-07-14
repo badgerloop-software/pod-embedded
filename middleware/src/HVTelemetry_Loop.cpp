@@ -10,9 +10,7 @@
 #include "writer.h"
 
 #include "data.h"
-
-#define LV_BONE_IP "172.25.2.114"
-#define LV_BONE_PORT 7878
+#include "connStat.h"
 
 using namespace rapidjson;
 using namespace std;
@@ -166,5 +164,5 @@ void *HVTelemetryLoop(void *arg){
 }
 
 void sendLVCommand(char *command) {
-    sock.sendTo(command, strlen(command), LV_BONE_IP, LV_BONE_PORT);
+    sock.sendTo(command, strlen(command), LV_SERVER_IP, LV_SERVER_PORT);
 }

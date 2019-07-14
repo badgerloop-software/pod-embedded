@@ -5,10 +5,6 @@
 #define MAX_TLM_HV_RECV 4096
 #endif
 
-#ifndef TLM_RECV_PORT
-#define TLM_RECV_PORT 9099
-#endif
-
 void SetupHVTelemRecv();
 void *HVTelemRecv(void *arg);
 

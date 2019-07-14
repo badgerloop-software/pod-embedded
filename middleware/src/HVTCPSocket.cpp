@@ -7,24 +7,33 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#include "data.h"
+extern "C" {
+    #include "data.h"
+}
+
 #include "HVTCPSocket.h"
+#include "connStat.h"
 #include "state_machine.h"
 
+pthread_t HVTCPThread, connStatThread;
 
-pthread_t HVTCPThread;
+static uint64_t *lastPacket;
 
-extern data_t *data;
+extern void *connStatLoop(void *pTimestamp);
 extern stateMachine_t stateMachine;
-#define LV_TCP_PORT_RECV 7878
 
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
-	
+    
+    lastPacket = (uint64_t *) malloc(sizeof(uint64_t));
+
+    if (pthread_create(&connStatThread, NULL, connStatLoop, lastPacket)) {
+        fprintf(stderr, "Error creating connection watcher\n");
+    }
+
 	if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL)){
 		fprintf(stderr, "Error creating HV Telemetry thread\n");
 	}
-	 
 }
 
 
@@ -81,8 +90,10 @@ void *TCPLoop(void *arg){
 			fprintf(stderr, "Error accepting a packet\n"); 
 			exit(EXIT_FAILURE); 
 		}
-		
-		read(new_socket, buffer, 1024); 
+        
+        *lastPacket = getuSTimestamp();
+
+        read(new_socket, buffer, 1024); 
 		
 		printf("RECEIVED: %s\n",buffer);  
 		
@@ -166,7 +177,7 @@ void signalLV(char *cmd) {
     
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_port = htons(LV_TCP_PORT_RECV);
+    addr.sin_port = htons(LV_SERVER_PORT);
     
     if (bind(srvFd, (struct sockaddr *)&addr,
                 sizeof(addr)) < 0) {

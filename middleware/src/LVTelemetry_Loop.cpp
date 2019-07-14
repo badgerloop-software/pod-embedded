@@ -9,6 +9,7 @@
 #include "LVTelemetry_Loop.h"
 #include "document.h"
 #include "writer.h"
+#include "connStat.h"
 
 /* ADD SENSOR INCLUDES HERE */
 extern "C" 

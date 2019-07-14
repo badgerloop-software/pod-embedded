@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include "connStat.h"
 #include "LVTelemetry_Loop.h"
 #include "LVTCPSocket.h"
 /* ADD SENSOR INCLUDES HERE */
@@ -26,7 +26,7 @@ int init() {
     initProcIox(true);
 
 	/* Init telemetry services */
-	SetupLVTelemetry((char *) "192.168.1.112", 33333);
+	SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupLVTCPServer();
 
     return 0;

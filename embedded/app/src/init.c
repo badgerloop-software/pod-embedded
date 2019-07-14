@@ -145,7 +145,10 @@ int initFlagData() {
 	data->flags->readyCommand = 0;
 	data->flags->propulse = 0;
 	data->flags->emergencyBrake = 0;
-	return 0;
+	data->flags->isConnected = false;
+    data->flags->shouldBrake = false;
+    data->flags->shutdown = false;
+    return 0;
 }
 
 int initTimerData() {

@@ -42,6 +42,7 @@ typedef struct flags_t {
     int shouldStop;
     int shutdown;
     bool shouldBrake;
+    bool isConnected;
 } flags_t;
 
 

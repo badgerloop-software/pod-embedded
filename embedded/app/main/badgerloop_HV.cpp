@@ -7,6 +7,7 @@
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data_dump.h"
+#include "connStat.h"
 
 extern "C" 
 {
@@ -34,7 +35,7 @@ int init() {
 	buildStateMachine();
 
     /* Init telemetry */
-    SetupHVTelemetry((char *) "192.168.1.126", 33333);
+    SetupHVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
 	
