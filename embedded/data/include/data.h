@@ -75,6 +75,7 @@ typedef struct timers_t {
     uint64_t oldRetro;
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
+    uint64_t crawlTimer;
 } timers_t;
 
 

@@ -173,6 +173,20 @@ static int pvDepressurizingTest()
         }
     return PASS;
     }
+    
+    
+/* Generic SM Testing */
+static int smGeneralTest()
+    {
+    FREEZE_SM;
+    genericInit("Generic SM Testing");
+    goToState(PUMPDOWN_NAME);
+    UNFREEZE_SM;
+
+    WAIT(0.5);  
+        
+    return PASS;
+    }
 
 void *stateMachineLoop() 
     {

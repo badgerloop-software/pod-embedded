@@ -153,5 +153,6 @@ int initTimerData() {
     data->timers->startTime = 0;
     data->timers->lastRetro = 0;
     for (i = 0; i < NUM_RETROS; i++) data->timers->lastRetros[i] = 0;
+	data->timers->crawlTimer = 0;
     return 0;
 }
