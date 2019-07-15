@@ -15,7 +15,6 @@ extern "C"
 #include "data.h"
 #include "state_machine.h"
 #include "hv_iox.h"
-#include <braking.h>
 }
 
 
@@ -161,24 +160,10 @@ void *TCPLoop(void *arg)
 			setMCUHVEnabled(false);
 		}
 
-		if (!strncmp(buffer, "override", 8))
-		{
-			fprintf(stderr, "Override received for state: %s\n", buffer + 9);
-			sprintf(stateMachine.overrideStateName, "%s\0", buffer + 9);
-		}
-
-		if(!strncmp(buffer, "safetyOn", MAX_COMMAND_SIZE)){
-			//TODO Motor Safety on
-		}
-
-		if(!strncmp(buffer, "safetyOff", MAX_COMMAND_SIZE)){
-			//TODO Motor Safety off
-		}
-
 		if(!strncmp(buffer,"override", 8)){
 			fprintf(stderr, "Override received for state: %s\n", buffer+9);
 		  sprintf(stateMachine.overrideStateName, "%s\0", buffer+9);
-    }
+        }
 		
 		// HEARTBEAT
 		if (!strncmp(buffer, "ping", MAX_COMMAND_SIZE))

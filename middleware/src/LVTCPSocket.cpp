@@ -11,6 +11,10 @@
 #include "data.h"
 #include "connStat.h"
 
+extern  "C" {
+	#include <braking.h>
+}
+
 pthread_t LVTCPThread;
 
 
@@ -89,6 +93,23 @@ void *LVTCPLoop(void *arg){
         if (!strncmp(buffer, "brake", MAX_COMMAND_SIZE)) {
             data->flags->shouldBrake = true;
         }
+
+						if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
+		{
+			brakePrimaryRelease();
+		}
+		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
+		{
+			brakePrimary();
+		}
+		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
+		{
+			brakeSecondaryRelease();
+		}
+		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
+		{
+			brakeSecondary();
+		}
 
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
