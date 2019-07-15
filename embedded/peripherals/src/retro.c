@@ -53,9 +53,11 @@ int initRetros() {
 		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i) != 0)
 			return -1;
 	}
+    
     if (pthread_create(&spuriousThread, NULL, blockSpuriousInts, SPURIOUS_BLOCK_TIMEOUT) != 0)
         return -1;
-	return 0;
+	
+    return 0;
 }
 
 /***

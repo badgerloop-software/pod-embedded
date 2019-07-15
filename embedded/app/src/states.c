@@ -48,82 +48,36 @@ static bool checkStopped(void) {
  *
  */
 
-stateTransition_t * powerOnAction() {
-    printf("Power on action\n");
-    return findTransition(stateMachine.currState, IDLE_NAME);
-}
-
 stateTransition_t * idleAction() {
     data->state = 1;
     
 
     // CHECK PRESSURE
     if(!checkPrerunPressures()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkPrerunBattery()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     if(!checkPrerunRMS()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // TRANSITION CRITERIA
     if(data->flags->readyPump){
-        return findTransition(stateMachine.currState, READY_FOR_PUMPDOWN_NAME);
-    }
-    
-
-    return NULL;
-}
-
-stateTransition_t * readyForPumpdownAction() {
-    data->state = 2;
-
-    /* Check IMD status */
-    if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    /* Check HV Indicator light */
-    if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    // CHECK PRESSURE
-    if(!checkPrerunPressures()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-    
-    // CHECK STOPPED (MOTION)
-    if(!checkStopped()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-    
-    // TODO check LV Power
-    // TODO check LV Temp
-    
-    if(!checkPrerunBattery()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-    
-    if(!checkPrerunRMS()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    if (data->flags->pumpDown){
         return findTransition(stateMachine.currState, PUMPDOWN_NAME);
     }
+    
 
     return NULL;
 }
@@ -133,83 +87,39 @@ stateTransition_t * pumpdownAction() {
     data->state = 3;
      /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
 
     // CHECK PRESSURE
     if(!checkPrerunPressures()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkPrerunBattery()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     if(!checkPrerunRMS()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     
     if(data->flags->readyCommand){
-	return findTransition(stateMachine.currState, READY_NAME);
-    }
-
-    return NULL;
-}
-
-stateTransition_t * readyForLaunchAction() {
-    data->state = 4;
-     /* Check IMD status */
-    if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    /* Check HV Indicator light */
-    if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-
-     // CHECK PRESSURE
-    if(!checkPrerunPressures())
-    {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-    
-    // CHECK STOPPED (MOTION)
-    if(!checkStopped()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-    
-    // TODO check LV Power
-    // TODO check LV Temp
-
-	if(!checkPrerunBattery()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    if(!checkPrerunRMS()){
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
-    }
-
-    if(data->flags->propulse){
-        // Init initial timer
-		data->timers->startTime = getuSTimestamp();
-        return findTransition(stateMachine.currState, PROPULSION_NAME);
+	return findTransition(stateMachine.currState, PROPULSION_NAME);
     }
 
     return NULL;
@@ -219,12 +129,12 @@ stateTransition_t * propulsionAction() {
     data->state = 5;
      /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
 
@@ -236,21 +146,21 @@ stateTransition_t * propulsionAction() {
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
     if(!checkPrerunPressures()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkRunBattery()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     if(!checkRunRMS()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // CHECK TRANSITION CRITERIA
@@ -268,33 +178,33 @@ stateTransition_t * brakingAction() {
     // TODO Add logic to handle switches / actuate both
  /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
 
     // CHECK FAULT CRITERIA
     if(!checkBrakingPressures()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // TODO check LV Power
     // TODO check LV Temp
 
     if(!checkBrakingBattery()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     if(!checkBrakingRMS()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // CHECK TRANSITION CRITERIA
@@ -310,35 +220,35 @@ stateTransition_t * stoppedAction() {
 	data->state = 7;
      /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
    
     // CHECK FAULT CRITERIA
     
     if(!checkBrakingPressures()){ // Still unchanged
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkBrakingBattery()){ // Still unchanged
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     if(!checkStoppedRMS()){ // Still unchanged
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
 	// FIXME FIX ALL TIME CHECKS!
     if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     
     // CHECK TRANSITION CRITERIA
@@ -360,28 +270,28 @@ stateTransition_t * crawlAction() {
     data->state = 8;
  /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
 
     if(!checkCrawlPostrunPressures()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // TODO check LV Power
     // TODO check LV Temp
 
     if(!checkCrawlBattery()){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     if(!checkCrawlRMS()){ // Still unchanged
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // CHECK TRANSITION CRITERIA
@@ -400,28 +310,28 @@ stateTransition_t * postRunAction() {
     data->state = 9;
  /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
 
     if(!checkCrawlPostrunPressures()){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // TODO check LV Power
     // TODO check LV Temp
 
     if(!checkPostrunBattery()){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     if(!checkPostRMS()){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
 
     // TODO CHECK TRANSITION CRITERIA
@@ -432,7 +342,7 @@ stateTransition_t * postRunAction() {
 
 stateTransition_t * safeToApproachAction() {
     if (isHVEnabled()) {
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return stateMachine.currState->fault;
     }
     data->state = 10;
 	return NULL;
@@ -440,7 +350,7 @@ stateTransition_t * safeToApproachAction() {
 // 
 //  We're removing pre and post faults and making them non run faults. 
 // When you change this make 11 the non run fault action. Ty - EU
-stateTransition_t * preFaultAction() {
+stateTransition_t * nonRunFaultAction() {
     //TODO
     data->state = 11;
 	return NULL;
@@ -452,8 +362,3 @@ stateTransition_t * runFaultAction() {
 	return NULL;
 }
 
-stateTransition_t * postFaultAction() {
-    //TODO
-    data->state = 13;
-	return NULL;
-}

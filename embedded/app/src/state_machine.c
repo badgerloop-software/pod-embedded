@@ -20,20 +20,16 @@ static void initState(state_t* state, char* name, stateTransition_t *(*action)()
 static void initTransition(stateTransition_t *transition, state_t *target, int (*action)() );
 
 
-extern stateTransition_t * powerOnAction(void);
 extern stateTransition_t * idleAction(void);
-extern stateTransition_t * readyForPumpdownAction(void);
 extern stateTransition_t * pumpdownAction(void);
-extern stateTransition_t * readyForLaunchAction(void);
 extern stateTransition_t * propulsionAction(void);
 extern stateTransition_t * brakingAction(void);
 extern stateTransition_t * stoppedAction(void);
 extern stateTransition_t * crawlAction(void);
 extern stateTransition_t * postRunAction(void);
 extern stateTransition_t * safeToApproachAction(void);
-extern stateTransition_t * preFaultAction(void);
 extern stateTransition_t * runFaultAction(void);
-extern stateTransition_t * postFaultAction(void);
+extern stateTransition_t * nonRunFaultAction(void);
 
 
 
@@ -133,47 +129,27 @@ static int addTransition(char *stateName, stateTransition_t *trans) {
     return 0;
 }
 
-static int initPowerOff(state_t *powerOff) {
-    initTransition(powerOff->transitions[0], findState(IDLE_NAME), genTranAction);
-    initTransition(powerOff->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction); 
-    addTransition(POWER_OFF_NAME, powerOff->transitions[0]);
-    addTransition(POWER_OFF_NAME, powerOff->transitions[1]);
-    return 0;
-}
-
 static int initIdle(state_t *idle) {
 
-    initTransition(idle->transitions[0], findState(READY_FOR_PUMPDOWN_NAME), genTranAction);
-    initTransition(idle->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
+    initTransition(idle->transitions[0], findState(PUMPDOWN_NAME), genTranAction);
+    initTransition(idle->transitions[1], findState(NON_RUN_FAULT_NAME), genTranAction);
     addTransition(IDLE_NAME, idle->transitions[0]);
     addTransition(IDLE_NAME, idle->transitions[1]);
-    return 0;
-}
+    
+    idle->fault = idle->transitions[1];
 
-static int initReadyForPumpdown(state_t *readyForPumpdown) {
-
-    initTransition(readyForPumpdown->transitions[0], findState(PUMPDOWN_NAME), genTranAction);
-    initTransition(readyForPumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
-    addTransition(READY_FOR_PUMPDOWN_NAME, readyForPumpdown->transitions[0]);
-    addTransition(READY_FOR_PUMPDOWN_NAME, readyForPumpdown->transitions[1]);
     return 0;
 }
 
 static int initPumpdown(state_t *pumpdown) {
 
-    initTransition(pumpdown->transitions[0], findState(READY_NAME), genTranAction);
-    initTransition(pumpdown->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
+    initTransition(pumpdown->transitions[0], findState(PROPULSION_NAME), genTranAction);
+    initTransition(pumpdown->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(PUMPDOWN_NAME, pumpdown->transitions[0]);
-    addTransition(PUMPDOWN_NAME, pumpdown->transitions[1]);
-    return 0;
-}
+    addTransition(PUMPDOWN_NAME, 
+            pumpdown->fault = pumpdown->transitions[1]);
 
-static int initReadyForLaunch(state_t *ready) {
 
-    initTransition(ready->transitions[0], findState(PROPULSION_NAME), toPropulsion);
-    initTransition(ready->transitions[1], findState(PRE_RUN_FAULT_NAME), genTranAction);
-    addTransition(READY_NAME, ready->transitions[0]);
-    addTransition(READY_NAME, ready->transitions[1]);
     return 0;
 }
 
@@ -182,7 +158,8 @@ static int initPropulsion(state_t *propulsion) {
     initTransition(propulsion->transitions[0], findState(BRAKING_NAME), toBraking);
     initTransition(propulsion->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(PROPULSION_NAME, propulsion->transitions[0]);
-    addTransition(PROPULSION_NAME, propulsion->transitions[1]);
+    addTransition(PROPULSION_NAME, 
+            propulsion->fault = propulsion->transitions[1]);
 
     return 0;
 }
@@ -194,19 +171,19 @@ static int initBraking(state_t *braking) {
     initTransition(braking->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(BRAKING_NAME, braking->transitions[0]);
     addTransition(BRAKING_NAME, braking->transitions[1]);
-    addTransition(BRAKING_NAME, braking->transitions[2]);
+    addTransition(BRAKING_NAME, 
+            braking->fault = braking->transitions[2]);
 
     return 0;
 }
 
 static int initCrawl(state_t *crawl) {
 
-    initTransition(crawl->transitions[0], findState(STOPPED_NAME), genTranAction);
-    initTransition(crawl->transitions[1], findState(BRAKING_NAME), toBraking);
+    initTransition(crawl->transitions[1], findState(POST_RUN_NAME), toBraking);
     initTransition(crawl->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(CRAWL_NAME, crawl->transitions[0]);
-    addTransition(CRAWL_NAME, crawl->transitions[1]);
-    addTransition(CRAWL_NAME, crawl->transitions[2]);
+    addTransition(CRAWL_NAME, 
+            crawl->fault = crawl->transitions[1]);
     
     return 0;
 }
@@ -215,26 +192,29 @@ static int initStopped(state_t *stopped) {
 
 
     initTransition(stopped->transitions[0], findState(POST_RUN_NAME), genTranAction);
-    initTransition(stopped->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
-    initTransition(stopped->transitions[2], findState(CRAWL_NAME), toCrawl);
+    initTransition(stopped->transitions[1], findState(CRAWL_NAME), toCrawl);
+    initTransition(stopped->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(STOPPED_NAME, stopped->transitions[0]);
     addTransition(STOPPED_NAME, stopped->transitions[1]);
-    addTransition(STOPPED_NAME, stopped->transitions[2]);
+    addTransition(STOPPED_NAME, 
+            stopped->fault = stopped->transitions[2]);
 
     return 0;
 }
 
 static int initPostRun(state_t *postRun) {
     initTransition(postRun->transitions[0], findState(SAFE_TO_APPROACH_NAME), genTranAction);
-    initTransition(postRun->transitions[1], findState(POST_RUN_FAULT_NAME), genTranAction);
+    initTransition(postRun->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(POST_RUN_NAME, postRun->transitions[0]);
-    addTransition(POST_RUN_NAME, postRun->transitions[1]);
+    addTransition(POST_RUN_NAME, 
+            postRun->fault = postRun->transitions[1]);
     return 0;
 }
 
 static int initSafeToApproach(state_t *safeToApproach) {
-    initTransition(safeToApproach->transitions[0], findState(POST_RUN_FAULT_NAME), genTranAction);
-    addTransition(SAFE_TO_APPROACH_NAME, safeToApproach->transitions[0]);
+    initTransition(safeToApproach->transitions[0], findState(NON_RUN_FAULT_NAME), genTranAction);
+    addTransition(SAFE_TO_APPROACH_NAME, 
+            safeToApproach->fault = safeToApproach->transitions[0]);
     return 0;
 }
 
@@ -312,32 +292,25 @@ void buildStateMachine(void) {
         stateMachine.allStates[i] = malloc(sizeof(state_t));
     }
     
-    initState(stateMachine.allStates[0], POWER_OFF_NAME, powerOnAction, 2);   
-    initState(stateMachine.allStates[1], IDLE_NAME, idleAction, 2);
-    initState(stateMachine.allStates[2], READY_FOR_PUMPDOWN_NAME, readyForPumpdownAction, 2);
-    initState(stateMachine.allStates[3], PUMPDOWN_NAME, pumpdownAction, 2);
-    initState(stateMachine.allStates[4], READY_NAME, readyForLaunchAction, 2);
-    initState(stateMachine.allStates[5], PROPULSION_NAME, propulsionAction, 2);
-    initState(stateMachine.allStates[6], BRAKING_NAME, brakingAction, 3);
-    initState(stateMachine.allStates[7], CRAWL_NAME, crawlAction, 3);
-    initState(stateMachine.allStates[8], STOPPED_NAME, stoppedAction, 3);
-    initState(stateMachine.allStates[9], POST_RUN_NAME, postRunAction, 2);
-    initState(stateMachine.allStates[10], SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
-    initState(stateMachine.allStates[11], PRE_RUN_FAULT_NAME, preFaultAction, 0);
-    initState(stateMachine.allStates[12], RUN_FAULT_NAME, runFaultAction, 0);
-    initState(stateMachine.allStates[13], POST_RUN_FAULT_NAME, postFaultAction, 0);
+    initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 2);
+    initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 2);
+    initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
+    initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 3);
+    initState(stateMachine.allStates[4], CRAWL_NAME, crawlAction, 3);
+    initState(stateMachine.allStates[5], STOPPED_NAME, stoppedAction, 3);
+    initState(stateMachine.allStates[6], POST_RUN_NAME, postRunAction, 2);
+    initState(stateMachine.allStates[7], SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
+    initState(stateMachine.allStates[8], NON_RUN_FAULT_NAME, nonRunFaultAction, 0);
+    initState(stateMachine.allStates[9], RUN_FAULT_NAME, runFaultAction, 0);
     
-    initPowerOff(stateMachine.allStates[0]);
-    initIdle( stateMachine.allStates[1]);
-    initReadyForPumpdown(stateMachine.allStates[2]);
-    initPumpdown(stateMachine.allStates[3]);
-    initReadyForLaunch( stateMachine.allStates[4]);
-	initPropulsion(stateMachine.allStates[5]);
-    initBraking(stateMachine.allStates[6]);
-    initStopped(stateMachine.allStates[7]);
-    initCrawl(stateMachine.allStates[8]);
-    initPostRun(stateMachine.allStates[9]);
-    initSafeToApproach(stateMachine.allStates[10]);
+    initIdle( stateMachine.allStates[0]);
+    initPumpdown(stateMachine.allStates[1]);
+	initPropulsion(stateMachine.allStates[2]);
+    initBraking(stateMachine.allStates[3]);
+    initStopped(stateMachine.allStates[4]);
+    initCrawl(stateMachine.allStates[5]);
+    initPostRun(stateMachine.allStates[6]);
+    initSafeToApproach(stateMachine.allStates[7]);
  
     stateMachine.currState = stateMachine.allStates[0];
 

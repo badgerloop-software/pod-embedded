@@ -87,7 +87,7 @@ static int hvBattSOCLowTest()
     
     WAIT(0.5);
     
-    return ASSERT_STATE_IS(PRE_RUN_FAULT_NAME);
+    return ASSERT_STATE_IS(NON_RUN_FAULT_NAME);
     }
 
 /* Voltage Low, pack and cell */
@@ -169,7 +169,6 @@ static int pvDepressurizingTest()
     char *statesToTest[] = 
         {
         PUMPDOWN_NAME,
-        READY_NAME,
         PROPULSION_NAME,
         BRAKING_NAME,
         STOPPED_NAME,
@@ -195,9 +194,8 @@ static int pvDepressurizingTest()
         
         WAIT(.5);
         
-        if (ASSERT_STATE_IS(PRE_RUN_FAULT_NAME) != PASS &&
-                ASSERT_STATE_IS(RUN_FAULT_NAME) != PASS &&
-                ASSERT_STATE_IS(POST_RUN_FAULT_NAME) != PASS)
+        if (ASSERT_STATE_IS(NON_RUN_FAULT_NAME) != PASS &&
+                ASSERT_STATE_IS(RUN_FAULT_NAME) != PASS)
             return FAIL;
         printf(PASS_STR"in %s\n",statesToTest[i]);
         }

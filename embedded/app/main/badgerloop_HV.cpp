@@ -70,7 +70,7 @@ int main() {
 	    runStateMachine();
 
         if (data->flags->shouldBrake)
-            signalLV("brake");
+            signalLV((char *)"brake");
         usleep(10000);
 
 		// Control loop

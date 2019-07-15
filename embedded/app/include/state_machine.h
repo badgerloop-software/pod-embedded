@@ -9,17 +9,13 @@
 #include <stdlib.h>
 
 
-#define NUM_STATES              15
+#define NUM_STATES              10
 #define FAULT                   "fault"
 
-#define PRE_RUN_FAULT_NAME      FAULT"Pre"
-#define POST_RUN_FAULT_NAME     FAULT"Post"
+#define NON_RUN_FAULT_NAME      FAULT"NonRun"
 #define RUN_FAULT_NAME          FAULT"Run"
-#define POWER_OFF_NAME          "powerOff"
 #define IDLE_NAME               "idle"
 #define PUMPDOWN_NAME           "pumpdown"
-#define READY_FOR_PUMPDOWN_NAME "readyForPumpdown"
-#define READY_NAME              "readyForPropulsion"
 #define PROPULSION_NAME         "propulsion"
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"
@@ -67,6 +63,7 @@ typedef struct state_t {
 	stateTransition_t *(*action)();
 	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
+    stateTransition_t *fault;
     int numTransitions;
     int transitionCounter;
 } state_t;
