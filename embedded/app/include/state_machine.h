@@ -19,7 +19,7 @@
 #define PROPULSION_NAME         "propulsion"
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"
-#define CRAWL_NAME              "crawl"
+#define CRAWL_NAME              "servicePropulsion"
 #define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 

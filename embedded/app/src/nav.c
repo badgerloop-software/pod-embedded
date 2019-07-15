@@ -171,7 +171,6 @@ void navLoop(void *unused) {
         }
     
         if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {
-            printf("Hit time limit\n");
             data->flags->shouldStop = true;
         }
 

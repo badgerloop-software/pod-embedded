@@ -23,9 +23,10 @@ ifdef LOCAL
 NOI2C := NOI2C
 endif
 
-USER   := "debian"
-LV_IP  := "192.168.7.2"
-HV_IP  := "192.168.7.3"
+LV_USER   := "debian"
+HV_USER	  := "ezra"
+LV_IP  := "192.168.1.106"
+HV_IP  := "192.168.1.146"
 
 ifdef BB
 BEAGLE := ${BBCC}
@@ -71,8 +72,8 @@ examples: $(EXAMPLES)
 utils: $(UTILS)
 
 copy:
-	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(USER)@$(LV_IP):~/bin &
-	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(USER)@$(HV_IP):~/bin &
+	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(LV_USER)@$(LV_IP):~/bin &
+	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(HV_USER)@$(HV_IP):~/bin &
 
 $(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@

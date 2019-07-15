@@ -22,9 +22,9 @@ int main(int argc, char *argv[])
   initRetros();
   initNav();
   
+  SetupLVTelemetry((char *)"192.168.1.120", 33333);
   joinRetroThreads();
 
 
-  SetupLVTelemetry((char *)"127.0.0.1", 33333);
   while(1);
 }

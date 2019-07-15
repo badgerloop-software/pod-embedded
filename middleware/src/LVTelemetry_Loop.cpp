@@ -10,10 +10,12 @@
 #include "document.h"
 #include "writer.h"
 #include "connStat.h"
+#include "data.h"
 
 /* ADD SENSOR INCLUDES HERE */
 extern "C" 
 {
+    #include "lv_iox.h"
 	#include "imu.h"
 }
 
@@ -76,20 +78,20 @@ void *LVTelemetryLoop(void *arg)
 			
 			// POSITION
 			Value pos;
-			pos.SetNull();
+			pos.SetFloat(data->motion->pos);
 			
 			// RETRO
 			Value retro;
-			retro.SetNull();
+			retro.SetInt(data->motion->retroCount);
 			
 			// VELOCITY - Change "X" to "Y" if need be
 			Value vel;
-			// vel.SetFloat(getDeltaVX());
+			vel.SetFloat(data->motion->vel);
 	
 			
 			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			// accel.SetFloat(getAccelX());
+			accel.SetFloat(getAccelX());
 				
 			// HIGH TEMP
 			Value tempH;
@@ -101,12 +103,28 @@ void *LVTelemetryLoop(void *arg)
 						
 			// PRESSURE VESSEL PRESSURE
 			Value pressureV;
-			pressureV.SetNull();
+			pressureV.SetDouble(data->pressure->pv);
 			
+            Value primTank, primLine, primAct;
+            primTank.SetFloat(data->pressure->primTank);
+            primLine.SetFloat(data->pressure->primLine);
+            primAct.SetFloat(data->pressure->primAct);
+            
+            Value secTank, secLine, secAct;
+            secTank.SetFloat(data->pressure->secTank);
+            secLine.SetFloat(data->pressure->secLine);
+            secAct.SetFloat(data->pressure->secAct);
+ 
 			// CURRENT PRESSURE
 			Value currP;
 			currP.SetNull();
 			
+            Value primBrake, secBrake;
+            primBrake.SetBool(limSwitchGet(PRIM_LIM_SWITCH));
+            secBrake.SetBool(limSwitchGet(SEC_LIM_SWITCH));
+
+            Value imuPos;
+            imuPos.SetFloat(getPosX());
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
@@ -119,7 +137,8 @@ void *LVTelemetryLoop(void *arg)
 			motionDoc.AddMember("retro", retro, motionDoc.GetAllocator());
 			motionDoc.AddMember("velocity", vel, motionDoc.GetAllocator());
 			motionDoc.AddMember("acceleration", accel, motionDoc.GetAllocator());
-			
+			motionDoc.AddMember("distanceSinceLastRetro", imuPos, motionDoc.GetAllocator());
+
 			Document batteryDoc;
 			batteryDoc.SetObject();
 			batteryDoc.AddMember("highTemp", tempH, batteryDoc.GetAllocator());
@@ -129,7 +148,15 @@ void *LVTelemetryLoop(void *arg)
 			brakingDoc.SetObject();
 			brakingDoc.AddMember("pressureVesselPressure", pressureV, brakingDoc.GetAllocator());
 			brakingDoc.AddMember("currentPressure", currP, brakingDoc.GetAllocator());
-			
+			brakingDoc.AddMember("primBrake", primBrake, brakingDoc.GetAllocator());
+            brakingDoc.AddMember("secBrake", secBrake, brakingDoc.GetAllocator());
+            brakingDoc.AddMember("primaryTank", primTank, brakingDoc.GetAllocator()); 
+            brakingDoc.AddMember("primaryLine", primLine, brakingDoc.GetAllocator()); 
+            brakingDoc.AddMember("primaryActuation", primAct, brakingDoc.GetAllocator()); 
+            brakingDoc.AddMember("secondaryTank", secTank, brakingDoc.GetAllocator()); 
+            brakingDoc.AddMember("secondaryLine", secLine, brakingDoc.GetAllocator()); 
+            brakingDoc.AddMember("secondaryActuation", secAct, brakingDoc.GetAllocator()); 
+
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
 			document.AddMember("time", age, document.GetAllocator());

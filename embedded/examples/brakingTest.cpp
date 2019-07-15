@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
+#include "LVTelemetry_Loop.h"
 #include <string.h>
+#include "connStat.h"
+extern "C" {
 #include "braking.h"
 #include "lv_iox.h"
 #include "data.h"
-
-#define NUM_LIM_SWITCHES 4  /* In test */
+}
+#define NUM_LIM_SWITCHES 2  /* In test */
 #define FOREVER while(1)
 
 void showBrakingInfo() {
@@ -24,7 +27,7 @@ int main(int argc, char *argv[]) {
     initData();
     initPressureMonitor();
     initLVIox(isHard);
-
+    SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
     if (argc > 1) {
         if (strcmp(argv[1], "-p") == 0) {
             if (argc > 2) {

@@ -75,12 +75,6 @@ void *IMULoop(void *arg){
 		write_byte_i2c(i2c, DATA_REG);
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
-        printf("message size\n");
-        printf("message:\n");
-        for (i = 0; i < messageSize; i++) {
-            printf("%#x ", dataBuffer[i]);
-        }
-        printf("\n");
         i = 0;
 		while(i < messageSize){
 			//Check delta velocity
@@ -121,7 +115,7 @@ void *IMULoop(void *arg){
                 data->velZ = data->velZ + (data->accelZ * 0.01);
                 
                 
-                data->posX += (data->velX * 0.01);
+/*                data->posX += (data->velX * 0.01);*/
                 
                 
                 sem_post(&data->mutex);

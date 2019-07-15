@@ -146,7 +146,6 @@ static void *motorHeartbeatLoop(void *unusedParam) {
                 fprintf(stderr, "Failed to send heartbeat\n");
             }
         } else {
-			printf("IDLE\n");
             if (rmsIdleHb() != 0) {
                 fprintf(stderr, "Failed to send idle heartbeat\n");
             }
