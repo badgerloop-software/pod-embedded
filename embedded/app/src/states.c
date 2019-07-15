@@ -352,6 +352,11 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * crawlAction() {
+    
+    // Start crawl timer
+    if(data->timers->crawlTimer == 0){
+        data->timers->crawlTimer = getuSTimestamp();
+    }
     data->state = 8;
  /* Check IMD status */
     if (!getIMDStatus()) {
@@ -379,11 +384,12 @@ stateTransition_t * crawlAction() {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
-    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    }
-
     // CHECK TRANSITION CRITERIA
+    
+    if (getuSTimestamp() - data->timers->crawlTimer > MAX_CRAWL_TIME){
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+    
     if(data->flags->shouldStop){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
