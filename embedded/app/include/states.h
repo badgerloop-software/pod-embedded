@@ -41,7 +41,8 @@
 #define SEC_PS3_BOTTOM_LIMIT			0
 #define SEC_PS3_TOP_LIMIT				20
 
-
+#define PV_TOP_LIMIT                20
+#define PV_BOTTOM_LIMIT             10
 
 
 /* Battery Acceptable Limits */
@@ -140,6 +141,7 @@
 #define MIN_DISTANCE_TO_END		30		/*in m //FIXME Confirm how far from the end of the tube we need to stop */
 
 #define MAX_RUN_TIME            30000000  /* in microseconds, TODO get the real number */
+#define MAX_CRAWL_TIME          30000000  /* in microseconds, TODO get the real number */
 
 
 

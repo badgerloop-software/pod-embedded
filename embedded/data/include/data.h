@@ -42,6 +42,7 @@ typedef struct flags_t {
     int shouldStop;
     int shutdown;
     bool shouldBrake;
+    bool isConnected;
 } flags_t;
 
 
@@ -75,6 +76,7 @@ typedef struct timers_t {
     uint64_t oldRetro;
     uint64_t lastRetro;
 	uint64_t lastRetros[NUM_RETROS];
+    uint64_t crawlTimer;
 } timers_t;
 
 

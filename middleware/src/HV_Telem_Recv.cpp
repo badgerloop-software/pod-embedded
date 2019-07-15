@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
+#include "connStat.h"
 
 using namespace rapidjson;
 
@@ -27,7 +28,7 @@ void *HVTelemRecv(void *arg){
 	
 	while(1){
 		try {
-			UDPSocket sock(TLM_RECV_PORT);                
+			UDPSocket sock(HV_TELEM_RECV_PORT);                
 		
 			char recvString[MAX_TLM_HV_RECV + 1];
 			string sourceAddress;

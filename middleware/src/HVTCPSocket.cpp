@@ -7,8 +7,9 @@
 #include <pthread.h>
 #include <unistd.h>
 
-
 #include "HVTCPSocket.h"
+#include "connStat.h"
+
 extern "C"
 {
 #include "data.h"
@@ -17,20 +18,26 @@ extern "C"
 #include <braking.h>
 }
 
-pthread_t HVTCPThread;
 
-extern data_t *data;
+pthread_t HVTCPThread, connStatThread;
+
+static uint64_t *lastPacket;
+
+extern void *connStatLoop(void *pTimestamp);
 extern stateMachine_t stateMachine;
-#define LV_TCP_PORT_RECV 7878
 
 /* Setup PThread Loop */
-void SetupHVTCPServer()
-{
+void SetupHVTCPServer(){
+    
+    lastPacket = (uint64_t *) malloc(sizeof(uint64_t));
 
-	if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL))
-	{
-		fprintf(stderr, "Error creating HV Telemetry thread\n");
-	}
+    if (pthread_create(&connStatThread, NULL, connStatLoop, lastPacket)) {
+        fprintf(stderr, "Error creating connection watcher\n");
+    }
+
+	  if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL)){
+		  fprintf(stderr, "Error creating HV Telemetry thread\n");
+	  }
 }
 
 /* Thread Loop */
@@ -93,11 +100,13 @@ void *TCPLoop(void *arg)
 			fprintf(stderr, "Error accepting a packet\n");
 			exit(EXIT_FAILURE);
 		}
+    
+    *lastPacket = getuSTimestamp();
 
-		read(new_socket, buffer, 1024);
-
-		printf("RECEIVED: %s\n", buffer);
-
+    read(new_socket, buffer, 1024); 
+		
+		printf("RECEIVED: %s\n",buffer);  
+		
 		// Do things
 		if (!strncmp(buffer, "readyPump", MAX_COMMAND_SIZE))
 		{
@@ -157,6 +166,19 @@ void *TCPLoop(void *arg)
 			sprintf(stateMachine.overrideStateName, "%s\0", buffer + 9);
 		}
 
+		if(!strncmp(buffer, "safetyOn", MAX_COMMAND_SIZE)){
+			//TODO Motor Safety on
+		}
+
+		if(!strncmp(buffer, "safetyOff", MAX_COMMAND_SIZE)){
+			//TODO Motor Safety off
+		}
+
+		if(!strncmp(buffer,"override", 8)){
+			fprintf(stderr, "Override received for state: %s\n", buffer+9);
+		  sprintf(stateMachine.overrideStateName, "%s\0", buffer+9);
+    }
+		
 		// HEARTBEAT
 		if (!strncmp(buffer, "ping", MAX_COMMAND_SIZE))
 		{
@@ -189,10 +211,11 @@ void signalLV(char *cmd)
 		fprintf(stderr, "Signal error\n");
 		exit(1);
 	}
-
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = INADDR_ANY;
-	addr.sin_port = htons(LV_TCP_PORT_RECV);
+    
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(LV_SERVER_PORT);
+    
 
 	if (bind(srvFd, (struct sockaddr *)&addr,
 					 sizeof(addr)) < 0)

@@ -9,12 +9,4 @@ typedef struct LVTelemArgs{
 	int port;
 } LVTelemArgs;
 
-#ifndef HV_SERVER_IP 
-#define HV_SERVER_IP "192.168.1.140"
-#endif
-
-#ifndef HV_SERVER_PORT
-#define HV_SERVER_PORT 9099
-#endif
-
 #endif

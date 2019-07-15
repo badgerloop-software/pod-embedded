@@ -185,7 +185,8 @@ stateTransition_t * readyForLaunchAction() {
 
 
      // CHECK PRESSURE
-    if(!checkPrerunPressures()){
+    if(!checkPrerunPressures())
+    {
         return findTransition(stateMachine.currState, PRE_RUN_FAULT_NAME);
     }
     
@@ -321,23 +322,23 @@ stateTransition_t * stoppedAction() {
     // CHECK FAULT CRITERIA
     
     if(!checkBrakingPressures()){ // Still unchanged
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
     // TODO check LV Power
     // TODO check LV Temp
     
     if(!checkBrakingBattery()){ // Still unchanged
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
     if(!checkStoppedRMS()){ // Still unchanged
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
 	// FIXME FIX ALL TIME CHECKS!
     if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
     
     // CHECK TRANSITION CRITERIA
@@ -351,38 +352,44 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * crawlAction() {
+    
+    // Start crawl timer
+    if(data->timers->crawlTimer == 0){
+        data->timers->crawlTimer = getuSTimestamp();
+    }
     data->state = 8;
  /* Check IMD status */
     if (!getIMDStatus()) {
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
 
     if(!checkCrawlPostrunPressures()){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     // TODO check LV Power
     // TODO check LV Temp
 
     if(!checkCrawlBattery()){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     if(!checkCrawlRMS()){ // Still unchanged
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
-    }
-
-    if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return findTransition(stateMachine.currState, POST_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
     // CHECK TRANSITION CRITERIA
+    
+    if (getuSTimestamp() - data->timers->crawlTimer > MAX_CRAWL_TIME){
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+    
     if(data->flags->shouldStop){
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }

@@ -9,6 +9,7 @@
 
 #include "LVTCPSocket.h"
 #include "data.h"
+#include "connStat.h"
 
 pthread_t LVTCPThread;
 
@@ -48,7 +49,7 @@ void *LVTCPLoop(void *arg){
 		
 	address.sin_family = AF_INET; 
 	address.sin_addr.s_addr = INADDR_ANY; 
-	address.sin_port = htons(LV_TCP_PORT_RECV); 
+	address.sin_port = htons(LV_SERVER_PORT); 
 
 	// Bind Socket
 	if (bind(server_fd, (struct sockaddr *)&address,
