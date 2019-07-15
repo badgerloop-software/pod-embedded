@@ -135,23 +135,24 @@ void *TCPLoop(void *arg)
 
 		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
 		{
-			brakePrimaryRelease();
+			brakePrimaryUnactuate();
 		}
 		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
 		{
-			brakePrimary();
+			brakePrimaryActuate();
 		}
 		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
 		{
-			brakeSecondaryRelease();
+			brakeSecondaryUnactuate();
 		}
 		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
 		{
-			brakeSecondary();
+			brakeSecondaryActuate();
 		}
 
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
 		{
+            /* Lets add a safety check here */
 			setMCUHVEnabled(true);
 		}
 

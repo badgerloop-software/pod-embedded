@@ -84,7 +84,15 @@ static double avgDouble(double *arr, int size) {
     return sum / (double) size;
 }
 
-int brakePrimary() {
+int brake() {
+    brakePrimaryActuate();
+    usleep(500000);
+    if (!limSwitchGet(PRIM_LIM_SWITCH))
+        brakeSecondaryActuate();
+    return 0;
+}
+
+int brakePrimaryUnactuate() {
     if (solenoidSet(SOLENOID_0, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return 1;
@@ -93,9 +101,11 @@ int brakePrimary() {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return 1;
     }
+
+    return 0;
 }
 
-int brakeSecondary() {
+int brakeSecondaryUnactuate() {
     if (solenoidSet(SOLENOID_4, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
         return 1;
@@ -108,10 +118,11 @@ int brakeSecondary() {
         fprintf(stderr, "Failed to set SOLENOID_6\n");
         return 1;
     }
-    return;
+
+    return 0;
 }
 
-int brakePrimaryRelease() {
+int brakePrimaryActuate() {
     if (solenoidSet(SOLENOID_0, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");
         return 1;
@@ -120,9 +131,11 @@ int brakePrimaryRelease() {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return 1;
     }
+
+    return 0;
 }
 
-int brakeSecondaryRelease() {
+int brakeSecondaryActuate() {
     if (solenoidSet(SOLENOID_4, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_2\n");
         return 1;
@@ -135,16 +148,40 @@ int brakeSecondaryRelease() {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
         return 1;
     }
-    return;
+
+    return 0;
 }
 
-/*VENT*/
-/*
- *void brakePrimaryVent() {}
- * 
- *void brakeSecondaryVent() {}
- *
- */
+int brakePrimaryVent() {
+    if (solenoidSet(SOLENOID_0, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_0\n");
+        return 1;
+    }
+    if (solenoidSet(SOLENOID_2, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_1\n");
+        return 1;
+    }
+
+    return 0;
+}
+  
+int brakeSecondaryVent() {
+    if (solenoidSet(SOLENOID_4, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_2\n");
+        return 1;
+    }
+    if (solenoidSet(SOLENOID_5, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_3\n");
+        return 1;
+    }
+    if (solenoidSet(SOLENOID_6, 0) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_4\n");
+        return 1;
+    }
+
+    return 0;
+}
+ 
 
 //Voltage
 double readPrimaryTank() {

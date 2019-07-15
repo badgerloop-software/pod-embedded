@@ -29,18 +29,18 @@ int main(int argc, char *argv[]) {
         if (strcmp(argv[1], "-p") == 0) {
             if (argc > 2) {
                 if (strcmp(argv[2], "on") == 0)
-                    brakePrimary();
+                    brakePrimaryActuate();
                 else if (strcmp(argv[2], "off") == 0)
-                    brakePrimaryRelease();
+                    brakePrimaryUnactuate();
 
             }
         }
         else if (strcmp(argv[1], "-s") == 0) {
             if (argc > 2) {
                 if (strcmp(argv[2], "on") == 0)
-                    brakeSecondary();
+                    brakeSecondaryActuate();
                 else if (strcmp(argv[2], "off") == 0)
-                    brakeSecondaryRelease();
+                    brakeSecondaryUnactuate();
             }
         }
     }

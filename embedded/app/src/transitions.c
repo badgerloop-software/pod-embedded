@@ -20,14 +20,13 @@ int toPropulsion() {
 
 int toBraking() {
     if (stopMotor() != 0) return 1;
-    if (brakePrimary() != 0) return 1;
-
+    brake();
     return 0;
 }
 
 int toCrawl() {
-    brakePrimaryRelease();
-    brakeSecondaryRelease();    /* Usually doesnt do anything */
+    brakePrimaryUnactuate();
+    brakeSecondaryUnactuate();    /* Usually doesnt do anything */
     if (startMotor() != 0) return 1;
     setTorque(CRAWL_TORQUE);
     return 0;
