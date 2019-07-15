@@ -139,6 +139,14 @@ void *TCPLoop(void *arg){
 			// TODO turn hv off
 		}
 
+		if(!strncmp(buffer, "safetyOn", MAX_COMMAND_SIZE)){
+			//TODO Motor Safety on
+		}
+
+		if(!strncmp(buffer, "safetyOff", MAX_COMMAND_SIZE)){
+			//TODO Motor Safety off
+		}
+
 		if(!strncmp(buffer,"override", 8)){
 			fprintf(stderr, "Override received for state: %s\n", buffer+9);
 		    sprintf(stateMachine.overrideStateName, "%s\0", buffer+9);
