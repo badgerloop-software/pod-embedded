@@ -257,3 +257,6 @@ $RECYCLE.BIN/
 #Dashboard Assets
 **/public/fonts
 **/public/images
+
+/.vscode
+.vscode/

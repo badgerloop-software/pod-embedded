@@ -59,13 +59,13 @@ int initData() {
 }
 
 int initMetaData() {
-    if ((data = (data_t *) malloc(sizeof(data_t)))                      == NULL) { return 1; }
-	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t)))    == NULL) { return 1; }
-	if ((data->motion = (motion_t *)malloc(sizeof(motion_t)))           == NULL) { return 1; }
-	if ((data->bms = (bms_t *) malloc(sizeof(bms_t)))     	          	== NULL) { return 1; }
-	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		       	== NULL) { return 1; }
-	if ((data->flags = (flags_t *) malloc(sizeof(flags_t)))             == NULL) { return 1; }
-	if ((data->timers = (timers_t *) malloc(sizeof(timers_t)))          == NULL) { return 1; }
+    if ((data = (data_t *) malloc(sizeof(data_t)))                 == NULL) { return 1; }
+	if ((data->pressure = (pressure_t *) malloc(sizeof(pressure_t))) == NULL) { return 1; }
+	if ((data->motion = (motion_t *)malloc(sizeof(motion_t)))        == NULL) { return 1; }
+	if ((data->bms = (bms_t *) malloc(sizeof(bms_t)))     	         == NULL) { return 1; }
+	if ((data->rms = (rms_t *) malloc(sizeof(rms_t)))      		       == NULL) { return 1; }
+	if ((data->flags = (flags_t *) malloc(sizeof(flags_t)))          == NULL) { return 1; }
+	if ((data->timers = (timers_t *) malloc(sizeof(timers_t)))       == NULL) { return 1; }
     data->state = 0;
     return 0;
 }
