@@ -132,23 +132,6 @@ void *TCPLoop(void *arg)
 			data->flags->emergencyBrake = 1;
 		}
 
-		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
-		{
-			brakePrimaryUnactuate();
-		}
-		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
-		{
-			brakePrimaryActuate();
-		}
-		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
-		{
-			brakeSecondaryUnactuate();
-		}
-		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
-		{
-			brakeSecondaryActuate();
-		}
-
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
 		{
             /* Lets add a safety check here */
