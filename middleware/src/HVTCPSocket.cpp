@@ -15,7 +15,6 @@ extern "C"
 #include "data.h"
 #include "state_machine.h"
 #include "hv_iox.h"
-#include <braking.h>
 }
 
 
@@ -131,23 +130,6 @@ void *TCPLoop(void *arg)
 		if (!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE))
 		{
 			data->flags->emergencyBrake = 1;
-		}
-
-		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
-		{
-			brakePrimaryRelease();
-		}
-		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
-		{
-			brakePrimary();
-		}
-		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
-		{
-			brakeSecondaryRelease();
-		}
-		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
-		{
-			brakeSecondary();
 		}
 
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
