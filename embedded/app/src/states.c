@@ -437,7 +437,9 @@ stateTransition_t * safeToApproachAction() {
     data->state = 10;
 	return NULL;
 }
-
+// 
+//  We're removing pre and post faults and making them non run faults. 
+// When you change this make 11 the non run fault action. Ty - EU
 stateTransition_t * preFaultAction() {
     //TODO
     data->state = 11;

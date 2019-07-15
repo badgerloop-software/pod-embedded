@@ -258,4 +258,5 @@ $RECYCLE.BIN/
 **/public/fonts
 **/public/images
 
+/.vscode
 .vscode/
