@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <state_machine.h>
+#include <states.h>
 
 #define PASS 0
 #define FAIL 1
@@ -133,6 +134,35 @@ static int navMissedRetroTest()
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
     }
 
+static int crawlTimerTest()
+    {
+    FREEZE_SM;
+    genericInit("Crawl Timer Test");
+    goToState(CRAWL_NAME);
+    UNFREEZE_SM;
+
+    WAIT(.5);
+
+    if (checkForChange(CRAWL_NAME) != PASS) return FAIL;
+    
+
+    printf("check\n");
+
+    uint64_t offset = getuSTimestamp();
+    
+    for (int i = 0; i < (30 * 5); i++) {
+        printf("crawl timer: %llu\r", getuSTimestamp() - data->timers->crawlTimer);
+        fflush(stdin);
+        usleep(200000);
+    }
+   
+    WAIT(.2);
+
+    return ASSERT_STATE_IS(BRAKING_NAME);
+
+    }
+
+
 /* PV depressurizing.*/
 static int pvDepressurizingTest()
     {
@@ -197,7 +227,8 @@ int main() {
     }
     if (pthread_create(&smThread, NULL, stateMachineLoop, NULL) != 0)
         return -1;
-    WAIT(1);
+    WAIT(.5);
+    RUN_TEST(crawlTimerTest);
     RUN_TEST(hvBattSOCLowTest);
     RUN_TEST(hvBattLowVoltTest);
     RUN_TEST(rmsOverheatTest);

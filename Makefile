@@ -23,6 +23,10 @@ ifdef LOCAL
 NOI2C := NOI2C
 endif
 
+USER   := "debian"
+LV_IP  := "192.168.7.2"
+HV_IP  := "192.168.7.3"
+
 ifdef BB
 BEAGLE := ${BBCC}
 endif
@@ -59,11 +63,16 @@ UTL_OBJ		:= $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(basename $(ALL_UTL))))
 # .SEC keeps intermediates, so make doesnt automatically clean .o files
 .SECONDARY:
 
-all: $(TARGETS)
 
+all: $(TARGETS)
+	
 examples: $(EXAMPLES)
 
 utils: $(UTILS)
+
+copy:
+	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(USER)@$(LV_IP):~/bin &
+	-scp -q -o ConnectTimeout=2 -r $(OUTPUT_DIR) $(USER)@$(HV_IP):~/bin &
 
 $(OUTPUT_DIR)/%: $(GEN_OBJ) $(OBJ_DIR)/%.o
 	$(GPP) $(LDFLAGS) $^ $(LDLIBS) -o $@
