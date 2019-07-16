@@ -37,6 +37,7 @@ typedef struct stateMachine_t stateMachine_t;
 
 state_t *getCurrState(void);
 
+state_t *setCurrState(state_t *state);
 state_t *findState(char *name);
 /*
 * The state machine is a directed graph. Each edge is a transition
