@@ -12,6 +12,12 @@
 #include "data.h"
 #include "connStat.h"
 
+extern "C" {
+#include "bms.h"
+    extern float* getCellArray();
+    extern float cells[72];
+}
+
 using namespace rapidjson;
 using namespace std;
 
@@ -121,6 +127,44 @@ void *HVTelemetryLoop(void *arg){
 			
             Value maxCellTemp;
             maxCellTemp.SetUint(data->bms->highTemp);
+            
+            Value minCellTemp;
+            minCellTemp.SetUint(data->bms->lowTemp);
+
+            Value avgCellTemp;
+            avgCellTemp.SetUint(data->bms->avgTemp);
+
+            Value igbtT;
+            igbtT.SetUint(data->rms->igbtTemp);
+
+            Value gateDrvTemp;
+            gateDrvTemp.SetUint(data->rms->gateDriverBoardTemp);
+
+            Value cntrlBoardTemp;
+            cntrlBoardTemp.SetUint(data->rms->controlBoardTemp);
+
+            Value motorTemp;
+            motorTemp.SetUint(data->rms->motorTemp);
+
+            Value motorSpeed;
+            motorSpeed.SetUint(data->rms->motorSpeed);
+
+            Value phaseACurrent;
+            phaseACurrent.SetUint(data->rms->phaseACurrent);
+
+            Value busCurrent;
+            busCurrent.SetUint(data->rms->dcBusCurrent);
+
+            Value busV;
+            busV.SetUint(data->rms->dcBusVoltage);
+
+            Value cmdT;
+            cmdT.SetUint(data->rms->commandedTorque);
+
+            Value torqueFdbk;
+            torqueFdbk.SetUint(data->rms->actualTorque);
+
+            
 
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
@@ -128,31 +172,49 @@ void *HVTelemetryLoop(void *arg){
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();
+            Value battCells;
+            battCells.SetArray();
+            for (int i =0; i < 72; i++)
+                    battCells.PushBack((Value)cells[i], batteryDoc.GetAllocator()); 
 			batteryDoc.AddMember("packVoltage", packV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packCurrent", packC, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packSOC", packSOC, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packAH", packAH, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMaxVoltage", cellMaxV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMinVoltage", cellMinV, batteryDoc.GetAllocator());
-		    
+		    batteryDoc.AddMember("cells", battCells, batteryDoc.GetAllocator());
             /**/
             batteryDoc.AddMember("maxCellTemp", maxCellTemp, batteryDoc.GetAllocator());
-/*            batteryDoc.AddMember("lvVoltage")*/
-            /**/
+            batteryDoc.AddMember("minCellTemp", minCellTemp, batteryDoc.GetAllocator());
+            batteryDoc.AddMember("avgCellTemp", avgCellTemp, batteryDoc.GetAllocator());
 
 			Document brakingDoc;
 			brakingDoc.SetObject();
-			brakingDoc.AddMember("secondaryTank", secondaryTank, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("secondaryLine", secondaryLine, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("secondaryActuation", secondaryActuation, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("primaryTank", primaryTank, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("primaryLine", primaryLine, brakingDoc.GetAllocator());
-			brakingDoc.AddMember("primaryActuation", primaryActuation, brakingDoc.GetAllocator());
+/*			brakingDoc.AddMember("secondaryTank", secondaryTank, brakingDoc.GetAllocator());*/
+/*			brakingDoc.AddMember("secondaryLine", secondaryLine, brakingDoc.GetAllocator());*/
+/*			brakingDoc.AddMember("secondaryActuation", secondaryActuation, brakingDoc.GetAllocator());*/
+/*			brakingDoc.AddMember("primaryTank", primaryTank, brakingDoc.GetAllocator());*/
+/*			brakingDoc.AddMember("primaryLine", primaryLine, brakingDoc.GetAllocator());*/
+/*			brakingDoc.AddMember("primaryActuation", primaryActuation, brakingDoc.GetAllocator());*/
+            Document motorDoc;
+            motorDoc.SetObject();
+            motorDoc.AddMember("phaseAIGBTTemp", igbtT, motorDoc.GetAllocator());
+            motorDoc.AddMember("gateDriverBoardTemp", gateDrvTemp, motorDoc.GetAllocator());
+            motorDoc.AddMember("controlBoardTemp", cntrlBoardTemp, motorDoc.GetAllocator());
+            motorDoc.AddMember("motorTemp", motorTemp, motorDoc.GetAllocator());
+            motorDoc.AddMember("motorSpeed", motorSpeed, motorDoc.GetAllocator());
+            motorDoc.AddMember("phaseACurrent", phaseACurrent, motorDoc.GetAllocator());
+            motorDoc.AddMember("busCurrent", busCurrent, motorDoc.GetAllocator());
+            motorDoc.AddMember("busVoltage", busV, motorDoc.GetAllocator());
+            motorDoc.AddMember("commandTorque", cmdT, motorDoc.GetAllocator());
+            motorDoc.AddMember("torqueFeedback", torqueFdbk, motorDoc.GetAllocator());
 			
-			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
-			document.AddMember("time", age, document.GetAllocator());
+            /* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
+			document.AddMember("motor", motorDoc, document.GetAllocator());
+            document.AddMember("time", age, document.GetAllocator());
 			document.AddMember("battery", batteryDoc, document.GetAllocator());
-			document.AddMember("braking", brakingDoc, document.GetAllocator());
+/*			document.AddMember("braking", brakingDoc,
+ *			document.GetAllocator());*/
 			document.AddMember("state", state, document.GetAllocator());
 			StringBuffer sb;
 			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too

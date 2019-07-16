@@ -5,7 +5,7 @@
 #include <lv_iox.h>
 #include <pthread.h>
 
-#define VOLTAGE_2000_SCALING(x) ( ((((x / 256.0) * 5.0) - 0.5) / 4.0) * 2000.0)
+#define VOLTAGE_2000_SCALING(x) ((((((x/256.0)*5.0)-0.5)/4.0)*2000.0))
 #define CURRENT_500_SCALING(x)  ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 500.0)
 #define CURRENT_50_SCALING(x)   ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 50.0)
 
@@ -44,11 +44,11 @@ void *pressureMonitor() {
 
     uint64_t i = 0;
     while(1) {
-        primTankRing[i % RING_SIZE] = readPrimaryTank();
+        primTankRing[i % RING_SIZE] = readPrimaryTank() + 10.76;
         primLineRing[i % RING_SIZE] = readPrimaryLine();
         primActRing[i % RING_SIZE]  = readPrimaryActuator();
 
-        secTankRing[i % RING_SIZE]  = readSecTank();
+        secTankRing[i % RING_SIZE]  = readSecTank() + 11.83;
         secLineRing[i % RING_SIZE]  = readSecLine();
         secActRing[i % RING_SIZE]   = readSecActuator();
 

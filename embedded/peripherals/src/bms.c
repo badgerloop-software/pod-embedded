@@ -4,8 +4,9 @@
 #include "bms.h"
 #include "can.h"
 #include "data.h"
-#define DEBUG_BMS
+
 extern data_t *data;
+float cells[72] = {0};
 
 int bmsClearFaults(void){
 
@@ -45,7 +46,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 			bms->packVoltage /= 10;
 			bms->Soc = msg[4]/2;
 			bms->relayStatus = msg[6] | msg[5] << 8;
-            bms->cellMaxVoltage = (msg[5] << 8) /10000.0;
+            bms->cellMaxVoltage = ((msg[5] << 8)| msg[6]) /10000.0;
 #ifdef DEBUG_BMS
 			printf("V: %f\r\n", bms->packVoltage);
 			printf("A: %f\r\n", bms->packCurrent);
@@ -56,7 +57,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 		case 0x6B1:
 			bms->packDCL = msg[1] | msg[0] << 8;
 			bms->highTemp = msg[4];
-			bms->cellMinVoltage = (msg[7] | (msg[6] << 8)) / 10000.0;
+/*			bms->cellMinVoltage = (msg[7] | (msg[6] << 8)) / 10000.0;*/
 #ifdef DEBUG_BMS
             printf("DCL: %d\r\n", bms->packDCL);
 			printf("High T: %d\r\n", bms->highTemp);
@@ -64,7 +65,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 #endif
 			break;
 		case 0x653:
-			printf("ID: 0x%3lx\r\n", (long unsigned int) id);
+/*			printf("ID: 0x%3lx\r\n", (long unsigned int) id);*/
 			bms->relayStatus = msg[1] | msg[0] << 8;
 			bms->relayStatus = msg[0];
 			bms->inputVoltage = msg[2] | (msg[3] << 8);
@@ -121,9 +122,9 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
             break;
 		case 0x150:
 
-			bms->packCurrent = msg[0] | (msg[1] << 8);
+/*			bms->avgTemp = msg[0];*/
 			bms->packCurrent /= 10;
-            bms->cellMinVoltage = ((msg[3] << 8) | msg[4]) / 10000.0;
+/*            bms->cellMinVoltage = ((msg[3] << 8) | msg[4]) / 10000.0;*/
 /*			bms->packVoltage = msg[2] | (msg[3] << 8);*/
 /*			bms->packVoltage /= 10;*/
 			bms->packAh = msg[4] | (msg[5] << 8);
@@ -137,11 +138,22 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
             printf("Low Temp  %d\r\n", bms->lowTemp);
 #endif
             break;
+        case 0x6b2:
+            data->bms->cellMinVoltage = ((msg[0] << 8) | msg[1]) / 10000.0;
+/*            data->bms->cellMaxVoltage = ((msg[2] << 8) | msg[3]) / 10000;*/
+            bms->avgTemp = msg[2];
+            break;
 		case 0x80:
 			break;
-		default:
+        case 0x36:
+            if (msg[0] >= 0 && msg[0] < 72)
+                cells[msg[0]] = (msg[2] | (msg[1] << 8)) / 10000.0;
+             
+        
+        default:
 			return 0;
-	}
+        
+    }
 	return 1;
 }
 
@@ -162,9 +174,21 @@ void bmsDump () {
     printf("\tRelay Status      = %u\n", bms->relayStatus);
     printf("\tHigh Temp         = %u\n", bms->highTemp);
     printf("\tLow Temp          = %u\n", bms->lowTemp);
+    printf("\tAvg Temp          = %d\n", bms->avgTemp);
     printf("\tCell Max Voltage  = %f\n", bms->cellMaxVoltage);
     printf("\tCell Min Voltage  = %f\n", bms->cellMinVoltage);
     printf("\tMax Cells         = %u\n", bms->maxCells);
     printf("\tNumber of Cells   = %u\n", bms->numCells);
     printf("---END BMS---\n");
+}
+float *getCellArray();
+float *getCellArray() {
+    return cells;
+}
+
+void dumpCells() {
+    printf("BATTERY CELLS: \n");
+    for (int i = 0; i < 72; i++) {
+        printf("CELL: %d : %f V\n", i , cells[i]);
+    }
 }

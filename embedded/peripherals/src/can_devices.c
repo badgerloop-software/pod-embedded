@@ -25,13 +25,14 @@ void rx_recv(struct can_frame *can_mesg){
 		//	printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
 		//	printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
 			bool validRMSMesg = false;
-/*			if(rms_parser(can_mesg->can_id, can_mesg->data, NO_FILTER)){*/
+			if(!rms_parser(can_mesg->can_id, can_mesg->data, NO_FILTER)){
 		//		printf("RMS Data parsed successfully\n");
-/*				validRMSMesg = true;*/
-/*			}*/
+				validRMSMesg = true;
+			}
 			if(!validRMSMesg && bmsParseMsg(can_mesg->can_id, can_mesg->data)){
-				printf("BMS Data parsed successfully\n");
-				bmsDump();
+/*				printf("BMS Data parsed successfully\n");*/
+/*				//dumpCells();*/
+/*                bmsDump();*/
 		}
 		NEW_CAN_MESSAGE = false;
 	}

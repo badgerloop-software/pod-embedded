@@ -26,7 +26,7 @@ endif
 LV_USER   := "debian"
 HV_USER	  := "ezra"
 LV_IP  := "192.168.1.126"
-HV_IP  := "192.168.1.146"
+HV_IP  := "192.168.1.147"
 
 ifdef BB
 BEAGLE := ${BBCC}

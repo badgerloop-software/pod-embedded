@@ -6,5 +6,5 @@
 int bmsClearFaults();
 int bmsParseMsg(uint32_t id, uint8_t *msg);
 void bmsDump();
-
+void dumpCells();
 #endif

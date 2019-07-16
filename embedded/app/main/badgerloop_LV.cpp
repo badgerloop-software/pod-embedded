@@ -9,6 +9,7 @@
 extern "C"
 {
     #include "lv_iox.h"
+    #include "nav.h"
     #include "braking.h"
     #include "proc_iox.h"
 	#include "imu.h"
@@ -20,19 +21,22 @@ int init() {
     /* Init Data */
     initData();
 
+    initProcIox(true);
+    initLVIox(true);
 	/* Init all peripherals */
 	SetupIMU();
-    initLVIox(true);
-    initProcIox(true);
-
-	/* Init telemetry services */
-	SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+    initRetros();
+    initPressureMonitor();
+    initNav();
+    /* Init telemetry services */
+	SetupLVTelemetry((char *) DASHBOARD_IP, LV_TELEM_PORT);
 	SetupLVTCPServer();
 
     return 0;
 }
 
 int main() {
+
 
 	if (init() == 1) {
 		printf("Error in initialization! Exiting...\r\n");

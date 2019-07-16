@@ -277,6 +277,7 @@ void runStateMachine(void) {
     }
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();
+    printf("curr: %s\n", stateMachine.currState->name);
     if (transition != NULL) {
         if (transition->action() == 0) 
             stateMachine.currState = transition->target;

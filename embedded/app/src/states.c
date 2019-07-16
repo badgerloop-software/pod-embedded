@@ -53,25 +53,25 @@ stateTransition_t * idleAction() {
     
 
     // CHECK PRESSURE
-    if(!checkPrerunPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkPrerunPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // CHECK STOPPED (MOTION)
-    if(!checkStopped()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkStopped()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // TODO check LV Power
     // TODO check LV Temp
     
-    if(!checkPrerunBattery()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkPrerunBattery()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
-    if(!checkPrerunRMS()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkPrerunRMS()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // TRANSITION CRITERIA
     if(data->flags->readyPump){
