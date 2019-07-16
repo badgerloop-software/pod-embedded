@@ -147,8 +147,8 @@ typedef struct bms_t {
     uint16_t relayStatus;
     uint8_t highTemp;
     uint8_t lowTemp;
-    uint16_t cellMaxVoltage;
-    uint16_t cellMinVoltage;
+    float cellMaxVoltage;
+    float cellMinVoltage;
     uint16_t cellAvgVoltage;
     uint8_t maxCells;
     uint8_t numCells;

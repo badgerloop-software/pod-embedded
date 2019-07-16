@@ -89,11 +89,11 @@ void *HVTelemetryLoop(void *arg){
 			
 			// CELL MAX VOLTAGE
 			Value cellMaxV;
-			cellMaxV.SetUint(data->bms->cellMaxVoltage);
+			cellMaxV.SetFloat(data->bms->cellMaxVoltage);
 			
 			// CELL MIN VOLTAGE
 			Value cellMinV;
-			cellMinV.SetUint(data->bms->cellMinVoltage);
+			cellMinV.SetFloat(data->bms->cellMinVoltage);
 			
 			// SECONDARY TANK
 			Value secondaryTank;
@@ -119,6 +119,9 @@ void *HVTelemetryLoop(void *arg){
 			Value primaryActuation;
 			primaryActuation.SetNull();
 			
+            Value maxCellTemp;
+            maxCellTemp.SetUint(data->bms->highTemp);
+
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
 			document.AddMember("id", packet_id, document.GetAllocator());
@@ -131,7 +134,12 @@ void *HVTelemetryLoop(void *arg){
 			batteryDoc.AddMember("packAH", packAH, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMaxVoltage", cellMaxV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMinVoltage", cellMinV, batteryDoc.GetAllocator());
-			
+		    
+            /**/
+            batteryDoc.AddMember("maxCellTemp", maxCellTemp, batteryDoc.GetAllocator());
+/*            batteryDoc.AddMember("lvVoltage")*/
+            /**/
+
 			Document brakingDoc;
 			brakingDoc.SetObject();
 			brakingDoc.AddMember("secondaryTank", secondaryTank, brakingDoc.GetAllocator());

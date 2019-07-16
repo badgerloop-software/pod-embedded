@@ -4,6 +4,7 @@
 #include <string.h>
 #include "connStat.h"
 extern "C" {
+#include "imu.h"
 #include "braking.h"
 #include "lv_iox.h"
 #include "data.h"
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]) {
     initData();
     initPressureMonitor();
     initLVIox(isHard);
+    SetupIMU();
     SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
     if (argc > 1) {
         if (strcmp(argv[1], "-p") == 0) {

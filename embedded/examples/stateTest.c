@@ -90,6 +90,17 @@ static int hvBattSOCLowTest()
     return ASSERT_STATE_IS(NON_RUN_FAULT_NAME);
     }
 
+static int bmsTest() {
+    //min voltage, max temp, SOC, Current, packV
+    FREEZE_SM;
+    genericInit("BMS passes health checks");
+    UNFREEZE_SM;
+    
+
+    WAIT(0.5);
+    return 0;    
+}
+
 /* Voltage Low, pack and cell */
 static int hvBattLowVoltTest() 
     {

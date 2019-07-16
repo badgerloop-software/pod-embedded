@@ -261,12 +261,12 @@ stateTransition_t * stoppedAction() {
 	return NULL;
 }
 
-stateTransition_t * crawlAction() {
+stateTransition_t * servPrechargeAction() {
+    return NULL;
     
-    // Start crawl timer
-    if(data->timers->crawlTimer == 0){
-        data->timers->crawlTimer = getuSTimestamp();
-    }
+}
+
+stateTransition_t * crawlAction() {
     data->state = 8;
  /* Check IMD status */
     if (!getIMDStatus()) {

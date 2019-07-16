@@ -1,7 +1,7 @@
 #ifndef __CONNSTAT_H__
 #define __CONNSTAT_H__
 
-#define DASHBOARD_IP "192.168.1.120"
+#define DASHBOARD_IP "192.168.1.109"
 #define DASHBOARD_PORT 33333
 
 #define LV_SERVER_IP "192.168.1.146"

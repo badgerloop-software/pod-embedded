@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 
-#define NUM_STATES              10
+#define NUM_STATES              11
 #define FAULT                   "fault"
 
 #define NON_RUN_FAULT_NAME      FAULT"NonRun"
@@ -19,6 +19,7 @@
 #define PROPULSION_NAME         "propulsion"
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"
+#define SERV_PRECHARGE_NAME     "servicePrecharge"
 #define CRAWL_NAME              "servicePropulsion"
 #define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"

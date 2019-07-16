@@ -120,8 +120,8 @@ void *LVTelemetryLoop(void *arg)
 			currP.SetNull();
 			
             Value primBrake, secBrake;
-            primBrake.SetBool(limSwitchGet(PRIM_LIM_SWITCH));
-            secBrake.SetBool(limSwitchGet(SEC_LIM_SWITCH));
+            primBrake.SetBool(1/*limSwitchGet(PRIM_LIM_SWITCH)*/);
+            secBrake.SetBool(1/*limSwitchGet(SEC_LIM_SWITCH)*/);
 
             Value imuPos;
             imuPos.SetFloat(getPosX());

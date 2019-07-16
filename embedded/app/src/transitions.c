@@ -27,6 +27,9 @@ int toBraking() {
 int toCrawl() {
     brakePrimaryUnactuate();
     brakeSecondaryUnactuate();    /* Usually doesnt do anything */
+
+    data->timers->crawlTimer = getuSTimestamp();
+
     if (startMotor() != 0) return 1;
     setTorque(CRAWL_TORQUE);
     return 0;

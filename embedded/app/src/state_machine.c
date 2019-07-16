@@ -25,6 +25,7 @@ extern stateTransition_t * pumpdownAction(void);
 extern stateTransition_t * propulsionAction(void);
 extern stateTransition_t * brakingAction(void);
 extern stateTransition_t * stoppedAction(void);
+extern stateTransition_t * servPrechargeAction(void);
 extern stateTransition_t * crawlAction(void);
 extern stateTransition_t * postRunAction(void);
 extern stateTransition_t * safeToApproachAction(void);
@@ -177,6 +178,14 @@ static int initBraking(state_t *braking) {
     return 0;
 }
 
+static int initServPrecharge(state_t *servPrecharge) {
+    initTransition(servPrecharge->transitions[0], findState(CRAWL_NAME), toCrawl);
+    initTransition(servPrecharge->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
+    addTransition(SERV_PRECHARGE_NAME, servPrecharge->transitions[0]);
+    addTransition(SERV_PRECHARGE_NAME,
+            servPrecharge->fault = servPrecharge->transitions[1]);
+}
+
 static int initCrawl(state_t *crawl) {
 
     initTransition(crawl->transitions[1], findState(POST_RUN_NAME), toBraking);
@@ -296,21 +305,23 @@ void buildStateMachine(void) {
     initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 2);
     initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
     initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 3);
-    initState(stateMachine.allStates[4], CRAWL_NAME, crawlAction, 3);
-    initState(stateMachine.allStates[5], STOPPED_NAME, stoppedAction, 3);
-    initState(stateMachine.allStates[6], POST_RUN_NAME, postRunAction, 2);
-    initState(stateMachine.allStates[7], SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
-    initState(stateMachine.allStates[8], NON_RUN_FAULT_NAME, nonRunFaultAction, 0);
-    initState(stateMachine.allStates[9], RUN_FAULT_NAME, runFaultAction, 0);
+    initState(stateMachine.allStates[4], SERV_PRECHARGE_NAME, servPrechargeAction, 2);
+    initState(stateMachine.allStates[5], CRAWL_NAME, crawlAction, 3);
+    initState(stateMachine.allStates[6], STOPPED_NAME, stoppedAction, 3);
+    initState(stateMachine.allStates[7], POST_RUN_NAME, postRunAction, 2);
+    initState(stateMachine.allStates[8], SAFE_TO_APPROACH_NAME, safeToApproachAction, 1);
+    initState(stateMachine.allStates[9], NON_RUN_FAULT_NAME, nonRunFaultAction, 0);
+    initState(stateMachine.allStates[10], RUN_FAULT_NAME, runFaultAction, 0);
     
     initIdle( stateMachine.allStates[0]);
     initPumpdown(stateMachine.allStates[1]);
 	initPropulsion(stateMachine.allStates[2]);
     initBraking(stateMachine.allStates[3]);
     initStopped(stateMachine.allStates[4]);
-    initCrawl(stateMachine.allStates[5]);
-    initPostRun(stateMachine.allStates[6]);
-    initSafeToApproach(stateMachine.allStates[7]);
+    initServPrecharge(stateMachine.allStates[5]);
+    initCrawl(stateMachine.allStates[6]);
+    initPostRun(stateMachine.allStates[7]);
+    initSafeToApproach(stateMachine.allStates[8]);
  
     stateMachine.currState = stateMachine.allStates[0];
 
