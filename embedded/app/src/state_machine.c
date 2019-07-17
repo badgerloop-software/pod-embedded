@@ -134,9 +134,10 @@ static int initIdle(state_t *idle) {
 
     initTransition(idle->transitions[0], findState(PUMPDOWN_NAME), genTranAction);
     initTransition(idle->transitions[1], findState(NON_RUN_FAULT_NAME), genTranAction);
+    initTransition(idle->transitions[2], findState(RUN_FAULT_NAME), toRunFault);
     addTransition(IDLE_NAME, idle->transitions[0]);
     addTransition(IDLE_NAME, idle->transitions[1]);
-    
+    addTransition(IDLE_NAME, idle->transitions[2]);
     idle->fault = idle->transitions[1];
 
     return 0;
@@ -167,13 +168,11 @@ static int initPropulsion(state_t *propulsion) {
 
 static int initBraking(state_t *braking) {
 
-    initTransition(braking->transitions[0], findState(CRAWL_NAME), toCrawl);
-    initTransition(braking->transitions[1], findState(STOPPED_NAME), genTranAction);
-    initTransition(braking->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(braking->transitions[0], findState(STOPPED_NAME), genTranAction);
+    initTransition(braking->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(BRAKING_NAME, braking->transitions[0]);
-    addTransition(BRAKING_NAME, braking->transitions[1]);
     addTransition(BRAKING_NAME, 
-            braking->fault = braking->transitions[2]);
+            braking->fault = braking->transitions[1]);
 
     return 0;
 }
@@ -201,7 +200,7 @@ static int initStopped(state_t *stopped) {
 
 
     initTransition(stopped->transitions[0], findState(POST_RUN_NAME), genTranAction);
-    initTransition(stopped->transitions[1], findState(CRAWL_NAME), toCrawl);
+/*    initTransition(stopped->transitions[1], findState(SERV_PRECHARGE_NAME), toServPrecharge);*/
     initTransition(stopped->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(STOPPED_NAME, stopped->transitions[0]);
     addTransition(STOPPED_NAME, stopped->transitions[1]);
@@ -227,6 +226,7 @@ static int initSafeToApproach(state_t *safeToApproach) {
     return 0;
 }
 
+
 /***
  * findTransition - Looks through a passed in states list of transitions
  * 	and identifies the one that leads to a specified target
@@ -245,11 +245,14 @@ stateTransition_t *findTransition(state_t *srcState, char *targName) {
     }
     return NULL;
 }
-
-state_t *getCurrState(void) {
+state_t *getCurrState(void);
+state_t *getCurrState() {
     return stateMachine.currState;
 }
-
+void setCurrState(state_t *state);
+void setCurrState(state_t *state) {
+    stateMachine.currState = state;
+}
 /***
  * runStateMachine -
  *		Executes the current states action. A mini control loop
@@ -277,7 +280,6 @@ void runStateMachine(void) {
     }
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();
-    printf("curr: %s\n", stateMachine.currState->name);
     if (transition != NULL) {
         if (transition->action() == 0) 
             stateMachine.currState = transition->target;
@@ -302,7 +304,7 @@ void buildStateMachine(void) {
         stateMachine.allStates[i] = malloc(sizeof(state_t));
     }
     
-    initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 2);
+    initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 4);
     initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 2);
     initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
     initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 3);

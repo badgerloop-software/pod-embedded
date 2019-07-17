@@ -5,12 +5,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include <rms.h>
 #include <stdint.h>
-#include <can.h>
-#include <data.h>
 #include <data_dump.h>
 #include <signal.h>
+#include "connStat.h"
+#include "data.h"
+#include "rms.h"
+#include "can.h"
 
 static pthread_t motorThreads[3];
 static bool motorIsEnabled = false;
@@ -96,12 +97,11 @@ void spinMotor() {
 int main() {
 	initData();
 	printf("initData\n");
-	initCan();
 	//	SetupDataDump();
-	printf("canINit\n");
-	data->rms->VSMCode = 0;
-	//	rmsConfig();
-
+	initCan();
+    printf("canINit\n");
+/*	SetupCANDevices();*/
+    //	rmsConfig();
 	struct sigaction sig;
 	sig.sa_sigaction = quitHandler;
 	printf("SIGACTION %d\n",sigaction(SIGINT, &sig, NULL));

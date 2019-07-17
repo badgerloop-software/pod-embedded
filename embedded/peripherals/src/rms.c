@@ -118,7 +118,7 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
 }
 int rmsSendHbMsg(uint16_t torque) {
 	
-	uint8_t payload[] = {20/*TORQUE_SCALE_LWR(torque)*/, 0/*TORQUE_SCALE_UPR(torque)*/, 0x0, 0x0, 
+	uint8_t payload[] = {10/*TORQUE_SCALE_LWR(torque)*/, 0/*TORQUE_SCALE_UPR(torque)*/, 0x0, 0x0, 
         0x1, 0x1, 0x0, 0x0};
     
     return canSend(RMS_INV_EN_ID, payload, 8);
@@ -162,8 +162,7 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
 		case (0xa4):
 			break;
 		case (0xa5):
-            val = (rmsData[2] | (rmsData[3] << 8));
-			data->rms->motorSpeed = val < -10000 || val > 10000 ? data->rms->motorSpeed: val; // RPM
+			data->rms->motorSpeed = (rmsData[2] | (rmsData[3] << 8));//val == 0 ? 0 : 65536 - abs(val) ;//< -10000 || val > 10000 ? data->rms->motorSpeed: val; // RPM
 			data->rms->electricalFreq = (rmsData[4] | (rmsData[5] << 8 )) / 10; //electrical frequency Hz
 #ifdef DEBUG_RMS
             printf("Motor Speed: %d\r\n", data->rms->motorSpeed);
@@ -171,10 +170,10 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
 #endif
             break;
 		case (0xa6):
-            val = (rmsData[0] | (rmsData[1] << 8)) / 10;
-            val2 = (rmsData[6] | (rmsData[7] << 8)) / 10;
-			data->rms->phaseACurrent = val > 1000 ? data->rms->phaseACurrent : val; // Phase A current
-			data->rms->dcBusCurrent = val2 < 0 ? data->rms->dcBusCurrent : val2; //DC Bus current
+			data->rms->phaseACurrent = (rmsData[0] | (rmsData[1] << 8));
+            data->rms->phaseACurrent /= 10;//> 1000 ? data->rms->phaseACurrent : val; // Phase A current
+			data->rms->dcBusCurrent = (rmsData[6] | (rmsData[7] << 8));
+            data->rms->dcBusCurrent /= 10;//< 0 ? data->rms->dcBusCurrent : val2; //DC Bus current
 #ifdef DEBUG_RMS
             printf("Phase A Current: %d\r\n", data->rms->phaseACurrent);
 			printf("DC Bus Current: %d\r\n", data->rms->dcBusCurrent);
@@ -183,10 +182,10 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
             break;
 		case (0xa7):
 
-            val =  (rmsData[0] | (rmsData[1] << 8))/10;
             val2 = (rmsData[2] | (rmsData[3] << 8)) / 10;
-			data->rms->dcBusVoltage = val > 1000 ? data->rms->dcBusVoltage : val;//DC Bus voltage
-			data->rms->outputVoltageLn = val2; //Voltage line to netural 
+			data->rms->dcBusVoltage = (rmsData[0] | (rmsData[1] << 8)); //> 1000 ? data->rms->dcBusVoltage : val;//DC Bus voltage
+			data->rms->dcBusVoltage /= 10;
+            data->rms->outputVoltageLn = val2; //Voltage line to netural 
 #ifdef DEBUG_RMS
             printf("DC Bus Voltage: %d\r\n", data->rms->dcBusVoltage);
 			printf("Output Voltage line: %d\r\n", data->rms->outputVoltageLn);
@@ -218,11 +217,11 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
 #endif
             break;
 		case (0xac):
-            val = (rmsData[0] | (rmsData[1] << 8)) /10;
-            val2 = (rmsData[2] | (rmsData[3] << 8)) / 10;
-			data->rms->commandedTorque = val > 200 ? data->rms->commandedTorque : val; 
-			data->rms->actualTorque = val2 > 200 ? data->rms->actualTorque : val2;
-#ifdef DEBUG_RMS
+			data->rms->commandedTorque = (rmsData[0] | (rmsData[1] << 8));// > 200 ? data->rms->commandedTorque : val; 
+			data->rms->commandedTorque /= 10;
+            data->rms->actualTorque = (rmsData[2] | (rmsData[3] << 8));// / 10;
+            data->rms->actualTorque /= 10;
+#ifdef DEBUG_RMSi
             printf("Commanded Torque: %d\r\n", data->rms->commandedTorque);
 			printf("Actual Torque: %d\r\n", data->rms->actualTorque);
 #endif

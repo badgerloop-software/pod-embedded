@@ -11,16 +11,16 @@ int genTranAction() {
 }
 
 int toPropulsion() {
-    if (startMotor() != 0) return 1;
-    setTorque(FULL_SPEED_AHEAD);
+/*    if (startMotor() != 0) return 1;*/
+/*    setTorque(FULL_SPEED_AHEAD);*/
     data->timers->startTime = getuSTimestamp();
     /* FIXME  I need a way to tell if this was successful */    
     return 0;
 }
 
 int toBraking() {
-    if (stopMotor() != 0) return 1;
-    brake();
+/*    if (stopMotor() != 0) return 1;*/
+    brakeHV();
     return 0;
 }
 
@@ -32,5 +32,19 @@ int toCrawl() {
 
     if (startMotor() != 0) return 1;
     setTorque(CRAWL_TORQUE);
+    return 0;
+}
+
+int toPostRun() {
+    stopMotor();
+    setMCUHVEnabled(0);
+    brakeHV();
+    
+    return 0;
+}
+
+int toRunFault() {
+    setMCUHVEnabled(0);
+    brakeHV();
     return 0;
 }

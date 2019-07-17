@@ -9,4 +9,5 @@ int toBraking(void);
 
 int toCrawl(void);
 
+int toRunFault(void);
 #endif

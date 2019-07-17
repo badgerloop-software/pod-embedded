@@ -57,9 +57,20 @@ void *HVTelemRecv(void *arg){
 					const Value &motion = document["motion"];
 					data->motion->vel = motion["velocity"].GetFloat();
 					data->motion->accel = motion["acceleration"].GetFloat();
-					
-					//printf("Updated vel to: %lf, accel to: %lf\n", data->motion->vel, data->motion->accel);	
-					
+	                data->motion->retroCount = motion["retro"].GetInt();	
+					printf("Updated vel to: %lf, accel to: %lf\n", data->motion->vel, data->motion->accel);	
+		            data->motion->pos = motion["position"].GetFloat();
+                    
+                    const Value &b = document["braking"];
+                    data->pressure->pv = b["pressureVesselPressure"].GetFloat();
+                    data->pressure->primTank = b["primaryTank"].GetFloat();
+                    data->pressure->primLine = b["primaryLine"].GetFloat();
+                    data->pressure->primAct = b["primaryActuation"].GetFloat();
+
+                    data->pressure->secTank = b["secondaryTank"].GetFloat();
+                    data->pressure->secLine = b["secondaryLine"].GetFloat();
+                    data->pressure->secAct =  b["secondaryActuation"].GetFloat();
+
 				}
 				else{
 					fprintf(stderr, "Encountered total: %i dropped packets due to ID error\n", ++packetErrCounter);

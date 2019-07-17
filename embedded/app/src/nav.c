@@ -9,8 +9,8 @@
 
 #define FEET_TO_METERS(x) ((x) * 0.3048)
 #define USEC_TO_SEC(x)    ((x) / 1000000)
-#define STRIP_DISTANCE FEET_TO_METERS(100) /*m*/
-#define TOTAL_DISTANCE FEET_TO_METERS(1000) /*m, not real TODO change*/
+#define STRIP_DISTANCE FEET_TO_METERS(10) /*m*/
+#define TOTAL_DISTANCE FEET_TO_METERS(100) /*m, not real TODO change*/
 #define TOTAL_RUN_TIME 30   /* s */
 #define EXPECTED_DECEL 9.8  /* m/s/s */
 
@@ -148,9 +148,18 @@ void filterMotion(int filterType) {
     data->motion->pos = pos;
     data->motion->vel = vel;
     data->motion->accel = accel;
-/*    imuDirFn[CURR_DIR].setPos(data->motion->pos);*/
+    imuDirFn[CURR_DIR].setPos(0);
 }
 
+void resetNav() {
+    data->motion->pos = 0;
+    data->motion->vel = 0;
+    data->motion->accel = 0;
+    imuDirFn[CURR_DIR].setPos(0);
+    data->motion->retroCount = 0;
+
+    /* reset rest */
+}
 
 /* TODO Open Qs
  *      1. Find out how bad drift is
@@ -158,6 +167,7 @@ void filterMotion(int filterType) {
  */
 void navLoop(void *unused) {
     int lastRetroCount = 0;
+    data->motion->missedRetro = 0;
     csvFormatHeader();
     while (1) {
         if (lastRetroCount != data->motion->retroCount) {
@@ -165,9 +175,11 @@ void navLoop(void *unused) {
             filterMotion(FILTER_NONE);
         }
     
-        if ((imuDirFn[CURR_DIR].getPos() - data->motion->pos) > STRIP_DISTANCE * 2) {
+        if ((imuDirFn[CURR_DIR].getPos() > ((float)STRIP_DISTANCE * 1.5))) {
             /* If it is that different, we likely missed a strip */
+            data->motion->missedRetro += 1;
             fprintf(stderr, "MISSED A TAPESTRIP\n"); //FIXME All we do rn is notify, to be adjusted in test
+            imuDirFn[CURR_DIR].setPos(0);
         }
     
         if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {

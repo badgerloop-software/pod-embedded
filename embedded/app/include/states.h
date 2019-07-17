@@ -7,39 +7,49 @@
 
 
 /* Pressure sensor acceptable limits (in PSI) */
-#define PS1_BOTTOM_LIMIT_PRE        	1000
-#define PS1_BOTTOM_LIMIT_CRAWLPOST  	0
-#define PS1_TOP_LIMIT_PRE          		3000
-#define PS1_TOP_LIMIT_CRAWLPOST     	20
+#define PS1_BOTTOM_LIMIT_IDLE           -50
+#define PS1_BOTTOM_LIMIT_PRE        	500
+#define PS1_BOTTOM_LIMIT_CRAWLPOST  	-50
+#define PS1_TOP_LIMIT_PRE          		1300
+#define PS1_TOP_LIMIT_CRAWLPOST     	50
+#define PS1_TOP_LIMIT_IDLE           	1300
 
-#define PS2_BOTTOM_LIMIT_PRE        	150
-#define PS2_BOTTOM_LIMIT_CRAWLPOST  	0
-#define PS2_TOP_LIMIT_PRE           	275
+#define PS2_BOTTOM_LIMIT_IDLE        	-15
+#define PS2_BOTTOM_LIMIT_PRE        	120
+#define PS2_BOTTOM_LIMIT_CRAWLPOST  	-15
+#define PS2_TOP_LIMIT_IDLE        	    150
+#define PS2_TOP_LIMIT_PRE           	300
 #define PS2_TOP_LIMIT_CRAWLPOST     	20
 
 
-#define PS3_BOTTOM_LIMIT_PRE        	0
+#define PS3_BOTTOM_LIMIT_IDLE        	-10
+#define PS3_BOTTOM_LIMIT_PRE        	-15
 #define PS3_BOTTOM_LIMIT_BRAKING		150
-#define PS3_BOTTOM_LIMIT_CRAWLPOST		0
-#define PS3_TOP_LIMIT_PRE           	20
-#define PS3_TOP_LIMIT_BRAKING			275
-#define PS3_TOP_LIMIT_CRAWLPOST			20
+#define PS3_BOTTOM_LIMIT_CRAWLPOST		-15
+#define PS3_TOP_LIMIT_IDLE        	    15
+#define PS3_TOP_LIMIT_PRE           	15
+#define PS3_TOP_LIMIT_BRAKING			300
+#define PS3_TOP_LIMIT_CRAWLPOST			15
 
-
+#define SEC_PS1_BOTTOM_LIMIT_IDLE       -50
 #define SEC_PS1_BOTTOM_LIMIT_PRE		1000
 #define SEC_PS1_BOTTOM_LIMIT_CRAWLPOST	0
 #define SEC_PS1_TOP_LIMIT_PRE			3000
 #define SEC_PS1_TOP_LIMIT_CRAWLPOST		20
+#define SEC_PS1_TOP_LIMIT_IDLE          50
 
 
+#define SEC_PS2_BOTTOM_LIMIT_IDLE       -15
 #define SEC_PS2_BOTTOM_LIMIT_PRE		150
 #define SEC_PS2_BOTTOM_LIMIT_CRAWLPOST	0
 #define SEC_PS2_TOP_LIMIT_PRE			275
 #define SEC_PS2_TOP_LIMIT_CRAWLPOST		20
+#define SEC_PS2_TOP_LIMIT_IDLE          15
 
-
+#define SEC_PS3_BOTTOM_LIMIT_IDLE       -15
 #define SEC_PS3_BOTTOM_LIMIT			0
 #define SEC_PS3_TOP_LIMIT				20
+#define SEC_PS3_TOP_LIMIT_IDLE          15
 
 #define PV_TOP_LIMIT                20
 #define PV_BOTTOM_LIMIT             10

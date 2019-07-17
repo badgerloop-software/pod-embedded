@@ -6,15 +6,19 @@
 #include <string.h>
 #include <pthread.h>
 #include <unistd.h>
-
+#include <netdb.h>
 #include "HVTCPSocket.h"
 #include "connStat.h"
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#define SA struct sockaddr
 
 extern "C"
 {
 #include "data.h"
 #include "state_machine.h"
 #include "hv_iox.h"
+extern void setCurrState(state_t *state);
 }
 
 
@@ -129,7 +133,7 @@ void *TCPLoop(void *arg)
 
 		if (!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE))
 		{
-			data->flags->emergencyBrake = 1;
+            data->flags->emergencyBrake = 1;
 		}
 
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
@@ -167,7 +171,7 @@ void signalLV(char *cmd)
 
 	struct sockaddr_in addr;
 	int addrlen = sizeof(addr);
-
+    
 	if ((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
 	{
 		fprintf(stderr, "Error signalling\n");
@@ -182,24 +186,15 @@ void signalLV(char *cmd)
 	}
     
     addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_addr.s_addr = inet_addr(LV_SERVER_IP);
     addr.sin_port = htons(LV_SERVER_PORT);
     
+    if (connect(srvFd, (SA*)&addr,addrlen) != 0) {
+        fprintf(stderr, "Failed to open port\n");
+        return;
+    }
 
-	if (bind(srvFd, (struct sockaddr *)&addr,
-					 sizeof(addr)) < 0)
-	{
-		fprintf(stderr, "Error binding\n");
-		exit(1);
-	}
-
-	if (listen(srvFd, 3) < 0)
-	{
-		fprintf(stderr, "Error listening\n");
-		exit(1);
-	}
-
-	send(srvFd, cmd, strlen(cmd), 0);
+	write(srvFd, cmd, strlen(cmd));
 
 	close(srvFd);
 }

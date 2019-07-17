@@ -92,6 +92,10 @@ int brake() {
     return 0;
 }
 
+void brakeHV() {
+    data->flags->shouldBrake = true;
+}
+
 int brakePrimaryUnactuate() {
     if (solenoidSet(SOLENOID_0, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_0\n");

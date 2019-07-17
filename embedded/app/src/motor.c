@@ -93,18 +93,19 @@ bool getMotorIsOn() {
 int startMotor() {
     static bool isMCULatched = false;
     if (!isMCULatched) {
-        setMCULatch(true);
+/*        setMCULatch(true);*/
 /*        usleep(1000000);  //FIXME Not sure what to make this, .5 s for now*/
 /*        setMCULatch(false);*/
 /*        isMCULatched = true;*/
     }
-    if (rmsEnHeartbeat() != 0) return 1;
-	if (rmsClrFaults() != 0) return 1;
-	if (rmsInvDis() != 0) return 1;
+    rmsEnHeartbeat();
+	rmsClrFaults();
+	rmsInvDis();
 /*	idleMotor();*/
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
-    rmsInvEnNoTorque();
 	setMotorIsOn(true);
+    usleep(100000);
+    rmsInvEnNoTorque();
     return 0;
 }
 
@@ -122,8 +123,6 @@ int stopMotor() {
     if (rmsDischarge() != 0) return 1;        
     if (rmsInvDis() != 0) return 1;
    
-    usleep(500000);
-    data->flags->shouldBrake = true;
     return 0;
 }
 

@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 			printf("latchon\n");
 			setMCULatch(true);
 		}
-		return;
+	    if (argc == 3) return;
 	}
 /*	printf("HV EN\n");*/
 /*	setMCULatch(true);*/

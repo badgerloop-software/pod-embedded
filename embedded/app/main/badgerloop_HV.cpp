@@ -9,6 +9,7 @@
 #include "data_dump.h"
 #include "connStat.h"
 
+
 extern "C" 
 {
     #include <signal.h>
@@ -19,6 +20,7 @@ extern "C"
     #include "data.h"
     #include "can_devices.h"
     #include "state_machine.h"
+    #include "NCD9830DBR2G.h"
 }
 
 int init() {
@@ -30,7 +32,7 @@ int init() {
     initProcIox(true);
     initHVIox(true);
     initMotor();   
-    
+    initPressureSensors();
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
 
@@ -67,8 +69,17 @@ int main() {
             exit(0);
 	    }
 	    runStateMachine();
-        if (data->flags->shouldBrake)
+        if (data->flags->shouldBrake) {
             signalLV((char *)"brake");
+            data->flags->shouldBrake = false;
+        }
+        if (data->flags->brakeInit) {
+            signalLV((char *)"primBrakeOff");
+            signalLV((char *)"secBrakeOff");
+            data->flags->brakeInit = false;
+        }
+
+        
         usleep(10000);
 
 		// Control loop

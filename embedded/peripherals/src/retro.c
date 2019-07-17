@@ -23,8 +23,8 @@
 #define BUF_LEN 256
 #define SAFETY_CONSTANT 2
 #define SEC_TO_USEC     1000000
-#define VOTE_BUFFER     500000
-#define VOTE_RESET_TIME 30000  /* Hard coded for max speed, approx algo should be (DIST_BTWN_STRIPS / (2 * SPEED_FTPS)) */
+#define VOTE_BUFFER     200000
+#define VOTE_RESET_TIME 300000  /* Hard coded for max speed, approx algo should be (DIST_BTWN_STRIPS / (2 * SPEED_FTPS)) */
 #define CONST_TERM      SAFETY_CONSTANT * SEC_TO_USEC
 
 static pthread_t retroThreads[3];
@@ -105,7 +105,7 @@ static int voteOnCandidate(int retroNum) {
 static int onTapeStrip(int retroNum) {
     DBG_RETRO_PRINTF("Tape strip detected on retro %d\n", retroNum);
 	uint64_t currTime = getuSTimestamp();
-    uint64_t delay = 1000;//getDelay();
+    uint64_t delay = 10000;//getDelay();
     DBG_RETRO_PRINTF("Current delay: %llu\n", delay);
 
 

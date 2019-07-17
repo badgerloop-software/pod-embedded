@@ -49,8 +49,21 @@ static bool checkStopped(void) {
  */
 
 stateTransition_t * idleAction() {
+    static firstCycle = true;
+
+    if (firstCycle) {
+        data->flags->brakeInit = true;
+/*  Does this!      */
+/*        brakePrimaryUnactuate();*/
+/*        brakeSecondaryUnactuate();*/
+        firstCycle = false;
+    }
+    
     data->state = 1;
     
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    }
 
     // CHECK PRESSURE
 /*    if(!checkPrerunPressures()){*/
@@ -84,8 +97,12 @@ stateTransition_t * idleAction() {
 
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
-    data->state = 3;
+    data->state = 2;
      /* Check IMD status */
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
+   
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -97,9 +114,9 @@ stateTransition_t * pumpdownAction() {
 
 
     // CHECK PRESSURE
-    if(!checkPrerunPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkPrerunPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // CHECK STOPPED (MOTION)
     if(!checkStopped()){
@@ -126,45 +143,59 @@ stateTransition_t * pumpdownAction() {
 }
 
 stateTransition_t * propulsionAction() {
-    data->state = 5;
-     /* Check IMD status */
-    if (!getIMDStatus()) {
-        return stateMachine.currState->fault;
+    static bool isInit = false;
+    data->state = 3;
+    if (!isInit) {
+    
+        data->timers->startTime = getuSTimestamp();
+        isInit = true;
     }
+    /* Check IMD status */
+    if (data->flags->emergencyBrake) {
+        printf("EMERG\n");
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
+/*    if (!getIMDStatus()) {*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
     /* Check HV Indicator light */
-    if (!isHVIndicatorEnabled()) {
-        return stateMachine.currState->fault;
-    }
+/*    if (!isHVIndicatorEnabled()) {*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
 
-    // CHECK FOR EMERGENCY BRAKE
-    if(data->flags->emergencyBrake){
-        return findTransition(stateMachine.currState, BRAKING_NAME);
-    }
     
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
-    if(!checkPrerunPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkRunPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // TODO check LV Power
     // TODO check LV Temp
     
-    if(!checkRunBattery()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkRunBattery()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
-    if(!checkRunRMS()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkRunRMS()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     if (getuSTimestamp() - data->timers->startTime > MAX_RUN_TIME){
-        return stateMachine.currState->fault;
+        printf("here54\n");
+        
+        return findTransition(stateMachine.currState, BRAKING_NAME);
+    }
+
+    if (data->motion->retroCount >= 3) {
+        printf("here3\n");
+        return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 
     // CHECK TRANSITION CRITERIA
     if(data->flags->shouldStop){
+        printf("HERE1\n");
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
     // TODO will the IMU/timer logic be handled in the retro driver or do we do it here?
@@ -173,10 +204,13 @@ stateTransition_t * propulsionAction() {
 }
 
 stateTransition_t * brakingAction() {
-    data->state = 6;
+    data->state = 4;
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
  /* Check IMD status */
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -188,9 +222,9 @@ stateTransition_t * brakingAction() {
 
 
     // CHECK FAULT CRITERIA
-    if(!checkBrakingPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkBrakingPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
     // TODO check LV Power
     // TODO check LV Temp
@@ -217,8 +251,11 @@ stateTransition_t * brakingAction() {
 }
 
 stateTransition_t * stoppedAction() {
-	data->state = 7;
+	data->state = 5;
      /* Check IMD status */
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -231,9 +268,9 @@ stateTransition_t * stoppedAction() {
    
     // CHECK FAULT CRITERIA
     
-    if(!checkBrakingPressures()){ // Still unchanged
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkBrakingPressures()){ // Still unchanged*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
     
     // TODO check LV Power
     // TODO check LV Temp
@@ -262,26 +299,34 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * servPrechargeAction() {
-    return NULL;
+    data->state = 6;
     
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
+
+    return NULL;
 }
 
 stateTransition_t * crawlAction() {
-    data->state = 8;
+    data->state = 7;
  /* Check IMD status */
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
 
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
     /* Check HV Indicator light */
     if (!isHVIndicatorEnabled()) {
         return stateMachine.currState->fault;
     }
 
 
-    if(!checkCrawlPostrunPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkCrawlPostrunPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
     // TODO check LV Power
     // TODO check LV Temp
@@ -301,14 +346,18 @@ stateTransition_t * crawlAction() {
     }
     
     if(data->flags->shouldStop){
+
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 	return NULL;
 }
 
 stateTransition_t * postRunAction() {
-    data->state = 9;
+    data->state = 8;
  /* Check IMD status */
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -319,9 +368,9 @@ stateTransition_t * postRunAction() {
     }
 
 
-    if(!checkCrawlPostrunPressures()){
-        return stateMachine.currState->fault;
-    }
+/*    if(!checkCrawlPostrunPressures()){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
     // TODO check LV Power
     // TODO check LV Temp
@@ -335,7 +384,9 @@ stateTransition_t * postRunAction() {
     }
 
     // TODO CHECK TRANSITION CRITERIA
-    
+/*    if(data->flags->safeToApproach) {*/
+/**/
+/*    }*/
 
     return NULL;
 }
@@ -343,8 +394,16 @@ stateTransition_t * postRunAction() {
 stateTransition_t * safeToApproachAction() {
     if (isHVEnabled()) {
         return stateMachine.currState->fault;
-    }
-    data->state = 10;
+    } 
+/*    if (!checkIdlePressures()) {*/
+/*       fprintf(stderr, "Pressures are out of the safe range\n");*/
+/*       return stateMachine.currState->fault;*/
+/*    }*/
+    
+    if (data->flags->emergencyBrake) {
+        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
+    } 
+    data->state = 9;
 	return NULL;
 }
 // 
@@ -352,13 +411,18 @@ stateTransition_t * safeToApproachAction() {
 // When you change this make 11 the non run fault action. Ty - EU
 stateTransition_t * nonRunFaultAction() {
     //TODO
-    data->state = 11;
+    data->state = 10;
 	return NULL;
 }
 
 stateTransition_t * runFaultAction() {
-    //TODO
-    data->state = 12;
-	return NULL;
+    data->state = 11;
+	
+    return NULL;
 }
 
+stateTransition_t * brakingFault() {
+    //TODO
+    data->state = 12;
+    return NULL;
+}

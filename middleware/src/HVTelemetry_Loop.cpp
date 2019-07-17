@@ -16,6 +16,8 @@ extern "C" {
 #include "bms.h"
     extern float* getCellArray();
     extern float cells[72];
+    extern double getLVBattVoltage();
+    extern double getLVCurrent();
 }
 
 using namespace rapidjson;
@@ -135,10 +137,10 @@ void *HVTelemetryLoop(void *arg){
             avgCellTemp.SetUint(data->bms->avgTemp);
 
             Value igbtT;
-            igbtT.SetUint(data->rms->igbtTemp);
+            igbtT.SetInt(data->rms->igbtTemp);
 
             Value gateDrvTemp;
-            gateDrvTemp.SetUint(data->rms->gateDriverBoardTemp);
+            gateDrvTemp.SetInt(data->rms->gateDriverBoardTemp);
 
             Value cntrlBoardTemp;
             cntrlBoardTemp.SetUint(data->rms->controlBoardTemp);
@@ -147,24 +149,28 @@ void *HVTelemetryLoop(void *arg){
             motorTemp.SetUint(data->rms->motorTemp);
 
             Value motorSpeed;
-            motorSpeed.SetUint(data->rms->motorSpeed);
+            motorSpeed.SetInt(data->rms->motorSpeed);
+
+            Value current;
+            current.SetInt(getLVCurrent());
 
             Value phaseACurrent;
-            phaseACurrent.SetUint(data->rms->phaseACurrent);
+            phaseACurrent.SetInt(data->rms->phaseACurrent);
 
             Value busCurrent;
-            busCurrent.SetUint(data->rms->dcBusCurrent);
+            busCurrent.SetInt(data->rms->dcBusCurrent);
 
             Value busV;
-            busV.SetUint(data->rms->dcBusVoltage);
+            busV.SetInt(data->rms->dcBusVoltage);
 
             Value cmdT;
-            cmdT.SetUint(data->rms->commandedTorque);
+            cmdT.SetInt(data->rms->commandedTorque);
 
             Value torqueFdbk;
-            torqueFdbk.SetUint(data->rms->actualTorque);
+            torqueFdbk.SetInt(data->rms->actualTorque);
 
-            
+            Value lvVolt;
+            lvVolt.SetDouble(getLVBattVoltage());
 
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
@@ -184,12 +190,11 @@ void *HVTelemetryLoop(void *arg){
 			batteryDoc.AddMember("cellMinVoltage", cellMinV, batteryDoc.GetAllocator());
 		    batteryDoc.AddMember("cells", battCells, batteryDoc.GetAllocator());
             /**/
+            batteryDoc.AddMember("lvCurrent", current, batteryDoc.GetAllocator());
             batteryDoc.AddMember("maxCellTemp", maxCellTemp, batteryDoc.GetAllocator());
             batteryDoc.AddMember("minCellTemp", minCellTemp, batteryDoc.GetAllocator());
             batteryDoc.AddMember("avgCellTemp", avgCellTemp, batteryDoc.GetAllocator());
-
-			Document brakingDoc;
-			brakingDoc.SetObject();
+            batteryDoc.AddMember("lvVoltage", lvVolt, batteryDoc.GetAllocator());
 /*			brakingDoc.AddMember("secondaryTank", secondaryTank, brakingDoc.GetAllocator());*/
 /*			brakingDoc.AddMember("secondaryLine", secondaryLine, brakingDoc.GetAllocator());*/
 /*			brakingDoc.AddMember("secondaryActuation", secondaryActuation, brakingDoc.GetAllocator());*/
@@ -228,7 +233,8 @@ void *HVTelemetryLoop(void *arg){
 		}
 	}
 	catch (SocketException &e) {
-		cerr << e.what() << endl;
+		printf("what happened?\n");
+        cerr << e.what() << endl;
 		exit(1);
 	}
 }

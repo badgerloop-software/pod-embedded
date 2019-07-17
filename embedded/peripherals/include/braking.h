@@ -33,6 +33,8 @@ int joinPressureMonitor(void);
 
 int brake(void);
 
+void brakeHV(void);
+
 int brakePrimaryUnactuate(void);
 
 int brakeSecondaryUnactuate(void);

@@ -93,14 +93,6 @@ void *LVTelemetryLoop(void *arg)
 			Value accel;
 			accel.SetFloat(getAccelX());
 				
-			// HIGH TEMP
-			Value tempH;
-			tempH.SetNull();
-			
-			// LOW TEMP
-			Value tempL;
-			tempL.SetNull();
-						
 			// PRESSURE VESSEL PRESSURE
 			Value pressureV;
 			pressureV.SetDouble(data->pressure->pv);
@@ -118,7 +110,8 @@ void *LVTelemetryLoop(void *arg)
 			// CURRENT PRESSURE
 			Value currP;
 			currP.SetNull();
-			
+			Value missedRetro;
+            missedRetro.SetInt(data->motion->missedRetro);
             Value primBrake, secBrake;
             primBrake.SetBool(1/*limSwitchGet(PRIM_LIM_SWITCH)*/);
             secBrake.SetBool(1/*limSwitchGet(SEC_LIM_SWITCH)*/);
@@ -138,11 +131,7 @@ void *LVTelemetryLoop(void *arg)
 			motionDoc.AddMember("velocity", vel, motionDoc.GetAllocator());
 			motionDoc.AddMember("acceleration", accel, motionDoc.GetAllocator());
 			motionDoc.AddMember("distanceSinceLastRetro", imuPos, motionDoc.GetAllocator());
-
-			Document batteryDoc;
-			batteryDoc.SetObject();
-			batteryDoc.AddMember("highTemp", tempH, batteryDoc.GetAllocator());
-			batteryDoc.AddMember("lowTemp", tempL, batteryDoc.GetAllocator());
+            motionDoc.AddMember("missedRetros", missedRetro, motionDoc.GetAllocator());
 			
 			Document brakingDoc;
 			brakingDoc.SetObject();
@@ -161,7 +150,6 @@ void *LVTelemetryLoop(void *arg)
 			
 			document.AddMember("time", age, document.GetAllocator());
 			document.AddMember("motion", motionDoc, document.GetAllocator());
-			document.AddMember("battery", batteryDoc, document.GetAllocator());
 			document.AddMember("braking", brakingDoc, document.GetAllocator());
 			
 			StringBuffer sb;
@@ -171,7 +159,7 @@ void *LVTelemetryLoop(void *arg)
 			// Repeatedly send the string (not including \0) to the servers
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
-			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_SERVER_PORT);
+			sock.sendTo(sb.GetString(), strlen(sb.GetString()), HV_SERVER_IP, HV_TELEM_RECV_PORT);
 			usleep(30000);
 		}
 	} 

@@ -43,6 +43,11 @@ typedef struct flags_t {
     int shutdown;
     bool shouldBrake;
     bool isConnected;
+    bool brakeInit;
+    bool brakePrimAct;
+    bool brakeSecAct;
+    bool brakePrimRetr;
+    bool brakeSecRetr;
 } flags_t;
 
 
@@ -126,6 +131,7 @@ typedef struct motion_t {
     float vel;
     float accel;
     int retroCount;
+    int missedRetro;
 } motion_t;
 
 /***
@@ -165,22 +171,22 @@ typedef struct rms_t {
     uint16_t gateDriverBoardTemp;
     uint16_t controlBoardTemp;
     uint16_t motorTemp;
-    uint16_t motorSpeed;
-    uint16_t phaseACurrent;
+    int16_t motorSpeed;
+    int16_t phaseACurrent;
     uint16_t phaseBCurrent;
     uint16_t phaseCCurrent;
-    uint16_t dcBusVoltage;
+    int16_t dcBusVoltage;
      //uint16_t output_voltage_peak;
     uint16_t lvVoltage;
     uint64_t canCode1;
     uint64_t canCode2;
     uint64_t faultCode1;
     uint64_t faultCode2;
-    uint16_t commandedTorque;
-    uint16_t actualTorque;
+    int16_t commandedTorque;
+    int16_t actualTorque;
     uint16_t relayState;
     uint16_t  electricalFreq;
-    uint16_t dcBusCurrent;
+    int16_t dcBusCurrent;
     uint16_t outputVoltageLn;
 	uint16_t VSMCode;
 

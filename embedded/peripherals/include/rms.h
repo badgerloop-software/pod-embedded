@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #define RMS_EEPROM_SEND_ID      0xC1
-#define RMS_HB_ID               0xC1
+#define RMS_HB_ID               0xC0
 #define RMS_CLR_FAULTS_ID       0xC1
 #define RMS_INV_DIS_ID          0xC0
 #define RMS_INV_EN_ID           0xC0
@@ -31,7 +31,7 @@ int rmsSendHbMsg(uint16_t torque);
 int rmsWriteEeprom(uint16_t addr, uint16_t val);
 int rmsReadEeprom(uint16_t addr);
 int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write);
-
+int rmsInvEnNoTorque();
 
 /* Handles parsing of all recieved CAN messages */
 int rms_parser(uint32_t id, uint8_t *data, uint32_t filter);
