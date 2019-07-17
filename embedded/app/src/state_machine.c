@@ -249,10 +249,7 @@ state_t *getCurrState(void);
 state_t *getCurrState() {
     return stateMachine.currState;
 }
-void setCurrState(state_t *state);
-void setCurrState(state_t *state) {
-    stateMachine.currState = state;
-}
+
 /***
  * runStateMachine -
  *		Executes the current states action. A mini control loop

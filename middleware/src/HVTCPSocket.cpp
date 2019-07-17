@@ -18,7 +18,7 @@ extern "C"
 #include "data.h"
 #include "state_machine.h"
 #include "hv_iox.h"
-extern void setCurrState(state_t *state);
+#include "braking.h"
 }
 
 
