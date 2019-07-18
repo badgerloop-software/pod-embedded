@@ -11,11 +11,21 @@
 #include "imu.h"
 #include "i2c.h"
 
+static inline uint64_t convertTouS(struct timespec *currTime) {
+    return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
+}
+
+static inline uint64_t getuSTimestamp() {
+    struct timespec _temp;
+    clock_gettime(CLOCK_MONOTONIC, &_temp);
+    uint64_t _tempTs = convertTouS(&_temp);
+    return _tempTs;
+}
+
 //Global Variables
 static IMU_data * data;
 static i2c_settings * i2c;
 static pthread_t IMUThread;
-
 void SetupIMU(){
 	i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
 	i2c->bus = 2;
@@ -59,9 +69,9 @@ void *IMULoop(void *arg){
 	unsigned char res1[4];
 	uint32_t tempx, tempy, tempz;
 	int i;
-    
+    uint64_t curr, prev, delt;
+    prev = getuSTimestamp();
 	while (1){
-		
 		i = 0;
 		// Information on data registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_datasheet.pdf
 
@@ -76,21 +86,21 @@ void *IMULoop(void *arg){
 		unsigned char dataBuffer[messageSize];
 		read_i2c(i2c, dataBuffer, messageSize);
         i = 0;
+        curr = getuSTimestamp();
 		while(i < messageSize){
 			//Check delta velocity
             
-	//		if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){
-//
-//				//Load data into 32-bit unsigned integers
-//				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
-//				tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
-//				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
-//
-//				sem_wait(&data->mutex);
+/*		if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){*/
+/*//				//Load data into 32-bit unsigned integers*/
+/*				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];*/
+/*				tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];*/
+/*				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];*/
+
+/*				sem_wait(&data->mutex);*/
 //				//Convert into float values
-//				data->dVx = * ((float *) &tempx);
-//				data->dVy = * ((float *) &tempy);
-//				data->dVz = * ((float *) &tempz);
+/*				data->dVx = * ((float *) &tempx);*/
+/*				data->dVy = * ((float *) &tempy);*/
+/*				data->dVz = * ((float *) &tempz);*/
 
 				//Time increment is 10ms, convert deltaV into accel
 /*				data->accelX = data->dVx / 0.01;*/
@@ -110,9 +120,11 @@ void *IMULoop(void *arg){
                 data->accelY = * ((float *) &tempy);
                 data->accelZ = * ((float *) &tempz);
                 
-                data->velX = data->velX + (data->accelX * 0.01);
-                data->velY = data->velY + (data->accelY * 0.01);
-                data->velZ = data->velZ + (data->accelZ * 0.01);
+                delt = curr - prev;
+
+                data->velX = data->velX + (data->accelX * .025);
+                data->velY = data->velY + (data->accelY * .025);
+                data->velZ = data->velZ + (data->accelZ * .025);
                 
                 
 /*                data->posX += (data->velX * 0.01);*/
@@ -126,11 +138,13 @@ void *IMULoop(void *arg){
 
 		//IMU Time Increment (10 ms)
         sem_wait(&data->mutex);
-        data->posX += data->velX * 0.01;
-        data->posY += data->velY * 0.01;
-		data->posZ += data->velZ * 0.01;
+        data->posX += data->velX * .025;
+        data->posY += data->velY * .025;
+		data->posZ += data->velZ * .025;
         sem_post(&data->mutex);
+        prev = curr;
         usleep(10000);
+        
 	}
 	free(i2c);
 	free(data);

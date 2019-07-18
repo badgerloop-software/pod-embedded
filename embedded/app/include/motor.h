@@ -25,4 +25,9 @@ int stopMotor(void);
 
 void idleMotor(void);
 
+void setMotorEn();
+void clrMotorEn();
+void SetupMotor();
+
+
 #endif

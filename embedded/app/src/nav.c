@@ -182,13 +182,10 @@ void navLoop(void *unused) {
             imuDirFn[CURR_DIR].setPos(0);
         }
     
-        if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {
-            data->flags->shouldStop = true;
-        }
+/*        if ((getuSTimestamp() - data->timers->startTime) > TOTAL_RUN_TIME) {*/
+/*            data->flags->shouldStop = true;*/
+/*        }*/
 
-        if (data->flags->shouldBrake) {
-            printf("BRAKE\n");
-        }
         lastRetroCount = data->motion->retroCount;
     /*    showNavData();   */
     /*    csvFormatShow(); */

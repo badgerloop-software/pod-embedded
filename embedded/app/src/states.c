@@ -109,9 +109,20 @@ stateTransition_t * pumpdownAction() {
     // First check for nominal values?
     data->state = 2;
      /* Check IMD status */
+    static firstRun = true;
+    uint64_t start;
+    if (firstRun) {
+        start = getuSTimestamp();
+        firstRun = false;
+    }
+    
+/*    if (getuSTimestamp() - start > 3000000)*/
+/*        return findTransition(stateMachine.currState,PROPULSION_NAME);*/
+/**/
     if (data->flags->emergencyBrake) {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
+
 #ifndef NO_FAULT
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
@@ -126,7 +137,6 @@ stateTransition_t * pumpdownAction() {
     if(!checkPrerunPressures()){
         return stateMachine.currState->fault;
     }
-#endif    
     // TODO check LV Power
     // TODO check LV Temp
     
@@ -137,18 +147,18 @@ stateTransition_t * pumpdownAction() {
     if(!checkPrerunRMS()){
         return stateMachine.currState->fault;
     }
+#endif 
     
-    
-    if(data->flags->readyCommand){
-	return findTransition(stateMachine.currState, PROPULSION_NAME);
-    }
+/*    if(data->flags->readyCommand){*/
+/*	return findTransition(stateMachine.currState, PROPULSION_NAME);*/
+/*    }*/
 
     return NULL;
 }
 
 stateTransition_t * propulsionAction() {
     static bool isInit = false;
-    
+    setMotorEn();
     data->state = 3;
     if (!isInit) {
         data->flags->clrMotionData = true;
@@ -209,11 +219,13 @@ stateTransition_t * propulsionAction() {
 }
 
 stateTransition_t * brakingAction() {
+    
     data->state = 4;
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
  /* Check IMD status */
     if (data->flags->emergencyBrake) {
+        printf("?\n");
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
 #ifndef NO_FAULT
@@ -243,9 +255,9 @@ stateTransition_t * brakingAction() {
         return stateMachine.currState->fault;
     }
 #endif
-    if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){
-        return stateMachine.currState->fault;
-    }
+/*    if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){*/
+/*        return stateMachine.currState->fault;*/
+/*    }*/
 
     // CHECK TRANSITION CRITERIA
 /*    if(checkStopped()){

@@ -45,28 +45,27 @@ int main() {
 		exit(1);
 	}
     flags_t *f = data->flags;
-	if (f == NULL) printf("its null\n");
     while(1) {
 		usleep(100000);
-        if (f->shouldBrake) {
+        if (data->flags->shouldBrake) {
             brake();
-            f->shouldBrake = false;
+            data->flags->shouldBrake = false;
         }
-        if (f->brakePrimAct) {
+        if (data->flags->brakePrimAct) {
             brakePrimaryActuate();
-            f->brakePrimAct = false;
+            data->flags->brakePrimAct = false;
         }
-        if (f->brakePrimRetr) {
+        if (data->flags->brakePrimRetr) {
             brakePrimaryUnactuate();
-            f->brakePrimRetr = false;
+            data->flags->brakePrimRetr = false;
         }
-        if (f->brakeSecAct) {
+        if (data->flags->brakeSecAct) {
             brakeSecondaryActuate();
-            f->brakeSecAct = false;
+            data->flags->brakeSecAct = false;
         }
-        if (f->brakeSecRetr) {
+        if (data->flags->brakeSecRetr) {
             brakeSecondaryUnactuate();
-            f->brakeSecRetr = false;
+            data->flags->brakeSecRetr = false;
         }
 		// Control loop
 	}

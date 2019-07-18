@@ -70,7 +70,8 @@ void *HVTelemRecv(void *arg){
                     data->pressure->secTank = b["secondaryTank"].GetFloat();
                     data->pressure->secLine = b["secondaryLine"].GetFloat();
                     data->pressure->secAct =  b["secondaryActuation"].GetFloat();
-                    data->flags->readyToBrake = (bool)b["readyToBrake"].GetInt();
+                    data->flags->readyToBrake = b["readyToBrake"].GetInt();
+                    
 				}
 				else{
 					fprintf(stderr, "Encountered total: %i dropped packets due to ID error\n", ++packetErrCounter);

@@ -23,13 +23,9 @@ extern "C"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
 }
-extern bool noTorqueMode;
-extern bool motorIsEnabled;
 void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     printf("shutdown\n");
-    motorIsEnabled = false;
-    noTorqueMode = false;
-    usleep(10000);
+    setMCUHVEnabled(false);
     rmsCmdNoTorque();
     sleep(1);
     rmsDischarge();
@@ -46,7 +42,9 @@ int init() {
     SetupCANDevices();
     initProcIox(true);
     initHVIox(true);
-/*    initMotor();   */
+
+    SetupMotor();
+    /*    initMotor();   */
     initPressureSensors();
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
@@ -65,11 +63,6 @@ int init() {
     return 0;	
 }
 
-void shutdown() {
-    setTorque(0);   /* Try our best to de-escalate while not overstaying our welcome */
-    data->flags->shutdown = true;
-    return;
-}
 int main() {
 	/* Create the big data structures to house pod data */
 	
@@ -81,11 +74,6 @@ int main() {
     printf("Here\n");
 
 	while(1) {
-	    if (data->flags->shutdown) {
-            if (getMotorIsOn())
-                stopMotor();
-            exit(0);
-	    }
 	    runStateMachine();
         if (data->flags->shouldBrake) {
             signalLV((char *)"brake");
@@ -97,6 +85,7 @@ int main() {
             data->flags->brakeInit = false;
         }
         if (data->flags->clrMotionData) {
+            printf("signal clear\n");
             signalLV((char *) "clrMotion");
             data->flags->clrMotionData = false;
         }

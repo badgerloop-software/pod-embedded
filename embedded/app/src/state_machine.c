@@ -132,7 +132,7 @@ static int addTransition(char *stateName, stateTransition_t *trans) {
 
 static int initIdle(state_t *idle) {
 
-    initTransition(idle->transitions[0], findState(PUMPDOWN_NAME), genTranAction);
+    initTransition(idle->transitions[0], findState(PUMPDOWN_NAME), toPumpdown);
     initTransition(idle->transitions[1], findState(NON_RUN_FAULT_NAME), genTranAction);
     initTransition(idle->transitions[2], findState(RUN_FAULT_NAME), toRunFault);
     addTransition(IDLE_NAME, idle->transitions[0]);
@@ -265,11 +265,10 @@ state_t *getCurrState() {
 void runStateMachine(void) {
     /* The cmd receiver will populate this field if we get an override */
     if (strcmp(stateMachine.overrideStateName, BLANK_NAME) != 0) {
-    
         state_t *tempState = findState(stateMachine.overrideStateName);
         /* TODO We also need to execute a transition if it exists here */
         if (tempState != NULL) {
-            stateTransition_t *trans = findTransition(tempState, stateMachine.overrideStateName);
+            stateTransition_t *trans = findTransition(stateMachine.currState, stateMachine.overrideStateName);
             if (trans != NULL) trans->action();
             stateMachine.currState = tempState;
         }
@@ -304,7 +303,7 @@ void buildStateMachine(void) {
     initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 3);
     initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 2);
     initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
-    initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 3);
+    initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 2);
     initState(stateMachine.allStates[4], SERV_PRECHARGE_NAME, servPrechargeAction, 2);
     initState(stateMachine.allStates[5], CRAWL_NAME, crawlAction, 3);
     initState(stateMachine.allStates[6], STOPPED_NAME, stoppedAction, 3);

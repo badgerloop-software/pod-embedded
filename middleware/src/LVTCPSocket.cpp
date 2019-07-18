@@ -97,8 +97,8 @@ void *LVTCPLoop(void *arg){
         }
 
         if (!strncmp(buffer, "brake", MAX_COMMAND_SIZE)) {
-            data->flags->shouldBrake = true;
-            //brake();
+/*            data->flags->shouldBrake = true;*/
+            brake();
         }
 
 		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))

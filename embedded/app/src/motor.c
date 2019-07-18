@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <hv_iox.h>
 #include <data.h>
-
+bool invEn = false;
 /***
  * The high level interface for the motor
  */
@@ -53,6 +53,37 @@ int initMotor() {
         return 1;
     }
     return 0;
+}
+
+static pthread_t hbThread;
+static bool motorEnabled = false;
+static bool noTorqueMode = false;
+static void motorHbLoop();
+
+void setMotorEn() {
+    motorEnabled = true;
+}
+
+void clrMotorEn() {
+    motorEnabled = false;
+}
+
+
+
+void SetupMotor() {
+    pthread_create(&hbThread, NULL, (motorHbLoop), NULL);
+}
+
+static void motorHbLoop() {
+    while(1) {
+        if (motorEnabled)
+            rmsInvEn();
+        else if (noTorqueMode)
+            rmsInvEnNoTorque();
+        else
+            rmsIdleHb();
+        usleep(10000);
+    }
 }
 
 void joinMotorHbThread() {
@@ -102,6 +133,7 @@ int startMotor() {
 	rmsClrFaults();
 	rmsInvDis();
 /*	idleMotor();*/
+/*    invEn = true;*/
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
     rmsInvEnNoTorque();
 	setMotorIsOn(true);
@@ -139,12 +171,14 @@ static void *motorHeartbeatLoop(void *unusedParam) {
 		
 		sem_wait(&hbSem);
         if (getMotorIsOn()) {
-            printf("MOTOR IS ON\n");
+            printf("CURR TIME: %llu\n", getuSTimestamp());
             rmsInvEn();
 /*			if (rmsSendHbMsg(getTorque()) != 0) {*/
 /*                fprintf(stderr, "Failed to send heartbeat\n");*/
 /*            }*/
-        } else {
+/*        } else if (invEn) {*/
+/*            rmsInvEnNoTorque();*/
+        }else {
             if (rmsIdleHb() != 0) {
                 fprintf(stderr, "Failed to send idle heartbeat\n");
             }

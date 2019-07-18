@@ -38,7 +38,7 @@ int rmsInvDis() {
 
 /* 4 */
 int rmsInvEn() {
-    uint8_t payload[] = {70/*TORQUE_SCALE_LWR(1)*/, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
+    uint8_t payload[] = {40/*TORQUE_SCALE_LWR(1)*/, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     return canSend(RMS_INV_EN_ID, payload, 8);
 }
 
