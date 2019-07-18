@@ -12,7 +12,8 @@
 #include "connStat.h"
 
 extern  "C" {
-	#include <braking.h>
+    extern void resetNav();
+#include <braking.h>
 }
 
 pthread_t LVTCPThread;
@@ -89,7 +90,12 @@ void *LVTCPLoop(void *arg){
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
 			// DO POWER OFF
 		}
-		
+	    
+        if (!strncmp(buffer, "clrMotion", MAX_COMMAND_SIZE)) {
+            resetNav();
+            data->flags->readyToBrake = true;
+        }
+
         if (!strncmp(buffer, "brake", MAX_COMMAND_SIZE)) {
             data->flags->shouldBrake = true;
             //brake();

@@ -301,7 +301,7 @@ void buildStateMachine(void) {
         stateMachine.allStates[i] = malloc(sizeof(state_t));
     }
     
-    initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 4);
+    initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 3);
     initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 2);
     initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
     initState(stateMachine.allStates[3], BRAKING_NAME, brakingAction, 3);

@@ -47,7 +47,7 @@ void *HVTelemRecv(void *arg){
 			// Get a counter
 			if(document.HasMember("id")){
 				// Make sure it's a new packet
-				if(document["id"].GetUint64() > recentPacketID){
+				if(document["id"].GetUint64() != recentPacketID){
 					recentPacketID = document["id"].GetUint64();
 					
 					// TODO complete as new sensors/etc are added
@@ -70,7 +70,7 @@ void *HVTelemRecv(void *arg){
                     data->pressure->secTank = b["secondaryTank"].GetFloat();
                     data->pressure->secLine = b["secondaryLine"].GetFloat();
                     data->pressure->secAct =  b["secondaryActuation"].GetFloat();
-
+                    data->flags->readyToBrake = (bool)b["readyToBrake"].GetInt();
 				}
 				else{
 					fprintf(stderr, "Encountered total: %i dropped packets due to ID error\n", ++packetErrCounter);

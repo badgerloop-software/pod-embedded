@@ -18,10 +18,16 @@
 #include "data.h"
 #include "states.h"
 #include "hv_iox.h"
-
+#include <math.h>
 #include "bms_fault_checking.h"
 #include "rms_fault_checking.h"
 #include "pressure_fault_checking.h"
+#define NO_FAULT
+#define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + \
+        pow(78.334 * (x), 5) - \
+        pow(2280.5 * (x), 4) + \
+        pow(35181.0 * (x), 3) - \
+        pow(303240.0 *(x),2) - (1000000.0 * (x)))
 
 /* Imports/Externs */
 
@@ -50,7 +56,7 @@ static bool checkStopped(void) {
 
 stateTransition_t * idleAction() {
     static firstCycle = true;
-
+    static displayBatt = 0;
     if (firstCycle) {
         data->flags->brakeInit = true;
 /*  Does this!      */
@@ -58,7 +64,12 @@ stateTransition_t * idleAction() {
 /*        brakeSecondaryUnactuate();*/
         firstCycle = false;
     }
-    
+
+    if (displayBatt >= 100) {
+        printf("LV SOC: %f\n", LV_BATT_SOC_CALC(getLVBattVoltage()));
+        displayBatt = 0;
+    } else 
+        displayBatt += 1;
     data->state = 1;
     
     if (data->flags->emergencyBrake) {
@@ -66,26 +77,25 @@ stateTransition_t * idleAction() {
     }
 
     // CHECK PRESSURE
-/*    if(!checkPrerunPressures()){*/
-/*        return stateMachine.currState->fault;*/
-/*    }*/
-    
-    // CHECK STOPPED (MOTION)
-/*    if(!checkStopped()){*/
-/*        return stateMachine.currState->fault;*/
-/*    }*/
+#ifndef NO_FAULT
+    if(!checkPrerunPressures()){
+        return stateMachine.currState->fault;
+    }
+#endif
     
     // TODO check LV Power
+    
+
     // TODO check LV Temp
+#ifndef NO_FAULT
+    if(!checkPrerunBattery()){
+        return stateMachine.currState->fault;
+    }
     
-/*    if(!checkPrerunBattery()){*/
-/*        return stateMachine.currState->fault;*/
-/*    }*/
-    
-/*    if(!checkPrerunRMS()){*/
-/*        return stateMachine.currState->fault;*/
-/*    }*/
-    
+    if(!checkPrerunRMS()){
+        return stateMachine.currState->fault;
+    }
+#endif
     // TRANSITION CRITERIA
     if(data->flags->readyPump){
         return findTransition(stateMachine.currState, PUMPDOWN_NAME);
@@ -102,7 +112,7 @@ stateTransition_t * pumpdownAction() {
     if (data->flags->emergencyBrake) {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
-   
+#ifndef NO_FAULT
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -112,17 +122,11 @@ stateTransition_t * pumpdownAction() {
         return stateMachine.currState->fault;
     }
 
-
     // CHECK PRESSURE
-/*    if(!checkPrerunPressures()){*/
-/*        return stateMachine.currState->fault;*/
-/*    }*/
-    
-    // CHECK STOPPED (MOTION)
-    if(!checkStopped()){
+    if(!checkPrerunPressures()){
         return stateMachine.currState->fault;
     }
-    
+#endif    
     // TODO check LV Power
     // TODO check LV Temp
     
@@ -144,9 +148,10 @@ stateTransition_t * pumpdownAction() {
 
 stateTransition_t * propulsionAction() {
     static bool isInit = false;
+    
     data->state = 3;
     if (!isInit) {
-    
+        data->flags->clrMotionData = true;
         data->timers->startTime = getuSTimestamp();
         isInit = true;
     }
@@ -188,7 +193,7 @@ stateTransition_t * propulsionAction() {
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 
-    if (data->motion->retroCount >= 3) {
+    if (data->motion->retroCount >= 3 && data->flags->readyToBrake) {
         printf("here3\n");
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
@@ -211,6 +216,7 @@ stateTransition_t * brakingAction() {
     if (data->flags->emergencyBrake) {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
+#ifndef NO_FAULT
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
@@ -236,15 +242,15 @@ stateTransition_t * brakingAction() {
     if(!checkBrakingRMS()){
         return stateMachine.currState->fault;
     }
-
+#endif
     if ((getuSTimestamp() - data->timers->startTime) > MAX_RUN_TIME){
         return stateMachine.currState->fault;
     }
 
     // CHECK TRANSITION CRITERIA
-    if(checkStopped()){
+/*    if(checkStopped()){
         return findTransition(stateMachine.currState, STOPPED_NAME);
-    }
+    }*/
 
 
     return NULL;

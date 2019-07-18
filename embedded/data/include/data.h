@@ -37,6 +37,7 @@ typedef struct flags_t {
     int readyPump;
     int pumpDown;
     int readyCommand;
+    bool readyToBrake;
     int propulse;
     int emergencyBrake;
     int shouldStop;
@@ -48,6 +49,7 @@ typedef struct flags_t {
     bool brakeSecAct;
     bool brakePrimRetr;
     bool brakeSecRetr;
+    bool clrMotionData;
 } flags_t;
 
 

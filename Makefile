@@ -19,6 +19,9 @@ ifdef DEBUG
 DEBUG_MODE := DEBUG_RETRO DEBUG_RMS DEBUG_BMS DEBUG_PRES
 endif
 
+ifdef NF
+NO_FAULT := NO_FAULT
+endif
 ifdef LOCAL
 NOI2C := NOI2C
 endif
@@ -37,7 +40,7 @@ GCC	   	:= $(BEAGLE)gcc
 GPP	   	:= $(BEAGLE)g++
 IFLAGS 	:= $(addprefix -I,$(INCLUDE_DIRS))
 WFLAGS	:= -Wall -Wno-deprecated -Wextra -Wno-type-limits -fdiagnostics-color
-CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN)) $(addprefix -D, $(DEBUG_MODE)) $(addprefix -D, $(NOI2C))
+CFLAGS 	:= -std=gnu11 $(addprefix -D,$(USE_VCAN)) $(addprefix -D, $(DEBUG_MODE)) $(addprefix -D, $(NOI2C)) $(addprefix -D, $(NF))
 CPFLAGS := -std=c++11
 LDFLAGS := -Llib
 LDLIBS 	:= -lm -lpthread

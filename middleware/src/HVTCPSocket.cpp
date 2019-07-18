@@ -15,6 +15,7 @@
 
 extern "C"
 {
+#include "rms.h"
 #include "data.h"
 #include "state_machine.h"
 #include "hv_iox.h"
@@ -26,9 +27,23 @@ pthread_t HVTCPThread, connStatThread;
 
 static uint64_t *lastPacket;
 
+bool motorIsEnabled, noTorqueMode;
+pthread_t hbT;
 extern void *connStatLoop(void *pTimestamp);
 extern stateMachine_t stateMachine;
+void *hbLoop(void *nul) {
+	while (1) {
+		if (motorIsEnabled) {
+			rmsInvEn();
+		} else if (noTorqueMode) {
+			rmsInvEnNoTorque();
+		} else {
+			rmsIdleHb();
+		}
 
+		usleep(10000);
+	}
+}
 /* Setup PThread Loop */
 void SetupHVTCPServer(){
     
@@ -48,7 +63,8 @@ void *TCPLoop(void *arg)
 {
 
 	(void)arg;
-
+    motorIsEnabled = false;
+    noTorqueMode = false;
 	int server_fd, new_socket;
 	int opt = 1;
 
@@ -135,13 +151,30 @@ void *TCPLoop(void *arg)
 		{
             data->flags->emergencyBrake = 1;
 		}
+        if (!strncmp(buffer, "mcuLatchOn", MAX_COMMAND_SIZE)) {
+            setMCULatch(true);
+        }
+        if (!strncmp(buffer, "mcuLatchOff", MAX_COMMAND_SIZE)) {
+            setMCULatch(false);
+        }
+        if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
+            pthread_create(&hbT, NULL, hbLoop, NULL);
+            rmsEnHeartbeat();
+            rmsClrFaults();
+            rmsInvDis();
+            noTorqueMode = true;
+        }
+        
+        if(!strncmp(buffer, "cmdTorque", MAX_COMMAND_SIZE)) {
+            motorIsEnabled = true;
+        }
 
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
 		{
             /* Lets add a safety check here */
 			setMCUHVEnabled(true);
 		}
-
+        
 		if (!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE))
 		{
 			setMCUHVEnabled(false);

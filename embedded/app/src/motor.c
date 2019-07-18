@@ -103,9 +103,8 @@ int startMotor() {
 	rmsInvDis();
 /*	idleMotor();*/
     sleep(3); /* Not ideal, but unless we have a way to check status this stays */
-	setMotorIsOn(true);
-    usleep(100000);
     rmsInvEnNoTorque();
+	setMotorIsOn(true);
     return 0;
 }
 
@@ -141,9 +140,10 @@ static void *motorHeartbeatLoop(void *unusedParam) {
 		sem_wait(&hbSem);
         if (getMotorIsOn()) {
             printf("MOTOR IS ON\n");
-			if (rmsSendHbMsg(getTorque()) != 0) {
-                fprintf(stderr, "Failed to send heartbeat\n");
-            }
+            rmsInvEn();
+/*			if (rmsSendHbMsg(getTorque()) != 0) {*/
+/*                fprintf(stderr, "Failed to send heartbeat\n");*/
+/*            }*/
         } else {
             if (rmsIdleHb() != 0) {
                 fprintf(stderr, "Failed to send idle heartbeat\n");

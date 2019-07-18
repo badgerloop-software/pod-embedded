@@ -60,7 +60,9 @@ static int setupIox() {
 
 int limSwitchGet(int limSwitch) {
     if (limSwitch != PRIM_LIM_SWITCH &&
-            limSwitch != SEC_LIM_SWITCH 
+            limSwitch != SEC_LIM_SWITCH &&
+            limSwitch != MCP_GPIOA_0 &&
+            limSwitch != MCP_GPIOA_2
        ) {
         fprintf(stderr, "Invalid Limit Switch\n");
         return -1;

@@ -6,7 +6,7 @@
 #define CURR_SENSOR    CHANNEL_7
 
 #define VOLT_SCALE(x) (((((double) x) / 255.0) * 5.0000 * 2.942))
-#define CURR_SCALE(x)  (((((double) x) / 255.0) * 5.0000))
+#define CURR_SCALE(x) ((((((double) x) / 255.0) * 5.0000) - 2.5 / 2.5) * 50)
 double getLVBattVoltage();
 double getLVCurrent();
 double getLVBattVoltage() {

@@ -150,7 +150,7 @@ void filterMotion(int filterType) {
     data->motion->accel = accel;
     imuDirFn[CURR_DIR].setPos(0);
 }
-
+void resetNav();
 void resetNav() {
     data->motion->pos = 0;
     data->motion->vel = 0;

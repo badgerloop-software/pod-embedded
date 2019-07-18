@@ -16,10 +16,10 @@ void showBrakingInfo() {
     int i = 0;
     pressure_t *p = data->pressure; 
     //showPressures();
-    fprintf(stderr,"%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
-            p->secTank, p->secLine, p->secAct);
-    printf("%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
-            p->secTank, p->secLine, p->secAct);
+    fprintf(stderr,"%f,%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
+            p->secTank, p->secLine, p->secAct, p->pv);
+    printf("%f,%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
+            p->secTank, p->secLine, p->secAct,p->pv);
 }
 
 
@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    fprintf(stderr, "primTank,primLine,primAct,secTank,secLine,secAct\n");
-    printf("primTank,primLine,primAct,secTank,secLine,secAct\n");
+    fprintf(stderr, "primTank,primLine,primAct,secTank,secLine,secAct,pv\n");
+    printf("primTank,primLine,primAct,secTank,secLine,secAct,pv\n");
     FOREVER {
         showBrakingInfo();
         usleep(100000);

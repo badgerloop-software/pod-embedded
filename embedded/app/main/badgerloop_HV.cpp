@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <signal.h>
 #include "HVTelemetry_Loop.h"
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
@@ -13,7 +13,8 @@
 extern "C" 
 {
     #include <signal.h>
-    #include "motor.h"
+    #include <rms.h>
+#include "motor.h"
     #include "hv_iox.h"
     #include "motor.h"
     #include "proc_iox.h"
@@ -21,6 +22,20 @@ extern "C"
     #include "can_devices.h"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
+}
+extern bool noTorqueMode;
+extern bool motorIsEnabled;
+void emergQuitter(int sig, siginfo_t* inf, void *nul) {
+    printf("shutdown\n");
+    motorIsEnabled = false;
+    noTorqueMode = false;
+    usleep(10000);
+    rmsCmdNoTorque();
+    sleep(1);
+    rmsDischarge();
+    sleep(1);
+    rmsInvDis();
+    exit(0);
 }
 
 int init() {
@@ -31,7 +46,7 @@ int init() {
     SetupCANDevices();
     initProcIox(true);
     initHVIox(true);
-    initMotor();   
+/*    initMotor();   */
     initPressureSensors();
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
@@ -40,7 +55,10 @@ int init() {
     SetupHVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
 	SetupHVTelemRecv();	
-	
+
+	struct sigaction sig;
+    sig.sa_sigaction = emergQuitter;
+    sigaction(SIGINT, &sig, NULL);
     /* Start 'black box' data saving */
 /*    SetupDataDump();*/
 	
@@ -78,7 +96,10 @@ int main() {
             signalLV((char *)"secBrakeOff");
             data->flags->brakeInit = false;
         }
-
+        if (data->flags->clrMotionData) {
+            signalLV((char *) "clrMotion");
+            data->flags->clrMotionData = false;
+        }
         
         usleep(10000);
 

@@ -218,8 +218,6 @@ void *HVTelemetryLoop(void *arg){
 			document.AddMember("motor", motorDoc, document.GetAllocator());
             document.AddMember("time", age, document.GetAllocator());
 			document.AddMember("battery", batteryDoc, document.GetAllocator());
-/*			document.AddMember("braking", brakingDoc,
- *			document.GetAllocator());*/
 			document.AddMember("state", state, document.GetAllocator());
 			StringBuffer sb;
 			Writer<StringBuffer> writer(sb); // PrettyWriter<StringBuffer> writer(sb); for debugging, don't forget to change header too

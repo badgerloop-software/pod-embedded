@@ -113,9 +113,10 @@ void *LVTelemetryLoop(void *arg)
 			Value missedRetro;
             missedRetro.SetInt(data->motion->missedRetro);
             Value primBrake, secBrake;
-            primBrake.SetBool(1/*limSwitchGet(PRIM_LIM_SWITCH)*/);
-            secBrake.SetBool(1/*limSwitchGet(SEC_LIM_SWITCH)*/);
-
+            primBrake.SetInt(limSwitchGet(PRIM_LIM_SWITCH));
+            secBrake.SetInt(limSwitchGet(SEC_LIM_SWITCH));
+            Value readyFlag;
+            readyFlag.SetInt(data->flags->readyToBrake);
             Value imuPos;
             imuPos.SetFloat(getPosX());
 			
@@ -145,7 +146,7 @@ void *LVTelemetryLoop(void *arg)
             brakingDoc.AddMember("secondaryTank", secTank, brakingDoc.GetAllocator()); 
             brakingDoc.AddMember("secondaryLine", secLine, brakingDoc.GetAllocator()); 
             brakingDoc.AddMember("secondaryActuation", secAct, brakingDoc.GetAllocator()); 
-
+            brakingDoc.AddMember("readyToBrake", readyFlag, brakingDoc.GetAllocator());
 			/* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			
 			document.AddMember("time", age, document.GetAllocator());
