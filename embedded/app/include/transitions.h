@@ -12,4 +12,6 @@ int toBraking(void);
 int toCrawl(void);
 
 int toRunFault(void);
+
+int toServPrecharge(void);
 #endif

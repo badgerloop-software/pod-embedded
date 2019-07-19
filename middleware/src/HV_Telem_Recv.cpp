@@ -1,19 +1,29 @@
 #include "HV_Telem_Recv.h"
 #include "PracticalSocket.h"  
 #include "document.h"
-#include "data.h" 
 #include <iostream>
 #include <cstdlib>
 #include <stdint.h>
+
+extern "C" {
 #include "connStat.h"
+#include "data.h"
+}
 
 using namespace rapidjson;
 
-pthread_t HVRecvThread;
+static uint64_t *latest;
+
+pthread_t HVRecvThread, udpConnT;
 extern data_t *data;
 
 void SetupHVTelemRecv(){
-	if (pthread_create(&HVRecvThread, NULL, HVTelemRecv, NULL)){
+	latest = (uint64_t*)malloc(sizeof(uint64_t));
+    
+    if (pthread_create(&udpConnT, NULL, connStatUDPLoop, latest)) {
+        fprintf(stderr, "Error with timer\n");
+    }
+    if (pthread_create(&HVRecvThread, NULL, HVTelemRecv, NULL)){
 		fprintf(stderr, "Error creating LV Telemetry thread\n");
 	}
 }
@@ -35,7 +45,7 @@ void *HVTelemRecv(void *arg){
 			unsigned short sourcePort; 
 			int bytesRcvd = sock.recvFrom(recvString, MAX_TLM_HV_RECV, sourceAddress, sourcePort);
 			recvString[bytesRcvd] = '\0'; 
-			
+			*latest = getuSTimestamp();
 			//cout << "Received " << recvString << " from " << sourceAddress << ": "
 			//		 << sourcePort << endl;
 					
@@ -58,7 +68,6 @@ void *HVTelemRecv(void *arg){
 					data->motion->vel = motion["velocity"].GetFloat();
 					data->motion->accel = motion["acceleration"].GetFloat();
 	                data->motion->retroCount = motion["retro"].GetInt();	
-					printf("Updated vel to: %lf, accel to: %lf\n", data->motion->vel, data->motion->accel);	
 		            data->motion->pos = motion["position"].GetFloat();
                     
                     const Value &b = document["braking"];

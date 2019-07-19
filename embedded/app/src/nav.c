@@ -6,6 +6,7 @@
 #include <data.h>
 #include <imu.h>
 #include <nav.h>
+#include <connStat.h>
 
 #define FEET_TO_METERS(x) ((x) * 0.3048)
 #define USEC_TO_SEC(x)    ((x) / 1000000)

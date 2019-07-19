@@ -132,13 +132,10 @@ static int addTransition(char *stateName, stateTransition_t *trans) {
 
 static int initIdle(state_t *idle) {
 
-    initTransition(idle->transitions[0], findState(PUMPDOWN_NAME), toPumpdown);
-    initTransition(idle->transitions[1], findState(NON_RUN_FAULT_NAME), genTranAction);
-    initTransition(idle->transitions[2], findState(RUN_FAULT_NAME), toRunFault);
+    initTransition(idle->transitions[0], findState(NON_RUN_FAULT_NAME), genTranAction);
+    initTransition(idle->transitions[1], findState(RUN_FAULT_NAME), toRunFault);
     addTransition(IDLE_NAME, idle->transitions[0]);
-    addTransition(IDLE_NAME, idle->transitions[1]);
-    addTransition(IDLE_NAME, idle->transitions[2]);
-    idle->fault = idle->transitions[1];
+    addTransition(IDLE_NAME, idle->fault = idle->transitions[1]);
 
     return 0;
 }
@@ -200,7 +197,7 @@ static int initStopped(state_t *stopped) {
 
 
     initTransition(stopped->transitions[0], findState(POST_RUN_NAME), genTranAction);
-/*    initTransition(stopped->transitions[1], findState(SERV_PRECHARGE_NAME), toServPrecharge);*/
+    initTransition(stopped->transitions[1], findState(SERV_PRECHARGE_NAME), toServPrecharge);
     initTransition(stopped->transitions[2], findState(RUN_FAULT_NAME), genTranAction);
     addTransition(STOPPED_NAME, stopped->transitions[0]);
     addTransition(STOPPED_NAME, stopped->transitions[1]);
@@ -268,11 +265,13 @@ void runStateMachine(void) {
         state_t *tempState = findState(stateMachine.overrideStateName);
         /* TODO We also need to execute a transition if it exists here */
         if (tempState != NULL) {
+            if (tempState->intro() != 0) tempState->fault->target->action();
             stateTransition_t *trans = findTransition(stateMachine.currState, stateMachine.overrideStateName);
             if (trans != NULL) trans->action();
             stateMachine.currState = tempState;
         }
         strcpy(stateMachine.overrideStateName, BLANK_NAME);
+        return;
     }
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();

@@ -10,6 +10,7 @@
 #define BS_LINE     CHANNEL_7
 #define BS_ACTUATE  CHANNEL_6
 
+double readAmbientPressure(void);
 
 double readPrimaryTank(void);
 

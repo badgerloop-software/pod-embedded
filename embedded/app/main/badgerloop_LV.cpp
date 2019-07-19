@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "connStat.h"
 #include "LVTelemetry_Loop.h"
 #include "LVTCPSocket.h"
 
@@ -13,7 +12,8 @@ extern "C"
     #include "lv_iox.h"
     #include "nav.h"
     #include "braking.h"
-
+    
+#include "connStat.h"
     #include "proc_iox.h"
 	#include "imu.h"
     #include <data.h>
@@ -26,13 +26,16 @@ int init() {
 
     initProcIox(true);
     initLVIox(true);
-	/* Init all peripherals */
+	
+    /* Init all peripherals */
 	SetupIMU();
     initRetros();
     initPressureMonitor();
     initNav();
+    
     /* Init telemetry services */
-	SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+	
+    SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupLVTCPServer();
 
     return 0;
@@ -44,9 +47,11 @@ int main() {
 		printf("Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-    flags_t *f = data->flags;
+    int errs = 0;
     while(1) {
 		usleep(100000);
+/*        if (errs > 100) brake();*/
+        
         if (data->flags->shouldBrake) {
             brake();
             data->flags->shouldBrake = false;
@@ -67,7 +72,14 @@ int main() {
             brakeSecondaryUnactuate();
             data->flags->brakeSecRetr = false;
         }
-		// Control loop
+		if (!checkUDPStat() || !checkTCPStat())
+            errs += 1;
+        else 
+            errs = 0;
+        
+        
+
+        // Control loop
 	}
     return 0;
 

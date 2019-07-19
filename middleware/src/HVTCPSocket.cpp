@@ -8,13 +8,14 @@
 #include <unistd.h>
 #include <netdb.h>
 #include "HVTCPSocket.h"
-#include "connStat.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #define SA struct sockaddr
 
 extern "C"
 {
+#include "motor.h"
+#include "connStat.h"
 #include "rms.h"
 #include "data.h"
 #include "state_machine.h"
@@ -29,7 +30,6 @@ static uint64_t *lastPacket;
 
 bool motorIsEnabled, noTorqueMode;
 pthread_t hbT;
-extern void *connStatLoop(void *pTimestamp);
 extern stateMachine_t stateMachine;
 void *hbLoop(void *nul) {
 	while (1) {
@@ -49,7 +49,7 @@ void SetupHVTCPServer(){
     
     lastPacket = (uint64_t *) malloc(sizeof(uint64_t));
 
-    if (pthread_create(&connStatThread, NULL, connStatLoop, lastPacket)) {
+    if (pthread_create(&connStatThread, NULL, connStatTCPLoop, lastPacket)) {
         fprintf(stderr, "Error creating connection watcher\n");
     }
 
@@ -158,15 +158,15 @@ void *TCPLoop(void *arg)
             setMCULatch(false);
         }
         if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
-            pthread_create(&hbT, NULL, hbLoop, NULL);
+/*            pthread_create(&hbT, NULL, hbLoop, NULL);*/
             rmsEnHeartbeat();
             rmsClrFaults();
             rmsInvDis();
-            noTorqueMode = true;
+/*            noTorqueMode = true;*/
         }
         
         if(!strncmp(buffer, "cmdTorque", MAX_COMMAND_SIZE)) {
-            motorIsEnabled = true;
+            setMotorEn();
         }
 
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))

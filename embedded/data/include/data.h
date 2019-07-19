@@ -116,6 +116,7 @@ typedef struct pressure_t {
     double secTank;
     double secLine;
     double secAct;
+    double amb;
     double pv;
 } pressure_t;
 

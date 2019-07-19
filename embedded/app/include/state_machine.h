@@ -66,6 +66,7 @@ typedef struct state_t {
 	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
     stateTransition_t *fault;
+    int (*intro)(void);
     int numTransitions;
     int transitionCounter;
 } state_t;

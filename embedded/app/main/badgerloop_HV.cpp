@@ -7,12 +7,13 @@
 #include "HVTCPSocket.h"
 #include "HV_Telem_Recv.h"
 #include "data_dump.h"
-#include "connStat.h"
 
 
 extern "C" 
 {
-    #include <signal.h>
+    #include "bbgpio.h"
+#include "connStat.h"
+#include <signal.h>
     #include <rms.h>
 #include "motor.h"
     #include "hv_iox.h"
@@ -75,12 +76,17 @@ int main() {
 
 	while(1) {
 	    runStateMachine();
+        
+/*        printf("CONN STAT: TCP - %d | UDP - %d\n", */
+/*                checkTCPStat(),*/
+/*                checkUDPStat());*/
         if (data->flags->shouldBrake) {
             signalLV((char *)"brake");
             data->flags->shouldBrake = false;
         }
         if (data->flags->brakeInit) {
             signalLV((char *)"primBrakeOff");
+            usleep(1000);
             signalLV((char *)"secBrakeOff");
             data->flags->brakeInit = false;
         }

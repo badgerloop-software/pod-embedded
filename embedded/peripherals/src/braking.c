@@ -9,8 +9,8 @@
 #define CURRENT_500_SCALING(x)  ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 500.0)
 #define CURRENT_50_SCALING(x)   ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 50.0)
 
-#define RING_SIZE  50
-#define LOOP_PERIOD 100000
+#define RING_SIZE  200
+#define LOOP_PERIOD 20000
 
 static double avgDouble(double *arr, int size);
 double readPressureVessel();
@@ -40,6 +40,8 @@ void *pressureMonitor() {
     double secLineRing[RING_SIZE];
     double secActRing[RING_SIZE];
 
+    double ambRing[RING_SIZE];
+
     double pvRing[RING_SIZE];
 
     uint64_t i = 0;
@@ -52,6 +54,8 @@ void *pressureMonitor() {
         secLineRing[i % RING_SIZE]  = readSecLine();
         secActRing[i % RING_SIZE]   = readSecActuator();
 
+        ambRing[i % RING_SIZE]      = readAmbientPressure();
+
         pvRing[i % RING_SIZE]       = readPressureVessel();
 
         data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
@@ -60,6 +64,7 @@ void *pressureMonitor() {
         data->pressure->secTank  = avgDouble(secTankRing,  RING_SIZE);
         data->pressure->secLine  = avgDouble(secLineRing,  RING_SIZE);
         data->pressure->secAct   = avgDouble(secActRing,   RING_SIZE);
+        data->pressure->amb      = avgDouble(ambRing,      RING_SIZE);
         data->pressure->pv       = avgDouble(pvRing,       RING_SIZE);
 #ifdef DEBUG_PRES
         showPressures();
@@ -156,19 +161,6 @@ int brakeSecondaryActuate() {
     return 0;
 }
 
-int brakePrimaryVent() {
-    if (solenoidSet(SOLENOID_0, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_0\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_2, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_1\n");
-        return 1;
-    }
-
-    return 0;
-}
-  
 int brakeSecondaryVent() {
     if (solenoidSet(SOLENOID_4, 0) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_2\n");
@@ -243,6 +235,14 @@ double readSecActuator() {
 double readPressureVessel() {
     uint8_t data[2];
     if (readPressureSensor(ADC_0, PRES_VESL, data) != 0) {
+        return -1;
+    }
+    return (CURRENT_50_SCALING( (double) data[0]) );
+}
+
+double readAmbientPressure() {
+    uint8_t data[2];
+    if (readPressureSensor(ADC_0, CHANNEL_4, data) != 0) {
         return -1;
     }
     return ( CURRENT_50_SCALING( (double) data[0]) );

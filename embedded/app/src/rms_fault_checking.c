@@ -23,11 +23,8 @@ bool checkPrerunRMS(void){
 		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
 		return false;
 	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_PRERUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
-		return false;
-	}
-	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PRE){
+    
+    if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PRE){
 		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
 		return false;
 	}
@@ -73,6 +70,10 @@ bool checkPrerunRMS(void){
 			printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
 			return false;
 		}
+        if (data->rms->faultCode1 || data->rms->faultCode2) {
+            printf("CAN FAIL: %#x %#x\n");
+            return false;
+        }
 		if(data->rms->motorSpeed < MIN_RPM_IDLE || data->rms->motorSpeed > MAX_RPM_IDLE){
 			printf("Motor speed Failure: %i\n", data->rms->motorSpeed);
 			return false;
@@ -137,10 +138,6 @@ bool checkRunRMS(void){
 		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
 		return false;
 	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
-		return false;
-	}
 	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_PROPULSION){
 		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
 		return false;
@@ -184,10 +181,6 @@ bool checkBrakingRMS(void){
 	}
 	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
 		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
-		return false;
-	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
 		return false;
 	}
 	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
@@ -235,10 +228,6 @@ bool checkStoppedRMS(void){
 		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
 		return false;
 	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
-		return false;
-	}
 	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
 		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
 		return false;
@@ -284,10 +273,6 @@ bool checkCrawlRMS(void){
 		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
 		return false;
 	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
-		return false;
-	}
 	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_CRAWL){
 		printf("Phase A Current Failure: %i\n", data->rms->phaseACurrent);
 		return false;
@@ -331,10 +316,6 @@ bool checkPostRMS(void){
 	}
 	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
 		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
-		return false;
-	}
-	if(data->rms->motorTemp < MIN_MOTOR_TEMP || data->rms->motorTemp > MAX_MOTOR_TEMP_RUN){
-		printf("Motor Temp Failure: %i\n", data->rms->motorTemp);
 		return false;
 	}
 	if(data->rms->phaseACurrent < PHASE_A_MIN || data->rms->phaseACurrent > PHASE_A_MAX_POST){
