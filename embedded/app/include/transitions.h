@@ -1,17 +1,24 @@
 #ifndef __TRANSITIONS_H__
 #define __TRANSITIONS_H__
 
+int genIdle(void);
+
 int genTranAction(void);
 
-int toPropulsion(void);
+int genPropulsion(void);
 
-int toPumpdown(void);
+int genPumpdown(void);
 
-int toBraking(void);
+int genBraking(void);
 
-int toCrawl(void);
+int genCrawl(void);
 
-int toRunFault(void);
+int genRunFault(void);
 
-int toServPrecharge(void);
+int genServPrecharge(void);
+
+int genPostRun(void);
+
+int genStopped(void);
+
 #endif

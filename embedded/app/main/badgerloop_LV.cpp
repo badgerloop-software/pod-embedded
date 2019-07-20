@@ -28,7 +28,7 @@ int init() {
     initLVIox(true);
 	
     /* Init all peripherals */
-	SetupIMU();
+/*	SetupIMU();  GOODBYE MY SWEET SUMMER CHILD */
     initRetros();
     initPressureMonitor();
     initNav();
@@ -37,7 +37,7 @@ int init() {
 	
     SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupLVTCPServer();
-
+    data->state = 1;
     return 0;
 }
 
@@ -50,7 +50,7 @@ int main() {
     int errs = 0;
     while(1) {
 		usleep(100000);
-/*        if (errs > 100) brake();*/
+        if (errs > 50) brake();
         
         if (data->flags->shouldBrake) {
             brake();
@@ -72,11 +72,14 @@ int main() {
             brakeSecondaryUnactuate();
             data->flags->brakeSecRetr = false;
         }
-		if (!checkUDPStat() || !checkTCPStat())
-            errs += 1;
-        else 
-            errs = 0;
+		
         
+        if (data->state != 1 && (!checkTCPStatHV() || !checkTCPStat())) {
+            printf("ERRS: %d\n", errs);
+            errs += 1;
+        } else { 
+            errs = 0;
+        }
         
 
         // Control loop

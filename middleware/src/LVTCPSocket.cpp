@@ -9,19 +9,29 @@
 
 #include "LVTCPSocket.h"
 #include "data.h"
-#include "connStat.h"
+
+#define DASH 0
+#define HV 1
 
 extern  "C" {
     extern void resetNav();
+#include "connStat.h"
 #include <braking.h>
 }
 
-pthread_t LVTCPThread;
-
+pthread_t LVTCPThread, lvTcpConT, lvTcpConT2;
+uint64_t *lastPacket[2];
 
 /* Setup PThread Loop */
 void SetupLVTCPServer(){
-	
+    lastPacket[DASH] = (uint64_t *) malloc(sizeof(uint64_t));
+    lastPacket[HV] = (uint64_t *) malloc(sizeof(uint64_t));
+	    if (pthread_create(&lvTcpConT, NULL, connStatTCPLoop, lastPacket[DASH])) {
+        fprintf(stderr, "Error creating connection watcher\n");
+    }
+    if (pthread_create(&lvTcpConT2, NULL, connStatTCPLoopHV, lastPacket[HV])) {
+        fprintf(stderr, "Error creating connection watcher\n");
+    }
 	if (pthread_create(&LVTCPThread, NULL, LVTCPLoop, NULL)){
 		fprintf(stderr, "Error creating LV Telemetry thread\n");
 	}
@@ -81,7 +91,6 @@ void *LVTCPLoop(void *arg){
 			fprintf(stderr, "Error accepting a packet\n"); 
 			exit(EXIT_FAILURE); 
 		}
-		
 		read(new_socket, buffer, 1024); 
 		
 		printf("RECEIVED: %s\n",buffer);  
@@ -90,6 +99,10 @@ void *LVTCPLoop(void *arg){
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){
 			// DO POWER OFF
 		}
+        if (!strncmp(buffer, "state", 5)) {
+            *lastPacket[HV] = getuSTimestamp();
+            data->state = buffer[5] - 0x30;
+        }
 	    
         if (!strncmp(buffer, "clrMotion", MAX_COMMAND_SIZE)) {
             resetNav();
@@ -125,7 +138,8 @@ void *LVTCPLoop(void *arg){
 		// HEARTBEAT
 		if(!strncmp(buffer, "ping", MAX_COMMAND_SIZE)){
 			// Send acknowledge packet back
-			send(new_socket, (char*) "pong2" , strlen("pong2") , 0 ); 
+			*lastPacket[DASH] = getuSTimestamp();
+            send(new_socket, (char*) "pong2" , strlen("pong2") , 0 ); 
 		}
 		
 		close(new_socket);

@@ -66,13 +66,13 @@ int init() {
 
 int main() {
 	/* Create the big data structures to house pod data */
-	
-	if (init() == 1) {
+	int i = 0;
+	char buffer[100];
+    
+    if (init() == 1) {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-/*    signal(SIGINT, shutdown);*/
-    printf("Here\n");
 
 	while(1) {
 	    runStateMachine();
@@ -81,8 +81,10 @@ int main() {
 /*                checkTCPStat(),*/
 /*                checkUDPStat());*/
         if (data->flags->shouldBrake) {
+            printf("signalling\n");
             signalLV((char *)"brake");
             data->flags->shouldBrake = false;
+            printf("signallingDone\n");
         }
         if (data->flags->brakeInit) {
             signalLV((char *)"primBrakeOff");
@@ -96,6 +98,13 @@ int main() {
             data->flags->clrMotionData = false;
         }
         
+        if (i >= 50) {
+            sprintf(buffer, "state%d\n", data->state == 1);
+            signalLV((char *) buffer);
+            i = 0;
+        } else {
+            i += 1;
+        }
         usleep(10000);
 
 		// Control loop

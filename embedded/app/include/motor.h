@@ -16,7 +16,7 @@ void setTorque(uint16_t val);
 uint16_t getTorque(void);
 
 void setMotorIsOn(bool val);
-
+void setMotorCrawl(void);
 bool getMotorIsOn(void);
 
 int startMotor(void);

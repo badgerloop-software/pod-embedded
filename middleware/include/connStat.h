@@ -20,8 +20,10 @@
 
 void *connStatTCPLoop(void *timestamp);
 void *connStatUDPLoop(void *timestamp);
+void *connStatTCPLoopHV(void *timestamp);
 
 bool checkUDPStat(void);
 bool checkTCPStat(void);
+bool checkTCPStatHV(void);
 
 #endif

@@ -94,6 +94,7 @@ int brake() {
     usleep(500000);
     if (limSwitchGet(PRIM_LIM_SWITCH))
         brakeSecondaryActuate();
+        
     return 0;
 }
 

@@ -16,7 +16,6 @@
 extern "C" 
 {
     #include "lv_iox.h"
-	#include "imu.h"
 }
 
 
@@ -88,10 +87,11 @@ void *LVTelemetryLoop(void *arg)
 			Value vel;
 			vel.SetFloat(data->motion->vel);
 	
-			
+			Value lstRet;
+            lstRet.SetUint64(data->timers->lastRetro);
 			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			accel.SetFloat(getAccelX());
+			accel.SetFloat(data->motion->accel);
 				
 			// PRESSURE VESSEL PRESSURE
 			Value pressureV;
@@ -117,8 +117,6 @@ void *LVTelemetryLoop(void *arg)
             secBrake.SetInt(limSwitchGet(SEC_LIM_SWITCH));
             Value readyFlag;
             readyFlag.SetInt(data->flags->readyToBrake);
-            Value imuPos;
-            imuPos.SetFloat(getPosX());
 			
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
@@ -131,9 +129,7 @@ void *LVTelemetryLoop(void *arg)
 			motionDoc.AddMember("retro", retro, motionDoc.GetAllocator());
 			motionDoc.AddMember("velocity", vel, motionDoc.GetAllocator());
 			motionDoc.AddMember("acceleration", accel, motionDoc.GetAllocator());
-			motionDoc.AddMember("distanceSinceLastRetro", imuPos, motionDoc.GetAllocator());
-            motionDoc.AddMember("missedRetros", missedRetro, motionDoc.GetAllocator());
-			
+			motionDoc.AddMember("lastRetro", lstRet, motionDoc.GetAllocator());
 			Document brakingDoc;
 			brakingDoc.SetObject();
 			brakingDoc.AddMember("pressureVesselPressure", pressureV, brakingDoc.GetAllocator());

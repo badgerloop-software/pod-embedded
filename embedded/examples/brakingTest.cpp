@@ -26,7 +26,7 @@ void showBrakingInfo() {
 int main(int argc, char *argv[]) {
     bool isHard = false;
     if (argc > 1) {
-        if (strcmp(argv[1], "-h")) isHard = true;
+        if (strcmp(argv[1], "-h") == 0) isHard = true;
     }
     initData();
     initPressureMonitor();

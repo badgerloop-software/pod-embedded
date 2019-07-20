@@ -142,6 +142,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
             data->bms->cellMinVoltage = ((msg[0] << 8) | msg[1]) / 10000.0;
 /*            data->bms->cellMaxVoltage = ((msg[2] << 8) | msg[3]) / 10000;*/
             bms->avgTemp = msg[2];
+            bms->imdStatus = msg[3];
             break;
 		case 0x80:
 			break;

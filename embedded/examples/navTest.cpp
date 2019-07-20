@@ -18,7 +18,7 @@ extern void initNav();
 int main(int argc, char *argv[])
 {
   initData();
-  SetupIMU();
+/*  SetupIMU();*/
   initRetros();
   initNav();
   

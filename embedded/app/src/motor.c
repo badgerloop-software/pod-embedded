@@ -56,9 +56,9 @@ void SetupMotor() {
 static void motorHbLoop() {
     while(1) {
         if (motorEnabled)
-            rmsInvEn();
+            rmsSendHbMsg(2);
         else if (lowTorqueMode)
-            rmsInvEnNoTorque();
+            rmsSendHbMsg(2);
         else
             rmsIdleHb();
         usleep(10000);

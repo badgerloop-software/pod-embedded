@@ -10,6 +10,7 @@
 
 static bool udpStat;
 static bool tcpStat;
+static bool tcpStatHV;
 
 bool checkUDPStat() {
     return udpStat;
@@ -17,6 +18,10 @@ bool checkUDPStat() {
 
 bool checkTCPStat() {
     return tcpStat;
+}
+
+bool checkTCPStatHV() {
+    return tcpStatHV;
 }
 
 void *connStatUDPLoop(void *timestamp) {
@@ -41,6 +46,19 @@ void *connStatTCPLoop(void *timestamp) {
             tcpStat = false;
         } else {
             tcpStat = true;
+        }
+        usleep(SLP);
+    }
+}
+
+void *connStatTCPLoopHV(void *timestamp) {
+    uint64_t *lastPacket = (uint64_t *) timestamp;
+
+    while (1) {
+        if ((getuSTimestamp() - *lastPacket) > HB_DELAY) {
+            tcpStatHV = false;
+        } else {
+            tcpStatHV = true;
         }
         usleep(SLP);
     }

@@ -19,8 +19,8 @@
 #define PROPULSION_NAME         "propulsion"
 #define BRAKING_NAME            "braking"
 #define STOPPED_NAME            "stopped"
-#define SERV_PRECHARGE_NAME     "servicePrecharge"
-#define CRAWL_NAME              "servicePropulsion"
+#define SERV_PRECHARGE_NAME     "crawlPrecharge"
+#define CRAWL_NAME              "crawl"
 #define POST_RUN_NAME           "postRun"
 #define SAFE_TO_APPROACH_NAME   "safeToApproach"
 
@@ -35,6 +35,7 @@ typedef struct stateTransition_t stateTransition_t;
 typedef struct stateMachine_t stateMachine_t;
 
 
+extern stateTransition_t *runFault, *nonRunFault;
 state_t *getCurrState(void);
 
 state_t *setCurrState(state_t *state);
@@ -66,7 +67,8 @@ typedef struct state_t {
 	char *name; // FIXME Thinking about switching this to a number
 	stateTransition_t **transitions;
     stateTransition_t *fault;
-    int (*intro)(void);
+    stateTransition_t *next;
+    int (*begin)(void);
     int numTransitions;
     int transitionCounter;
 } state_t;
@@ -75,6 +77,7 @@ typedef struct stateMachine_t {
 	state_t *currState;
     char *  overrideStateName;
 	state_t **allStates;
+    uint64_t start;
 } stateMachine_t;
 
 #endif

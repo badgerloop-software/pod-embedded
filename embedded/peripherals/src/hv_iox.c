@@ -77,7 +77,7 @@ int getIMDStatus() {
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, IMD_STAT_FDBK);
+    return data->bms->imdStatus >= 4;//getState(&iox, IMD_STAT_FDBK);
 }
 
 int getINRTStatus() {

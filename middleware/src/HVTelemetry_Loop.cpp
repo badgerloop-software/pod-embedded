@@ -178,17 +178,18 @@ void *HVTelemetryLoop(void *arg){
 			
 			Document batteryDoc;
 			batteryDoc.SetObject();
-            Value battCells;
-            battCells.SetArray();
-            for (int i =0; i < 72; i++)
-                    battCells.PushBack((Value)cells[i], batteryDoc.GetAllocator()); 
+/*            Value battCells;*/
+/*            battCells.SetArray();*/
+/*            for (int i =0; i < 72; i++)*/
+/*                    battCells.PushBack((Value)cells[i], batteryDoc.GetAllocator()); */
 			batteryDoc.AddMember("packVoltage", packV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packCurrent", packC, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packSOC", packSOC, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("packAH", packAH, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMaxVoltage", cellMaxV, batteryDoc.GetAllocator());
 			batteryDoc.AddMember("cellMinVoltage", cellMinV, batteryDoc.GetAllocator());
-		    batteryDoc.AddMember("cells", battCells, batteryDoc.GetAllocator());
+/*		    batteryDoc.AddMember("cells", battCells,
+ *		    batteryDoc.GetAllocator());*/
             /**/
             batteryDoc.AddMember("lvCurrent", current, batteryDoc.GetAllocator());
             batteryDoc.AddMember("maxCellTemp", maxCellTemp, batteryDoc.GetAllocator());
@@ -227,7 +228,9 @@ void *HVTelemetryLoop(void *arg){
 		
 			sock.sendTo(sb.GetString(), strlen(sb.GetString()), sarg->ipaddr, sarg->port);
 //			printf("Sent string: %s\n", sb.GetString());
-			usleep(30000);
+			document.GetAllocator().Clear();
+            document = NULL;
+            usleep(30000);
 		}
 	}
 	catch (SocketException &e) {

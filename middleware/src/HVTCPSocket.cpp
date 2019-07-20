@@ -53,9 +53,9 @@ void SetupHVTCPServer(){
         fprintf(stderr, "Error creating connection watcher\n");
     }
 
-	  if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL)){
-		  fprintf(stderr, "Error creating HV Telemetry thread\n");
-	  }
+	if (pthread_create(&HVTCPThread, NULL, TCPLoop, NULL)){
+	    fprintf(stderr, "Error creating HV Telemetry thread\n");
+	}
 }
 
 /* Thread Loop */
@@ -224,6 +224,7 @@ void signalLV(char *cmd)
     
     if (connect(srvFd, (SA*)&addr,addrlen) != 0) {
         fprintf(stderr, "Failed to open port\n");
+        close(srvFd);
         return;
     }
 

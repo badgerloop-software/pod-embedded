@@ -4,9 +4,11 @@
 #include <motor.h>
 #include <data.h>
 #include <transitions.h>
+#include <state_machine.h>
 #include <braking.h>
 #include <rms.h>
 
+extern stateMachine_t stateMachine;
 
 /* If there is nothing special to do */
 int genTranAction() {
@@ -20,6 +22,7 @@ int genIdle() {
     if (rmsDischarge() != 0) fprintf(stderr, "Failed in genIdle, 2\n");
     usleep(50000);
     if (rmsInvDis() != 0) fprintf(stderr, "Failed in genIdle, 3\n");
+    setMCUHVEnabled(false);
     return 0;
 }
 
@@ -28,58 +31,79 @@ int genPumpdown() {
     setMCULatch(true);
     usleep(10000);
     setMCULatch(false);
+    usleep(10000);
     setMCUHVEnabled(true);
     sleep(1);
     if(rmsEnHeartbeat() != 0) printf("EEERR0\n");
     if (rmsClrFaults() != 0) printf("eeE1\n");
     if(rmsInvDis() != 0) printf("EEERR2\n");
+    stateMachine.start = getuSTimestamp();
     return 0;
 }
 
-int toPropulsion() {
-/*    if (startMotor() != 0) return 1;*/
-/*    setTorque(FULL_SPEED_AHEAD);*/
-    data->timers->startTime = getuSTimestamp();
-    
+int genPropulsion() {
+    stateMachine.start = data->timers->startTime = getuSTimestamp();
+    data->flags->clrMotionData = true;
+    setMotorEn();
     /* FIXME  I need a way to tell if this was successful */    
+    //
+    // Wait for a timeout to see success?
+    //
+    //////////////////////////
     return 0;
 }
 
 
 
-int toBraking() {
-    clrMotorEn();
-    usleep(1000);
-    rmsCmdNoTorque();
-    usleep(1000);
-    rmsDischarge();
-    usleep(1000);
-    rmsInvDis();
-    usleep(1000);
-       
+int genBraking() {
+    printf("BRAKING!\n");
+    if (data->rms->dcBusVoltage > 60) {
+        clrMotorEn();
+        usleep(1000);
+        rmsCmdNoTorque();
+        usleep(1000);
+        rmsDischarge();
+        usleep(1000);
+        rmsInvDis();
+        usleep(1000);
+    }   
     setMCUHVEnabled(false);
     brakeHV();
+    stateMachine.start = getuSTimestamp();
     return 0;
 }
 
-int toCrawl() {
+int genStopped() {
+    data->flags->brakeInit = true;
+    return 0;
+}
 
+int genCrawl() {
     setMotorCrawl(); 
     data->timers->crawlTimer = getuSTimestamp();
     
     return 0;
 }
 
-int toPostRun() {
+int genPostRun() {
+    if (data->rms->dcBusVoltage > 200) {
+        clrMotorEn();
+        usleep(1000);
+        rmsCmdNoTorque();
+        usleep(1000);
+        rmsDischarge();
+        usleep(1000);
+        rmsInvDis();
+        usleep(1000);
+    }
     setMCUHVEnabled(0);
     brakeHV();
-    
     return 0;
 }
 
-int toServPrecharge() {
+int genServPrecharge() {
     data->flags->brakeInit = true;
-    printf("LETS GO\n");
+    printf("PRE CHARGE\n");
     setMCULatch(true);
     usleep(10000);
     setMCULatch(false);
@@ -91,31 +115,42 @@ int toServPrecharge() {
     return 0;
 }
 
-int toRunFault() {
+
+int genRunFault() {
+    printf("Entering here\n");
     clrMotorEn();
     usleep(1000);
     rmsCmdNoTorque();
+    printf("Entering here2\n");
     usleep(1000);
     rmsDischarge();
+    printf("Entering here3\n");
     usleep(1000);
     rmsInvDis();
     usleep(1000);
  
     setMCUHVEnabled(0);
+    printf("Entering here4\n");
     brakeHV();
+    printf("Entering here\n");
     return 0;
 }
 
-int toNonRunFault() {
+int genNonRunFault() {
+    printf("non run0\n");
     clrMotorEn();
+    printf("non run0\n");
     usleep(1000);
     rmsCmdNoTorque();
+    printf("non run0\n");
     usleep(1000);
     rmsDischarge();
+    printf("non run0\n");
     usleep(1000);
     rmsInvDis();
     usleep(1000);
  
     setMCUHVEnabled(0);
+    printf("non run0\n");
     return 0;
 }

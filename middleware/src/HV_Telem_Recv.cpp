@@ -61,7 +61,7 @@ void *HVTelemRecv(void *arg){
 					recentPacketID = document["id"].GetUint64();
 					
 					// TODO complete as new sensors/etc are added
-					// Parse data in
+   					// Parse data in
 					
 					// MOTION DATA
 					const Value &motion = document["motion"];
@@ -69,7 +69,7 @@ void *HVTelemRecv(void *arg){
 					data->motion->accel = motion["acceleration"].GetFloat();
 	                data->motion->retroCount = motion["retro"].GetInt();	
 		            data->motion->pos = motion["position"].GetFloat();
-                    
+                    data->timers->lastRetro = motion["lastRetro"].GetUint64();
                     const Value &b = document["braking"];
                     data->pressure->pv = b["pressureVesselPressure"].GetFloat();
                     data->pressure->primTank = b["primaryTank"].GetFloat();

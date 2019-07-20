@@ -17,7 +17,7 @@
 #include "pressure_fault_checking.h"
 
 bool checkIdlePressures(void) {
-	if (data->pressure->primTank < PS1_BOTTOM_LIMIT_IDLE || data->pressure->primTank > PS1_TOP_LIMIT_IDLE) {
+    if (data->pressure->primTank < PS1_BOTTOM_LIMIT_IDLE || data->pressure->primTank > PS1_TOP_LIMIT_IDLE) {
 		fprintf(stderr, "primTank pressure failing\n");
 		return false;
 	}
@@ -50,7 +50,7 @@ bool checkIdlePressures(void) {
 }
 
 bool checkPrerunPressures(void) {
-	if (data->pressure->primTank < PS1_BOTTOM_LIMIT_PRE || data->pressure->primTank > PS1_TOP_LIMIT_PRE) {
+    if (data->pressure->primTank < PS1_BOTTOM_LIMIT_PRE || data->pressure->primTank > PS1_TOP_LIMIT_PRE) {
 		fprintf(stderr, "primTank pressure failing\n");
 		return false;
 	}
@@ -83,7 +83,7 @@ bool checkPrerunPressures(void) {
 }
 
 bool checkBrakingPressures(void) {
-	if (data->pressure->primTank < PS1_BOTTOM_LIMIT_PRE || data->pressure->primTank > PS1_TOP_LIMIT_PRE) {
+    if (data->pressure->primTank < PS1_BOTTOM_LIMIT_PRE || data->pressure->primTank > PS1_TOP_LIMIT_PRE) {
 		fprintf(stderr, "primTank pressure failing\n");
 		return false;
 	}
@@ -117,7 +117,7 @@ bool checkBrakingPressures(void) {
 }
 
 bool checkCrawlPostrunPressures(void) {
-	if (data->pressure->primTank < PS1_BOTTOM_LIMIT_CRAWLPOST || data->pressure->primTank > PS1_TOP_LIMIT_CRAWLPOST) {
+    if (data->pressure->primTank < PS1_BOTTOM_LIMIT_CRAWLPOST || data->pressure->primTank > PS1_TOP_LIMIT_CRAWLPOST) {
 		fprintf(stderr, "primTank pressure failing\n");
 		return false;
 	}
