@@ -1,5 +1,5 @@
 #include <NCD9830DBR2G.h>
-
+#include <semaphore.h>
 #define PS_TANK     CHANNEL_0
 #define PS_LINE     CHANNEL_1
 #define PS_ACTUATE  CHANNEL_2
@@ -9,6 +9,8 @@
 #define BS_TANK     CHANNEL_5
 #define BS_LINE     CHANNEL_7
 #define BS_ACTUATE  CHANNEL_6
+
+extern sem_t bigSem;
 
 double readAmbientPressure(void);
 

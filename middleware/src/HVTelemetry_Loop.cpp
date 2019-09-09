@@ -13,11 +13,12 @@
 #include "connStat.h"
 
 extern "C" {
-#include "bms.h"
+    #include "hv_iox.h"
+    #include "bms.h"
     extern float* getCellArray();
     extern float cells[72];
-    extern double getLVBattVoltage();
-    extern double getLVCurrent();
+/*    extern double getLVBattVoltage();*/
+/*    extern double getLVCurrent();*/
 }
 
 using namespace rapidjson;
@@ -151,8 +152,8 @@ void *HVTelemetryLoop(void *arg){
             Value motorSpeed;
             motorSpeed.SetInt(data->rms->motorSpeed);
 
-            Value current;
-            current.SetInt(getLVCurrent());
+/*            Value current;*/
+/*            current.SetInt(getLVCurrent());*/
 
             Value phaseACurrent;
             phaseACurrent.SetInt(data->rms->phaseACurrent);
@@ -169,8 +170,11 @@ void *HVTelemetryLoop(void *arg){
             Value torqueFdbk;
             torqueFdbk.SetInt(data->rms->actualTorque);
 
-            Value lvVolt;
-            lvVolt.SetDouble(getLVBattVoltage());
+/*            Value lvVolt;*/
+/*            lvVolt.SetDouble(getLVBattVoltage());*/
+
+            Value imd;
+            imd.SetInt(getIMDStatus());
 
 			/* INSERT VALUES INTO JSON DOCUMENTS */
 			
@@ -191,11 +195,12 @@ void *HVTelemetryLoop(void *arg){
 /*		    batteryDoc.AddMember("cells", battCells,
  *		    batteryDoc.GetAllocator());*/
             /**/
-            batteryDoc.AddMember("lvCurrent", current, batteryDoc.GetAllocator());
+            batteryDoc.AddMember("imdStatus", imd, batteryDoc.GetAllocator());			
+/*            batteryDoc.AddMember("lvCurrent", current, batteryDoc.GetAllocator());*/
             batteryDoc.AddMember("maxCellTemp", maxCellTemp, batteryDoc.GetAllocator());
             batteryDoc.AddMember("minCellTemp", minCellTemp, batteryDoc.GetAllocator());
             batteryDoc.AddMember("avgCellTemp", avgCellTemp, batteryDoc.GetAllocator());
-            batteryDoc.AddMember("lvVoltage", lvVolt, batteryDoc.GetAllocator());
+/*            batteryDoc.AddMember("lvVoltage", lvVolt, batteryDoc.GetAllocator());*/
 /*			brakingDoc.AddMember("secondaryTank", secondaryTank, brakingDoc.GetAllocator());*/
 /*			brakingDoc.AddMember("secondaryLine", secondaryLine, brakingDoc.GetAllocator());*/
 /*			brakingDoc.AddMember("secondaryActuation", secondaryActuation, brakingDoc.GetAllocator());*/
@@ -214,7 +219,6 @@ void *HVTelemetryLoop(void *arg){
             motorDoc.AddMember("busVoltage", busV, motorDoc.GetAllocator());
             motorDoc.AddMember("commandTorque", cmdT, motorDoc.GetAllocator());
             motorDoc.AddMember("torqueFeedback", torqueFdbk, motorDoc.GetAllocator());
-			
             /* ADD DOCUMENTS TO MAIN JSON DOCUMENT */
 			document.AddMember("motor", motorDoc, document.GetAllocator());
             document.AddMember("time", age, document.GetAllocator());

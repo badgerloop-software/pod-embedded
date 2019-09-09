@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <connStat.h>
 
-#define HB_DELAY 1000000
+#define HB_DELAY 2000000
 #define SLP      100000
 
 static bool udpStat;

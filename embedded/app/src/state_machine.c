@@ -15,7 +15,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
 static void initState(state_t* state, char* name, stateTransition_t *(*action)(), int numTrans);
 static void initTransition(stateTransition_t *transition, state_t *target, int (*action)() );
 
@@ -150,7 +149,7 @@ static int initPumpdown(state_t *pumpdown) {
 
 static int initPropulsion(state_t *propulsion) {
 
-    initTransition(propulsion->transitions[0], findState(BRAKING_NAME), genTranAction);
+    initTransition(propulsion->transitions[0], findState(BRAKING_NAME), genBraking);
     initTransition(propulsion->transitions[1], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(PROPULSION_NAME, propulsion->transitions[0]);
     addTransition(PROPULSION_NAME, propulsion->transitions[1]);
@@ -162,7 +161,7 @@ static int initPropulsion(state_t *propulsion) {
 
 static int initBraking(state_t *braking) {
 
-    initTransition(braking->transitions[0], findState(STOPPED_NAME), genTranAction);
+    initTransition(braking->transitions[0], findState(STOPPED_NAME), genStopped);
     initTransition(braking->transitions[1], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(BRAKING_NAME, braking->transitions[0]);
     addTransition(BRAKING_NAME, braking->transitions[1]);
@@ -174,7 +173,7 @@ static int initBraking(state_t *braking) {
 }
 
 static int initServPrecharge(state_t *servPrecharge) {
-    initTransition(servPrecharge->transitions[0], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(servPrecharge->transitions[0], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(SERV_PRECHARGE_NAME, servPrecharge->transitions[0]);
     servPrecharge->fault = servPrecharge->transitions[0];
 
@@ -186,17 +185,18 @@ static int initServPrecharge(state_t *servPrecharge) {
 static int initCrawl(state_t *crawl) {
 
     initTransition(crawl->transitions[0], findState(POST_RUN_NAME), genPostRun);
-    initTransition(crawl->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(crawl->transitions[1], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(CRAWL_NAME, crawl->transitions[0]);
-    addTransition(CRAWL_NAME, crawl->fault = crawl->transitions[1]);
+    addTransition(CRAWL_NAME, crawl->transitions[1] );
    
+    crawl->fault = crawl->transitions[1];
     crawl->next = crawl->transitions[0];
     crawl->begin = genCrawl;
     return 0;
 }
 
 static int initStopped(state_t *stopped) {
-    initTransition(stopped->transitions[0], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(stopped->transitions[0], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(STOPPED_NAME, stopped->transitions[0]);
     stopped->fault = stopped->transitions[0];
     stopped->next = NULL;
@@ -205,7 +205,7 @@ static int initStopped(state_t *stopped) {
 }
 
 static int initPostRun(state_t *postRun) {
-    initTransition(postRun->transitions[1], findState(RUN_FAULT_NAME), genTranAction);
+    initTransition(postRun->transitions[0], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(POST_RUN_NAME, postRun->transitions[0]);
     postRun->fault = postRun->transitions[0];
     postRun->next = NULL;
@@ -214,10 +214,11 @@ static int initPostRun(state_t *postRun) {
 }
 
 static int initSafeToApproach(state_t *safeToApproach) {
-    initTransition(safeToApproach->transitions[0], findState(NON_RUN_FAULT_NAME), genTranAction);
-    addTransition(SAFE_TO_APPROACH_NAME, 
-            safeToApproach->fault = safeToApproach->transitions[0]);
-    safeToApproach->next = NULL;
+    initTransition(safeToApproach->transitions[0], findState(NON_RUN_FAULT_NAME), genNonRunFault);
+    addTransition(SAFE_TO_APPROACH_NAME, safeToApproach->transitions[0]);
+    safeToApproach->fault = safeToApproach->transitions[0];
+    safeToApproach->next  = NULL;
+    safeToApproach->begin = genTranAction; 
     return 0;
 }
 
@@ -262,10 +263,12 @@ void runStateMachine(void) {
     if (strcmp(stateMachine.overrideStateName, BLANK_NAME) != 0) {
         state_t *tempState = findState(stateMachine.overrideStateName);
         if (tempState != NULL) {
+            printf("TEMP STATE NAME: %s\n", tempState->name);
             stateTransition_t *trans = findTransition(stateMachine.currState, stateMachine.overrideStateName);
             if (trans != NULL) {
                 trans->action();
             } else {
+                printf("begin func\n");
                 tempState->begin();
             }
             stateMachine.currState = tempState;
@@ -277,7 +280,7 @@ void runStateMachine(void) {
     /* execute the state and check if we should be transitioning */
 	stateTransition_t *transition = stateMachine.currState->action();
     if (transition != NULL) {
-        printf("transAction->%s\n", transition->target->name);
+/*        printf("transAction->%s\n", transition->target->name);*/
         if (transition->action() == 0)  {
             printf("here we are\n");
             stateMachine.currState = transition->target;
@@ -324,9 +327,9 @@ void buildStateMachine(void) {
     initPumpdown(stateMachine.allStates[1]);
 	initPropulsion(stateMachine.allStates[2]);
     initBraking(stateMachine.allStates[3]);
-    initStopped(stateMachine.allStates[4]);
-    initServPrecharge(stateMachine.allStates[5]);
-    initCrawl(stateMachine.allStates[6]);
+    initServPrecharge(stateMachine.allStates[4]);
+    initCrawl(stateMachine.allStates[5]);
+    initStopped(stateMachine.allStates[6]);
     initPostRun(stateMachine.allStates[7]);
     initSafeToApproach(stateMachine.allStates[8]);
         

@@ -21,4 +21,5 @@ int genPostRun(void);
 
 int genStopped(void);
 
+int genNonRunFault(void);
 #endif

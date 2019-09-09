@@ -116,23 +116,23 @@ void *LVTCPLoop(void *arg){
 
 		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
 		{
-			data->flags->brakePrimRetr = true;
-            //brakePrimaryUnactuate();
+/*			data->flags->brakePrimRetr = true;*/
+                brakePrimaryUnactuate(); 
 		}
 		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
 		{
-            data->flags->brakePrimAct = true;   
-/*		brakePrimaryActuate();*/
+/*            data->flags->brakePrimAct = true;   */
+	    brakePrimaryActuate();
 		}
 		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
 		{
-            data->flags->brakeSecRetr = true;
-/*			brakeSecondaryUnactuate();*/
+/*            data->flags->brakeSecRetr = true;*/
+		brakeSecondaryUnactuate();
 		}
 		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
 		{
-            data->flags->brakeSecAct = true;
-/*			brakeSecondaryActuate();*/
+/*            data->flags->brakeSecAct = true;*/
+		brakeSecondaryActuate();
 		}
 
 		// HEARTBEAT

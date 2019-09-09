@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <lv_iox.h>
 #include <pthread.h>
+#include <semaphore.h>
+#include <pthread.h>
 
 #define VOLTAGE_2000_SCALING(x) ((((((x/256.0)*5.0)-0.5)/4.0)*2000.0))
 #define CURRENT_500_SCALING(x)  ( ((((x / 256.0) * 5.0) - 0.6) / 2.4) * 500.0)
@@ -18,8 +20,10 @@ double readPressureVessel();
 double readPressureVessel(); 
 static pthread_t presMonThread;
 
-int initPressureMonitor() {
+sem_t bigSem;
 
+int initPressureMonitor() {
+    sem_init(&bigSem, 0, 1);
     if (initPressureSensors() != 0) {
         fprintf(stderr, "Failed to init ADCs\n");
         return (-1);
@@ -46,6 +50,7 @@ void *pressureMonitor() {
 
     uint64_t i = 0;
     while(1) {
+        sem_wait(&bigSem);
         primTankRing[i % RING_SIZE] = readPrimaryTank() + 10.76;
         primLineRing[i % RING_SIZE] = readPrimaryLine();
         primActRing[i % RING_SIZE]  = readPrimaryActuator();
@@ -71,6 +76,7 @@ void *pressureMonitor() {
 #endif
         i += 1;
         usleep(LOOP_PERIOD);
+        sem_post(&bigSem);
     }
 
     return NULL;
@@ -92,9 +98,9 @@ static double avgDouble(double *arr, int size) {
 int brake() {
     brakePrimaryActuate();
     usleep(500000);
-    if (limSwitchGet(PRIM_LIM_SWITCH))
+    if (limSwitchGet(PRIM_LIM_SWITCH)) {
         brakeSecondaryActuate();
-        
+    }
     return 0;
 }
 
@@ -120,15 +126,15 @@ int brakeSecondaryUnactuate() {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
         return 1;
     }
-    if (solenoidSet(SOLENOID_5, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_5\n");
-        return 1;
-    }
     if (solenoidSet(SOLENOID_6, 1) != 0) {
         fprintf(stderr, "Failed to set SOLENOID_6\n");
         return 1;
     }
 
+    if (solenoidSet(SOLENOID_5, 1) != 0) {
+        fprintf(stderr, "Failed to set SOLENOID_5\n");
+        return 1;
+    }
     return 0;
 }
 
@@ -141,7 +147,6 @@ int brakePrimaryActuate() {
         fprintf(stderr, "Failed to set SOLENOID_1\n");
         return 1;
     }
-
     return 0;
 }
 
@@ -158,7 +163,6 @@ int brakeSecondaryActuate() {
         fprintf(stderr, "Failed to set SOLENOID_4\n");
         return 1;
     }
-
     return 0;
 }
 

@@ -46,10 +46,10 @@ int init() {
 
     SetupMotor();
     /*    initMotor();   */
-    initPressureSensors();
+/*    initPressureSensors();*/
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
-
+printf("Ezra\n");
     /* Init telemetry */
     SetupHVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
@@ -87,6 +87,7 @@ int main() {
             printf("signallingDone\n");
         }
         if (data->flags->brakeInit) {
+            printf("Cancelling brake\n");
             signalLV((char *)"primBrakeOff");
             usleep(1000);
             signalLV((char *)"secBrakeOff");

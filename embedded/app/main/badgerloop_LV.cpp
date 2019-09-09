@@ -24,13 +24,13 @@ int init() {
     /* Init Data */
     initData();
 
+    initPressureMonitor();
     initProcIox(true);
     initLVIox(true);
 	
     /* Init all peripherals */
 /*	SetupIMU();  GOODBYE MY SWEET SUMMER CHILD */
     initRetros();
-    initPressureMonitor();
     initNav();
     
     /* Init telemetry services */

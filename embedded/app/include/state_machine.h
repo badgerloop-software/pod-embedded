@@ -12,8 +12,8 @@
 #define NUM_STATES              11
 #define FAULT                   "fault"
 
-#define NON_RUN_FAULT_NAME      FAULT"NonRun"
-#define RUN_FAULT_NAME          FAULT"Run"
+#define NON_RUN_FAULT_NAME      "nonRunFault"
+#define RUN_FAULT_NAME          "runFault"
 #define IDLE_NAME               "idle"
 #define PUMPDOWN_NAME           "pumpdown"
 #define PROPULSION_NAME         "propulsion"

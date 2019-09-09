@@ -9,7 +9,7 @@
 #include <rms.h>
 
 extern stateMachine_t stateMachine;
-
+int internalCount = 0;
 /* If there is nothing special to do */
 int genTranAction() {
     return 0;
@@ -27,7 +27,7 @@ int genIdle() {
 }
 
 int genPumpdown() {
-    printf("LETS GO\n");
+    usleep(10000);
     setMCULatch(true);
     usleep(10000);
     setMCULatch(false);
@@ -54,40 +54,51 @@ int genPropulsion() {
 }
 
 
-
 int genBraking() {
     printf("BRAKING!\n");
+    clrMotorEn();
     if (data->rms->dcBusVoltage > 60) {
-        clrMotorEn();
-        usleep(1000);
+        usleep(50000);
         rmsCmdNoTorque();
-        usleep(1000);
+        usleep(50000);
         rmsDischarge();
-        usleep(1000);
+        usleep(50000);
         rmsInvDis();
-        usleep(1000);
+        usleep(50000);
     }   
     setMCUHVEnabled(false);
+    
     brakeHV();
     stateMachine.start = getuSTimestamp();
     return 0;
 }
 
 int genStopped() {
+    if (data->rms->dcBusVoltage > 60) {
+        rmsCmdNoTorque();
+        rmsDischarge();
+        rmsInvDis();
+    }
+    printf("Proper stopper\n");
     data->flags->brakeInit = true;
     return 0;
 }
 
+
+
 int genCrawl() {
+    printf("gen crawl\n");
     setMotorCrawl(); 
+    internalCount = data->motion->retroCount;
     data->timers->crawlTimer = getuSTimestamp();
     
+    stateMachine.start = getuSTimestamp();    
     return 0;
 }
 
 int genPostRun() {
-    if (data->rms->dcBusVoltage > 200) {
-        clrMotorEn();
+    clrMotorEn();
+    if (data->rms->dcBusVoltage > 60) {
         usleep(1000);
         rmsCmdNoTorque();
         usleep(1000);
@@ -98,11 +109,11 @@ int genPostRun() {
     }
     setMCUHVEnabled(0);
     brakeHV();
+    
     return 0;
 }
 
 int genServPrecharge() {
-    data->flags->brakeInit = true;
     printf("PRE CHARGE\n");
     setMCULatch(true);
     usleep(10000);
@@ -149,7 +160,6 @@ int genNonRunFault() {
     usleep(1000);
     rmsInvDis();
     usleep(1000);
- 
     setMCUHVEnabled(0);
     printf("non run0\n");
     return 0;

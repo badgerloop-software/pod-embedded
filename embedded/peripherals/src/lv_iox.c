@@ -6,12 +6,13 @@
 #include <mcp23017.h>
 #include <proc_iox.h>
 #include <lv_iox.h>
+#include <semaphore.h>
+#include <braking.h>
 
 #define LV_IO_ADDR   0x21
 
 static i2c_settings iox;
 static int setupIox();
-
 
 int initLVIox(bool hardStart) {
     if (setupMCP(&iox, LV_IO_ADDR) != 0) return -1;
@@ -67,7 +68,11 @@ int limSwitchGet(int limSwitch) {
         fprintf(stderr, "Invalid Limit Switch\n");
         return -1;
     }
-    return getState(&iox, limSwitch);
+    int val = 0;
+    sem_wait(&bigSem);
+    val = getState(&iox, limSwitch);
+    sem_post(&bigSem);
+    return val;
 }
 
 int solenoidSet(int solenoid, bool val) { 
@@ -79,6 +84,9 @@ int solenoidSet(int solenoid, bool val) {
         fprintf(stderr, "Invalid solenoid\n");
         return -1;
     }
-    return setState(&iox, solenoid, val);
+    sem_wait(&bigSem);
+    int ret = setState(&iox, solenoid, val);
+    sem_post(&bigSem);
+    return ret;
 }
 
