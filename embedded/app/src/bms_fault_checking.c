@@ -28,7 +28,7 @@ bool checkPrerunBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_PRERUN){
@@ -53,7 +53,7 @@ bool checkRunBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
@@ -78,7 +78,7 @@ bool checkBrakingBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
@@ -103,7 +103,7 @@ bool checkStoppedBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
@@ -128,7 +128,7 @@ bool checkCrawlBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_POSTRUN){
@@ -153,7 +153,7 @@ bool checkPostrunBattery(void){
 		return false;
 	}
 	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %i, %i\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
 		return false;
 	}
 	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_POSTRUN){
