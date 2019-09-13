@@ -12,10 +12,10 @@
 extern "C" 
 {
     #include "bbgpio.h"
-#include "connStat.h"
-#include <signal.h>
+    #include "connStat.h"
+    #include <signal.h>
     #include <rms.h>
-#include "motor.h"
+    #include "motor.h"
     #include "hv_iox.h"
     #include "motor.h"
     #include "proc_iox.h"

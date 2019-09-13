@@ -146,6 +146,8 @@ void resetNav() {
  *      2. Are we going in X or Y plane
  */
 void navLoop(void *unused) {
+    (void) unused;
+    
     int lastRetroCount = 0;
     data->motion->missedRetro = 0;
     csvFormatHeader();

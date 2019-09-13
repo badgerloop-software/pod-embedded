@@ -168,7 +168,7 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
         return 1;
     }
     uint16_t val;
-    uint16_t val2;
+    //uint16_t val2;
     int16_t temp;
 	switch(id){
            case (0xa0):

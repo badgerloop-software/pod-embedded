@@ -16,13 +16,8 @@
 
 
 /* Thread management variables */
-static pthread_mutex_t torqueLock, motorLock;
-static sem_t hbSem;
-static pthread_t hbLoop;
-static bool JOIN_HB_THREAD = false;
-
-static void *motorHeartbeatLoop(void *);
 extern int rmsInvEnNoTorque();
+
 /* Create the semaphores and mutexes for thread sensitive operations
  *  and creates the HB loop that just waits for the motor to be started 
 */
@@ -31,7 +26,7 @@ extern int rmsInvEnNoTorque();
 static pthread_t hbThread;
 static bool motorEnabled = false;
 static bool lowTorqueMode = false;
-static void motorHbLoop();
+static void *motorHbLoop(void *arg);
 
 void setMotorEn() {
     motorEnabled = true;
@@ -53,7 +48,8 @@ void SetupMotor() {
     pthread_create(&hbThread, NULL, (motorHbLoop), NULL);
 }
 
-static void motorHbLoop() {
+static void *motorHbLoop(void *arg) {
+    (void) arg;
     while(1) {
         if (motorEnabled)
             rmsSendHbMsg(2);
@@ -63,5 +59,7 @@ static void motorHbLoop() {
             rmsIdleHb();
         usleep(10000);
     }
+    
+    return NULL;
 }
 

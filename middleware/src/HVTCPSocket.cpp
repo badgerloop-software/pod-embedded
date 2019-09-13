@@ -32,6 +32,9 @@ bool motorIsEnabled, noTorqueMode;
 pthread_t hbT;
 extern stateMachine_t stateMachine;
 void *hbLoop(void *nul) {
+	
+	(void) nul;
+	
 	while (1) {
 		if (motorIsEnabled) {
 			rmsInvEn();
@@ -182,7 +185,7 @@ void *TCPLoop(void *arg)
 
 		if(!strncmp(buffer,"override", 8)){
 			fprintf(stderr, "Override received for state: %s\n", buffer+9);
-		  sprintf(stateMachine.overrideStateName, "%s\0", buffer+9);
+		  sprintf(stateMachine.overrideStateName, "%s%c", buffer+9, '\0');
         }
 		
 		// HEARTBEAT

@@ -35,7 +35,7 @@ static bool blockInts  = true;
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
-static void * blockSpuriousInts(uint64_t timeout);
+static void * blockSpuriousInts(int timeout);
 
 
 /***
@@ -50,7 +50,7 @@ int initRetros() {
 		if (bbGpioExport(getPin(i)) != 0) return -1;
 		if (bbGpioSetDir(getPin(i), IN_DIR) != 0) return -1;
 		if (bbGpioSetEdge(getPin(i), RISING_EDGE) != 0) return -1;
-		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *) i) != 0)
+		if (pthread_create(&retroThreads[i], NULL, waitForStrip, (void *)(intptr_t) i) != 0)
 			return -1;
 	}
     
@@ -139,7 +139,7 @@ static int onTapeStrip(int retroNum) {
   *		void *num - an identifier for which retro is running the thread
   ***/
 static void *waitForStrip(void *num) {
-	int retroNum = (int) num;
+	int retroNum = (intptr_t) num;
 	int gpioFd = bbGpioFdOpen(getPin(retroNum));
 	struct pollfd fds[1];
 	int nfds = 1;
@@ -192,7 +192,7 @@ static int getPin(int retroNum) {
 	return -1;	/* Will never get here */
 }
 
-static void *blockSpuriousInts(uint64_t timeout) {
+static void *blockSpuriousInts(int timeout) {
 	blockInts = true;
     usleep(timeout);
     blockInts = false;

@@ -13,6 +13,7 @@ matrix:
 language: c
 compiler: gcc-6
 sudo: require
+dist: trusty
 python:
   - "3.4"
   
