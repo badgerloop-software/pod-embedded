@@ -24,7 +24,9 @@
 #include "pressure_fault_checking.h"
 #include "rms.h"
 #include "connStat.h"
+#include "motor.h"
 /*#define NO_FAULT*/
+
 #define NUM_FAIL 10
 #define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + \
         pow(78.334      * (x), 5) - \
@@ -37,11 +39,10 @@
 /* Imports/Externs */
 extern int internalCount;
 extern stateMachine_t stateMachine;
-stateTransition_t *runFault, *nonRunFault;
 extern stateTransition_t *findTransition(state_t *currState, char *name);
 int bErrs, pErrs, rErrs;
 int checkNetwork() {
-    static errs = 0;
+    static int errs = 0;
     if(!checkUDPStat() || !checkTCPStat()) {
         if (checkUDPStat() == 0) fprintf(stderr, "UDP ");
         if (checkTCPStat() == 0) fprintf(stderr, "TCP ");
@@ -62,11 +63,11 @@ int checkNetwork() {
  *
  * RETURNS: true if stopped, false if moving
  */
-
+/* DEPRECATED
 static bool checkStopped(void) {
 	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > TIME_SINCE_LAST_RETRO;
 }
-
+*/
 /***
  * Actions for all the states.
  * They perform transition and error condition
@@ -74,18 +75,11 @@ static bool checkStopped(void) {
  * braking.
  *
  */
-static bool first = true;
 
 stateTransition_t * idleAction() {
     data->state = 1;
     
-    if (checkUDPStat() && first) {
-        genIdle();
-        first = false;
-    }
-
     if (data->flags->emergencyBrake) {
-        printf("run fault: %p\n", runFault);
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
@@ -115,14 +109,12 @@ stateTransition_t * pumpdownAction() {
         fprintf(stderr, "prerun batt fault\n");
         bErrs += 1;
     } else bErrs = 0;
-    
-/*    if ((data->rms->faultCode1 << 8) &  )*/
 
     if(!checkPrerunRMS()){
         fprintf(stderr, "prerun rms fault\n");
         rErrs += 1;
     } else rErrs = 0;
-    
+    /* FIXME, need to fix robust failure cases */    
     if (pErrs >= NUM_FAIL || bErrs >= NUM_FAIL || rErrs >= NUM_FAIL)
         return stateMachine.currState->fault;
 
@@ -227,7 +219,7 @@ stateTransition_t * brakingAction() {
     }
     
     if (pErrs >= NUM_FAIL || bErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
-        printf("NUM FAILS: pErrs - %d | bErrs - %d | rErrs - %d\n");
+        fprintf(stderr,"NUM FAILS: pErrs - %d | bErrs - %d | rErrs - %d\n", pErrs, bErrs, rErrs);
         
         return stateMachine.currState->fault;
     }

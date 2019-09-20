@@ -149,7 +149,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
         case 0x36:
             if (msg[0] >= 0 && msg[0] < 72)
                 cells[msg[0]] = (msg[2] | (msg[1] << 8)) / 10000.0;
-             
+            break; 
         
         default:
 			return 0;

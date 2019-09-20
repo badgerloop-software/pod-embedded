@@ -35,7 +35,7 @@ static bool blockInts  = true;
 static int onTapeStrip (int retroNum);
 static void * waitForStrip (void * retroNum);
 static int getPin(int retroNum);
-static void * blockSpuriousInts(int timeout);
+static void * blockSpuriousInts(void *unused);
 
 
 /***
@@ -54,7 +54,7 @@ int initRetros() {
 			return -1;
 	}
     
-    if (pthread_create(&spuriousThread, NULL, blockSpuriousInts, SPURIOUS_BLOCK_TIMEOUT) != 0)
+    if (pthread_create(&spuriousThread, NULL, blockSpuriousInts, NULL) != 0)
         return -1;
 	
     return 0;
@@ -192,9 +192,9 @@ static int getPin(int retroNum) {
 	return -1;	/* Will never get here */
 }
 
-static void *blockSpuriousInts(int timeout) {
-	blockInts = true;
-    usleep(timeout);
+static void *blockSpuriousInts(void *null) {
+    blockInts = true;
+    usleep(SPURIOUS_BLOCK_TIMEOUT);
     blockInts = false;
     return NULL;
 }

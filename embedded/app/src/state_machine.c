@@ -53,26 +53,6 @@ state_t *findState(char *stateName) {
 }
 
 
-/***
- * findFaultState - Looks through a states transitions and finds its
- *  appropriate fault state
- *
- * ARGS state_t *state - The state whose transitions will be searched
- *
- * RETURNS state_t * - A pointer to the fault state
- */
-
-static state_t * findFaultState(state_t *state) {
-    int i = 0;
-    for (i = 0; i < state->numTransitions; i++) {
-        if (strncmp(state->transitions[i]->target->name, FAULT, 5) == 0) {
-            return state->transitions[i]->target;
-        }
-    }
-    fprintf(stderr, "This state has no fault? Needs to be fixed\n");
-    return NULL;    /* This should never happen, every state can fault */
-}
-
 
 /***
  * initState - fills in the fields of the state_t struct.
@@ -263,18 +243,15 @@ void runStateMachine(void) {
     if (strcmp(stateMachine.overrideStateName, BLANK_NAME) != 0) {
         state_t *tempState = findState(stateMachine.overrideStateName);
         if (tempState != NULL) {
-            printf("TEMP STATE NAME: %s\n", tempState->name);
             stateTransition_t *trans = findTransition(stateMachine.currState, stateMachine.overrideStateName);
             if (trans != NULL) {
                 trans->action();
             } else {
-                printf("begin func\n");
                 tempState->begin();
             }
             stateMachine.currState = tempState;
         }
         strcpy(stateMachine.overrideStateName, BLANK_NAME);
-        printf("leaving run\n");
         return;
     }
     /* execute the state and check if we should be transitioning */
@@ -282,12 +259,10 @@ void runStateMachine(void) {
     if (transition != NULL) {
 /*        printf("transAction->%s\n", transition->target->name);*/
         if (transition->action() == 0)  {
-            printf("here we are\n");
             stateMachine.currState = transition->target;
         } else {
-            stateMachine.currState = stateMachine.currState->fault;
+            stateMachine.currState = stateMachine.currState->fault->target;
         }
-        printf("BEGIN!\n");
         if (transition->target->begin != NULL) {
             transition->target->begin();
         }
@@ -333,10 +308,8 @@ void buildStateMachine(void) {
     initPostRun(stateMachine.allStates[7]);
     initSafeToApproach(stateMachine.allStates[8]);
         
-    nonRunFault = stateMachine.allStates[9];
-    runFault = stateMachine.allStates[10];
-
     stateMachine.currState = stateMachine.allStates[0];
+    stateMachine.currState->begin();
 
     stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
     strcpy(stateMachine.overrideStateName, BLANK_NAME);
