@@ -25,3 +25,19 @@ target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
 target_link_libraries(bmsDisplay PRIVATE middleware peripherals data)
 target_link_libraries(gpioHvTest PRIVATE drivers peripherals data)
 target_link_libraries(solenoidTest PRIVATE drivers peripherals data)
+
+#Make sure each executable generates in out/tests
+set_target_properties(bmsDisplay
+                      dashTest
+                      navTest
+                      solenoidTest
+                      brakingTest
+                      gpioHvTest
+                      oldMotorTest
+                      retroTest
+                      stateTest
+                      can_test
+                      imu_test
+                      presTest
+                      PROPERTIES
+                      RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out/tests)

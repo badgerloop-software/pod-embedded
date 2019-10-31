@@ -31,3 +31,8 @@ target_include_directories(LV_TCP_test PUBLIC include)
 target_link_libraries(HV_Test PRIVATE middleware peripherals data)
 target_link_libraries(LV_DataLoop_test PRIVATE middleware peripherals)
 target_link_libraries(LV_TCP_test PRIVATE data peripherals)
+
+#put examples into out/tests
+set_target_properties(HV_Test LV_DataLoop_test LV_TCP_test
+                      PROPERTIES
+                      RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")
