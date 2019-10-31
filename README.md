@@ -2,39 +2,38 @@
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
 
-*Developers: Rohan Daruwala, Ezra Boley*
+*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski*
 
 The embedded repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-There are currently 3 sets of targets:
+To build all compile targets:
 
-1) Making the main programs (`badgerloop_LV` and `badgerloop_HV`), placed in the `out/` folder
+1) Make a directory called build in the root of the repository and enter it
+
+```
+mkdir build
+cd build
+```
+
+2) Run cmake on the parent directory 
+
+```
+cmake ..
+```
+
+3) Build the project with make
 
 ```
 make
 ```
 
-The main target can also be executed in a special debug mode, adding useful
-print outs from various modules. Any of the following targets can also take
-advantage of the added debug functionality. To build in debug mode, run:
+There are currently 3 sets of targets:
 
-```
-make DEBUG=1
-```
+The main programs (`badgerloop_LV` and `badgerloop_HV`) are  placed in the `out/` directory
 
-2) Making the examples, placed into the `out/tests` folder
-
-```
-make examples
-```
-
-3) Making utilities for showcasing various parts of the pod's functionality
-
-```
-make utils
-```
+Tests will be placed in `out/tests`, and utilities in `out/utils`.
 
 ### Adding Tests
 
