@@ -21,5 +21,22 @@ int isEarlyInit(void);
 
 /**!!AUTO-GENERATE HERE!!**/
 
+static inline uint64_t convertTouS(struct timespec *currTime) {
+    return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
+}
+
+static inline uint64_t getuSTimestamp() {
+    struct timespec _temp;
+    clock_gettime(CLOCK_MONOTONIC, &_temp);
+    uint64_t _tempTs = convertTouS(&_temp);
+    return _tempTs;
+}
+
+static inline uint64_t getSTimestamp() {
+    struct timespec temp;
+    clock_gettime(CLOCK_MONOTONIC, &temp);
+    return (uint64_t) (temp.tv_sec);
+}
+
 extern data_t *data;
 #endif
