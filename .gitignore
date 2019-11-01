@@ -260,3 +260,10 @@ $RECYCLE.BIN/
 
 /.vscode
 .vscode/
+
+# CLion
+.idea/
+cmake-build-debug/
+
+# Autocoder Python
+*.pyc
