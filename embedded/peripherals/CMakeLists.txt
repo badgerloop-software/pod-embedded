@@ -16,6 +16,9 @@ add_library(peripherals src/batt.c
                         src/proc_iox.c
                         src/rms.c)
 
+# Run Autocoder
+add_dependencies(peripherals autocoder)
+
 target_include_directories(peripherals PUBLIC include)
 
 target_link_libraries(peripherals PRIVATE data app)

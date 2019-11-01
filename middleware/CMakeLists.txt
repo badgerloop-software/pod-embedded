@@ -11,6 +11,9 @@ add_library(middleware src/connStat.c
                        src/LVTCPSocket.cpp
                        src/PracticalSocket.cpp)
 
+# Run Autocoder
+add_dependencies(middleware autocoder)
+
 target_include_directories(middleware PUBLIC include include/jsonlib)
 
 target_link_libraries(middleware PRIVATE data peripherals app drivers)

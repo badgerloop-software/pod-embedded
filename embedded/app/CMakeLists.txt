@@ -27,6 +27,9 @@ add_library(app ${dependecies})
 target_include_directories(app PUBLIC include)
 target_link_libraries(app PRIVATE ${libraries})
 
+# Run Autocoder
+add_dependencies(app autocoder)
+
 #export app library so it can be used externally
 export(TARGETS app FILE AppLibConfig.cmake)
 

@@ -4,6 +4,9 @@ project(datalib VERSION 1.0
 
 add_library(data src/filters.c)
 
+# Run Autocoder
+add_dependencies(data autocoder)
+
 target_include_directories(data PUBLIC include)
 
 export(TARGETS data FILE DataConfig.cmake)

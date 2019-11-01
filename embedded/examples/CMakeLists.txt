@@ -26,6 +26,21 @@ target_link_libraries(bmsDisplay PRIVATE middleware peripherals data)
 target_link_libraries(gpioHvTest PRIVATE drivers peripherals data)
 target_link_libraries(solenoidTest PRIVATE drivers peripherals data)
 
+# Run Autocoder
+add_dependencies(imu_test autocoder)
+add_dependencies(can_test autocoder)
+add_dependencies(stateTest autocoder)
+add_dependencies(retroTest autocoder)
+add_dependencies(oldMotorTest autocoder)
+add_dependencies(presTest autocoder)
+add_dependencies(dashTest autocoder)
+add_dependencies(navTest autocoder)
+add_dependencies(brakingTest autocoder)
+add_dependencies(bmsDisplay autocoder)
+add_dependencies(gpioHvTest autocoder)
+add_dependencies(solenoidTest autocoder)
+
+
 #Make sure each executable generates in out/tests
 set_target_properties(bmsDisplay
                       dashTest
