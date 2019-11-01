@@ -1,5 +1,5 @@
 /* 
- * Please note that this is an auto-generated file which is automatically generated whenever CMake runs.
+ * Please note that this is an auto-generated file which is automatically generated whenever a target is built.
  */
 
 #ifndef __DATA_H__
