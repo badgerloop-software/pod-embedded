@@ -50,81 +50,21 @@ send(new_socket , toSend , strlen(toSend) , 0);
 
 ## UDP Data Telemetry Loop
 
-The UDP Telemetry Loop gathers data from the various sensors connected to the beaglebones. It then generates a packet and sends it to the dashboard server.
+The UDP Telemetry Loop gathers data from the various sensors connected to the Beaglebone. It then generates a packet and sends it to the dashboard server.
 
 ### How it works:
-	
+
 Start the telemetry loop by calling the function:
 	
 ```
-#include "LVTelemetry_Loop.h"
-SetupLVTelemetry("IP Address", Port);
-```
-
-or
-
-```
-#include "HVTelemetry_Loop.h"
-SetupHVTelemetry("IP Address", Port);
+#include "TelemetryLoop.h"
+SetupTelemetry((char *) "IP Address", port);
 ```
 
 Where "IP Address and "Port" are that of the dashboard server.
 
-This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
+This feature uses the [Boost CRC](https://www.boost.org/doc/libs/1_71_0/doc/html/crc.html) library to generate a cyclical redundancy check.
 	
 ### How to add data
 
-As functionality is added, you'll need to add data to the JSON string sent to the server. Several data points have already been added, based off of [this dashboard example](https://github.com/badgerloop-software/pod/blob/6953b71426e69a523f0ab82c737bd0ef032e486a/dashboard/server.js). Features that have not been implemented yet only return NULL values.
-
-To add a data point, you'll first need to create a "Value" object. Next, set the value using the setXYZ command. You can use SetNull(), SetFloat(), SetInt(), etc.
-
-```
-Value newData;
-newData.SetInt(42);
-```
-
-Next, you'll want to add it to a document (JSON object). To create one:
-
-```
-Document document;
-document.SetObject();
-```
-
-To add a data point (or another document) to a document, use the following command:
-
-```
-document.AddMember("key", newData, document.GetAllocator());
-```
-
-
-## High-Voltage UDP Data Parser
-
-The Low-Voltage BeagleBone collects data from various sensors and then sends it to the High-Voltage BeagleBone. The HV module needs to read-in and parse the data.
-
-### How it works:
-	
-Start the telemetry loop::
-	
-```
-#include "HV_Telem_Recv.h"
-SetupHVTelemRecv();
-```
-
-This feature uses the [RapidJSON](http://rapidjson.org) library to handle JSON objects with ease.
-	
-### How to add data parsing
-
-As data is added to the LV section (See the UDP Data section), it will need to be parsed on the HV end. To do so, use the following template:
-
-```
-uint64_t id = document["id"].GetUint64();
-```
-
-Or if you have nested objects:
-
-```
-const Value &<VAR> = document["CATEGORY"];
-float test = <VAR>[SUBCATEGORY].GetFloat();
-```
-
-Both types have been implemented in the file already if you need further reference
+In order to add more data, add additional fields to the `autocoder/data.xml`. The auto-coder will add the fields to the data.h tree structure. So long as the `data.xml` on the pod and on the dashboard are identical, the fields will be automatically sent.
