@@ -11,6 +11,13 @@
 #include "PracticalSocket.h"
 #include "data.h"
 #include <crc.hpp>
+#include <chrono>
+
+extern  "C" {
+#include <hv_iox.h>
+#include <lv_iox.h>
+}
+
 
 #define BUFFER_SIZE 500
 #define ENDIAN "LITTLE" // TODO: Is there a way to check this during compile-time or something?
@@ -32,7 +39,7 @@ void addToBuffer(std::vector<uint8_t>* buffer, type* value, uint8_t size = 0){
     const uint8_t* byteArray = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(value));
 
     for(int i = 0; i < bytes; i++)
-        if(ENDIAN == "LITTLE")
+        if(ENDIAN == "BIG") // NOLINT(misc-redundant-expression)
             buffer->push_back(byteArray[(bytes - 1) - i]);
         else
             buffer->push_back(byteArray[i]);
@@ -65,7 +72,7 @@ void* TelemetryLoop(void *arg) {
         UDPSocket sock;
 
         // Sent with each packet to keep track of ordering
-        uint64_t packetCount = 0;
+        uint32_t packetNumber = 0;
 
         // Buffer to be sent by the socket
         std::vector<uint8_t> buffer;
@@ -79,17 +86,41 @@ void* TelemetryLoop(void *arg) {
             addToBuffer(&buffer, &header, 3);
 
             // Contents: Loop through the data and add everything in
+
+            // Write 4 byte packet count
+            addToBuffer(&buffer, &packetNumber);
+
+            // Write 8 byte time
+            uint64_t time = chrono::duration_cast<chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()
+            ).count();
+            addToBuffer(&buffer, &time);
+
+            // Write 1 byte IMD status
+            uint8_t imdStatus = getIMDStatus();
+            addToBuffer(&buffer, &imdStatus);
+
+            // Write 4 byte primary brake
+            int32_t primBrake = limSwitchGet(PRIM_LIM_SWITCH);
+            addToBuffer(&buffer, &primBrake);
+
+            // Write 4 byte secondary brake
+            int32_t secBrake = limSwitchGet(SEC_LIM_SWITCH);
+            addToBuffer(&buffer, &secBrake);
+
             /**!!AUTO-GENERATE HERE!!**/
 
             // Tail: Cyclic Redundancy Check (32 bit)
             result.process_bytes(buffer.data(), buffer.size());
-            unsigned long checksum = result.checksum();
+            unsigned int checksum = result.checksum();
             addToBuffer(&buffer, &checksum);
             result.reset();
 
             // Send data and reset buffer
             sock.sendTo(buffer.data(), buffer.size(), sarg->ipaddr, sarg->port);
             buffer.clear();
+
+            packetNumber ++;
 
             // Pause for 30 milliseconds before sending the next packet
             usleep(30000);
