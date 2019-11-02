@@ -14,7 +14,7 @@
 #include <bitset>
 #include <PracticalSocket/PracticalSocket.h>
 #include "data.h"
-#include <boost/crc.hpp>
+#include <CRCpp/CRC.h>
 #include <chrono>
 
 extern  "C" {
@@ -83,7 +83,6 @@ void* TelemetryLoop(void *arg) {
         buffer.reserve(BUFFER_SIZE); // Prevents constant reallocation which can slow things down
 
         const uint32_t header = HEADER;
-        boost::crc_32_type result;
 
         while (true) {
             // Header: Write BAD6E4 (Because it kind of looks like "Badger")
@@ -196,10 +195,8 @@ void* TelemetryLoop(void *arg) {
             
 
             // Tail: Cyclic Redundancy Check (32 bit)
-            result.process_bytes(buffer.data(), buffer.size());
-            unsigned int checksum = result.checksum();
-            addToBuffer(&buffer, &checksum);
-            result.reset();
+            uint32_t crc = CRC::Calculate(buffer.data(), buffer.size(), CRC::CRC_32());
+            addToBuffer(&buffer, &crc);
 
             // Send data and reset buffer
             sock.sendTo(buffer.data(), buffer.size(), sarg->ipaddr, sarg->port);
