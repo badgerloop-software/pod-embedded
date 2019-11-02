@@ -13,7 +13,7 @@
 #include <CRCpp/CRC.h>
 #include <chrono>
 
-extern  "C" {
+extern "C" {
 #include <hv_iox.h>
 #include <lv_iox.h>
 }
@@ -100,11 +100,17 @@ void* TelemetryLoop(void *arg) {
             addToBuffer(&buffer, &imdStatus);
 
             // Write 4 byte primary brake
-            int32_t primBrake = limSwitchGet(PRIM_LIM_SWITCH);
+            int32_t primBrake = 0;
+            #ifndef TELEMETRY_LOOP_TEST
+                primBrake = limSwitchGet(PRIM_LIM_SWITCH);
+            #endif
             addToBuffer(&buffer, &primBrake);
 
             // Write 4 byte secondary brake
-            int32_t secBrake = limSwitchGet(SEC_LIM_SWITCH);
+            int32_t secBrake = 0;
+            #ifndef TELEMETRY_LOOP_TEST
+                secBrake = limSwitchGet(SEC_LIM_SWITCH);
+            #endif
             addToBuffer(&buffer, &secBrake);
 
             /**!!AUTO-GENERATE HERE!!**/
@@ -118,6 +124,13 @@ void* TelemetryLoop(void *arg) {
             buffer.clear();
 
             packetNumber ++;
+
+            #ifdef TELEMETRY_LOOP_TEST
+                if(packetNumber % 100 == 0){
+                    cout << packetNumber << " packets have been sent.\n";
+                    cout.flush();
+                }
+            #endif
 
             // Pause for 30 milliseconds before sending the next packet
             usleep(30000);
