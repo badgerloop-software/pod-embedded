@@ -50,4 +50,4 @@ def autocode(templateFilePath, outputFilePath, placeholderGeneratorTupleArray):
     print("Successfully auto-coded " + directoryPath + "/" + outputFilePath + ".")
 
 autocode("templates/data.template.h", "../embedded/data/include/data.h", [("!!AUTO-GENERATE HERE!!", generators.generateDataHeader)])
-#autocode("templates/TelemetryLoop.template.cpp", "output/TelemetryLoop.cpp", [("!!AUTO-GENERATE HERE!!", generators.generateBufferContents)])
+autocode("templates/TelemetryLoop.template.cpp", "../middleware/src/TelemetryLoop.cpp", [("!!AUTO-GENERATE HERE!!", generators.generateBufferContents)])
