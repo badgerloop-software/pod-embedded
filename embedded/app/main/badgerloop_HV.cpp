@@ -3,9 +3,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include "HVTelemetry_Loop.h"
+#include <TelemetryLoop.h>
 #include "HVTCPSocket.h"
-#include "HV_Telem_Recv.h"
 #include "data_dump.h"
 
 
@@ -51,9 +50,8 @@ int init() {
 	buildStateMachine();
 printf("Ezra\n");
     /* Init telemetry */
-    SetupHVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+    SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
-	SetupHVTelemRecv();	
 
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;

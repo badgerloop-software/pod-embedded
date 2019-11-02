@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "LVTelemetry_Loop.h"
+#include <TelemetryLoop.h>
 #include "LVTCPSocket.h"
 
 
@@ -35,7 +35,7 @@ int init() {
     
     /* Init telemetry services */
 	
-    SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+    SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupLVTCPServer();
     data->state = 1;
     return 0;

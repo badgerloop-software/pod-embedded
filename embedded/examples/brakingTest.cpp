@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "LVTelemetry_Loop.h"
+#include <TelemetryLoop.h>
 #include <string.h>
 #include "connStat.h"
 extern "C" {
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     initPressureMonitor();
     initLVIox(isHard);
     SetupIMU();
-    SetupLVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+    SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
     if (argc > 1) {
         if (strcmp(argv[1], "-p") == 0) {
             if (argc > 2) {
