@@ -10,7 +10,7 @@
 #include <bitset>
 #include <PracticalSocket/PracticalSocket.h>
 #include "data.h"
-#include <Boost/crc.hpp>
+#include <boost/crc.hpp>
 #include <chrono>
 
 extern  "C" {
