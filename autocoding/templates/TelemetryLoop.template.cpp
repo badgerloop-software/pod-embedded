@@ -8,9 +8,9 @@
 #include <memory.h>
 #include <vector>
 #include <bitset>
-#include "PracticalSocket.h"
+#include <PracticalSocket/PracticalSocket.h>
 #include "data.h"
-#include <crc.hpp>
+#include <Boost/crc.hpp>
 #include <chrono>
 
 extern  "C" {
