@@ -19,7 +19,7 @@ target_link_libraries(middleware PRIVATE data peripherals app drivers)
 export(TARGETS middleware FILE MiddlewareConfig.cmake)
 
 #examples executables
-add_executable(LV_TCP_test examples/LV_TCP_test.cpp src/LVTCPSocket.cpp examples/TCPServerTest.cpp)
+add_executable(LV_TCP_test examples/LV_TCP_test.cpp src/LVTCPSocket.cpp)
 add_executable(TelemetryLoopTest examples/TelemetryLoopTest.cpp src/TelemetryLoop.cpp ../embedded/app/src/init.c)
 add_executable(TCPServerTest examples/TCPServerTest.cpp src/TCPServer.cpp)
 
