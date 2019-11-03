@@ -16,6 +16,7 @@
 extern "C" 
 {
     #include "lv_iox.h"
+    #include "imu.h"
 }
 
 
@@ -77,21 +78,28 @@ void *LVTelemetryLoop(void *arg)
 			
 			// POSITION
 			Value pos;
-			pos.SetFloat(data->motion->pos);
-			
+			//pos.SetFloat(getPosX());
+            pos.SetFloat(0);
+		
+            
+           // printf("%f %f %f\n", getAccelX(), getAccelY(), getAccelZ());
+
+
 			// RETRO
 			Value retro;
 			retro.SetInt(data->motion->retroCount);
 			
 			// VELOCITY - Change "X" to "Y" if need be
 			Value vel;
-			vel.SetFloat(data->motion->vel);
+			//vel.SetFloat(getVelX());
+            vel.SetFloat(0);
 	
 			Value lstRet;
             lstRet.SetUint64(data->timers->lastRetro);
 			// ACCELERATION - Change "X" to "Y" if need be
 			Value accel;
-			accel.SetFloat(data->motion->accel);
+			accel.SetFloat(-1 * getAccelX());
+            //accel.SetFloat(0);
 				
 			// PRESSURE VESSEL PRESSURE
 			Value pressureV;
