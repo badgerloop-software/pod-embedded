@@ -41,7 +41,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 	switch(id) {
 		case 0x6B0:		
             bms->packCurrent = (msg[1] | msg[0] << 8)/10;
-		printf("0x6B0 Pack Current 1\ 0: %f\n", bms->packCurrent);
+		//printf("0x6B0 Pack Current 1\ 0: %f\n", bms->packCurrent);
 		//int64_t tryTwo = (((int16_t) msg[1]) |((int16_t) msg[0]) << 8)/10;
 		//printf("0x6B0 Pack Current hepl: %lld\n", tryTwo);
 
