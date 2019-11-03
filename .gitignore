@@ -59,6 +59,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 out/
+build/
 ### C++ ###
 # Prerequisites
 
