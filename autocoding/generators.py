@@ -31,6 +31,7 @@ def generateDataHeader(data):
         out += "} " + struct.attrib["id"] + "_t;\n\n"
     return out
 
+# Generates the code which includes all of the data.h fields in TelemetryLoop.cpp
 def generateBufferContents(data):
     out = ""
     for field in data.iter("field"):
