@@ -59,7 +59,7 @@ printf("Ezra\n");
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
     /* Start 'black box' data saving */
-/*    SetupDataDump();*/
+    SetupDataDump();
 	
     return 0;	
 }
@@ -73,7 +73,7 @@ int main() {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
-
+	fprintf(stderr,"torque,rpm\n");
 	while(1) {
 	    runStateMachine();
         
@@ -106,6 +106,7 @@ int main() {
         } else {
             i += 1;
         }
+	fprintf(stderr, "%d,%d,%d\n", data->rms->actualTorque, data->rms->motorSpeed, getuSTimestamp());
         usleep(10000);
 
 		// Control loop
