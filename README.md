@@ -65,6 +65,9 @@ pod/
  |  |--include/          /* Network API for transmitting data between modules and off the pod */
  |  |--libs/             /* Libraries required for the middleware code */
  |  |--examples/         /* Examples for testing the networking functionality */
+ | 
+ |--autocoding/          /* Auto-coding python scripts and data.xml */
+    |--templates/        /* Template files to be autocoded */
  |
  ```
  
