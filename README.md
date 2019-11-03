@@ -67,7 +67,7 @@ pod/
  |  |--examples/         /* Examples for testing the networking functionality */
  | 
  |--autocoding/          /* Auto-coding python scripts and data.xml */
-    |--templates/        /* Template files to be autocoded */
+ |  |--templates/        /* Template files to be autocoded */
  |
  ```
  
