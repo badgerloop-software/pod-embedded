@@ -35,7 +35,7 @@ target_include_directories(TCPServerTest PUBLIC include libs)
 #link required libraries
 target_link_libraries(LV_TCP_test PRIVATE data peripherals)
 target_link_libraries(TelemetryLoopTest PRIVATE data peripherals)
-target_link_libraries(TCPServerTest PRIVATE data peripherals)
+target_link_libraries(TCPServerTest PRIVATE data peripherals app)
 
 #put examples into out/tests
 set_target_properties(LV_TCP_test
