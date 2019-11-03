@@ -34,7 +34,7 @@
         pow(35181.0     * (x), 3) - \
         pow(303240.0    * (x), 2) - (1000000.0 * (x)))
 
-#define MAX_RETRO 3
+#define MAX_RETRO 1
 #define MAX_PACKET_LOSS 500
 /* Imports/Externs */
 extern int internalCount;
@@ -100,10 +100,10 @@ stateTransition_t * pumpdownAction() {
     } 
 
     // CHECK PRESSURE
-    if(!checkPrerunPressures()){
+  /*  if(!checkPrerunPressures()){
         fprintf(stderr, "Pressure failure\n");
         pErrs += 1;
-    } else pErrs = 0;
+    } else pErrs = 0;*/
     
     if(!checkPrerunBattery()){
         fprintf(stderr, "prerun batt fault\n");
@@ -134,10 +134,10 @@ stateTransition_t * propulsionAction() {
 
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
-    if (!checkPrerunPressures()) { 
+ /*   if (!checkPrerunPressures()) { 
         fprintf(stderr, "Pressure failing\n");
         pErrs += 1;
-    } else pErrs = 0;
+    } else pErrs = 0;*/
     
     if(!checkRunBattery()){
         printf("Failed battery\n");
@@ -149,7 +149,7 @@ stateTransition_t * propulsionAction() {
         rErrs += 1;
     } rErrs = 0;
 
-    if (getuSTimestamp() - data->timers->startTime > 30000000/*MAX_RUN_TIME*/){
+    if (getuSTimestamp() - data->timers->startTime > 7000000/*MAX_RUN_TIME*/){
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }
@@ -239,10 +239,10 @@ stateTransition_t * stoppedAction() {
     if (checkNetwork() != 0) return stateMachine.currState->fault;
     // CHECK FAULT CRITERIA
     
-    if(!checkBrakingPressures()){ // Still unchanged
+ /*   if(!checkBrakingPressures()){ // Still unchanged
         printf("Pressures failing\n");
         pErrs += 1; 
-    } else pErrs = 0;
+    } else pErrs = 0;*/
     
     if(!checkBrakingBattery()){ // Still unchanged
         fprintf(stderr, "Battery error\n");
@@ -262,10 +262,10 @@ stateTransition_t * stoppedAction() {
 
 stateTransition_t * servPrechargeAction() {
     data->state = 6;
-    if (!checkBrakingPressures()) {
+ /*   if (!checkBrakingPressures()) {
         fprintf(stderr, "Pressure failed\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } else pErrs = 0;
+    } else pErrs = 0;*/
     
     if (!getIMDStatus()) {
         fprintf(stderr, "getIMDStatus()");
@@ -299,10 +299,10 @@ stateTransition_t * crawlAction() {
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
 
-    if(!checkCrawlPostrunPressures()){
+ /*   if(!checkCrawlPostrunPressures()){
         printf("pres fail\n");
         pErrs += 1;    
-    } else pErrs = 0;
+    } else pErrs = 0;*/
 
     if(!checkCrawlBattery()){
         printf("batt fail\n");
@@ -369,7 +369,7 @@ stateTransition_t * safeToApproachAction() {
 /*        return stateMachine.currState->fault;*/
 /*    } */
     pressure_t *p = data->pressure;
-    if (p->primTank > 30 || p->primTank < -15 || 
+ /*   if (p->primTank > 30 || p->primTank < -15 || 
         p->primLine > 20 || p->primLine < -10 ||
         p->primAct  > 20 || p->primAct  < -10 ||
         p->secTank  > 30 || p->secTank  < -15 || 
@@ -378,7 +378,7 @@ stateTransition_t * safeToApproachAction() {
         p->pv       > 20 || p->pv       <  13 ){
        fprintf(stderr, "Pressures are out of the safe range\n");
        return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
-    }
+    }*/
     
     if (checkNetwork() != 0) return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
     if (data->flags->emergencyBrake) {

@@ -37,6 +37,8 @@ void currentDateTime(char *buf) {
 /* Thread Loop */
 void *DataLoop(void *arg){
 	
+	printf("START DATA LOOP\n");
+
 	(void) arg;
 	
 	FILE *fp;
@@ -45,16 +47,20 @@ void *DataLoop(void *arg){
 	char timestamp[80];
 	currentDateTime(timestamp);
 	
-	sprintf(dir, "../data_logs/%s.csv", timestamp);
+	sprintf(dir, "../../data_logs/LOG.csv", timestamp);
 	
 	fp = fopen (dir,"w");
 	if (fp == NULL){
 		printf("Unable to open file\n");
 		return NULL;
 	}
+
+	
 	
 	fprintf(fp, "FRP,FPD,FRC,FP,FEB,TST,TLR,TLR1,TLR2,TLR3,Pps1,Pps2,Pps3,Sps1,Sps2,Sps3,pv,pos,vel,accel,retC,pCurr,pVol,pDCL,pCCL,pRes,pHealth,pOV,pC,pAH,iV,Soc,hiT,loT,cMax,cMin,cAvg,mCells,nCells,igbtTemp,GDBT,CBT,mT,mS,paC,pbC,pcC,dcbV,lvV,cc1,cc2,fC1,fC2,cT,aT,rS,eF,dcbC,oVL\n");
 	
+	printf("ABOUT TO DATA LOOP\n");
+
 	while(1){
 		
 		// FLAGS
