@@ -1,5 +1,5 @@
 # Pod Middleware
-*Developer: Rohan Daruwala*
+*Developer: Rohan Daruwala, Daniel Kouchekinia*
 
 Everything that facilitates data-transfer between the Beaglebones on the pod, or between the pod and the dashboard
 
@@ -63,7 +63,7 @@ SetupTelemetry((char *) "IP Address", port);
 
 Where "IP Address and "Port" are that of the dashboard server.
 
-This feature uses the [Boost CRC](https://www.boost.org/doc/libs/1_71_0/doc/html/crc.html) library to generate a cyclical redundancy check.
+This feature uses d-bahr's [CRCpp](https://github.com/d-bahr/CRCpp) to generate the cyclical redundancy check.
 	
 ### How to add data
 
