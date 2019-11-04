@@ -62,7 +62,7 @@ int init() {
     sigaction(SIGINT, &sig, NULL);
 
     /* Start 'black box' data saving */
-    SetupDataDump();
+/*    SetupDataDump();*/
 	
     return 0;	
 }

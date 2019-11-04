@@ -12,7 +12,6 @@ extern "C"
     #include "lv_iox.h"
     #include "nav.h"
     #include "braking.h"
-    extern void csvFormatShow();    
     #include "connStat.h"
     #include "proc_iox.h"
 	#include "imu.h"
@@ -72,8 +71,7 @@ int main() {
             brakeSecondaryUnactuate();
             data->flags->brakeSecRetr = false;
         }
-		
-        csvFormatShow();
+
         if (data->state != 1 && (!checkTCPStatHV() || !checkTCPStat())) {
             printf("ERRS: %d\n", errs);
             errs += 1;
