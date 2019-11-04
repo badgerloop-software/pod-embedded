@@ -149,7 +149,7 @@ stateTransition_t * propulsionAction() {
         rErrs += 1;
     } rErrs = 0;
 
-    if (getuSTimestamp() - data->timers->startTime > 3000000/*MAX_RUN_TIME*/){
+    if (getuSTimestamp() - data->timers->startTime > 30000000/*MAX_RUN_TIME*/){
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }
