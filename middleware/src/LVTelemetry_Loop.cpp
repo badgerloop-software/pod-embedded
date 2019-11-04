@@ -80,10 +80,6 @@ void *LVTelemetryLoop(void *arg)
 			Value pos;
 			//pos.SetFloat(getPosX());
             pos.SetFloat(0);
-		
-            
-           // printf("%f %f %f\n", getAccelX(), getAccelY(), getAccelZ());
-
 
 			// RETRO
 			Value retro;

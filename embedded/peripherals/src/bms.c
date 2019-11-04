@@ -41,10 +41,6 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 	switch(id) {
 		case 0x6B0:		
             bms->packCurrent = (msg[1] | msg[0] << 8)/10;
-		//printf("0x6B0 Pack Current 1\ 0: %f\n", bms->packCurrent);
-		//int64_t tryTwo = (((int16_t) msg[1]) |((int16_t) msg[0]) << 8)/10;
-		//printf("0x6B0 Pack Current hepl: %lld\n", tryTwo);
-
 			bms->packVoltage = (msg[3] | msg[2] << 8)/10;
 			bms->Soc = msg[4]/2;
 			bms->relayStatus = msg[6] | msg[5] << 8;
@@ -121,19 +117,6 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 #endif
             break;
 		case 0x150:
-		//	printf("");
-		//	float twoTrye = (msg[0] | (msg[1] << 8))/10;
-		//	printf("0x150 Pack Current 0/1: %f\n", twoTrye);
-
-		//	float twoTry2 = (msg[1] | (msg[0] << 8))/10;
-                       // printf("0x150 Pack Current 1/ 0: %f\n", twoTry2); 
-
-
-/*			bms->avgTemp = msg[0];*/
-		//	bms->packCurrent /= 10;
-/*            bms->cellMinVoltage = ((msg[3] << 8) | msg[4]) / 10000.0;*/
-/*			bms->packVoltage = msg[2] | (msg[3] << 8);*/
-/*			bms->packVoltage /= 10;*/
 			bms->packAh = msg[4] | (msg[5] << 8);
 			bms->highTemp = msg[6];
 			bms->lowTemp = msg[7];

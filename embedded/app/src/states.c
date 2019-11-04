@@ -34,7 +34,7 @@
         pow(35181.0     * (x), 3) - \
         pow(303240.0    * (x), 2) - (1000000.0 * (x)))
 
-#define MAX_RETRO 1
+#define MAX_RETRO 3
 #define MAX_PACKET_LOSS 500
 /* Imports/Externs */
 extern int internalCount;
@@ -149,7 +149,7 @@ stateTransition_t * propulsionAction() {
         rErrs += 1;
     } rErrs = 0;
 
-    if (getuSTimestamp() - data->timers->startTime > 7000000/*MAX_RUN_TIME*/){
+    if (getuSTimestamp() - data->timers->startTime > 3000000/*MAX_RUN_TIME*/){
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }

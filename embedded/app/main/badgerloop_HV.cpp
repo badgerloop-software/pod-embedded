@@ -45,8 +45,10 @@ int init() {
     initHVIox(true);
 
     SetupMotor();
+
     /*    initMotor();   */
-/*    initPressureSensors();*/
+    /*    initPressureSensors();*/
+
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
 
@@ -58,6 +60,7 @@ int init() {
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
+
     /* Start 'black box' data saving */
     SetupDataDump();
 	
@@ -106,7 +109,7 @@ int main() {
         } else {
             i += 1;
         }
-//	fprintf(stderr, "%d,%d,%d\n", data->rms->actualTorque, data->rms->motorSpeed, getuSTimestamp());
+	    // fprintf(stderr, "%d,%d,%d\n", data->rms->actualTorque, data->rms->motorSpeed, getuSTimestamp());
         usleep(10000);
 
 		// Control loop
