@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.1)
 project(PodEmbedded VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
+# Run Autocoder when CMake is run
+execute_process(COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
+
 # Autocoder target
 add_custom_target(autocoder COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
 
