@@ -172,5 +172,97 @@ static inline uint64_t getSTimestamp() {
     return (uint64_t) (temp.tv_sec);
 }
 
+/***
+ * pressure_t - Pressure data from the braking system
+ */
+typedef struct pressure_t {
+    double primTank;
+    double primLine;
+    double primAct;
+    double secTank;
+    double secLine;
+    double secAct;
+    double amb;
+    double pv;
+} pressure_t;
+
+
+/***
+ * motion_t - Where all movement data goes
+ *
+ * Fields are fairly self explanatory, assumed positive X direction (because the
+ * pod only travels in one direction)
+ *  
+ * All values should be assumed metric (m, m/s, m/s/s)
+ */
+typedef struct motion_t {
+    float pos;
+    float vel;
+    float accel;
+    int retroCount;
+    int missedRetro;
+} motion_t;
+
+/***
+ * bms_t - All of the data collected about the battery system
+ *
+ */
+typedef struct bms_t {
+    int64_t packCurrent;
+    float packVoltage;
+    int imdStatus;
+    uint16_t packDCL;
+    int16_t packCCL;
+    uint16_t packResistance;
+    uint8_t packHealth;
+    float packOpenVoltage;
+    uint16_t packCycles;
+    uint16_t packAh;
+    float inputVoltage;
+    uint8_t Soc;
+    uint16_t relayStatus;
+    uint8_t highTemp;
+    uint8_t lowTemp;
+    uint8_t avgTemp;
+    float cellMaxVoltage;
+    float cellMinVoltage;
+    uint16_t cellAvgVoltage;
+    uint8_t maxCells;
+    uint8_t numCells;
+} bms_t;
+
+/***
+ * rms_t - Collection of all of the RMS (motor controller) data
+ *
+ * Read in and filled in via CAN from the motor
+ */
+typedef struct rms_t {
+    uint16_t igbtTemp;
+    uint16_t gateDriverBoardTemp;
+    uint16_t controlBoardTemp;
+    uint16_t motorTemp;
+    int16_t motorSpeed;
+    int16_t phaseACurrent;
+    uint16_t phaseBCurrent;
+    uint16_t phaseCCurrent;
+    int16_t dcBusVoltage;
+     //uint16_t output_voltage_peak;
+    uint16_t lvVoltage;
+    uint64_t canCode1;
+    uint64_t canCode2;
+    uint64_t faultCode1;
+    uint64_t faultCode2;
+    int16_t commandedTorque;
+    int16_t actualTorque;
+    uint16_t relayState;
+    uint16_t  electricalFreq;
+    int16_t dcBusCurrent;
+    uint16_t outputVoltageLn;
+	uint16_t VSMCode;
+
+	uint16_t keyMode;
+} rms_t;
+
+
 extern data_t *data;
 #endif

@@ -40,10 +40,8 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
     bms_t *bms = data->bms;
 	switch(id) {
 		case 0x6B0:		
-            bms->packCurrent = msg[1] | msg[0] << 8;
-			bms->packCurrent /= 10;
-			bms->packVoltage = msg[3] | msg[2] << 8;
-			bms->packVoltage /= 10;
+            bms->packCurrent = (msg[1] | msg[0] << 8)/10;
+			bms->packVoltage = (msg[3] | msg[2] << 8)/10;
 			bms->Soc = msg[4]/2;
 			bms->relayStatus = msg[6] | msg[5] << 8;
             bms->cellMaxVoltage = ((msg[5] << 8)| msg[6]) /10000.0;
@@ -68,8 +66,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 /*			printf("ID: 0x%3lx\r\n", (long unsigned int) id);*/
 			bms->relayStatus = msg[1] | msg[0] << 8;
 			bms->relayStatus = msg[0];
-			bms->inputVoltage = msg[2] | (msg[3] << 8);
-			bms->inputVoltage /= 10;
+			bms->inputVoltage = (msg[2] | (msg[3] << 8))/10;
 #ifdef DEBUG_BMS
             printf("Relay status %d\r\n", bms->relayStatus);
 			printf("Input Source Supply Voltage: %f\r\n", bms->inputVoltage);
@@ -109,8 +106,7 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 			bms->Soc /= 2;
 			bms->packResistance = msg[1] | (msg[2] << 8);
 			bms->packHealth = msg[3];
-			bms->packOpenVoltage = msg[4] | (msg[5] << 8);
-			bms->packOpenVoltage /= 10;
+			bms->packOpenVoltage = (msg[4] | (msg[5] << 8))/10;
 			bms->packCycles = msg[6] | (msg[7] << 8);
 #ifdef DEBUG_BMS
 			printf("SOC %d\r\n", bms->Soc);
@@ -121,12 +117,6 @@ int bmsParseMsg(uint32_t id, uint8_t *msg) {
 #endif
             break;
 		case 0x150:
-
-/*			bms->avgTemp = msg[0];*/
-			bms->packCurrent /= 10;
-/*            bms->cellMinVoltage = ((msg[3] << 8) | msg[4]) / 10000.0;*/
-/*			bms->packVoltage = msg[2] | (msg[3] << 8);*/
-/*			bms->packVoltage /= 10;*/
 			bms->packAh = msg[4] | (msg[5] << 8);
 			bms->highTemp = msg[6];
 			bms->lowTemp = msg[7];

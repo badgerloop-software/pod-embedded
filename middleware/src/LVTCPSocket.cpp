@@ -93,7 +93,7 @@ void *LVTCPLoop(void *arg){
 		}
 		read(new_socket, buffer, 1024); 
 		
-		printf("RECEIVED: %s\n",buffer);  
+	//	printf("RECEIVED: %s\n",buffer);  
 		
 		// Do things
 		if(!strncmp(buffer, "power off", MAX_COMMAND_SIZE)){

@@ -44,11 +44,13 @@ int init() {
     initHVIox(true);
 
     SetupMotor();
+
     /*    initMotor();   */
-/*    initPressureSensors();*/
+    /*    initPressureSensors();*/
+
     /* Allocate needed memory for state machine and create graph */
 	buildStateMachine();
-printf("Ezra\n");
+
     /* Init telemetry */
     SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
@@ -56,6 +58,7 @@ printf("Ezra\n");
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
+
     /* Start 'black box' data saving */
 /*    SetupDataDump();*/
 	
@@ -104,6 +107,7 @@ int main() {
         } else {
             i += 1;
         }
+	    // fprintf(stderr, "%d,%d,%d\n", data->rms->actualTorque, data->rms->motorSpeed, getuSTimestamp());
         usleep(10000);
 
 		// Control loop
