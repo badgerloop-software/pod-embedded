@@ -4,35 +4,39 @@ project(middlewarelib VERSION 1.0
 
 add_library(middleware src/connStat.c
                        src/HVTCPSocket.cpp
-                       src/HV_Telem_Recv.cpp
-                       src/LVTelemetry_Loop.cpp
                        src/data_dump.cpp
-                       src/HVTelemetry_Loop.cpp
                        src/LVTCPSocket.cpp
-                       src/PracticalSocket.cpp)
+                       libs/PracticalSocket/PracticalSocket.cpp
+                       src/TelemetryLoop.cpp)
 
-target_include_directories(middleware PUBLIC include include/jsonlib)
+# Run Autocoder
+add_dependencies(middleware autocoder)
+
+target_include_directories(middleware PUBLIC include libs)
 
 target_link_libraries(middleware PRIVATE data peripherals app drivers)
 
 export(TARGETS middleware FILE MiddlewareConfig.cmake)
 
 #examples executables
-add_executable(HV_Test examples/HV_Test.cpp)
-add_executable(LV_DataLoop_test examples/LV_DataLoop_test.cpp)
 add_executable(LV_TCP_test examples/LV_TCP_test.cpp src/LVTCPSocket.cpp)
+add_executable(TelemetryLoopTest examples/TelemetryLoopTest.cpp src/TelemetryLoop.cpp ../embedded/app/src/init.c)
+
+# Set test definitions
+target_compile_definitions(TelemetryLoopTest PUBLIC TELEMETRY_LOOP_TEST)
 
 #link local includes
-target_include_directories(HV_Test PUBLIC include)
-target_include_directories(LV_DataLoop_test PUBLIC include)
-target_include_directories(LV_TCP_test PUBLIC include)
+target_include_directories(LV_TCP_test PUBLIC include libs)
+target_include_directories(TelemetryLoopTest PUBLIC include libs)
 
 #link required libraries
-target_link_libraries(HV_Test PRIVATE middleware peripherals data)
-target_link_libraries(LV_DataLoop_test PRIVATE middleware peripherals)
 target_link_libraries(LV_TCP_test PRIVATE data peripherals)
+target_link_libraries(TelemetryLoopTest PRIVATE data peripherals)
 
 #put examples into out/tests
-set_target_properties(HV_Test LV_DataLoop_test LV_TCP_test
+set_target_properties(LV_TCP_test
                       PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")
+set_target_properties(TelemetryLoopTest
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")

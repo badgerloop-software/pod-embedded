@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <HVTelemetry_Loop.h>
-#include <LVTelemetry_Loop.h>
+#include <TelemetryLoop.h>
 extern "C" 
 {
     #include "motor.h"
@@ -18,8 +17,7 @@ extern "C"
 
 int init() {
   initData();
-  SetupHVTelemetry((char *) "127.0.0.1", 33333);  
-  SetupLVTelemetry((char *) "127.0.0.1", 33333);
+  SetupTelemetry((char *) "127.0.0.1", 33333);
 }
 int main() {
 init();

@@ -3,6 +3,12 @@ cmake_minimum_required(VERSION 3.1)
 project(PodEmbedded VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
+# Run Autocoder when CMake is run
+execute_process(COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
+
+# Autocoder target
+add_custom_target(autocoder COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
+
 #put binaries in out/
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out/lib)

@@ -7,7 +7,7 @@ extern "C"
 #include <string.h>
 #include <nav.h>
 }
-#include <LVTelemetry_Loop.h>
+#include <TelemetryLoop.h>
 #include "connStat.h"
 #define ROLL "roll"
 #define EXP "exp"
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
   initRetros();
   initNav();
   
-  SetupLVTelemetry((char *)DASHBOARD_IP, 33333);
+  SetupTelemetry((char *)DASHBOARD_IP, 33333);
   joinRetroThreads();
 
   while(1);

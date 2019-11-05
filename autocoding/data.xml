@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<struct id="data" init="initData" comment="Top of the great hierarchy of our descending data tree.">
+	<field id="state" type="int"/>
+	<struct pointer="true" id="pressure" init="initPressureData" comment="Pressure information from the braking system">
+		<field id="primTank" type="double"/>
+		<field id="primLine" type="double"/>
+		<field id="primAct" type="double"/>
+		<field id="secTank" type="double"/>
+		<field id="secLine" type="double"/>
+		<field id="secAct" type="double"/>
+		<field id="amb" type="double"/>
+		<field id="pv" type="double"/>
+	</struct>
+	<struct pointer="true" id="motion" init="initMotionData" comment="Where all motion data goes. X-positive direction is assumed. All values should be assumed to be metric.">
+		<field id="pos" type="float"/>
+		<field id="vel" type="float"/>
+		<field id="accel" type="float"/>
+		<field id="retroCount" type="int"/>
+		<field id="missedRetro" type="int"/>
+	</struct>
+	<struct pointer="true" id="bms" init="initBmsData" comment="Data collected about the battery system">
+		<field id="packCurrent" type="float"/>
+		<field id="packVoltage" type="float"/>
+		<field id="imdStatus" type="int"/>
+		<field id="packDCL" type="uint16_t"/>
+		<field id="packCCL" type="int16_t"/>
+		<field id="packResistance" type="uint16_t"/>
+		<field id="packHealth" type="uint8_t"/>
+		<field id="packOpenVoltage" type="float"/>
+		<field id="packCycles" type="uint16_t"/>
+		<field id="packAh" type="uint16_t"/>
+		<field id="inputVoltage" type="float"/>
+		<field id="Soc" type="uint8_t"/>
+		<field id="relayStatus" type="uint16_t"/>
+		<field id="highTemp" type="uint8_t"/>
+		<field id="lowTemp" type="uint8_t"/>
+		<field id="avgTemp" type="uint8_t"/>
+		<field id="cellMaxVoltage" type="float"/>
+		<field id="cellMinVoltage" type="float"/>
+		<field id="cellAvgVoltage" type="uint16_t"/>
+		<field id="maxCells" type="uint8_t"/>
+		<field id="numCells" type="uint8_t"/>
+	</struct>
+	<struct pointer="true" id="rms" init="initRmsData" comment="Collection of all the RMS (motor controller) data">
+		<field id="igbtTemp" type="uint16_t"/>
+		<field id="gateDriverBoardTemp" type="uint16_t"/>
+		<field id="controlBoardTemp" type="uint16_t"/>
+		<field id="motorTemp" type="uint16_t"/>
+		<field id="motorSpeed" type="int16_t"/>
+		<field id="phaseACurrent" type="int16_t"/>
+		<field id="phaseBCurrent" type="uint16_t"/>
+		<field id="phaseCCurrent" type="uint16_t"/>
+		<field id="dcBusVoltage" type="int16_t"/>
+		<!-- <field id="output_voltage_peak" type="uint16_t"/> -->
+		<field id="lvVoltage" type="uint16_t"/>
+		<field id="canCode1" type="uint64_t"/>
+		<field id="canCode2" type="uint64_t"/>
+		<field id="faultCode1" type="uint64_t"/>
+		<field id="faultCode2" type="uint64_t"/>
+		<field id="commandedTorque" type="int16_t"/>
+		<field id="actualTorque" type="int16_t"/>
+		<field id="relayState" type="uint16_t"/>
+		<field id="electricalFreq" type="uint16_t"/>
+		<field id="dcBusCurrent" type="int16_t"/>
+		<field id="outputVoltageLn" type="uint16_t"/>
+		<field id="VSMCode" type="uint16_t"/>
+		<field id="keyMode" type="uint16_t"/>
+	</struct>
+	<struct pointer="true" id="flags" init="initFlagData" comment="Where information about the flags is held.">
+		<field id="readyPump" type="int"/>
+		<field id="pumpDown" type="int"/>
+		<field id="readyCommand" type="int"/>
+		<field id="readyToBrake" type="bool"/>
+		<field id="propulse" type="int"/>
+		<field id="emergencyBrake" type="int"/>
+		<field id="shouldStop" type="int"/>
+		<field id="shutdown" type="int"/>
+		<field id="shouldBrake" type="bool"/>
+		<field id="isConnected" type="bool"/>
+		<field id="brakeInit" type="bool"/>
+		<field id="brakePrimAct" type="bool"/>
+		<field id="brakeSecAct" type="bool"/>
+		<field id="brakePrimRetr" type="bool"/>
+		<field id="brakeSecRetr" type="bool"/>
+		<field id="clrMotionData" type="bool"/>
+	</struct>
+	<struct pointer="true" id="timers" init="initTimerData" comment="For making sure that our run happens in a timely manner">
+		<field id="startTime" type="uint64_t"/>
+		<field id="oldRetro" type="uint64_t"/>
+		<field id="lastRetro" type="uint64_t"/>
+		<field id="lastRetros" type="uint64_t[NUM_RETROS]"/>
+		<field id="crawlTimer" type="uint64_t"/>
+	</struct>
+</struct>

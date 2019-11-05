@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
 
-*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski*
+*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia*
 
 The embedded repository for Badgerloop's pod in the Hyperloop Competition
 
@@ -63,7 +63,11 @@ pod/
  |--middleware/
  |  |--src/              /* Source files for the UDP and TCP servers that run on the pod */
  |  |--include/          /* Network API for transmitting data between modules and off the pod */
+ |  |--libs/             /* Libraries required for the middleware code */
  |  |--examples/         /* Examples for testing the networking functionality */
+ | 
+ |--autocoding/          /* Auto-coding python scripts and data.xml */
+ |  |--templates/        /* Template files to be autocoded */
  |
  ```
  

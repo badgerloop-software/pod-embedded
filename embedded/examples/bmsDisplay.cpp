@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <connStat.h>
 #include <pthread.h>
-#include "HVTelemetry_Loop.h"
+#include <TelemetryLoop.h>
 extern "C" {
     #include "data.h"
 #include "NCD9830DBR2G.h"
@@ -15,6 +15,6 @@ int main() {
     initData();
     initPressureSensors();
     SetupCANDevices();
-    SetupHVTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
+    SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
     pthread_join(CANThread, NULL);
 }
