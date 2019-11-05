@@ -58,13 +58,11 @@ void showNavData() {
 }
 
 void csvFormatHeader() {
-    printf("posx,posy,posz,velx,vely,velz,accelx,accely,accelz,pos,vel,accel\n");   
+    printf("accelx,accely,accelz,pos,vel,accel\n");   
 }
 
 void csvFormatShow() {
-    printf("%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f\n", 
-           getPosX(), getPosY(), getPosZ(), 
-           getDeltaVX(), getDeltaVY(), getDeltaVZ(), 
+    printf("%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f\n", 
            getAccelX(), getAccelY(), getAccelZ(),
            data->motion->pos, data->motion->vel, data->motion->accel);
 }

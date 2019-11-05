@@ -191,6 +191,7 @@ void *TCPLoop(void *arg)
 		// HEARTBEAT
 		if (!strncmp(buffer, "ping", MAX_COMMAND_SIZE))
 		{
+			printf("ping\n");
 			// Send acknowledge packet back
 			send(new_socket, (char *)"pong1", strlen("pong1"), 0);
 		}
@@ -226,7 +227,7 @@ void signalLV(char *cmd)
     addr.sin_port = htons(LV_SERVER_PORT);
     
     if (connect(srvFd, (SA*)&addr,addrlen) != 0) {
-        fprintf(stderr, "Failed to open port\n");
+     //   fprintf(stderr, "Failed to open port\n");
         close(srvFd);
         return;
     }

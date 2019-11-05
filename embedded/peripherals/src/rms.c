@@ -149,7 +149,7 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
 }
 int rmsSendHbMsg(uint16_t torque) {
 	
-	uint8_t payload[] = {TORQUE_SCALE_LWR(torque), 0/*TORQUE_SCALE_UPR(torque)*/, 0x0, 0x0, 
+	uint8_t payload[] = {TORQUE_SCALE_LWR(torque), TORQUE_SCALE_UPR(torque), 0x0, 0x0, 
         0x1, 0x1, 0x0, 0x0};
     
     sem_wait(&canSem);

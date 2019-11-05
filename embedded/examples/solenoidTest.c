@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
     int state = whatToDo(argc, argv);
     printf("STATE: %d\n", state);
     if (state < 0) return -1;
+    printf("start\n");
     solenoidSet(sol, state);
+    printf("end\n");
     return 0;
 }

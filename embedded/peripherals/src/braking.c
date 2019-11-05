@@ -97,7 +97,7 @@ static double avgDouble(double *arr, int size) {
 
 int brake() {
     brakePrimaryActuate();
-    usleep(500000);
+    usleep(5000000);
     if (limSwitchGet(PRIM_LIM_SWITCH)) {
         brakeSecondaryActuate();
     }

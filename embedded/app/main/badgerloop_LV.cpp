@@ -12,8 +12,7 @@ extern "C"
     #include "lv_iox.h"
     #include "nav.h"
     #include "braking.h"
-    
-#include "connStat.h"
+    #include "connStat.h"
     #include "proc_iox.h"
 	#include "imu.h"
     #include <data.h>
@@ -29,7 +28,7 @@ int init() {
     initLVIox(true);
 	
     /* Init all peripherals */
-/*	SetupIMU();  GOODBYE MY SWEET SUMMER CHILD */
+	SetupIMU();
     initRetros();
     initNav();
     
@@ -72,8 +71,7 @@ int main() {
             brakeSecondaryUnactuate();
             data->flags->brakeSecRetr = false;
         }
-		
-        
+
         if (data->state != 1 && (!checkTCPStatHV() || !checkTCPStat())) {
             printf("ERRS: %d\n", errs);
             errs += 1;

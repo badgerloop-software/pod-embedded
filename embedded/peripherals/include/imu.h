@@ -54,6 +54,10 @@ float getDeltaVX();
 float getDeltaVY();
 float getDeltaVZ();
 
+float getVelX();
+float getVelY();
+float getVelZ();
+
 void getAccelData(float *fData);
 float getAccelX();
 float getAccelY();

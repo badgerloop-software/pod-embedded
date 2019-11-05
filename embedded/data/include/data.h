@@ -142,7 +142,7 @@ typedef struct motion_t {
  *
  */
 typedef struct bms_t {
-    float packCurrent;
+    int64_t packCurrent;
     float packVoltage;
     int imdStatus;
     uint16_t packDCL;

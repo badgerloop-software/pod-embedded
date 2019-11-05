@@ -236,6 +236,27 @@ float getDeltaVZ(){
 	return ans;
 }
 
+float getVelX(){
+    sem_wait(&data->mutex);
+    float ans = data->velX;
+    sem_post(&data->mutex);
+    return ans;
+}
+
+float getVelY(){
+    sem_wait(&data->mutex);
+    float ans = data->velY;
+    sem_post(&data->mutex);
+    return ans;
+}
+
+float getVelZ(){
+    sem_wait(&data->mutex);
+    float ans = data->velZ;
+    sem_post(&data->mutex);
+    return ans;
+}
+
 float getAccelX(){
 	sem_wait(&data->mutex);
 	float ans = data->accelX;
