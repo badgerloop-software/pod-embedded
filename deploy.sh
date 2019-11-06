@@ -1,5 +1,14 @@
 #!/bin/bash
 
+if [ $1 == 'build']
+then
+
+elif [ $1 == 'clean']
+then
+
+else
+	echo "Invalid argument: please put it in the form "./deploy.sh build" or "./deploy.sh clean""
+fi
 
 mkdir build && cd build
 cmake ..
