@@ -8,7 +8,17 @@ The embedded repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-To build all compile targets:
+To build or clean all compile targets using the Bash script:
+
+```
+./deploy.sh build
+```
+
+```
+./deploy.sh clean
+```
+
+To build all compile targets manually:
 
 1) Make a directory called build in the root of the repository and enter it
 
