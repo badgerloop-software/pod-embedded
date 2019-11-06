@@ -2,13 +2,23 @@
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
 
-*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia*
+*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia, Ezra Freeman*
 
 The embedded repository for Badgerloop's pod in the Hyperloop Competition
 
 ## Beaglebone Make Instructions
 
-To build all compile targets:
+To build or clean all compile targets using the Bash script:
+
+```
+./deploy.sh build
+```
+
+```
+./deploy.sh clean
+```
+
+To build all compile targets manually:
 
 1) Make a directory called build in the root of the repository and enter it
 
