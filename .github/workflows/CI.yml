@@ -10,4 +10,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: test
-      run: ./deploy.sh
+      run: ./deploy.sh build && ./deploy.sh clean

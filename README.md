@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
 
-*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia*
+*Developers: Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia, Ezra Freeman*
 
 The embedded repository for Badgerloop's pod in the Hyperloop Competition
 

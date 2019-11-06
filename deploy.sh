@@ -3,6 +3,7 @@
 fileName=${0##*/}
 if [ "$#" -ne 1 ]; then
 	echo "one argument expected after './$fileName'"
+	exit 1
 elif [ "$1" == "build" ]; then
 	mkdir build && cd build
 	
@@ -26,5 +27,6 @@ elif [ "$1" == "clean" ]; then
 	echo "clean finished"
 else
 	echo "Invalid argument: please put it in the form './$fileName build' or './$fileName clean'"
+	exit 1
 fi
 exit 0
