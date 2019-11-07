@@ -1,5 +1,4 @@
 import util
-import re
 
 # Generates the data.h file
 def generateDataHeader(data):
@@ -38,11 +37,15 @@ def generateDataHeader(data):
                 # Create getter and setter headers
                 #headers += util.generateComment("Getter and setter for " + struct.attrib["id"] + "->" + field.attrib["id"], 100)
                 fieldType = field.attrib["type"]
+                isArray = False;
                 if "[" in field.attrib["type"]:
-                    fieldType = fieldType.split("[")[0] + "*"
-                headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "();\n"
-                headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val);\n\n"
+                    fieldType = fieldType.split("[")[0]
+                    isArray = True;
+                # headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "();\n"
+                # headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val);\n\n"
 
+                headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + ("int index" if isArray else "") + ");\n"
+                headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val" + (", int index" if isArray else "") + ");\n\n"
         out += "} " + struct.attrib["id"] + "_t;\n\n"
     return out + "\n" + headers + "\n\n\n"
 
@@ -132,23 +135,25 @@ def generateDataC(data):
         for field in struct:
             if field.tag == "field":
                 fieldType = field.attrib["type"]
+                isArray = False
 
                 # Deal with arrays
                 if "[" in fieldType:
-                    fieldType = fieldType.split("[")[0] + "*"
+                    fieldType = fieldType.split("[")[0]
+                    isArray = True
 
                 # Getter
-                out += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "() {\n"
+                out += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + ("int index" if isArray else "") + ") {\n"
                 out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
-                out += "\tauto val = " + util.getDataReference(field, data) + ";\n"
+                out += "\t" + fieldType + " val = " + util.getDataReference(field, data) + ("[index]" if isArray else "") + ";\n"
                 out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");\n"
                 out += "\treturn val;"
                 out += "\n}\n\n"
 
                 # Setter
-                out += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val) {\n"
+                out += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val" + (", int index" if isArray else "") + ") {\n"
                 out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
-                out += "\t" + util.getDataReference(field, data) + " = val;\n";
+                out += "\t" + util.getDataReference(field, data) + ("[index]" if isArray else "") + "  = val;\n";
                 out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");"
                 out += "\n}\n\n"
     return out
