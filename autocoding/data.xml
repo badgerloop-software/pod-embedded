@@ -88,7 +88,7 @@
 		<field id="startTime" type="uint64_t"/>
 		<field id="oldRetro" type="uint64_t"/>
 		<field id="lastRetro" type="uint64_t"/>
-		<field id="lastRetros" type="uint64_t[NUM_RETROS]"/>
+		<field id="lastRetros" type="uint64_t[3]"/>
 		<field id="crawlTimer" type="uint64_t"/>
 	</struct>
 </struct>

@@ -10,5 +10,8 @@ def getDataReference(element, root):
     for parent in root.iter():
         # Check to make sure parent is actually a parent of element
         if element in parent:
-            return getDataReference(parent, root) + " -> " + element.attrib["id"]
+            return getDataReference(parent, root) + "->" + element.attrib["id"]
     return root.attrib["id"]
+
+def capitalize(string):
+    return string.capitalize()[0] + string[1:]
