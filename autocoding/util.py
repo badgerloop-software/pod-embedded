@@ -18,3 +18,9 @@ def capitalize(string):
 
 def getSemaphoreReference(struct, root):
     return getDataReference(struct, root) + "->" + struct.attrib["id"] + "Semaphore"
+
+def getGetReference(struct, field):
+    return "get" + capitalize(struct.attrib["id"]) + capitalize(field.attrib["id"])
+
+def getSetReference(struct, field):
+    return "set" + capitalize(struct.attrib["id"]) + capitalize(field.attrib["id"])

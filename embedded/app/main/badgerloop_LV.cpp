@@ -15,6 +15,7 @@ extern "C"
     #include "connStat.h"
     #include "proc_iox.h"
 	#include "imu.h"
+    #include "retro.h"
     #include <data.h>
 }
 

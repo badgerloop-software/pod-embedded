@@ -44,8 +44,8 @@ def generateDataHeader(data):
                 # headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "();\n"
                 # headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val);\n\n"
 
-                headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + ("int index" if isArray else "") + ");\n"
-                headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val" + (", int index" if isArray else "") + ");\n\n"
+                headers += fieldType + " " + util.getGetReference(struct, field) + "(" + ("int index" if isArray else "") + ");\n"
+                headers += "void " + util.getSetReference(struct, field) + "(" + fieldType + " val" + (", int index" if isArray else "") + ");\n\n"
         out += "} " + struct.attrib["id"] + "_t;\n\n"
     return out + "\n" + headers + "\n\n\n"
 
@@ -98,19 +98,24 @@ def generateInitC(data):
             for field in struct:
                 if field.tag == "field":
 
-                    fieldType = "";
+                    # Initialize the values
 
-                    # Deal with arrays
+                    arrayLength = -1
+
                     if "[" in field.attrib["type"]:
                         fieldType = field.attrib["type"].split("[")[0]
-                        arrayLength = field.attrib["type"].split("[")[1].split("]")[0];
+                        arrayLength = field.attrib["type"].split("[")[1].split("]")[0]
+                    else:
+                        fieldType = field.attrib["type"]
+
+                    # Deal with arrays
+                    if arrayLength != -1:
                         out += "\tfor(int i = 0; i < " + arrayLength + "; i++)\n"
-                        out += "\t\t" + util.getDataReference(field, data) + "[i] = "
+                        out += "\t\t" + util.getSetReference(struct, field) + "("
 
                     # Non-arrays
                     else:
-                        fieldType = field.attrib["type"]
-                        out += "\t" + util.getDataReference(field, data) + " = "
+                        out += "\t" + util.getSetReference(struct, field) + "("
 
                     # Figure out what to set as the default value
                     if fieldType in defaultValues:
@@ -121,7 +126,10 @@ def generateInitC(data):
                         print ("WARNING: AUTO-CODER COULD NOT FIND DEFAULT VALUE FOR TYPE '" + fieldType + "'.")
                         out += "0"
 
-                    out += ";\n"
+                    if arrayLength != -1:
+                        out += ", i"
+
+                    out += ");\n"
 
 
             out += "\treturn 0;"
@@ -143,7 +151,7 @@ def generateDataC(data):
                     isArray = True
 
                 # Getter
-                out += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + ("int index" if isArray else "") + ") {\n"
+                out += fieldType + " " + util.getGetReference(struct, field) + "(" + ("int index" if isArray else "") + ") {\n"
                 out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
                 out += "\t" + fieldType + " val = " + util.getDataReference(field, data) + ("[index]" if isArray else "") + ";\n"
                 out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");\n"
@@ -151,7 +159,7 @@ def generateDataC(data):
                 out += "\n}\n\n"
 
                 # Setter
-                out += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val" + (", int index" if isArray else "") + ") {\n"
+                out += "void " + util.getSetReference(struct, field) + "(" + fieldType + " val" + (", int index" if isArray else "") + ") {\n"
                 out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
                 out += "\t" + util.getDataReference(field, data) + ("[index]" if isArray else "") + "  = val;\n";
                 out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");"
