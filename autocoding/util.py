@@ -1,5 +1,5 @@
 # Generates comments with the specified indentation and wrapping-length
-def generateComment(comment, length, indentation = ""):
+def generateComment(comment, length = 100, indentation = ""):
     out = ""
     for commentChunk in [comment[i : i + length] for i in range(0, len(comment), length)]:
         out += indentation + "// " + commentChunk + "\n"
@@ -15,3 +15,6 @@ def getDataReference(element, root):
 
 def capitalize(string):
     return string.capitalize()[0] + string[1:]
+
+def getSemaphoreReference(struct, root):
+    return getDataReference(struct, root) + "->" + struct.attrib["id"] + "Semaphore"

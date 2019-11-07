@@ -58,7 +58,7 @@ def autocode(templateFilePath, outputFilePath, placeholderGeneratorTupleArray):
 autocode("templates/data.template.h", "../embedded/data/include/data.h", [("!!AUTO-GENERATE HERE!!", generators.generateDataHeader)])
 
 # data.c file
-#autocode("templates/data.template.c", "../embedded/data/src/data.c", [("!!AUTO-GENERATE HERE!!", generators.generateDataC)])
+autocode("templates/data.template.c", "../embedded/data/src/data.c", [("!!AUTO-GENERATE HERE!!", generators.generateDataC)])
 
 # init.c file
 autocode("templates/init.template.c", "../embedded/app/src/init.c", [("!!AUTO-GENERATE HERE!!", generators.generateInitC)])

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <time.h>
-#include <retro.h>
+#include <semaphore.h>
 #include <stdbool.h>
 #define TIME_SINCE_LAST_RETRO 15000000
 #define FILTER_NONE     0

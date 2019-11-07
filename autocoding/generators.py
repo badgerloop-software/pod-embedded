@@ -37,8 +37,11 @@ def generateDataHeader(data):
 
                 # Create getter and setter headers
                 #headers += util.generateComment("Getter and setter for " + struct.attrib["id"] + "->" + field.attrib["id"], 100)
-                headers += fieldType + "* get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "();\n"
-                headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + "* val);\n\n"
+                fieldType = field.attrib["type"]
+                if "[" in field.attrib["type"]:
+                    fieldType = fieldType.split("[")[0] + "*"
+                headers += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "();\n"
+                headers += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val);\n\n"
 
         out += "} " + struct.attrib["id"] + "_t;\n\n"
     return out + "\n" + headers + "\n\n\n"
@@ -85,6 +88,10 @@ def generateInitC(data):
                             out += "\t}\n"
                 out += "\n"
 
+            # Initialize semaphores
+            out += util.generateComment("Initialize semaphore.", indentation="\t")
+            out += "\tsem_init(&" + util.getSemaphoreReference(struct, data) + ", 0, 1);\n\n"
+
             for field in struct:
                 if field.tag == "field":
 
@@ -119,15 +126,32 @@ def generateInitC(data):
     return out
 
 
-# def generateDataC(data):
-#     out = ""
-#     for struct in data.iter("struct"):
-#         for field in struct:
-#             if field.tag == "field":
-#                 fieldType = field.attrib["type"]
-#                 out += fieldType + "* get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "() {}\n"
-#                 out += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + "* val) {}\n\n"
-#     return out
+def generateDataC(data):
+    out = ""
+    for struct in data.iter("struct"):
+        for field in struct:
+            if field.tag == "field":
+                fieldType = field.attrib["type"]
+
+                # Deal with arrays
+                if "[" in fieldType:
+                    fieldType = fieldType.split("[")[0] + "*"
+
+                # Getter
+                out += fieldType + " get" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "() {\n"
+                out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\tauto val = " + util.getDataReference(field, data) + ";\n"
+                out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\treturn val;"
+                out += "\n}\n\n"
+
+                # Setter
+                out += "void set" + util.capitalize(struct.attrib["id"]) + util.capitalize(field.attrib["id"]) + "(" + fieldType + " val) {\n"
+                out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\t" + util.getDataReference(field, data) + " = val;\n";
+                out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");"
+                out += "\n}\n\n"
+    return out
 
 
 # Generates the code which includes all of the data.h fields in TelemetryLoop.cpp
