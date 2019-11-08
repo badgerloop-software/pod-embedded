@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <i2c.h>
 #include <proc_iox.h>
-#include "semaphore.h"
+#include <pthread.h>
 
 
 /* Checks whether or not the hardware has been initialized,

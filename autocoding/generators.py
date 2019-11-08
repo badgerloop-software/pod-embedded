@@ -18,7 +18,7 @@ def generateDataHeader(data):
         out += "typedef struct " + struct.attrib["id"] + "_t {\n"
 
         # Semaphores
-        out += "\tsem_t " + struct.attrib["id"] + "Semaphore;\n"
+        out += "\tpthread_mutex_t " + struct.attrib["id"] + "Mutex;\n"
 
         for field in struct:
             if "comment" in field.attrib:
@@ -91,9 +91,11 @@ def generateInitC(data):
                             out += "\t}\n"
                 out += "\n"
 
-            # Initialize semaphores
-            out += util.generateComment("Initialize semaphore.", indentation="\t")
-            out += "\tsem_init(&" + util.getSemaphoreReference(struct, data) + ", 0, 1);\n\n"
+            # Initialize mutexes
+            out += util.generateComment("Initialize mutex", indentation="\t")
+            out += "\tif(pthread_mutex_init(&" + util.getMutexReference(struct, data) + ", NULL) != 0) {\n"
+            out += "\t\treturn 1;\n"
+            out += "\t}\n\n"
 
             for field in struct:
                 if field.tag == "field":
@@ -152,17 +154,17 @@ def generateDataC(data):
 
                 # Getter
                 out += fieldType + " " + util.getGetReference(struct, field) + "(" + ("int index" if isArray else "") + ") {\n"
-                out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\tpthread_mutex_lock(&" + util.getMutexReference(struct, data) + ");\n"
                 out += "\t" + fieldType + " val = " + util.getDataReference(field, data) + ("[index]" if isArray else "") + ";\n"
-                out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\tpthread_mutex_unlock(&" + util.getMutexReference(struct, data) + ");\n"
                 out += "\treturn val;"
                 out += "\n}\n\n"
 
                 # Setter
                 out += "void " + util.getSetReference(struct, field) + "(" + fieldType + " val" + (", int index" if isArray else "") + ") {\n"
-                out += "\tsem_wait(&" + util.getSemaphoreReference(struct, data) + ");\n"
+                out += "\tpthread_mutex_lock(&" + util.getMutexReference(struct, data) + ");\n"
                 out += "\t" + util.getDataReference(field, data) + ("[index]" if isArray else "") + "  = val;\n";
-                out += "\tsem_post(&" + util.getSemaphoreReference(struct, data) + ");"
+                out += "\tpthread_mutex_unlock(&" + util.getMutexReference(struct, data) + ");"
                 out += "\n}\n\n"
     return out
 

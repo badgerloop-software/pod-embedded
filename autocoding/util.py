@@ -16,8 +16,8 @@ def getDataReference(element, root):
 def capitalize(string):
     return string.capitalize()[0] + string[1:]
 
-def getSemaphoreReference(struct, root):
-    return getDataReference(struct, root) + "->" + struct.attrib["id"] + "Semaphore"
+def getMutexReference(struct, root):
+    return getDataReference(struct, root) + "->" + struct.attrib["id"] + "Mutex"
 
 def getGetReference(struct, field):
     return "get" + capitalize(struct.attrib["id"]) + capitalize(field.attrib["id"])
