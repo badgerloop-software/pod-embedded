@@ -44,7 +44,7 @@ make
 To install the toolchain needed for cross-compiling:
 
 ```
-./deploy.sh cross-setup
+sudo ./deploy.sh cross-setup
 ```
 
 Then, to build the executable:
