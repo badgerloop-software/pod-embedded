@@ -54,7 +54,7 @@ void initNav() {
 
 void showNavData() {
     printf("Pos: %0.5f ; Vel: %0.5f ; Accel%0.5f\n", 
-            data->motion->pos, data->motion->vel, data->motion->accel);
+            getMotionPos(), getMotionVel(), getMotionAccel());
 }
 
 void csvFormatHeader() {
@@ -64,26 +64,26 @@ void csvFormatHeader() {
 void csvFormatShow() {
     printf("%0.5f,%0.5f,%0.5f,%0.5f,%0.5f,%0.5f\n", 
            getAccelX(), getAccelY(), getAccelZ(),
-           data->motion->pos, data->motion->vel, data->motion->accel);
+           getMotionPos(), getMotionVel(), getMotionAccel());
 }
 
 /* Returns m/s/s */
 static inline float accelFromRetro(float currVel) {
-   return (currVel - data->motion->vel) /
-       USEC_TO_SEC((float)data->timers->lastRetro - (float)data->timers->oldRetro); 
+   return (currVel - getMotionVel()) /
+       USEC_TO_SEC((float)getTimersLastRetro() - (float)getTimersOldRetro()); 
 }
 
 /* Returns m/s */
 static inline float velFromRetro(float currPos) {
-   return (currPos - data->motion->pos) /
-       USEC_TO_SEC((float)data->timers->lastRetro - (float)data->timers->oldRetro); 
+   return (currPos - getMotionPos()) /
+       USEC_TO_SEC((float)getTimersLastRetro() - (float)getTimersOldRetro()); 
 }
 
 
 void updateRawMotionData() {
     float vel, accel, pos;
 
-    pos = data->motion->retroCount * STRIP_DISTANCE;
+    pos = getMotionRetroCount() * STRIP_DISTANCE;
     vel = velFromRetro(pos);
     accel = accelFromRetro(vel);
     /* note: we want to reset xsens pos. too, stop drift*/
@@ -124,17 +124,17 @@ void filterMotion(int filterType) {
         accel = rawData.accel.data[rawData.accel.head];
     }
     pthread_mutex_unlock(&lock);
-    data->motion->pos = pos;
-    data->motion->vel = vel;
-    data->motion->accel = accel;
+    setMotionPos(pos);
+    setMotionVel(vel);
+    setMotionAccel(accel);
 }
 
 void resetNav();
 void resetNav() {
-    data->motion->pos = 0;
-    data->motion->vel = 0;
-    data->motion->accel = 0;
-    data->motion->retroCount = 0;
+    setMotionPos(0);
+    setMotionVel(0);
+    setMotionAccel(0);
+    setMotionRetroCount(0);
 
     /* reset rest */
 }
@@ -147,15 +147,15 @@ void navLoop(void *unused) {
     (void) unused;
     
     int lastRetroCount = 0;
-    data->motion->missedRetro = 0;
+    setMotionMissedRetro(0);
     csvFormatHeader();
     while (1) {
-        if (lastRetroCount != data->motion->retroCount) {
+        if (lastRetroCount != getMotionRetroCount()) {
             updateRawMotionData();
             filterMotion(FILTER_NONE);
         }
     
-        lastRetroCount = data->motion->retroCount;
+        lastRetroCount = getMotionRetroCount();
     /*    showNavData();   */
     /*    csvFormatShow(); */
         usleep(10000);  /* Runs at 10ms */

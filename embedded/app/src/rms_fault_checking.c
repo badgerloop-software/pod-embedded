@@ -19,62 +19,62 @@
 extern data_t *data;
 
 bool checkPrerunRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_PRERUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_PRERUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
     
-    if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_VOLTAGE_MAX){
+    if(getRmsDcBusVoltage() < DC_BUS_VOLTAGE_MIN || getRmsDcBusVoltage() > DC_BUS_VOLTAGE_MAX){
 
-		printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+		printf("DC Bus Voltage Failure: %i\n", getRmsDcBusVoltage());
 		return false;
 	}
 
 	// IDLE
-	if(data->state == 1){
-		if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_IDLE){
-			printf("DC Bus Current Idle Failure: %i\n", data->rms->dcBusCurrent);
+	if(getDataState() == 1){
+		if(getRmsDcBusCurrent() < DC_BUS_CURRENT_MIN || getRmsDcBusCurrent() > DC_BUS_CURRENT_MAX_IDLE){
+			printf("DC Bus Current Idle Failure: %i\n", getRmsDcBusCurrent());
 			return false;
 		}
-	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
-			printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+	if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_PRERUN){
+			printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 			return false;
 		}
-		if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_IDLE){
-			printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_IDLE){
+			printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 			return false;
 		}
 	}
 	// READY PUMPDOWN SPECIFIC
-	else if(data->state == 2){
-	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
-			printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+	else if(getDataState() == 2){
+	if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_PRERUN){
+			printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 			return false;
 		}
-		if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_PUMP){ //changes on spreadsheet
-			printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_PUMP){ //changes on spreadsheet
+			printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 			return false;
 		}
 	}
 	// PUMPDOWN SPECIFIC
-	else if(data->state == 3){
-	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_PRERUN){
-			printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+	else if(getDataState() == 3){
+	if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_PRERUN){
+			printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 			return false;
 		}
-		if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_PUMP){
-			printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_PUMP){
+			printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 			return false;
 		}
 	}
 	// PRE-PROPULSE SPECIFIC
-	else if(data->state == 4){
-	if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){ //changes on spreadsheet
-			printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+	else if(getDataState() == 4){
+	if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_RUN){ //changes on spreadsheet
+			printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 			return false;
 		}
-		if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_PUMP){
-			printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+		if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_PUMP){
+			printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 			return false;
 		}
 	}
@@ -83,20 +83,20 @@ bool checkPrerunRMS(void){
 }
 
 bool checkRunRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_RUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_RUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
-	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
-		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+	if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 		return false;
 	}
-if(data->rms->dcBusVoltage < DC_BUS_VOLTAGE_MIN || data->rms->dcBusVoltage > DC_BUS_VOLTAGE_MAX){
-		printf("DC Bus Voltage Failure: %i\n", data->rms->dcBusVoltage);
+if(getRmsDcBusVoltage() < DC_BUS_VOLTAGE_MIN || getRmsDcBusVoltage() > DC_BUS_VOLTAGE_MAX){
+		printf("DC Bus Voltage Failure: %i\n", getRmsDcBusVoltage());
 		return false;
 	}
-if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
-		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 		return false;
 	}
 	
@@ -104,16 +104,16 @@ if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardT
 }
 
 bool checkBrakingRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_RUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_RUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
-	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
-		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+	if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 		return false;
 	}
-if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
-		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 		return false;
 	}
 	
@@ -121,16 +121,16 @@ if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardT
 }
 
 bool checkStoppedRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
-	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
-		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+	if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 		return false;
 	}
-if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
-		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 		return false;
 	}
 	
@@ -138,20 +138,20 @@ if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardT
 }
 
 bool checkCrawlRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
-	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
-		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+	if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 		return false;
 	}
-if(data->rms->dcBusCurrent < DC_BUS_CURRENT_MIN || data->rms->dcBusCurrent > DC_BUS_CURRENT_MAX_CRAWL){
-		printf("DC Bus Current Pumpdown Failure: %i\n", data->rms->dcBusCurrent);
+if(getRmsDcBusCurrent() < DC_BUS_CURRENT_MIN || getRmsDcBusCurrent() > DC_BUS_CURRENT_MAX_CRAWL){
+		printf("DC Bus Current Pumpdown Failure: %i\n", getRmsDcBusCurrent());
 		return false;
 	}
-if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_RUN){
-		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_RUN){
+		printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 		return false;
 	}
 	
@@ -159,16 +159,16 @@ if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardT
 }
 
 bool checkPostRMS(void){
-	if(data->rms->igbtTemp < MIN_IGBT_TEMP || data->rms->igbtTemp > MAX_IGBT_TEMP_POSTRUN){
-		printf("IGBT Prerun Temp Failure: %i\n", data->rms->igbtTemp);
+	if(getRmsIgbtTemp() < MIN_IGBT_TEMP || getRmsIgbtTemp() > MAX_IGBT_TEMP_POSTRUN){
+		printf("IGBT Prerun Temp Failure: %i\n", getRmsIgbtTemp());
 		return false;
 	}
-	if(data->rms->controlBoardTemp < MIN_CONTROL_TEMP || data->rms->controlBoardTemp > MAX_CONTROL_TEMP_RUN){
-		printf("Control Temp Failure: %i\n", data->rms->controlBoardTemp);
+	if(getRmsControlBoardTemp() < MIN_CONTROL_TEMP || getRmsControlBoardTemp() > MAX_CONTROL_TEMP_RUN){
+		printf("Control Temp Failure: %i\n", getRmsControlBoardTemp());
 		return false;
 	}
-if(data->rms->gateDriverBoardTemp < MIN_GATE_TEMP || data->rms->gateDriverBoardTemp > MAX_GATE_TEMP_POSTRUN){
-		printf("Gate Driver Temp Failure: %i\n", data->rms->gateDriverBoardTemp);
+if(getRmsGateDriverBoardTemp() < MIN_GATE_TEMP || getRmsGateDriverBoardTemp() > MAX_GATE_TEMP_POSTRUN){
+		printf("Gate Driver Temp Failure: %i\n", getRmsGateDriverBoardTemp());
 		return false;
 	}
 	

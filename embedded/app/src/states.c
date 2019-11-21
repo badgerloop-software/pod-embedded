@@ -65,7 +65,7 @@ int checkNetwork() {
  */
 /* DEPRECATED
 static bool checkStopped(void) {
-	return fabs(data->motion->vel) < MAX_STOPPED_VEL &&  (getuSTimestamp() - data->timers->lastRetro) > TIME_SINCE_LAST_RETRO;
+	return fabs(getMotionVel()) < MAX_STOPPED_VEL &&  (getuSTimestamp() - getTimersLastRetro()) > TIME_SINCE_LAST_RETRO;
 }
 */
 /***
@@ -77,9 +77,9 @@ static bool checkStopped(void) {
  */
 
 stateTransition_t * idleAction() {
-    data->state = 1;
+    setDataState(1);
     
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
 
@@ -88,14 +88,14 @@ stateTransition_t * idleAction() {
 
 stateTransition_t * pumpdownAction() {
     // First check for nominal values?
-    data->state = 2;
+    setDataState(2);
     
     /* Check IMD status */
     
     if (getuSTimestamp() - stateMachine.start > 300000000)
         return stateMachine.currState->fault;
 
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
 
@@ -122,9 +122,9 @@ stateTransition_t * pumpdownAction() {
 }
 
 stateTransition_t * propulsionAction() {
-    data->state = 3;
+    setDataState(3);
     /* Check IMD status */
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
 
@@ -149,18 +149,18 @@ stateTransition_t * propulsionAction() {
         rErrs += 1;
     } rErrs = 0;
 
-    if (getuSTimestamp() - data->timers->startTime > 30000000/*MAX_RUN_TIME*/){
+    if (getuSTimestamp() - getTimersStartTime() > 30000000/*MAX_RUN_TIME*/){
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }
 
-    if (data->motion->retroCount >= MAX_RETRO && data->flags->readyToBrake) {
+    if (getMotionRetroCount() >= MAX_RETRO && getFlagsReadyToBrake()) {
         printf("retro transition\n");
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 
     // CHECK TRANSITION CRITERIA
-    if(data->flags->shouldStop){
+    if(getFlagsShouldStop()){
         printf("Should Stop\n");
         return stateMachine.currState->next;
     }
@@ -172,11 +172,11 @@ stateTransition_t * propulsionAction() {
 }
 
 stateTransition_t * brakingAction() {
-    data->state = 4;
+    setDataState(4);
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
     
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         printf("EMERG BRAKE\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
@@ -228,9 +228,9 @@ stateTransition_t * brakingAction() {
 }
 
 stateTransition_t * stoppedAction() {
-	data->state = 5;
+    setDataState(5);
      /* Check IMD status */
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
     
@@ -261,7 +261,7 @@ stateTransition_t * stoppedAction() {
 }
 
 stateTransition_t * servPrechargeAction() {
-    data->state = 6;
+    setDataState(6);
     if (!checkBrakingPressures()) {
         fprintf(stderr, "Pressure failed\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
@@ -271,7 +271,7 @@ stateTransition_t * servPrechargeAction() {
         fprintf(stderr, "getIMDStatus()");
         return stateMachine.currState->fault;
     }
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
     if (checkNetwork() != 0) return stateMachine.currState->fault;
@@ -281,20 +281,20 @@ stateTransition_t * servPrechargeAction() {
 static int prevRet = 0;
 
 stateTransition_t * crawlAction() {
-    data->state = 7;
+    setDataState(7);
  /* Check IMD status */
-    prevRet = data->motion->retroCount;
+    prevRet = getMotionRetroCount();
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
 
     if (checkNetwork() != 0) return stateMachine.currState->fault;
 
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
 
-    if ((data->motion->retroCount - internalCount) >= 2) {
+    if ((getMotionRetroCount() - internalCount) >= 2) {
         printf("retro transition\n");
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
@@ -320,12 +320,12 @@ stateTransition_t * crawlAction() {
         return findTransition(stateMachine.currState, POST_RUN_NAME );
     }
     
-    if(data->flags->shouldStop){
+    if(getFlagsShouldStop()){
 
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
     
-    printf("PRIM LINE: %f\n", data->pressure->primLine);
+    printf("PRIM LINE: %f\n", getPressurePrimLine());
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
         printf("fail\n");
         return stateMachine.currState->fault;
@@ -336,9 +336,9 @@ stateTransition_t * crawlAction() {
 }
 
 stateTransition_t * postRunAction() {
-    data->state = 8;
+    setDataState(8);
  /* Check IMD status */
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
     // TODO fixme there is a seg fault around here lol
@@ -368,30 +368,29 @@ stateTransition_t * safeToApproachAction() {
 /*    if (isHVEnabled()) {*/
 /*        return stateMachine.currState->fault;*/
 /*    } */
-    pressure_t *p = data->pressure;
-    if (p->primTank > 30 || p->primTank < -15 || 
-        p->primLine > 20 || p->primLine < -10 ||
-        p->primAct  > 20 || p->primAct  < -10 ||
-        p->secTank  > 30 || p->secTank  < -15 || 
-        p->secLine  > 20 || p->secLine  < -10 || 
-        p->secAct   > 20 || p->secAct   < -10 ||
-        p->pv       > 20 || p->pv       <  13 ){
+    if (getPressurePrimTank() > 30 || getPressurePrimTank() < -15 ||
+        getPressurePrimLine() > 20 || getPressurePrimLine() < -10 ||
+        getPressurePrimAct()  > 20 || getPressurePrimAct()  < -10 ||
+        getPressureSecTank()  > 30 || getPressureSecTank()  < -15 ||
+        getPressureSecLine()  > 20 || getPressureSecLine()  < -10 ||
+        getPressureSecAct()   > 20 || getPressureSecAct()   < -10 ||
+        getPressurePv()       > 20 || getPressurePv()       <  13 ){
        fprintf(stderr, "Pressures are out of the safe range\n");
        return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
     }
     
     if (checkNetwork() != 0) return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
-    if (data->flags->emergencyBrake) {
+    if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState ,NON_RUN_FAULT_NAME);
-    } 
-    data->state = 9;
+    }
+    setDataState(9);
 	return NULL;
 }
 // 
 //  We're removing pre and post faults and making them non run faults. 
 // When you change this make 11 the non run fault action. Ty - EU
 stateTransition_t * nonRunFaultAction() {
-    data->flags->emergencyBrake = false;
+    setFlagsEmergencyBrake(false);
     fprintf(stderr, "NON RUN FAULT\n");
     static int mcuDisPulse = 0;
     if (mcuDisPulse >= 50) {
@@ -408,15 +407,15 @@ stateTransition_t * nonRunFaultAction() {
     } else {
         mcuDisPulse += 1;
     }
-    data->state = 10;
+    setDataState(10);
 	return NULL;
 }
 
 stateTransition_t * runFaultAction() {
 	printf("RUN FAULT\n");
-    data->flags->emergencyBrake = false;
+    setFlagsEmergencyBrake(false);
     static int mcuDisPulse = 0;
-    data->state = 11;
+    setDataState(11);
     if (mcuDisPulse >= 50) {
         setMCUHVEnabled(0);
         clrMotorEn();
@@ -438,6 +437,6 @@ stateTransition_t * runFaultAction() {
 
 stateTransition_t * brakingFault() {
     //TODO
-    data->state = 12;
+    setDataState(12);
     return NULL;
 }

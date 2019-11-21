@@ -101,37 +101,37 @@ void *LVTCPLoop(void *arg){
 		}
         if (!strncmp(buffer, "state", 5)) {
             *lastPacket[HV] = getuSTimestamp();
-            data->state = buffer[5] - 0x30;
+            setDataState(buffer[5] - 0x30);
         }
 	    
         if (!strncmp(buffer, "clrMotion", MAX_COMMAND_SIZE)) {
             resetNav();
-            data->flags->readyToBrake = true;
+            setFlagsReadyToBrake(true);
         }
 
         if (!strncmp(buffer, "brake", MAX_COMMAND_SIZE)) {
-/*            data->flags->shouldBrake = true;*/
+/*            setFlagsShouldBrake(true);*/
             brake();
         }
 
 		if (!strncmp(buffer, "primBrakeOff", MAX_COMMAND_SIZE))
 		{
-/*			data->flags->brakePrimRetr = true;*/
+/*			setFlagsBrakePrimRetr(true);*/
                 brakePrimaryUnactuate(); 
 		}
 		if (!strncmp(buffer, "primBrakeOn", MAX_COMMAND_SIZE))
 		{
-/*            data->flags->brakePrimAct = true;   */
+/*            setFlagsBrakePrimAct(true); */
 	    brakePrimaryActuate();
 		}
 		if (!strncmp(buffer, "secBrakeOff", MAX_COMMAND_SIZE))
 		{
-/*            data->flags->brakeSecRetr = true;*/
+/*            setFlagsBrakeSecRetr(true);*/
 		brakeSecondaryUnactuate();
 		}
 		if (!strncmp(buffer, "secBrakeOn", MAX_COMMAND_SIZE))
 		{
-/*            data->flags->brakeSecAct = true;*/
+/*            setFlagsBrakeSecAct(true)*/
 		brakeSecondaryActuate();
 		}
 

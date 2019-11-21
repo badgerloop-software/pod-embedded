@@ -16,7 +16,7 @@ int genTranAction() {
 }
 /* Gen == general */
 int genIdle() {
-    data->flags->brakeInit = true;
+    setFlagsBrakeInit(true);
     if (rmsCmdNoTorque() != 0) fprintf(stderr, "Failed in genIdle, 1\n");
     usleep(50000);
     if (rmsDischarge() != 0) fprintf(stderr, "Failed in genIdle, 2\n");
@@ -42,8 +42,10 @@ int genPumpdown() {
 }
 
 int genPropulsion() {
-    stateMachine.start = data->timers->startTime = getuSTimestamp();
-    data->flags->clrMotionData = true;
+    uint64_t timestamp = getuSTimestamp();
+    setTimersStartTime(timestamp);
+    stateMachine.start = timestamp;
+    setFlagsClrMotionData(true);
     setMotorEn();
     /* FIXME  I need a way to tell if this was successful */    
     //
@@ -57,7 +59,7 @@ int genPropulsion() {
 int genBraking() {
     printf("BRAKING!\n");
     clrMotorEn();
-    if (data->rms->dcBusVoltage > 60) {
+    if (getRmsDcBusVoltage() > 60) {
         usleep(50000);
         rmsCmdNoTorque();
         usleep(50000);
@@ -74,13 +76,13 @@ int genBraking() {
 }
 
 int genStopped() {
-    if (data->rms->dcBusVoltage > 60) {
+    if (getRmsDcBusVoltage() > 60) {
         rmsCmdNoTorque();
         rmsDischarge();
         rmsInvDis();
     }
     printf("Proper stopper\n");
-    data->flags->brakeInit = true;
+    setFlagsBrakeInit(true);
     return 0;
 }
 
@@ -89,16 +91,15 @@ int genStopped() {
 int genCrawl() {
     printf("gen crawl\n");
     setMotorCrawl(); 
-    internalCount = data->motion->retroCount;
-    data->timers->crawlTimer = getuSTimestamp();
-    
+    internalCount = getMotionRetroCount();
+    setTimersCrawlTimer(getuSTimestamp());
     stateMachine.start = getuSTimestamp();    
     return 0;
 }
 
 int genPostRun() {
     clrMotorEn();
-    if (data->rms->dcBusVoltage > 60) {
+    if (getRmsDcBusVoltage() > 60) {
         usleep(1000);
         rmsCmdNoTorque();
         usleep(1000);

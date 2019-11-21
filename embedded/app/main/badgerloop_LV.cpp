@@ -37,7 +37,7 @@ int init() {
 	
     SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupLVTCPServer();
-    data->state = 1;
+    setDataState(1);
     return 0;
 }
 
@@ -52,28 +52,28 @@ int main() {
 		usleep(100000);
         if (errs > 50) brake();
         
-        if (data->flags->shouldBrake) {
+        if (getFlagsShouldBrake()) {
             brake();
-            data->flags->shouldBrake = false;
+            setFlagsShouldBrake(false);
         }
-        if (data->flags->brakePrimAct) {
+        if (getFlagsBrakePrimAct()) {
             brakePrimaryActuate();
-            data->flags->brakePrimAct = false;
+            setFlagsBrakePrimAct(false);
         }
-        if (data->flags->brakePrimRetr) {
+        if (getFlagsBrakePrimRetr()) {
             brakePrimaryUnactuate();
-            data->flags->brakePrimRetr = false;
+            setFlagsBrakePrimRetr(false);
         }
-        if (data->flags->brakeSecAct) {
+        if (getFlagsBrakeSecAct()) {
             brakeSecondaryActuate();
-            data->flags->brakeSecAct = false;
+            setFlagsBrakeSecAct(false);
         }
-        if (data->flags->brakeSecRetr) {
+        if (getFlagsBrakeSecRetr()) {
             brakeSecondaryUnactuate();
-            data->flags->brakeSecRetr = false;
+            setFlagsBrakeSecRetr(false);
         }
 
-        if (data->state != 1 && (!checkTCPStatHV() || !checkTCPStat())) {
+        if (getDataState() != 1 && (!checkTCPStatHV() || !checkTCPStat())) {
             printf("ERRS: %d\n", errs);
             errs += 1;
         } else { 

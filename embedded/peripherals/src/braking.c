@@ -63,14 +63,14 @@ void *pressureMonitor() {
 
         pvRing[i % RING_SIZE]       = readPressureVessel();
 
-        data->pressure->primTank = avgDouble(primTankRing, RING_SIZE);
-        data->pressure->primLine = avgDouble(primLineRing, RING_SIZE);
-        data->pressure->primAct  = avgDouble(primActRing,  RING_SIZE);
-        data->pressure->secTank  = avgDouble(secTankRing,  RING_SIZE);
-        data->pressure->secLine  = avgDouble(secLineRing,  RING_SIZE);
-        data->pressure->secAct   = avgDouble(secActRing,   RING_SIZE);
-        data->pressure->amb      = avgDouble(ambRing,      RING_SIZE);
-        data->pressure->pv       = avgDouble(pvRing,       RING_SIZE);
+        setPressurePrimTank(avgDouble(primTankRing, RING_SIZE));
+        setPressurePrimLine(avgDouble(primLineRing, RING_SIZE));
+        setPressurePrimAct(avgDouble(primActRing,  RING_SIZE));
+        setPressureSecTank(avgDouble(secTankRing,  RING_SIZE));
+        setPressureSecLine(avgDouble(secLineRing,  RING_SIZE));
+        setPressureSecAct(avgDouble(secActRing,   RING_SIZE));
+        setPressureAmb(avgDouble(ambRing,      RING_SIZE));
+        setPressurePv(avgDouble(pvRing,       RING_SIZE));
 #ifdef DEBUG_PRES
         showPressures();
 #endif
@@ -105,7 +105,6 @@ int brake() {
 }
 
 void brakeHV() {
-    data->flags->shouldBrake = true;
 }
 
 int brakePrimaryUnactuate() {
@@ -256,12 +255,12 @@ double readAmbientPressure() {
 void showPressures() {
     printf("======PRESSURE READINGS======\n");
     printf("---Primary System---\n");
-    printf("Primary Tank: %f psi\n", data->pressure->primTank);
-    printf("Primary Line: %f psi\n", data->pressure->primLine);
-    printf("Primary Actuator: %f psi\n", data->pressure->primAct);
+    printf("Primary Tank: %f psi\n", getPressurePrimTank());
+    printf("Primary Line: %f psi\n", getPressurePrimLine());
+    printf("Primary Actuator: %f psi\n", getPressurePrimAct());
     printf("---Secondary System---\n");
-    printf("Secondary Tank: %f psi\n", data->pressure->secTank);
-    printf("Secondary Line: %f psi\n", data->pressure->secLine);
-    printf("Secondary Actuator: %f psi\n\n", data->pressure->secAct);
-    printf("Pressure Vessel: %f psi\n", data->pressure->pv);
+    printf("Secondary Tank: %f psi\n", getPressureSecTank());
+    printf("Secondary Line: %f psi\n", getPressureSecLine());
+    printf("Secondary Actuator: %f psi\n\n", getPressureSecAct());
+    printf("Pressure Vessel: %f psi\n", getPressurePv());
 }

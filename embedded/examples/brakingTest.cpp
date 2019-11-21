@@ -14,12 +14,11 @@ extern "C" {
 
 void showBrakingInfo() {
     int i = 0;
-    pressure_t *p = data->pressure; 
     //showPressures();
-    fprintf(stderr,"%f,%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
-            p->secTank, p->secLine, p->secAct, p->pv);
-    printf("%f,%f,%f,%f,%f,%f,%f,%f\n", p->primTank, p->primLine, p->primAct,
-            p->secTank, p->secLine, p->secAct,p->amb, p->pv);
+    fprintf(stderr,"%f,%f,%f,%f,%f,%f,%f\n", getPressurePrimTank(), getPressurePrimLine(), getPressurePrimAct(),
+            getPressureSecTank(), getPressureSecLine(), getPressureSecAct(), getPressurePv());
+    printf("%f,%f,%f,%f,%f,%f,%f,%f\n", getPressurePrimTank(), getPressurePrimLine(), getPressurePrimAct(),
+           getPressureSecTank(), getPressureSecLine(), getPressureSecAct(), getPressurePv());
 }
 
 

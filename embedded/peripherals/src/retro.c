@@ -76,7 +76,7 @@ int joinRetroThreads() {
 
 /* Returns delay in uS */
 static inline uint64_t getDelay() {
-    return (CONST_TERM * WIDTH_TAPE_STRIP) / ( .1 + data->motion->vel);
+    return (CONST_TERM * WIDTH_TAPE_STRIP) / ( .1 + getMotionVel());
 }
 
 /* voteOnCandidate - the candidate is the most recent retro detected and the
@@ -93,12 +93,12 @@ static inline uint64_t getDelay() {
  * */
 static int voteOnCandidate(int retroNum) {
     /* Grab the other two retro timestamps to simplify comparisons */
-    uint64_t otherRetro1 = data->timers->lastRetros[(retroNum + 1) % NUM_RETROS];
-    uint64_t otherRetro2 = data->timers->lastRetros[(retroNum + 2) % NUM_RETROS];
-    uint64_t candidate   = data->timers->lastRetros[retroNum];
+    uint64_t otherRetro1 = getTimersLastRetros((retroNum + 1) % NUM_RETROS);
+    uint64_t otherRetro2 = getTimersLastRetros((retroNum + 2) % NUM_RETROS);
+    uint64_t candidate   = getTimersLastRetros(retroNum);
 
     return (((candidate - otherRetro1) <= VOTE_BUFFER || 
-        (candidate - otherRetro2) <= VOTE_BUFFER) && candidate > (data->timers->lastRetro + VOTE_RESET_TIME));
+        (candidate - otherRetro2) <= VOTE_BUFFER) && candidate > (getTimersLastRetro() + VOTE_RESET_TIME));
 }
 
 /* Not voting yet! */
@@ -110,22 +110,22 @@ static int onTapeStrip(int retroNum) {
 
 
 	/* Check if it has delayed long enough (in uS) to accept another strip */
-	if (((currTime - data->timers->lastRetros[retroNum]) > delay) ||
-			(currTime < data->timers->lastRetros[retroNum])) {
-		data->timers->lastRetros[retroNum] = currTime;
+	if (((currTime - getTimersLastRetros(retroNum)) > delay) ||
+			(currTime < getTimersLastRetros(retroNum))) {
+		setTimersLastRetros(currTime, retroNum);
         if (voteOnCandidate(retroNum)) {
             DBG_RETRO_PRINTF("Vote pass: incrementing count\n");
-            data->timers->oldRetro = data->timers->lastRetro;
-            data->timers->lastRetro = currTime;
-            data->motion->retroCount++;
+            setTimersOldRetro(getTimersLastRetro());
+            setTimersLastRetro(currTime);
+            setMotionRetroCount(getMotionRetroCount() + 1);
         }
-        DBG_RETRO_PRINTF("New count: %d\n", data->motion->retroCount);
+        DBG_RETRO_PRINTF("New count: %d\n", getMotionRetroCount());
     }
 
 
-    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 0, data->timers->lastRetros[0]);
-    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 1, data->timers->lastRetros[1]);
-    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 2, data->timers->lastRetros[2]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 0, getTimersLastRetros()[0]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 1, getTimersLastRetros()[1]);
+    DBG_RETRO_PRINTF("Last Retro %d: %llu\n", 2, getTimersLastRetros()[2]);
 
 	return 0;
 }

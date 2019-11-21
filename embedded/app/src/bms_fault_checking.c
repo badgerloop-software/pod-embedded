@@ -19,24 +19,24 @@
 extern data_t *data;
 
 bool checkPrerunBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_PRERUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_PRERUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_STILL){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_PRERUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_PRERUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_PRERUN){
-		printf("SOC is less than expected: %i\n", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_PRERUN){
+		printf("SOC is less than expected: %i\n", getBmsSoc());
 		return false;
 	}
 	
@@ -44,24 +44,24 @@ bool checkPrerunBattery(void){
 }
 
 bool checkRunBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_RUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_MOVING){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_MOVING){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_RUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_RUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_RUN){
+		printf("SOC is less than expected: %i", getBmsSoc());
 		return false;
 	}
 	
@@ -69,24 +69,24 @@ bool checkRunBattery(void){
 }
 
 bool checkBrakingBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_RUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_STILL){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_RUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_RUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_RUN){
+		printf("SOC is less than expected: %i", getBmsSoc());
 		return false;
 	}
 	
@@ -94,24 +94,24 @@ bool checkBrakingBattery(void){
 }
 
 bool checkStoppedBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_RUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_STILL){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_RUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_RUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_RUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_RUN){
+		printf("SOC is less than expected: %i", getBmsSoc());
 		return false;
 	}
 	
@@ -119,24 +119,24 @@ bool checkStoppedBattery(void){
 }
 
 bool checkCrawlBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_RUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_MOVING){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_MOVING){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_POSTRUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_POSTRUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_POSTRUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_POSTRUN){
+		printf("SOC is less than expected: %i", getBmsSoc());
 		return false;
 	}
 	
@@ -144,24 +144,24 @@ bool checkCrawlBattery(void){
 }
 
 bool checkPostrunBattery(void){
-	if(data->bms->highTemp > MAX_BATT_TEMP_RUN){
-		printf("Temp too high: %i\n", data->bms->highTemp);
+	if(getBmsHighTemp() > MAX_BATT_TEMP_RUN){
+		printf("Temp too high: %i\n", getBmsHighTemp());
 		return false;
 	}
-	if(data->bms->packCurrent > MAX_BATT_CURRENT_STILL){
-		printf("Pack Current too high: %f\n", data->bms->packCurrent);
+	if(getBmsPackCurrent() > MAX_BATT_CURRENT_STILL){
+		printf("Pack Current too high: %f\n", getBmsPackCurrent());
 		return false;
 	}
-	if(data->bms->cellMaxVoltage > MAX_CELL_VOLTAGE || data->bms->cellMinVoltage < MIN_CELL_VOLTAGE){
-		printf("Cell Voltage Error: %f, %f\n", data->bms->cellMinVoltage, data->bms->cellMaxVoltage);
+	if(getBmsCellMaxVoltage() > MAX_CELL_VOLTAGE || getBmsCellMinVoltage() < MIN_CELL_VOLTAGE){
+		printf("Cell Voltage Error: %f, %f\n", getBmsCellMinVoltage(), getBmsCellMaxVoltage());
 		return false;
 	}
-	if(data->bms->packVoltage > MAX_PACK_VOLTAGE || data->bms->packVoltage < MIN_PACK_VOLTAGE_POSTRUN){
-		printf("Pack Voltage Error: %f\n", data->bms->packVoltage);
+	if(getBmsPackVoltage() > MAX_PACK_VOLTAGE || getBmsPackVoltage() < MIN_PACK_VOLTAGE_POSTRUN){
+		printf("Pack Voltage Error: %f\n", getBmsPackVoltage());
 		return false;
 	}
-	if(data->bms->Soc < MIN_SOC_POSTRUN){
-		printf("SOC is less than expected: %i", data->bms->Soc);
+	if(getBmsSoc() < MIN_SOC_POSTRUN){
+		printf("SOC is less than expected: %i", getBmsSoc());
 		return false;
 	}
 	
