@@ -9,13 +9,13 @@
 #include <vector>
 #include <bitset>
 #include <PracticalSocket/PracticalSocket.h>
-#include "data.h"
 #include <CRCpp/CRC.h>
 #include <chrono>
 
 extern "C" {
 #include <hv_iox.h>
 #include <lv_iox.h>
+#include <data.h>
 }
 
 
@@ -30,13 +30,13 @@ extern "C" {
 pthread_t telemetryThread;
 
 template <typename type>
-void addToBuffer(std::vector<uint8_t>* buffer, type* value, uint8_t size = 0){
+void addToBuffer(std::vector<uint8_t>* buffer, type value, uint8_t size = 0){
     // TODO: Find some way to send information about the CPU-dependent sizes to standardize things
 
     // If not explicitly stated, the number of bits is the size of the contents of the pointer
-    int bytes = (size == 0) ? sizeof(*value) : size;
+    int bytes = (size == 0) ? sizeof(value) : size;
 
-    const uint8_t* byteArray = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(value));
+    const uint8_t* byteArray = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(&value));
 
     for(int i = 0; i < bytes; i++)
         if(ENDIAN == "BIG") // NOLINT(misc-redundant-expression)

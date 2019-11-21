@@ -172,6 +172,26 @@ def generateDataC(data):
 # Generates the code which includes all of the data.h fields in TelemetryLoop.cpp
 def generateBufferContents(data):
     out = ""
-    for field in data.iter("field"):
-        out += "addToBuffer(&buffer, &" + util.getDataReference(field, data) + ");\n"
+    for struct in data.iter("struct"):
+        for field in struct:
+            if field.tag == "field":
+
+                # Deal with arrays
+
+                arrayLength = -1
+
+                if "[" in field.attrib["type"]:
+                    fieldType = field.attrib["type"].split("[")[0]
+                    arrayLength = field.attrib["type"].split("[")[1].split("]")[0]
+                else:
+                    fieldType = field.attrib["type"]
+
+                # Deal with arrays
+                if arrayLength != -1:
+                    out += "for(int i = 0; i < " + arrayLength + "; i++)\n"
+                    out += "\taddToBuffer(&buffer, " + util.getGetReference(struct, field) + "(i));\n"
+
+                # Other cases
+                else:
+                    out += "addToBuffer(&buffer, " + util.getGetReference(struct, field) + "());\n"
     return out
