@@ -20,7 +20,7 @@ export(TARGETS middleware FILE MiddlewareConfig.cmake)
 
 #examples executables
 add_executable(LV_TCP_test examples/LV_TCP_test.cpp src/LVTCPSocket.cpp)
-add_executable(TelemetryLoopTest examples/TelemetryLoopTest.cpp src/TelemetryLoop.cpp)
+add_executable(TelemetryLoopTest examples/TelemetryLoopTest.cpp src/TelemetryLoop.cpp ../embedded/app/src/init.c)
 
 # Set test definitions
 target_compile_definitions(TelemetryLoopTest PUBLIC TELEMETRY_LOOP_TEST)
@@ -28,8 +28,6 @@ target_compile_definitions(TelemetryLoopTest PUBLIC TELEMETRY_LOOP_TEST)
 #link local includes
 target_include_directories(LV_TCP_test PUBLIC include libs)
 target_include_directories(TelemetryLoopTest PUBLIC include libs)
-
-target_include_directories(TelemetryLoopTest PRIVATE ../embedded/data/include)
 
 #link required libraries
 target_link_libraries(LV_TCP_test PRIVATE data peripherals)
