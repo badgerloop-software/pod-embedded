@@ -6,6 +6,8 @@
 #include <TelemetryLoop.h>
 #include "HVTCPSocket.h"
 #include "data_dump.h"
+#include <ctime>
+#include <iostream>
 
 
 extern "C" 
@@ -79,6 +81,7 @@ int main() {
     uint32_t counts = 0;
 
 	while(1) {
+        std::clock_t c_start = std::clock();
 	    runStateMachine();
         
 /*        printf("CONN STAT: TCP - %d | UDP - %d\n", */
