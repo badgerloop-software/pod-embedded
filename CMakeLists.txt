@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(PodEmbedded VERSION 1.0
+project(PodEmbedded LANGUAGES CXX;C
+                    VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
 # Run Autocoder when CMake is run
