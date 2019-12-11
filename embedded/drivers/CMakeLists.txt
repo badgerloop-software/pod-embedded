@@ -4,7 +4,7 @@ project(driverslib VERSION 1.0
 
 add_library(drivers src/bbgpio.c
                     src/can.c
-                    src/i2c.c)
+                    src/i2c.c include/uart.h src/uart.c)
 
 # Run Autocoder
 add_dependencies(drivers autocoder)
