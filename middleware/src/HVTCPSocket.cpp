@@ -182,6 +182,10 @@ void *TCPLoop(void *arg)
 		{
 			setMCUHVEnabled(false);
 		}
+		if (!strncmp(buffer, "sendTorque ", 11)) {
+			fprintf(stderr, "Recieved Torque command to command %d\n", buffer+11);
+			// TODO implement this
+		}
 
 		if(!strncmp(buffer,"override", 8)){
 			fprintf(stderr, "Override received for state: %s\n", buffer+9);
