@@ -11,4 +11,14 @@ def getDataReference(element, root):
         # Check to make sure parent is actually a parent of element
         if element in parent:
             return getDataReference(parent, root) + " -> " + element.attrib["id"]
-    return root.attrib["id"]
+    return root.attrib["id"] + ""
+
+def getCPPReadable(reference, type, inArray = False):
+    if inArray:
+        reference = reference + "[i]"
+    if type == "bool":
+        return "(" + reference + ' ? "True" : "False" )'
+    elif type == "float":
+        return 'std::to_string(' + reference + ').append("f")'
+    else:
+        return "std::to_string(" + reference + ")"

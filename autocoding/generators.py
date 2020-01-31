@@ -37,3 +37,37 @@ def generateBufferContents(data):
     for field in data.iter("field"):
         out += "addToBuffer(&buffer, &" + util.getDataReference(field, data) + ");\n"
     return out
+
+
+    # for(int i = 0; i < NUM_RETROS; i++)
+    #     std::cout << std::to_string(data -> timers -> lastRetros[i]) + (i == NUM_RETROS - 1 ? "" : ", ");
+    #
+    # std::cout << "]\n";
+
+def generateFileDumpContents(data):
+    out = ""
+    for field in data.iter("field"):
+        cppReference = util.getDataReference(field, data)
+
+        fieldType = field.attrib["type"]
+        isArray = field.attrib["type"].endswith("]")
+
+        readableCPPStringCode = "?"
+        arrayLength = 0
+
+        # deal with arrays
+        if isArray:
+            arrayType = field.attrib["type"].split("[")[0]
+            arrayLength = field.attrib["type"].split("[")[1].split("]")[0]
+            readableCPPStringCode = util.getCPPReadable(cppReference, arrayType, inArray=True)
+
+            out += 'logFile << "' + cppReference + ': [";\n'
+            out += "for(int i = 0; i < " + arrayLength + "; i++)\n"
+            out +=  "\tlogFile << " + readableCPPStringCode + ' + (i == ' + arrayLength + ' - 1 ? "" : ",");\n'
+            out += 'logFile << "]\\n";\n'
+        else:
+            readableCPPStringCode = util.getCPPReadable(cppReference, fieldType)
+            out += 'logFile << "' + cppReference + ':  " << ' + readableCPPStringCode + ' << "\\n";\n'
+
+
+    return out
