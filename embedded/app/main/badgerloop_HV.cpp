@@ -5,8 +5,6 @@
 #include <signal.h>
 #include <TelemetryLoop.h>
 #include "HVTCPSocket.h"
-#include "data_dump.h"
-
 
 extern "C" 
 {
