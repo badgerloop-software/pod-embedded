@@ -144,7 +144,6 @@ void *DataLoop(void *arg){
 
         logFile.flush();
         usleep(30000);
-        break;
     }
 
 }

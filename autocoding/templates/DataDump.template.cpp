@@ -55,8 +55,7 @@ void *DataLoop(void *arg){
         logFile << "\n\n";
 
         logFile.flush();
-        usleep(30000);
-        break;
+        usleep(300000);
     }
 
 }
