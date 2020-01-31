@@ -12,6 +12,7 @@
 #include "data.h"
 #include <CRCpp/CRC.h>
 #include <chrono>
+#include "DataDump.h"
 
 extern "C" {
 #include <hv_iox.h>
@@ -21,6 +22,7 @@ extern "C" {
 
 #define BUFFER_SIZE 500
 #define ENDIAN "LITTLE" // TODO: Is there a way to check this during compile-time or something?
+#define DUMP_DATA
 
 // Because it kind of looks like "BADGER"
 #define HEADER 0xBAD6E4
@@ -61,6 +63,10 @@ void SetupTelemetry(char* ip, int port){
     // Create a thread for the telemetry loop to run in
     if (pthread_create(&telemetryThread, NULL, TelemetryLoop, args))
         fprintf(stderr, "Error creating LV Telemetry thread\n");
+
+    #ifdef DUMP_DATA
+        SetupDataDump();
+    #endif
 }
 
 void* TelemetryLoop(void *arg) {

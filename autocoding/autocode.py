@@ -59,3 +59,6 @@ autocode("templates/data.template.h", "../embedded/data/include/data.h", [("!!AU
 
 # TelemetryLoop.cpp
 autocode("templates/TelemetryLoop.template.cpp", "../middleware/src/TelemetryLoop.cpp", [("!!AUTO-GENERATE HERE!!", generators.generateBufferContents)])
+
+# TelemetryLoop.cpp
+autocode("templates/DataDump.template.cpp", "../middleware/src/DataDump.cpp", [("!!AUTO-GENERATE HERE!!", generators.generateFileDumpContents)])
