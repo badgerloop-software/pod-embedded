@@ -6,7 +6,7 @@
 
 The embedded repository for Badgerloop's pod in the Hyperloop Competition
 
-## Beaglebone Make Instructions
+## Local Make Instructions
 
 To build or clean all compile targets using the Bash script:
 
@@ -39,11 +39,20 @@ cmake ..
 make
 ```
 
-There are currently 3 sets of targets:
+## Cross-Compilation Make Instructions
 
-The main programs (`badgerloop_LV` and `badgerloop_HV`) are  placed in the `out/` directory
+To install the toolchain needed for cross-compiling:
 
-Tests will be placed in `out/tests`, and utilities in `out/utils`.
+```
+sudo ./deploy.sh cross-setup
+```
+
+Then, to build the executable:
+
+```
+./deploy.sh cross
+```
+
 
 ### Adding Tests
 

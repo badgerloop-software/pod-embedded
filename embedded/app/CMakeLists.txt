@@ -35,11 +35,8 @@ export(TARGETS app FILE AppLibConfig.cmake)
 
 #configure HV and LV executables
 find_package(Threads REQUIRED)
-add_executable(badgerloop_HV main/badgerloop_HV.cpp ${dependecies})
-add_executable(badgerloop_LV main/badgerloop_LV.cpp ${dependecies})
+add_executable(badgerloop main/badgerloop.cpp ${dependecies})
 
-target_link_libraries(badgerloop_HV PRIVATE ${libraries})
-target_link_libraries(badgerloop_LV PRIVATE ${libraries})
+target_link_libraries(badgerloop PRIVATE ${libraries})
 
-target_include_directories(badgerloop_HV PRIVATE include)
-target_include_directories(badgerloop_LV PRIVATE include)
+target_include_directories(badgerloop PRIVATE include)
