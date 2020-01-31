@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <TelemetryLoop.h>
 #include "LVTCPSocket.h"
+#include <DataDump.h>
+
 
 
 /* ADD SENSOR INCLUDES HERE */

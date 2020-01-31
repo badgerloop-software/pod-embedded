@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <signal.h>
 #include "connStat.h"
+#include "DataDump.h"
 #include "data.h"
 #include "rms.h"
 #include "can.h"
