@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "data_dump.h"
+#include "DataDump.h"
 #include "data.h"
 
 pthread_t dataDumpThread;

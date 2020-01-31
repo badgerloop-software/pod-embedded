@@ -4,7 +4,6 @@ project(middlewarelib VERSION 1.0
 
 add_library(middleware src/connStat.c
                        src/HVTCPSocket.cpp
-                       src/data_dump.cpp
                        src/LVTCPSocket.cpp
                        libs/PracticalSocket/PracticalSocket.cpp
                        src/TelemetryLoop.cpp)
