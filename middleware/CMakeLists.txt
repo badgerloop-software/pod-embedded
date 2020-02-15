@@ -1,13 +1,13 @@
 project(middlewarelib VERSION 1.0
-                      DESCRIPTION "middleware"
-                      LANGUAGES CXX)
+        DESCRIPTION "middleware"
+        LANGUAGES CXX)
 
 add_library(middleware src/connStat.c
-                       src/HVTCPSocket.cpp
-                       src/data_dump.cpp
-                       src/LVTCPSocket.cpp
-                       libs/PracticalSocket/PracticalSocket.cpp
-                       src/TelemetryLoop.cpp)
+        src/HVTCPSocket.cpp
+        src/data_dump.cpp
+        src/LVTCPSocket.cpp
+        libs/PracticalSocket/PracticalSocket.cpp
+        src/TelemetryLoop.cpp)
 
 # Run Autocoder
 add_dependencies(middleware autocoder)
@@ -35,8 +35,8 @@ target_link_libraries(TelemetryLoopTest PRIVATE data peripherals)
 
 #put examples into out/tests
 set_target_properties(LV_TCP_test
-                      PROPERTIES
-                      RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")
 set_target_properties(TelemetryLoopTest
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/out/tests")

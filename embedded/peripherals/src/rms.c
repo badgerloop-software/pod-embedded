@@ -172,24 +172,24 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
     int16_t temp;
 	switch(id){
            case (0xa0):
-			data->rms->igbtTemp = (rmsData[0] | (rmsData[1] <<8)) / 10; //Deg C
-			data->rms->gateDriverBoardTemp = (rmsData[6] | (rmsData[7] << 8)) / 10; //Deg C
+			setRmsIgbtTemp((rmsData[0] | (rmsData[1] <<8)) / 10); //Deg C
+			setRmsGateDriverBoardTemp((rmsData[6] | (rmsData[7] << 8)) / 10); //Deg C
 #ifdef DEBUG_RMS
-            printf("IGBT: %d\r\n", data->rms->igbtTemp);
-			printf("Gate Driver Board Temp: %d\r\n", data->rms->gateDriverBoardTemp);
+            printf("IGBT: %d\r\n", getRmsIgbtTemp());
+			printf("Gate Driver Board Temp: %d\r\n", getRmsGateDriverBoardTemp());
 #endif
             break;
 		case (0xa1):
-			data->rms->controlBoardTemp = (rmsData[0] | (rmsData[1] << 8)) / 10; // Deg C
+			setRmsControlBoardTemp((rmsData[0] | (rmsData[1] << 8)) / 10); // Deg C
 #ifdef DEBUG_RMS
-            printf("Control Board Temp: %d\r\n", data->rms->controlBoardTemp);
+            printf("Control Board Temp: %d\r\n", getRmsControlBoardTemp());
 #endif
             break;
 		case (0xa2):
             val = (rmsData[4] | rmsData[5] << 8) / 10;
-			data->rms->motorTemp = val > 300 ? data->rms->motorTemp : val; //Deg C
+			setRmsMotorTemp(val > 300 ? getRmsMotorTemp() : val); //Deg C
 #ifdef DEBUG_RMS
-            printf("Motor Temp: %d\r\n", data->rms->motorTemp);
+            printf("Motor Temp: %d\r\n", getRmsMotorTemp());
 #endif
             break;
 		case (0xa3):
@@ -197,70 +197,70 @@ int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
 		case (0xa4):
 			break;
 		case (0xa5):
-			data->rms->motorSpeed = (rmsData[2] | (rmsData[3] << 8));//val == 0 ? 0 : 65536 - abs(val) ;//< -10000 || val > 10000 ? data->rms->motorSpeed: val; // RPM
-			data->rms->electricalFreq = (rmsData[4] | (rmsData[5] << 8 )) / 10; //electrical frequency Hz
+			setRmsMotorSpeed((rmsData[2] | (rmsData[3] << 8)));//val == 0 ? 0 : 65536 - abs(val) ;//< -10000 || val > 10000 ? getRmsMotorSpeed(): val; // RPM
+			setRmsElectricalFreq((rmsData[4] | (rmsData[5] << 8 )) / 10); //electrical frequency Hz
 #ifdef DEBUG_RMS
-            printf("Motor Speed: %d\r\n", data->rms->motorSpeed);
-			printf("Elect. Freq: %d\r\n", data->rms->electricalFreq);
+            printf("Motor Speed: %d\r\n", getRmsMotorSpeed());
+			printf("Elect. Freq: %d\r\n", getRmsElectricalFreq());
 #endif
             break;
 		case (0xa6):
 			temp = (rmsData[0] | (rmsData[1] << 8));
             
-            data->rms->phaseACurrent = temp / 10;//> 1000 ? data->rms->phaseACurrent : val; // Phase A current
+            setRmsPhaseACurrent(temp / 10);//> 1000 ? getRmsPhaseACurrent() : val; // Phase A current
 		    temp = (rmsData[6] | (rmsData[7] << 8));
-            data->rms->dcBusCurrent = temp / 10;//< 0 ? data->rms->dcBusCurrent : val2; //DC Bus current
+            setRmsDcBusCurrent(temp / 10);//< 0 ? getRmsDcBusCurrent() : val2; //DC Bus current
 #ifdef DEBUG_RMS
-            printf("Phase A Current: %d\r\n", data->rms->phaseACurrent);
-			printf("DC Bus Current: %d\r\n", data->rms->dcBusCurrent);
-            printf("Phase B Current: %d\r\n", data->rms->phaseBCurrent); //FIXME This isnt actually being read in?
+            printf("Phase A Current: %d\r\n", getRmsPhaseACurrent());
+			printf("DC Bus Current: %d\r\n", getRmsDcBusCurrent());
+            printf("Phase B Current: %d\r\n", getRmsPhaseBCurrent()); //FIXME This isnt actually being read in?
 #endif
             break;
 		case (0xa7):
 
 			
             temp = (rmsData[0] | (rmsData[1] << 8));
-            data->rms->dcBusVoltage = temp / 10.0;
+            setRmsDcBusVoltage(temp / 10.0);
             
-           // data->rms->outputVoltageLn = val2; //Voltage line to netural 
+           // setRmsOutputVoltageLn(val2); //Voltage line to netural
 #ifdef DEBUG_RMS
-            printf("DC Bus Voltage: %d\r\n", data->rms->dcBusVoltage);
-			printf("Output Voltage line: %d\r\n", data->rms->outputVoltageLn);
+            printf("DC Bus Voltage: %d\r\n", getRmsDcBusVoltage());
+			printf("Output Voltage line: %d\r\n", getRmsOutputVoltageLn());
 #endif
             break;
 		case (0xa8):
 			break;
 		case (0xa9):
-			data->rms->lvVoltage = (rmsData[6] | (rmsData[7] << 8)) / 100;
+			setRmsLvVoltage((rmsData[6] | (rmsData[7] << 8)) / 100);
 #ifdef DEBUG_RMS
-            printf("LV Voltage: %d\r\n", data->rms->lvVoltage);
+            printf("LV Voltage: %d\r\n", getRmsLvVoltage());
 #endif
             break;
 
 		case (0xaa):
-			data->rms->canCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
-			data->rms->canCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
+			setRmsCanCode1((rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0]);
+			setRmsCanCode2((rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4]);
 #ifdef DEBUG_RMS
-            printf("CAN Code 1: %lld\r\n", (long long int) data->rms->canCode1);
-			printf("CAN Code 2: %lld\r\n", (long long int) data->rms->canCode2);
+            printf("CAN Code 1: %lld\r\n", (long long int) getRmsCanCode()1);
+			printf("CAN Code 2: %lld\r\n", (long long int) getRmsCanCode()2);
 #endif
             break;
 		case (0xab):
-			data->rms->faultCode1 = (rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0];
-			data->rms->faultCode2 = (rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4];
+			setRmsFaultCode1((rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0]);
+			setRmsFaultCode2((rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4]);
 #ifdef DEBUG_RMS
-            printf("Fault Code 1: %lld\r\n", (long long int) data->rms->faultCode1);
-			printf("Fault Code 2: %lld\r\n", (long long int) data->rms->faultCode2);
+            printf("Fault Code 1: %lld\r\n", (long long int) getRmsFaultCode()1);
+			printf("Fault Code 2: %lld\r\n", (long long int) getRmsFaultCode()2);
 #endif
             break;
 		case (0xac):
-			data->rms->commandedTorque = (rmsData[0] | (rmsData[1] << 8));// > 200 ? data->rms->commandedTorque : val; 
-			data->rms->commandedTorque /= 10;
-            data->rms->actualTorque = (rmsData[2] | (rmsData[3] << 8));// / 10;
-            data->rms->actualTorque /= 10;
+			setRmsCommandedTorque((rmsData[0] | (rmsData[1] << 8)));// > 200 ? getRmsCommandedTorque() : val;
+			setRmsCommandedTorque(getRmsCommandedTorque() / 10);
+            setRmsActualTorque((rmsData[2] | (rmsData[3] << 8)));// / 10;
+            setRmsActualTorque(getRmsActualTorque() / 10);
 #ifdef DEBUG_RMSi
-            printf("Commanded Torque: %d\r\n", data->rms->commandedTorque);
-			printf("Actual Torque: %d\r\n", data->rms->actualTorque);
+            printf("Commanded Torque: %d\r\n", getRmsCommandedTorque());
+			printf("Actual Torque: %d\r\n", getRmsActualTorque());
 #endif
             break;
 		case (0xad):

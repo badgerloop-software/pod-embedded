@@ -23,257 +23,257 @@ static inline uint64_t getuSTimestamp() {
 }
 
 //Global Variables
-static IMU_data * data;
+static IMU_data * imudata;
 static i2c_settings * i2c;
 static pthread_t IMUThread;
 void SetupIMU(){
-	i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
-	i2c->bus = 2;
-	i2c->deviceAddress = I2C_ADDRESS;
-	i2c->openMode = O_RDWR;
+    i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
+    i2c->bus = 2;
+    i2c->deviceAddress = I2C_ADDRESS;
+    i2c->openMode = O_RDWR;
 
-	data = (IMU_data *) malloc(sizeof(IMU_data));
+    imudata = (IMU_data *) malloc(sizeof(IMU_data));
 
-	if (i2c_begin(i2c) == -1){
-		fprintf(stderr, "Could not open i2c bus.\n");
-		return;
-	}
+    if (i2c_begin(i2c) == -1){
+        fprintf(stderr, "Could not open i2c bus.\n");
+        return;
+    }
 
-	if (pthread_create(&IMUThread, NULL, IMULoop, NULL)){
-		fprintf(stderr, "Error creating IMU thread\n");
-	}
-    
-    data->posX = 0;
-    data->posY = 0;
-    data->posZ = 0;
+    if (pthread_create(&IMUThread, NULL, IMULoop, NULL)){
+        fprintf(stderr, "Error creating IMU thread\n");
+    }
 
-	//Set all IMU structure values to zero
-	data->dVx = 0;
-	data->dVy = 0;
-	data->dVz = 0;
-    
-    data->velX = 0;
-    data->velY = 0;
-    data->velZ = 0;
-    
-	data->accelX = 0;
-	data->accelY = 0;
-	data->accelZ = 0;
-	
-	sem_init(&data->mutex, 0, 1);
+    imudata->posX = 0;
+    imudata->posY = 0;
+    imudata->posZ = 0;
+
+    //Set all IMU structure values to zero
+    imudata->dVx = 0;
+    imudata->dVy = 0;
+    imudata->dVz = 0;
+
+    imudata->velX = 0;
+    imudata->velY = 0;
+    imudata->velZ = 0;
+
+    imudata->accelX = 0;
+    imudata->accelY = 0;
+    imudata->accelZ = 0;
+
+    sem_init(&imudata->mutex, 0, 1);
 }
 
 void *IMULoop(void *arg){
-	(void) arg;
-	
-	unsigned char res1[4];
-	uint32_t tempx, tempy, tempz;
-	int i;
+    (void) arg;
+
+    unsigned char res1[4];
+    uint32_t tempx, tempy, tempz;
+    int i;
     //uint64_t curr, prev;
-	// uint64_t delt;
+    // uint64_t delt;
     //prev = getuSTimestamp();
-	while (1){
-		i = 0;
-		// Information on data registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_datasheet.pdf
+    while (1){
+        i = 0;
+        // Information on imudata registers can be found @ https://www.xsens.com/download/pdf/documentation/mti-1/mti-1-series_imudatasheet.pdf
 
-		//Get message length size
-		write_byte_i2c(i2c, STATUS_REG);
-		read_i2c(i2c, res1, 4);
-		uint16_t messageSize = res1[2] | res1[3] << 8;
+        //Get message length size
+        write_byte_i2c(i2c, STATUS_REG);
+        read_i2c(i2c, res1, 4);
+        uint16_t messageSize = res1[2] | res1[3] << 8;
 
 
-		// Get Data
-		write_byte_i2c(i2c, DATA_REG);
-		unsigned char dataBuffer[messageSize];
-		read_i2c(i2c, dataBuffer, messageSize);
+        // Get Data
+        write_byte_i2c(i2c, DATA_REG);
+        unsigned char imudataBuffer[messageSize];
+        read_i2c(i2c, imudataBuffer, messageSize);
         i = 0;
         //curr = getuSTimestamp();
-		while(i < messageSize){
-			//Check delta velocity
-            
-/*		if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x10 && dataBuffer[i + 2] == 0x0C){*/
-/*//				//Load data into 32-bit unsigned integers*/
-/*				tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];*/
-/*				tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];*/
-/*				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];*/
+        while(i < messageSize){
+            //Check delta velocity
 
-/*				sem_wait(&data->mutex);*/
+/*		if (i + 14 < messageSize && imudataBuffer[i] == 0x40 && imudataBuffer[i + 1] == 0x10 && imudataBuffer[i + 2] == 0x0C){*/
+/*//				//Load imudata into 32-bit unsigned integers*/
+/*				tempx = (imudataBuffer[i + 3] << 24) | (imudataBuffer[i + 4] << 16) | (imudataBuffer[i + 5] << 8) | imudataBuffer[i + 6];*/
+/*				tempy = (imudataBuffer[i + 7] << 24) | (imudataBuffer[i + 8] << 16) | (imudataBuffer[i + 9] << 8) | imudataBuffer[i + 10];*/
+/*				tempz = (imudataBuffer[i + 11] << 24) | (imudataBuffer[i + 12] << 16) | (imudataBuffer[i + 13] << 8) | imudataBuffer[i + 14];*/
+
+/*				sem_wait(&imudata->mutex);*/
 //				//Convert into float values
-/*				data->dVx = * ((float *) &tempx);*/
-/*				data->dVy = * ((float *) &tempy);*/
-/*				data->dVz = * ((float *) &tempz);*/
+/*				imudata->dVx = * ((float *) &tempx);*/
+/*				imudata->dVy = * ((float *) &tempy);*/
+/*				imudata->dVz = * ((float *) &tempz);*/
 
-				//Time increment is 10ms, convert deltaV into accel
-/*				data->accelX = data->dVx / 0.01;*/
-/*				data->accelY = data->dVy / 0.01;*/
-/*				data->accelZ = data->dVz / 0.01;*/
-//				sem_post(&data->mutex);
+            //Time increment is 10ms, convert deltaV into accel
+/*				imudata->accelX = imudata->dVx / 0.01;*/
+/*				imudata->accelY = imudata->dVy / 0.01;*/
+/*				imudata->accelZ = imudata->dVz / 0.01;*/
+//				sem_post(&imudata->mutex);
 
 //			}
 
-            if (i + 14 < messageSize && dataBuffer[i] == 0x40 && dataBuffer[i + 1] == 0x30 && dataBuffer[i + 2] == 0x0C) {
-                tempx = (dataBuffer[i + 3] << 24) | (dataBuffer[i + 4] << 16) | (dataBuffer[i + 5] << 8) | dataBuffer[i + 6];
-			    tempy = (dataBuffer[i + 7] << 24) | (dataBuffer[i + 8] << 16) | (dataBuffer[i + 9] << 8) | dataBuffer[i + 10];
-				tempz = (dataBuffer[i + 11] << 24) | (dataBuffer[i + 12] << 16) | (dataBuffer[i + 13] << 8) | dataBuffer[i + 14];
-                sem_wait(&data->mutex);
-                
-                data->accelX = * ((float *) &tempx);
-                data->accelY = * ((float *) &tempy);
-                data->accelZ = * ((float *) &tempz);
-                
+            if (i + 14 < messageSize && imudataBuffer[i] == 0x40 && imudataBuffer[i + 1] == 0x30 && imudataBuffer[i + 2] == 0x0C) {
+                tempx = (imudataBuffer[i + 3] << 24) | (imudataBuffer[i + 4] << 16) | (imudataBuffer[i + 5] << 8) | imudataBuffer[i + 6];
+                tempy = (imudataBuffer[i + 7] << 24) | (imudataBuffer[i + 8] << 16) | (imudataBuffer[i + 9] << 8) | imudataBuffer[i + 10];
+                tempz = (imudataBuffer[i + 11] << 24) | (imudataBuffer[i + 12] << 16) | (imudataBuffer[i + 13] << 8) | imudataBuffer[i + 14];
+                sem_wait(&imudata->mutex);
+
+                imudata->accelX = * ((float *) &tempx);
+                imudata->accelY = * ((float *) &tempy);
+                imudata->accelZ = * ((float *) &tempz);
+
                 //delt = curr - prev;
 
-                data->velX = data->velX + (data->accelX * .025);
-                data->velY = data->velY + (data->accelY * .025);
-                data->velZ = data->velZ + (data->accelZ * .025);
-                
-                
-/*                data->posX += (data->velX * 0.01);*/
-                
-                
-                sem_post(&data->mutex);
+                imudata->velX = imudata->velX + (imudata->accelX * .025);
+                imudata->velY = imudata->velY + (imudata->accelY * .025);
+                imudata->velZ = imudata->velZ + (imudata->accelZ * .025);
+
+
+/*                imudata->posX += (imudata->velX * 0.01);*/
+
+
+                sem_post(&imudata->mutex);
             }
 
-			i++;
-		}
+            i++;
+        }
 
-		//IMU Time Increment (10 ms)
-        sem_wait(&data->mutex);
-        data->posX += data->velX * .025;
-        data->posY += data->velY * .025;
-		data->posZ += data->velZ * .025;
-        sem_post(&data->mutex);
+        //IMU Time Increment (10 ms)
+        sem_wait(&imudata->mutex);
+        imudata->posX += imudata->velX * .025;
+        imudata->posY += imudata->velY * .025;
+        imudata->posZ += imudata->velZ * .025;
+        sem_post(&imudata->mutex);
         //prev = curr;
         usleep(10000);
-        
-	}
-	free(i2c);
-	free(data);
+
+    }
+    free(i2c);
+    free(imudata);
 
 }
 
 void getDeltaVData(float *fData){
-	sem_wait(&data->mutex);
-	fData[0] = data->dVx;
-	fData[1] = data->dVy;
-	fData[2] = data->dVz;
-	sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    fData[0] = imudata->dVx;
+    fData[1] = imudata->dVy;
+    fData[2] = imudata->dVz;
+    sem_post(&imudata->mutex);
 }
 
 void getAccelData(float *fData){
-	sem_wait(&data->mutex);
-	fData[0] = data->accelX;
-	fData[1] = data->accelY;
-	fData[2] = data->accelZ;
-	sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    fData[0] = imudata->accelX;
+    fData[1] = imudata->accelY;
+    fData[2] = imudata->accelZ;
+    sem_post(&imudata->mutex);
 }
 
 void getPosData(float *fData) {
-	sem_wait(&data->mutex);
-    fData[0] = data->posX;
-    fData[1] = data->posY;
-    fData[2] = data->posZ;
-	sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    fData[0] = imudata->posX;
+    fData[1] = imudata->posY;
+    fData[2] = imudata->posZ;
+    sem_post(&imudata->mutex);
 }
 
 float getPosX() {
-	sem_wait(&data->mutex);
-	float ret = data->posX;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ret = imudata->posX;
+    sem_post(&imudata->mutex);
     return ret;
 }
 
 void setPosX(float val) {
-    sem_wait(&data->mutex);
-    data->posX = val;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    imudata->posX = val;
+    sem_post(&imudata->mutex);
 }
 
 float getPosY() {
-	sem_wait(&data->mutex);
-    float ret = data->posY;
-	sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ret = imudata->posY;
+    sem_post(&imudata->mutex);
     return ret;
 }
 
 void setPosY(float val) {
-    sem_wait(&data->mutex);
-    data->posY = val;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    imudata->posY = val;
+    sem_post(&imudata->mutex);
 }
 
 float getPosZ() {
-    sem_wait(&data->mutex);
-    float ret = data->posZ;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ret = imudata->posZ;
+    sem_post(&imudata->mutex);
     return ret;
 }
 
 void setPosZ(float val) {
-    sem_wait(&data->mutex);
-    data->posZ = val;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    imudata->posZ = val;
+    sem_post(&imudata->mutex);
 }
 
 float getDeltaVX(){
-	sem_wait(&data->mutex);
-	float ans = data->dVx;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->dVx;
+    sem_post(&imudata->mutex);
+    return ans;
 }
 
 float getDeltaVY(){
-	sem_wait(&data->mutex);
-	float ans = data->dVy;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->dVy;
+    sem_post(&imudata->mutex);
+    return ans;
 }
 
 float getDeltaVZ(){
-	sem_wait(&data->mutex);
-	float ans = data->dVz;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->dVz;
+    sem_post(&imudata->mutex);
+    return ans;
 }
 
 float getVelX(){
-    sem_wait(&data->mutex);
-    float ans = data->velX;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ans = imudata->velX;
+    sem_post(&imudata->mutex);
     return ans;
 }
 
 float getVelY(){
-    sem_wait(&data->mutex);
-    float ans = data->velY;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ans = imudata->velY;
+    sem_post(&imudata->mutex);
     return ans;
 }
 
 float getVelZ(){
-    sem_wait(&data->mutex);
-    float ans = data->velZ;
-    sem_post(&data->mutex);
+    sem_wait(&imudata->mutex);
+    float ans = imudata->velZ;
+    sem_post(&imudata->mutex);
     return ans;
 }
 
 float getAccelX(){
-	sem_wait(&data->mutex);
-	float ans = data->accelX;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->accelX;
+    sem_post(&imudata->mutex);
+    return ans;
 }
 
 float getAccelY(){
-	sem_wait(&data->mutex);
-	float ans = data->accelY;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->accelY;
+    sem_post(&imudata->mutex);
+    return ans;
 }
 
 float getAccelZ(){
-	sem_wait(&data->mutex);
-	float ans = data->accelZ;
-	sem_post(&data->mutex);
-	return ans;
+    sem_wait(&imudata->mutex);
+    float ans = imudata->accelZ;
+    sem_post(&imudata->mutex);
+    return ans;
 }

@@ -132,27 +132,27 @@ void *TCPLoop(void *arg)
 		// Do things
 		if (!strncmp(buffer, "readyPump", MAX_COMMAND_SIZE))
 		{
-			data->flags->readyPump = 1;
+			setFlagsReadyPump(1);
 		}
 
 		if (!strncmp(buffer, "pumpDown", MAX_COMMAND_SIZE))
 		{
-			data->flags->readyPump = 1;
+			setFlagsReadyPump(1);
 		}
 
 		if (!strncmp(buffer, "readyCommand", MAX_COMMAND_SIZE))
 		{
-			data->flags->readyCommand = 1;
+			setFlagsReadyCommand(1);
 		}
 
 		if (!strncmp(buffer, "propulse", MAX_COMMAND_SIZE))
 		{
-			data->flags->propulse = 1;
+			setFlagsPropulse(1);
 		}
 
 		if (!strncmp(buffer, "emergencyBrake", MAX_COMMAND_SIZE))
 		{
-            data->flags->emergencyBrake = 1;
+            setFlagsEmergencyBrake(1);
 		}
         if (!strncmp(buffer, "mcuLatchOn", MAX_COMMAND_SIZE)) {
             setMCULatch(true);

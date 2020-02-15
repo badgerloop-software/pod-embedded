@@ -83,7 +83,7 @@ static int hvBattSOCLowTest()
     
     if (checkForChange(PUMPDOWN_NAME) != PASS) return FAIL;
     
-    data->bms->Soc = 50;
+    setBmsSoc(50);
     
     WAIT(0.5);
     
@@ -112,7 +112,7 @@ static int hvBattLowVoltTest()
     
     if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
 
-    data->bms->packVoltage = 200;
+    setBmsPackVoltage(200);
 
     WAIT(0.5);
 
@@ -130,7 +130,7 @@ static int rmsOverheatTest()
    
     if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
 
-    data->rms->igbtTemp = 150;
+    setRmsIgbtTemp(150);
     WAIT(.5);
 
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
@@ -162,7 +162,7 @@ static int crawlTimerTest()
     uint64_t offset = getuSTimestamp();
     
     for (int i = 0; i < (30 * 5); i++) {
-        printf("crawl timer: %llu\r", getuSTimestamp() - data->timers->crawlTimer);
+        printf("crawl timer: %llu\r", getuSTimestamp() - getTimersCrawlTimer());
         fflush(stdin);
         usleep(200000);
     }
@@ -201,7 +201,7 @@ static int pvDepressurizingTest()
 
 /*        if (checkForChange(statesToTest[i]) == FAIL) return FAIL;*/
         
-        data->pressure->pv = 5;
+        setPressurePv(5);
         
         WAIT(.5);
         
@@ -252,81 +252,75 @@ int main() {
 static void genericInit(char *name) {
     BANNER(name);
     goToState(IDLE_NAME);
-    /* Just remember: pmbrft */
-    pressure_t *p = data->pressure;
-    motion_t   *m = data->motion;
-    bms_t      *b = data->bms;
-    rms_t      *r = data->rms;
-    flags_t    *f = data->flags;
-    timers_t   *t = data->timers;
+
+    setFlagsReadyPump(0);
+    setFlagsPumpDown(0);
+    setFlagsReadyCommand(0);
+    setFlagsPropulse(0);
+    setFlagsEmergencyBrake(0);
+    setFlagsShouldStop(0);
+    setFlagsShutdown(0);
     
-    f->readyPump        = 0; //false;
-    f->pumpDown         = 0;
-    f->readyCommand     = 0;
-    f->propulse         = 0;
-    f->emergencyBrake   = 0;
-    f->shouldStop       = 0;
-    f->shutdown         = 0;
-
-    t->startTime = getuSTimestamp();
-    t->oldRetro  = 0;
-    t->lastRetro = 0;
+    setTimersStartTime(getuSTimestamp());
+    setTimersOldRetro(0);
+    setTimersLastRetro(0);
     
-    p->primTank = 1500;
-    p->primLine = 200;
-    p->primAct  = 1;
-    p->secTank  = 1500;
-    p->secLine  = 200;
-    p->secAct   = 1;
-    p->pv       = 14;
+    setPressurePrimTank(1500);
+    setPressurePrimLine(200);
+    setPressurePrimAct(1);
+    setPressureSecTank(1500);
+    setPressureSecLine(200);
+    setPressureSecAct(1);
+    setPressurePv(14);
 
-    m->pos          = 0;
-    m->vel          = 0;
-    m->accel        = 0;
-    m->retroCount   = 0;
+    setMotionPos(0);
+    setMotionVel(0);
+    setMotionAccel(0);
+    setMotionRetroCount(0);
 
-    b->packCurrent      = 0;
-    b->packVoltage      = 270;
-    b->packDCL          = 0;
-    b->packCCL          = 0;
-    b->packResistance   = 0;
-    b->packHealth       = 100;
-    b->packOpenVoltage  = 0;
-    b->packCycles       = 0;
-    b->packAh           = 0;
-    b->inputVoltage     = 0;
-    b->Soc              = 95;
-    b->relayStatus      = 0;
-    b->highTemp         = 25;
-    b->lowTemp          = 20;
-    b->cellMaxVoltage   = 3200; /* These three are mV */
-    b->cellMinVoltage   = 3000;
-    b->cellAvgVoltage   = 3100;
-    b->maxCells         = 72;
-    b->numCells         = 72;
+    
+    setBmsPackCurrent(0);
+    setBmsPackVoltage(270);
+    setBmsPackDCL(0);
+    setBmsPackCCL(0);
+    setBmsPackResistance(0);
+    setBmsPackHealth(100);
+    setBmsPackOpenVoltage(0);
+    setBmsPackCycles(0);
+    setBmsPackAh(0);
+    setBmsInputVoltage(0);
+    setBmsSoc(95);
+    setBmsRelayStatus(0);
+    setBmsHighTemp(25);
+    setBmsLowTemp(20);
+    setBmsCellMaxVoltage(3200); /* These three are mV */
+    setBmsCellMinVoltage(3000);
+    setBmsCellAvgVoltage(3100);
+    setBmsMaxCells(72);
+    setBmsNumCells(72);
 
-    r->igbtTemp             = 23;
-    r->gateDriverBoardTemp  = 22;
-    r->controlBoardTemp     = 21;
-    r->motorTemp        = 25;
-    r->motorSpeed       = 0;
-    r->phaseACurrent    = 0;
-    r->phaseBCurrent    = 0;
-    r->phaseCCurrent    = 0;
-    r->dcBusVoltage     = 0;
-    r->lvVoltage        = 13;
-    r->canCode1         = 0;
-    r->canCode2         = 0;
-    r->faultCode1       = 0;
-    r->faultCode2       = 0;
-    r->commandedTorque  = 0;
-    r->actualTorque     = 0;
-    r->relayState       = 0;
-    r->electricalFreq   = 0;
-    r->dcBusCurrent     = 0;
-    r->outputVoltageLn  = 0;
-    r->VSMCode          = 0;
-    r->keyMode          = 0;
+    setRmsIgbtTemp(23);
+    setRmsGateDriverBoardTemp(22);
+    setRmsControlBoardTemp(21);
+    setRmsMotorTemp(25);
+    setRmsMotorSpeed(0);
+    setRmsPhaseACurrent(0);
+    setRmsPhaseBCurrent(0);
+    setRmsPhaseCCurrent(0);
+    setRmsDcBusVoltage(0);
+    setRmsLvVoltage(13);
+    setRmsCanCode1(0);
+    setRmsCanCode2(0);
+    setRmsFaultCode1(0);
+    setRmsFaultCode2(0);
+    setRmsCommandedTorque(0);
+    setRmsActualTorque(0);
+    setRmsRelayState(0);
+    setRmsElectricalFreq(0);
+    setRmsDcBusCurrent(0);
+    setRmsOutputVoltageLn(0);
+    setRmsVSMCode(0);
+    setRmsKeyMode(0);
 }
 
 static void goToState(char *name) {

@@ -64,9 +64,9 @@ void testLoop() {
 	//	rmsEepromMsg(143, 0, RD_EEPROM);
 	usleep(100);
 	while(1);
-	//	while (data->rms->VSMCode != 5) {
+	//	while (getRmsVSMCode() != 5) {
 	//		sleep(1);
-	//printf("data->rms->VSMCode == %d\n", data->rms->VSMCode);
+	//printf("setRmsVSMCode() == %d\n", getRmsVSMCode());
 	//	}
 	/*
 	   printf("\n\n\n\n\nWE ARE SPINNING \n\n\n");

@@ -7,6 +7,10 @@
 #include "HVTCPSocket.h"
 #include "data_dump.h"
 
+// Temp
+#include <chrono>
+#include <ctime>
+#include <iostream>
 
 extern "C" 
 {
@@ -22,6 +26,7 @@ extern "C"
     #include "can_devices.h"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
+
 }
 void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     printf("shutdown\n");
@@ -75,42 +80,42 @@ int main() {
 		exit(1);
 	}
 
-	while(1) {
+    while(1) {
+
 	    runStateMachine();
         
 /*        printf("CONN STAT: TCP - %d | UDP - %d\n", */
 /*                checkTCPStat(),*/
 /*                checkUDPStat());*/
-        if (data->flags->shouldBrake) {
+
+        if (getFlagsShouldBrake()) {
             printf("signalling\n");
             signalLV((char *)"brake");
-            data->flags->shouldBrake = false;
+            setFlagsShouldBrake(false);
             printf("signallingDone\n");
         }
-        if (data->flags->brakeInit) {
+        if (getFlagsBrakeInit()) {
             printf("Cancelling brake\n");
             signalLV((char *)"primBrakeOff");
             usleep(1000);
             signalLV((char *)"secBrakeOff");
-            data->flags->brakeInit = false;
+            setFlagsBrakeInit(false);
         }
-        if (data->flags->clrMotionData) {
+        if (getFlagsClrMotionData()) {
             printf("signal clear\n");
             signalLV((char *) "clrMotion");
-            data->flags->clrMotionData = false;
+            setFlagsClrMotionData(false);
         }
         
         if (i >= 50) {
-            sprintf(buffer, "state%d\n", data->state == 1);
+            sprintf(buffer, "state%d\n", getDataState() == 1);
             signalLV((char *) buffer);
             i = 0;
         } else {
             i += 1;
         }
-	    // fprintf(stderr, "%d,%d,%d\n", data->rms->actualTorque, data->rms->motorSpeed, getuSTimestamp());
+	    // fprintf(stderr, "%d,%d,%d\n", getRmsActualTorque(), getRmsMotorSpeed(), getuSTimestamp());
         usleep(10000);
-
-		// Control loop
 	}
     return 0;
 }

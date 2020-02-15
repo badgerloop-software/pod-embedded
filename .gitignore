@@ -1,11 +1,6 @@
 # Created by https://www.gitignore.io/api/c,c++,node,java,linux,macos,windows
 # Edit at https://www.gitignore.io/?templates=c,c++,node,java,linux,macos,windows
 
-
-# Ignore Autocoded Files
-embedded/data/include/data.h
-middleware/src/TelemetryLoop.cpp
-
 ### Misc Stuff ###
 *.csv
 

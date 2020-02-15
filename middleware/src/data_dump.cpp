@@ -60,22 +60,22 @@ void *DataLoop(void *arg){
 	while(1){
 		
 		// FLAGS
-		fprintf(fp, "%i,%i,%i,%i,%i,", data->flags->readyPump, data->flags->pumpDown, data->flags->readyCommand, data->flags->propulse, data->flags->emergencyBrake);
+		fprintf(fp, "%i,%i,%i,%i,%i,", getFlagsReadyPump(), getFlagsPumpDown(), getFlagsReadyCommand(), getFlagsPropulse(), getFlagsEmergencyBrake());
 		
 		// TIMERS
-		fprintf(fp, "%ld,%ld,%ld,%ld,%ld,", data->timers->startTime, data->timers->lastRetro, data->timers->lastRetros[0], data->timers->lastRetros[1], data->timers->lastRetros[2]);
+		fprintf(fp, "%ld,%ld,%ld,%ld,%ld,", getTimersStartTime(), getTimersLastRetro(), getTimersLastRetros(0), getTimersLastRetros(1), getTimersLastRetros(2));
 		
 		// PRESSURE
-		fprintf(fp, "%f,%f,%f,%f,%f,%f,%f,", data->pressure->primTank, data->pressure->primLine, data->pressure->primAct, data->pressure->secTank, data->pressure->secLine, data->pressure->secAct, data->pressure->pv);
+		fprintf(fp, "%f,%f,%f,%f,%f,%f,%f,", getPressurePrimTank(), getPressurePrimLine(), getPressurePrimAct(), getPressureSecTank(), getPressureSecLine(), getPressureSecAct(), getPressurePv());
 		
 		// MOTION
-		fprintf(fp, "%f,%f,%f,%i,", data->motion->pos, data->motion->vel, data->motion->accel, data->motion->retroCount);
+		fprintf(fp, "%f,%f,%f,%i,", getMotionPos(), getMotionVel(), getMotionAccel(), getMotionRetroCount());
 		
 		// BMS
-		fprintf(fp, "%f,%f,%hu,%hx,%hu,%hu,%f,%hu,%hu,%f,%hu,%hu,%hu,%hu,%f,%f,%hu,%hu,%hu,", data->bms->packCurrent, data->bms->packVoltage, data->bms->packDCL, data->bms->packCCL, data->bms->packResistance, data->bms->packHealth, data->bms->packOpenVoltage, data->bms->packCycles, data->bms->packAh, data->bms->inputVoltage, data->bms->Soc, data->bms->relayStatus, data->bms->highTemp, data->bms->lowTemp, data->bms->cellMaxVoltage, data->bms->cellMinVoltage, data->bms->cellAvgVoltage, data->bms->maxCells, data->bms->numCells);
+		fprintf(fp, "%f,%f,%hu,%hx,%hu,%hu,%f,%hu,%hu,%f,%hu,%hu,%hu,%hu,%f,%f,%hu,%hu,%hu,", getBmsPackCurrent(), getBmsPackVoltage(), getBmsPackDCL(), getBmsPackCCL(), getBmsPackResistance(), getBmsPackHealth(), getBmsPackOpenVoltage(), getBmsPackCycles(), getBmsPackAh(), getBmsInputVoltage(), getBmsSoc(), getBmsRelayStatus(), getBmsHighTemp(), getBmsLowTemp(), getBmsCellMaxVoltage(), getBmsCellMinVoltage(), getBmsCellAvgVoltage(), getBmsMaxCells(), getBmsNumCells());
 		
 		// RMS
-		fprintf(fp, "%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%lu,%lu,%lu,%lu,%hu,%hu,%hu,%hu,%hu,%hu\n", data->rms->igbtTemp, data->rms->gateDriverBoardTemp, data->rms->controlBoardTemp, data->rms->motorTemp, data->rms->motorSpeed, data->rms->phaseACurrent, data->rms->phaseBCurrent, data->rms->phaseCCurrent, data->rms->dcBusVoltage, data->rms->lvVoltage, data->rms->canCode1, data->rms->canCode2, data->rms->faultCode1, data->rms->faultCode2, data->rms->commandedTorque, data->rms->actualTorque, data->rms->relayState, data->rms->electricalFreq, data->rms->dcBusCurrent, data->rms->outputVoltageLn);
+		fprintf(fp, "%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%hu,%lu,%lu,%lu,%lu,%hu,%hu,%hu,%hu,%hu,%hu\n", getRmsIgbtTemp(), getRmsGateDriverBoardTemp(), getRmsControlBoardTemp(), getRmsMotorTemp(), getRmsMotorSpeed(), getRmsPhaseACurrent(), getRmsPhaseBCurrent(), getRmsPhaseCCurrent(), getRmsDcBusVoltage(), getRmsLvVoltage(), getRmsCanCode1(), getRmsCanCode2(), getRmsFaultCode1(), getRmsFaultCode2(), getRmsCommandedTorque(), getRmsActualTorque(), getRmsRelayState(), getRmsElectricalFreq(), getRmsDcBusCurrent(), getRmsOutputVoltageLn());
 		
 		fflush(fp);
 		

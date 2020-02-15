@@ -9,16 +9,16 @@
 static void initTest() {
     initData();
 	/*data = malloc(sizeof(data_t));
-	data->motion = malloc(sizeof(motion_t));
-	data->motion->vel = 3168.0;	 //3168.0 in/s == 180 mph
-	data->timers = malloc(sizeof(timers_t));
+	setMotion() = malloc(sizeof(motion_t));
+	setMotionVel(3168.0);	 //3168.0 in/s == 180 mph
+	setTimers() = malloc(sizeof(timers_t));
     int i = 0;
-	for (i = 0; i < NUM_RETROS; i++) data->timers->lastRetros[i] = getuSTimestamp();
-	data->motion->retroCount = 0;*/
+	for (i = 0; i < NUM_RETROS; i++) getTimersLastRetros()[i] = getuSTimestamp();
+	setMotionRetroCount(0)*/
 }
 
 static void setSpeed(float vel) {
-	data->motion->vel = vel;
+	setMotionVel(vel);
 }
 
 int main() {

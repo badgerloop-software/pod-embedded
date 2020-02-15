@@ -1,0 +1,5 @@
+# Don't show auto-generated files in diffs
+embedded/data/include/data.h linguist-generated
+embedded/data/src/data.c linguist-generated
+embedded/app/src/init.c linguist-generated
+middleware/src/TelemetryLoop.cpp linguist-generated
