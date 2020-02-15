@@ -80,17 +80,14 @@ int main() {
 		exit(1);
 	}
 
-    double totalCPUTime = 0;
-    uint32_t counts = 0;
-
     while(1) {
-        std::clock_t c_start = std::clock();
 
 	    runStateMachine();
         
 /*        printf("CONN STAT: TCP - %d | UDP - %d\n", */
 /*                checkTCPStat(),*/
 /*                checkUDPStat());*/
+
         if (getFlagsShouldBrake()) {
             printf("signalling\n");
             signalLV((char *)"brake");
@@ -119,14 +116,6 @@ int main() {
         }
 	    // fprintf(stderr, "%d,%d,%d\n", getRmsActualTorque(), getRmsMotorSpeed(), getuSTimestamp());
         usleep(10000);
-
-		// Control loop
-
-        // Counting CPU time
-        std::clock_t c_end = std::clock();
-        uint64_t msCPUTime = 1000.0 * (c_start-c_end) / CLOCKS_PER_SEC;
-        totalCPUTime += msCPUTime;
-        std::cout << msCPUTime << " ms CURRENT; " << (totalCPUTime/++counts) << " ms AVERAGE;";
 	}
     return 0;
 }
