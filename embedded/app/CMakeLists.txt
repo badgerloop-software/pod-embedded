@@ -40,3 +40,6 @@ add_executable(badgerloop main/badgerloop.cpp ${dependecies})
 target_link_libraries(badgerloop PRIVATE ${libraries})
 
 target_include_directories(badgerloop PRIVATE include)
+
+# Add StateMachineTest
+add_executable(StateMachineTest examples/StateMachineTest.cpp state-machine/StateMachine.cpp state-machine/IdleState.cpp state-machine/TestState.cpp)
