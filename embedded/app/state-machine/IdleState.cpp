@@ -1,16 +1,13 @@
-#include "State.h"
-#include "TestState.h"
-#include "IdleState.h"
+#include "States.h"
 
-IdleState::IdleState(State *previousState) : State(previousState) {
+States::IdleState::IdleState(State *previousState) : State(previousState) {
     this -> numberOfRuns = 0;
 }
 
-State* IdleState::run(std::ostream *logStream) {
-    return (this->numberOfRuns++ < 5 ? reinterpret_cast<State *> (this) : new TestState(this));
+State* States::IdleState::run(std::ostream *logStream) {
+    return (this->numberOfRuns++ < 5 ? reinterpret_cast<State *> (this) : new States::TestState(this));
 }
 
-char* IdleState::getName() {
+char* States::IdleState::getName() {
     return "Idle State";
 }
-

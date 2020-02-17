@@ -1,6 +1,6 @@
 #include <iostream>
 #include "StateMachine.h"
-#include "State.h"
+#include "States.h"
 #include "ostream"
 
 
@@ -13,7 +13,7 @@ StateMachine::StateMachine(State *initialState, std::ostream* logStream) {
     this -> logStream = logStream;
     this -> currentState = initialState;
 
-    *logStream << "State initialized with initial state '" << initialState -> getName() << "'.\n";
+    *logStream << "States initialized with initial state '" << initialState -> getName() << "'.\n";
 }
 
 /**
@@ -43,7 +43,7 @@ bool StateMachine::crank() {
 
     // Print a message when the state has been changed
     if(stateChanged) {
-        *this->logStream << "State changed from '" << lastState->getName() << "' to '"
+        *this->logStream << "States changed from '" << lastState->getName() << "' to '"
                          << this->currentState->getName() << ".\n";
         // De-allocate previous state
         delete(lastState);
@@ -66,7 +66,7 @@ State* StateMachine::getState() {
  * @param state The new state of the machine
  */
 void StateMachine::overwriteState(State *state) {
-    *this->logStream << (this->isHalted() ? "Halted state resumed with new state '" : "State overridden by '") << *state->getName() << "'.\n";
+    *this->logStream << (this->isHalted() ? "Halted state resumed with new state '" : "States overridden by '") << *state->getName() << "'.\n";
     this->currentState = state;
 }
 /**
