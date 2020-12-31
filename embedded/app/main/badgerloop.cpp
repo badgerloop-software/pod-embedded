@@ -26,6 +26,7 @@ extern "C"
     #include "can_devices.h"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
+    #include "nav.h"
 
 }
 void emergQuitter(int sig, siginfo_t* inf, void *nul) {
@@ -59,6 +60,8 @@ int init() {
     /* Init telemetry */
     SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
+
+    initNav();
 
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
@@ -102,8 +105,7 @@ int main() {
             setFlagsBrakeInit(false);
         }
         if (getFlagsClrMotionData()) {
-            printf("signal clear\n");
-            signalLV((char *) "clrMotion");
+            resetNav();
             setFlagsClrMotionData(false);
         }
         
