@@ -16,7 +16,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out)
 
 set(CMAKE_CXX_STANDARD 11)
 
-#add cmake projects from subdirectories
+# Add cmake projects from subdirectories
 add_subdirectory(embedded/app)
 add_subdirectory(embedded/data)
 add_subdirectory(embedded/drivers)
@@ -24,3 +24,9 @@ add_subdirectory(embedded/examples)
 add_subdirectory(embedded/peripherals)
 add_subdirectory(embedded/utils)
 add_subdirectory(middleware)
+
+# Do not compile tests when cross-compiling until we determine best way to include cross compiled GTest libs
+# Cross-compiled system name is "BeagleBone"
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_subdirectory(Test)
+endif()
