@@ -24,4 +24,9 @@ add_subdirectory(embedded/examples)
 add_subdirectory(embedded/peripherals)
 add_subdirectory(embedded/utils)
 add_subdirectory(middleware)
-add_subdirectory(Test)
+
+# Do not compile tests when cross-compiling until we determine best way to include cross compiled GTest libs
+# Cross-compiled system name is "BeagleBone"
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    add_subdirectory(Test)
+endif()
