@@ -4,10 +4,12 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
-    - name: test
-      run: ./deploy.sh gtest-setup && ./deploy.sh build && ./out/run_all_tests
+    - name: Install GTest
+      run: ./deploy.sh gtest-setup
+    - name: Build Executables
+      run: ./deploy.sh build
+    - name: Run Tests
+      run: ./out/run_all_tests
