@@ -143,4 +143,4 @@ class HVIox {
   #endif
       return getState(&iox, MSTR_SW_FDBK);
   }
-}
+};
