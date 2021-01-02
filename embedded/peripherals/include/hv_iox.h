@@ -20,33 +20,36 @@
 
 
 class HVIox {
-  HVIox(bool hardStart);
-  
-  i2c_settings getHVIoxDev(void);
-  
-  int isHVIndicatorEnabled(void);
-  
-  int setMCULatch(bool val);
-  
-  int getBMSMultiIn(void);
-  
-  int getIMDStatus(void);
-  
-  int getINRTStatus(void);
-  
-  int isHVEnabled(void);
-  
-  int isMCUHVEnabled(void);
-  
-  int getPsStatus(void);
-  
-  int getBMSStatus(void);
-  
-  int isEStopOn(void);
-  
-  int getMasterSwFeedback(void);
-  
-  int setMCUHVEnabled(int val);
+  public:
+    HVIox(bool hardStart);
+    
+    i2c_settings getHVIoxDev(void);
+    
+    int isHVIndicatorEnabled(void);
+    
+    int setMCULatch(bool val);
+    
+    int getBMSMultiIn(void);
+    
+    int getIMDStatus(void);
+    
+    int getINRTStatus(void);
+    
+    int isHVEnabled(void);
+    
+    int isMCUHVEnabled(void);
+    
+    int getPsStatus(void);
+    
+    int getBMSStatus(void);
+    
+    int isEStopOn(void);
+    
+    int getMasterSwFeedback(void);
+    
+    int setMCUHVEnabled(int val);
 };
+
+extern HVIox hv_iox;
 
 #endif

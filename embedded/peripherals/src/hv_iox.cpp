@@ -144,3 +144,5 @@ class HVIox {
       return getState(&iox, MSTR_SW_FDBK);
   }
 };
+
+HVIox hv_iox(true);
