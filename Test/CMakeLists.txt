@@ -3,7 +3,7 @@ project(testlib VERSION 1.0
                 LANGUAGES CXX)
 
 # Define sources
-set(dependencies example/test.cpp)
+set(dependencies example/Test_GTest.cpp)
 
 set(libraries middleware 
               data 
