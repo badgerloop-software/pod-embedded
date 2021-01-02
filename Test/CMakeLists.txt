@@ -3,7 +3,7 @@ project(testlib VERSION 1.0
                 LANGUAGES CXX)
 
 # Define sources
-set(dependencies ${PROJECT_SOURCE_DIR}/example/test.cpp)
+set(dependencies example/test.cpp)
 
 set(libraries middleware 
               data 
@@ -12,7 +12,7 @@ set(libraries middleware
               Threads::Threads) #so pthreads work
                 
 # Configure tests library                
-add_library(tests ${dependecies})
+add_library(tests ${dependencies})
 target_link_libraries(tests PRIVATE ${libraries})
 
 # Run Autocoder
