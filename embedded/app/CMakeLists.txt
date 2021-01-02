@@ -33,10 +33,12 @@ add_dependencies(app autocoder)
 #export app library so it can be used externally
 export(TARGETS app FILE AppLibConfig.cmake)
 
-#configure HV and LV executables
+#configure executable
 find_package(Threads REQUIRED)
-add_executable(badgerloop main/badgerloop.cpp ${dependecies})
 
-target_link_libraries(badgerloop PRIVATE ${libraries})
-
-target_include_directories(badgerloop PRIVATE include)
+# Add main if not a testing build
+if(!TESTING)
+  add_executable(badgerloop main/badgerloop.cpp ${dependecies})
+  target_link_libraries(badgerloop PRIVATE ${libraries})
+  target_include_directories(badgerloop PRIVATE include)
+endif()

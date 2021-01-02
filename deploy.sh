@@ -49,6 +49,31 @@ elif [ "$1" == "cross" ]; then
 		exit 1
 	fi
 	echo "cross build finished"
+elif [ "$1" == "gtest-setup" ]; then
+	echo "Installing Dependencies (Assumes Debian based System) - Sudo access required"
+	sudo apt-get update
+	sudo apt-get install -y build-essential
+	sudo apt-get install -y cmake libgtest-dev
+	
+	echo "Building GTest"
+	cd /usr/src/gtest
+	sudo cmake CMakeLists.txt
+	sudo make
+	sudo cp *.a /usr/lib
+	
+	echo "GTest Install Complete"
+	
+elif [ "$1" == "test" ]; then
+	mkdir build && cd build
+	
+	cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/testing.cmake ../
+	
+	make
+	retVal=$?
+	if [ $retVal -ne 0 ]; then
+		echo "failure detected during make"
+		exit 1
+	fi
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out
