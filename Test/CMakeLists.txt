@@ -3,9 +3,11 @@ project(testlib VERSION 1.0
                 LANGUAGES CXX)
 
 # Define sources
-set(dependencies example/test.cpp)
+set(dependencies example/t_test.cpp
+                 run_profiles/t_load_software_parameters.cpp)
 
-set(libraries middleware 
+set(libraries app
+              middleware 
               data 
               peripherals 
               drivers

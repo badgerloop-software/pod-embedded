@@ -5,6 +5,7 @@ if [ "$#" -ne 1 ]; then
 	echo "one argument expected after './$fileName'"
 	exit 1
 elif [ "$1" == "build" ]; then
+    ./deploy.sh clean
 	mkdir build && cd build
 	
 	cmake ..
@@ -33,6 +34,7 @@ elif [ "$1" == "cross-setup" ]; then
 
 	echo "cross build setup finished"
 elif [ "$1" == "cross" ]; then
+    ./deploy.sh clean
 	mkdir build && cd build
 
 	cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/beaglebone.cmake ../
