@@ -35,10 +35,6 @@ export(TARGETS app FILE AppLibConfig.cmake)
 
 #configure executable
 find_package(Threads REQUIRED)
-
-# Add main if not a testing build
-if(!TESTING)
-  add_executable(badgerloop main/badgerloop.cpp ${dependecies})
-  target_link_libraries(badgerloop PRIVATE ${libraries})
-  target_include_directories(badgerloop PRIVATE include)
-endif()
+add_executable(badgerloop main/badgerloop.cpp ${dependecies})
+target_link_libraries(badgerloop PRIVATE ${libraries})
+target_include_directories(badgerloop PRIVATE include)

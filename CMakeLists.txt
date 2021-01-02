@@ -24,8 +24,4 @@ add_subdirectory(embedded/examples)
 add_subdirectory(embedded/peripherals)
 add_subdirectory(embedded/utils)
 add_subdirectory(middleware)
-
-# If testing, add test dir 
-if(TESTING)
-    add_subdirectory(Test)
-endif()
+add_subdirectory(Test)

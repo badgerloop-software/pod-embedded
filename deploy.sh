@@ -62,18 +62,6 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo cp *.a /usr/lib
 	
 	echo "GTest Install Complete"
-	
-elif [ "$1" == "test" ]; then
-	mkdir build && cd build
-	
-	cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/testing.cmake ../
-	
-	make
-	retVal=$?
-	if [ $retVal -ne 0 ]; then
-		echo "failure detected during make"
-		exit 1
-	fi
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out
