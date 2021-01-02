@@ -25,11 +25,12 @@ static int setupIox(void);
  *
  */
 class HVIox {
+  bool isInit = true;
   HVIox(bool hardStart) {
-    if (setupMCP(&iox, HV_IO_ADDR) != 0) return -1;
+    if (setupMCP(&iox, HV_IO_ADDR) != 0) isInit = false;
     if (hardStart) {
-        if (clearSettingsMCP(&iox) != 0) return -1;
-        if (setupIox() != 0) return -1; 
+        if (clearSettingsMCP(&iox) != 0) isInit = false;
+        if (setupIox() != 0) isInit = false;
     }
 // static int setupIox() moved into constructor:
     setDir(&iox, HV_IND_EN, MCP_DIR_IN);
