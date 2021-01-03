@@ -1,16 +1,20 @@
-#include <stdio.h>
-#include <lv_iox.h>
 #include <braking.h>
 #include <data.h>
+#include <lv_iox.h>
+#include <stdio.h>
 #include <string.h>
 
-int whichSolenoid(int argc, char *argv[]) {
-    if (argc <= 1) return -1;
+int whichSolenoid(int argc, char* argv[])
+{
+    if (argc <= 1)
+        return -1;
     return atoi(argv[1]);
 }
 
-int whatToDo(int argc, char *argv[]) {
-    if (argc <= 2) return -1;
+int whatToDo(int argc, char* argv[])
+{
+    if (argc <= 2)
+        return -1;
 
     if (strcmp(argv[2], "set") == 0) {
         return 1;
@@ -21,15 +25,17 @@ int whatToDo(int argc, char *argv[]) {
     return -1;
 }
 
-bool isHard(int argc, char *argv[]) {
+bool isHard(int argc, char* argv[])
+{
     if (argc > 1) {
         return strcmp(argv[1], "-h") == 0;
     }
     return false;
 }
 
-int convSolenoid(int num) {
-    switch(num) {
+int convSolenoid(int num)
+{
+    switch (num) {
     case 0:
         return SOLENOID_0;
     case 1:
@@ -50,17 +56,20 @@ int convSolenoid(int num) {
     return -1;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     initData();
     initLVIox(isHard(argc, argv));
 
     int sol = convSolenoid(whichSolenoid(argc, argv));
     printf("SOL: %d\n", sol);
-    if (sol < 0) return -1;
+    if (sol < 0)
+        return -1;
 
     int state = whatToDo(argc, argv);
     printf("STATE: %d\n", state);
-    if (state < 0) return -1;
+    if (state < 0)
+        return -1;
     printf("start\n");
     solenoidSet(sol, state);
     printf("end\n");

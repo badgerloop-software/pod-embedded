@@ -1,9 +1,9 @@
 #ifndef __MCP23017_H__
 #define __MCP23017_H__
 
+#include "i2c.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "i2c.h"
 
 #define MCP_GPIOA_0 0
 #define MCP_GPIOA_1 1
@@ -23,28 +23,28 @@
 #define MCP_GPIOB_6 14
 #define MCP_GPIOB_7 15
 
-#define MCP_DIR_IN  1
+#define MCP_DIR_IN 1
 #define MCP_DIR_OUT 0
 
-static const int  NUM_PINS  = 16;
-static const char IODIR     = 0x00;
-static const char GPIO      = 0x12;
+static const int NUM_PINS = 16;
+static const char IODIR = 0x00;
+static const char GPIO = 0x12;
 
-static const char IODIRA    = 0x00;
-static const char IODIRB    = 0x01;
-static const char GPIOA     = 0x12;
-static const char GPIOB     = 0x13;
+static const char IODIRA = 0x00;
+static const char IODIRB = 0x01;
+static const char GPIOA = 0x12;
+static const char GPIOB = 0x13;
 
-int setupMCP(i2c_settings *i2c, char mcpAddress);
+int setupMCP(i2c_settings* i2c, char mcpAddress);
 
-int clearSettingsMCP(i2c_settings *i2c);
+int clearSettingsMCP(i2c_settings* i2c);
 
-int getState(i2c_settings *i2c, uint8_t pin);
+int getState(i2c_settings* i2c, uint8_t pin);
 
-int setState(i2c_settings *i2c, uint8_t pin, bool val); 
+int setState(i2c_settings* i2c, uint8_t pin, bool val);
 
-int getDir(i2c_settings *i2c, uint8_t pin);
+int getDir(i2c_settings* i2c, uint8_t pin);
 
-int setDir(i2c_settings *i2c, uint8_t pin, bool val);
+int setDir(i2c_settings* i2c, uint8_t pin, bool val);
 
 #endif

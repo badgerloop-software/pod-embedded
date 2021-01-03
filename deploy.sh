@@ -65,6 +65,9 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo cp *.a /usr/lib
 	
 	echo "GTest Install Complete"
+elif [ "$1" == "format" ]; then
+	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+	echo "Format successful"
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out

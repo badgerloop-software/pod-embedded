@@ -1,14 +1,14 @@
 #include <NCD9830DBR2G.h>
 #include <semaphore.h>
-#define PS_TANK     CHANNEL_0
-#define PS_LINE     CHANNEL_1
-#define PS_ACTUATE  CHANNEL_2
+#define PS_TANK CHANNEL_0
+#define PS_LINE CHANNEL_1
+#define PS_ACTUATE CHANNEL_2
 
-#define PRES_VESL   CHANNEL_4
+#define PRES_VESL CHANNEL_4
 
-#define BS_TANK     CHANNEL_5
-#define BS_LINE     CHANNEL_7
-#define BS_ACTUATE  CHANNEL_6
+#define BS_TANK CHANNEL_5
+#define BS_LINE CHANNEL_7
+#define BS_ACTUATE CHANNEL_6
 
 extern sem_t bigSem;
 
@@ -26,7 +26,7 @@ double readSecLine(void);
 
 double readSecActuator(void);
 
-void *pressureMonitor(void);
+void* pressureMonitor(void);
 
 int initPressureMonitor(void);
 
@@ -49,4 +49,3 @@ int brakeSecondaryActuate(void);
 int brakePrimaryVent(void);
 
 int brakeSecondaryVent(void);
-

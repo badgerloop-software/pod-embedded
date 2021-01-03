@@ -8,20 +8,15 @@ void showNavData(void);
 void resetNav(void);
 
 typedef struct rawMotionNode_t {
-    float *data;
+    float* data;
     int head;
     int size;
 } rawMotionNode_t;
 
 typedef struct rawMotion_t {
-   rawMotionNode_t pos;
-   rawMotionNode_t vel;
-   rawMotionNode_t accel;
+    rawMotionNode_t pos;
+    rawMotionNode_t vel;
+    rawMotionNode_t accel;
 } rawMotion_t;
-
-
-
-
-
 
 #endif

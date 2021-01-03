@@ -86,7 +86,6 @@ extern volatile int32_t CRAWL_RETRO_COUNT;
  */
 extern volatile int32_t MAXIMUM_CRAWL_TIME;
 
-
 /**
  * List of all software parameter pointers. Order must match 
  */
@@ -105,6 +104,5 @@ static volatile int32_t* PARAMETER_ARR[] = {
  * Size of paramater pointer array
  */
 static int32_t PARAMETER_ARR_COUNT = sizeof(PARAMETER_ARR) / sizeof(int32_t*);
-
 
 #endif

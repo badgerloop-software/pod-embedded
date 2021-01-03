@@ -6,7 +6,6 @@
 #endif
 
 void SetupLVTCPServer();
-void *LVTCPLoop(void *arg);
-
+void* LVTCPLoop(void* arg);
 
 #endif

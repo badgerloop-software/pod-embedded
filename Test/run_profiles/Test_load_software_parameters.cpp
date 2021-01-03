@@ -2,46 +2,46 @@
   * Author: Rohan
  */
 #include <gtest/gtest.h>
-#include <string>
 #include <stdio.h>
+#include <string>
 
 // Include Software Parameters
-extern "C"{
-    #include "load_software_parameters.h"
+extern "C" {
+#include "load_software_parameters.h"
 }
 
-#include "software_parameters.h"
 #include "gtest_globals.h"
-
+#include "software_parameters.h"
 
 class LoadSoftwareParameters_fixture : public ::testing::Test {
- protected:
-  void SetUp() override {
-    // Reset Software Parameters
-    PUMPDOWN_TIMEOUT                       = 0;
-    MAXIMUM_RUN_TIME                       = 0;
-    RUN_RETRO_COUNT                        = 0;
-    BRAKING_CHECK_PRESSURE_TIMEOUT         = 0;
-    BRAKING_CHECK_RMS_TIMEOUT              = 0;
-    BRAKING_TRANSITION_STOPPED_TIMEOUT     = 0;
-    CRAWL_RETRO_COUNT                      = 0;
-    MAXIMUM_CRAWL_TIME                     = 0;
-  }
+protected:
+    void SetUp() override
+    {
+        // Reset Software Parameters
+        PUMPDOWN_TIMEOUT = 0;
+        MAXIMUM_RUN_TIME = 0;
+        RUN_RETRO_COUNT = 0;
+        BRAKING_CHECK_PRESSURE_TIMEOUT = 0;
+        BRAKING_CHECK_RMS_TIMEOUT = 0;
+        BRAKING_TRANSITION_STOPPED_TIMEOUT = 0;
+        CRAWL_RETRO_COUNT = 0;
+        MAXIMUM_CRAWL_TIME = 0;
+    }
 
-  void TearDown() override {
-     // Nothing to do here
-  }
-
-
+    void TearDown() override
+    {
+        // Nothing to do here
+    }
 };
 
 /**
  * Test nominal parameter loading
  * This is what's called by the actual production code
 */
-TEST_F(LoadSoftwareParameters_fixture, VerifyNominalParameters_ExpectSuccess){
+TEST_F(LoadSoftwareParameters_fixture, VerifyNominalParameters_ExpectSuccess)
+{
     int status = loadParameters(executable_path, ACTIVE_RUN_PROFILE);
-    
+
     // Verify successful status
     EXPECT_EQ(status, 0);
 
@@ -59,9 +59,10 @@ TEST_F(LoadSoftwareParameters_fixture, VerifyNominalParameters_ExpectSuccess){
 /**
  * Test parameter loading against a constant static file case
 */
-TEST_F(LoadSoftwareParameters_fixture, VerifyKnownParameters_ExpectSuccess){
-    int status = loadParameters(executable_path, (char*) "../Test/run_profiles/Test_profiles/nominal_profile.txt");
-    
+TEST_F(LoadSoftwareParameters_fixture, VerifyKnownParameters_ExpectSuccess)
+{
+    int status = loadParameters(executable_path, (char*)"../Test/run_profiles/Test_profiles/nominal_profile.txt");
+
     // Verify successful status
     EXPECT_EQ(status, 0);
 
@@ -79,9 +80,10 @@ TEST_F(LoadSoftwareParameters_fixture, VerifyKnownParameters_ExpectSuccess){
 /**
  * Test failure condition where an invalid filepath is provided
 */
-TEST_F(LoadSoftwareParameters_fixture, VerifyNoFile_ExpectFailure){
-    int status = loadParameters(executable_path, (char*) "../Test/run_profiles/Test_profiles/does_not_exist.txt");
-    
+TEST_F(LoadSoftwareParameters_fixture, VerifyNoFile_ExpectFailure)
+{
+    int status = loadParameters(executable_path, (char*)"../Test/run_profiles/Test_profiles/does_not_exist.txt");
+
     // Verify failure status
     EXPECT_EQ(status, 1);
 
@@ -101,9 +103,10 @@ TEST_F(LoadSoftwareParameters_fixture, VerifyNoFile_ExpectFailure){
  * 
  * Additional sanity checking for parameter values post-load may be necessary
 */
-TEST_F(LoadSoftwareParameters_fixture, VerifyInvalidValue_ExpectSuccess){
-    int status = loadParameters(executable_path, (char*) "../Test/run_profiles/Test_profiles/bad_values_profile.txt");
-    
+TEST_F(LoadSoftwareParameters_fixture, VerifyInvalidValue_ExpectSuccess)
+{
+    int status = loadParameters(executable_path, (char*)"../Test/run_profiles/Test_profiles/bad_values_profile.txt");
+
     // Verify successful status
     EXPECT_EQ(status, 0);
 
@@ -115,7 +118,7 @@ TEST_F(LoadSoftwareParameters_fixture, VerifyInvalidValue_ExpectSuccess){
     EXPECT_EQ(BRAKING_TRANSITION_STOPPED_TIMEOUT, 15000000);
     EXPECT_EQ(CRAWL_RETRO_COUNT, 2);
     EXPECT_EQ(MAXIMUM_CRAWL_TIME, 5000000);
-    
+
     // Verify expected 0 for invalid value
     EXPECT_EQ(BRAKING_CHECK_RMS_TIMEOUT, 0);
 }
