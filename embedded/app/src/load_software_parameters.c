@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 #include "load_software_parameters.h"
 #include "software_parameters.h"
 
@@ -90,11 +92,14 @@ int loadParameters(char* directory, char* filepath){
                     success_status = 1;
                 }
                 else{
-                    // Insert parameter, convert to int
-                    *(PARAMETER_ARR[parameterCounter]) = atoi(parameter);
+                    // Verify counter has not exceeded size of array
+                    if(parameterCounter < PARAMETER_ARR_COUNT){
+                        // Insert parameter, convert to int
+                        *(PARAMETER_ARR[parameterCounter]) = atoi(parameter);
 
-                    // Increment Parameter Counter
-                    parameterCounter++;
+                        // Increment Parameter Counter
+                        parameterCounter++;
+                    }
                 }
             }
          }
