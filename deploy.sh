@@ -3,7 +3,7 @@
 fileName=${0##*/}
 if [ "$#" -ne 1 ]; then
 	echo "one argument expected after './$fileName'"
-	echo "Options are: build, cross-setup, cross, clean"
+	echo "Options are: build, cross-setup, cross, clean, gtest-setup"
 	exit 1
 elif [ "$1" == "build" ]; then
     ./deploy.sh clean

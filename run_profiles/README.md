@@ -29,7 +29,7 @@ extern volatile int32_t MAXIMUM_CRAWL_TIME;
 
 **2)** Add a pointer to the parameter to `PARAMETER_ARR`. The order of `PARAMETER_ARR` MUST match the order in which the parameters are declared & listed in the file.
 
-**3)** Instantiate the parameter in the global namespace in `load_software_paramwters()`. Instantiate it to a safe default value.
+**3)** Instantiate the parameter in the global namespace in `load_software_parameters()`. Instantiate it to a safe default value.
 
 **4)** Add the parameter to your run profile using the format mentioned above. Remember - order matters.
 
