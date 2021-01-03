@@ -50,16 +50,18 @@ int loadParameters(char* directory, char* filepath){
     int success_status = 0;
     FILE *fp;
 
+    // Append executable directory
+    char totalFP[128];
+    strcpy(totalFP, directory);
+
     // Strip the executable name from the filepath
     char *exe;
-    exe = strrchr(directory, '/');
+    exe = strrchr(totalFP, '/');
     if(exe != NULL){
         *exe = '\0';
     }
 
-    // Append filepath and directory
-    char totalFP[128];
-    strcpy(totalFP, directory);
+    // Append rest of filepath
     strcat(totalFP, "/");
     strcat(totalFP, filepath);
 
