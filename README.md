@@ -56,7 +56,7 @@ Then, to build the executable:
 
 ### Adding Tests
 
-In order to add a test or example, put a .c or .cpp file into the respective "example" folder. Make sure that your file contains a "main" function.
+In order to add a test or example, put a .c or .cpp file into the respective "example" folder. Make sure that your file contains a "main" function. Be sure to add to the file to the respective CMakeLists.txt file if necessary.
 
 ## Directory Structure
 ```
@@ -87,6 +87,9 @@ pod/
  | 
  |--autocoding/          /* Auto-coding python scripts and data.xml */
  |  |--templates/        /* Template files to be autocoded */
+ |
+ |--Test/                /* GTest Unit & Component Tests */
+ |  |--example/          /* Sample GTest Test */
  |
  ```
  
