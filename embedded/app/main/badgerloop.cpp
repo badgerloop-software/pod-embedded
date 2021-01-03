@@ -12,22 +12,25 @@
 #include <ctime>
 #include <iostream>
 
-extern "C" {
-#include "NCD9830DBR2G.h"
-#include "bbgpio.h"
-#include "can_devices.h"
-#include "connStat.h"
-#include "data.h"
-#include "hv_iox.h"
-#include "motor.h"
-#include "proc_iox.h"
-#include "state_machine.h"
-#include <rms.h>
-#include <signal.h>
+extern "C" 
+{
+    #include "bbgpio.h"
+    #include "connStat.h"
+    #include <signal.h>
+    #include <rms.h>
+    #include "motor.h"
+    #include "hv_iox.h"
+    #include "motor.h"
+    #include "proc_iox.h"
+    #include "data.h"
+    #include "can_devices.h"
+    #include "state_machine.h"
+    #include "NCD9830DBR2G.h"
+    #include "nav.h"
 
-// Software Parameter Loading
-#include "load_software_parameters.h"
-#include "software_parameters.h"
+    // Software Parameter Loading
+    #include "load_software_parameters.h"
+    #include "software_parameters.h"
 }
 
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
@@ -80,7 +83,9 @@ int init(char* directory)
     SetupTelemetry((char*)DASHBOARD_IP, DASHBOARD_PORT);
     SetupHVTCPServer();
 
-    struct sigaction sig;
+    initNav();
+
+	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
 
@@ -123,8 +128,7 @@ int main(int argc, char* argv[])
             setFlagsBrakeInit(false);
         }
         if (getFlagsClrMotionData()) {
-            printf("signal clear\n");
-            signalLV((char*)"clrMotion");
+            resetNav();
             setFlagsClrMotionData(false);
         }
 

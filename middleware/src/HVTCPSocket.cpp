@@ -188,24 +188,27 @@ void* TCPLoop(void* arg)
 
 void signalLV(char* cmd)
 {
-    int srvFd;
+	fprintf(stderr, "THERE IS NOTHING TO SIGNAL TO DO NOT SIGNAL LV\n");
+	int srvFd;
 
-    int opt = 1;
+	int opt = 1;
 
-    struct sockaddr_in addr;
-    int addrlen = sizeof(addr);
+	struct sockaddr_in addr;
+	int addrlen = sizeof(addr);
+    
+	if ((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+	{
+		fprintf(stderr, "Error signalling\n");
+		exit(1);
+	}
 
-    if ((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-        fprintf(stderr, "Error signalling\n");
-        exit(1);
-    }
-
-    if (setsockopt(srvFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
-            &opt, sizeof(opt))) {
-        fprintf(stderr, "Signal error\n");
-        exit(1);
-    }
-
+	if (setsockopt(srvFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+								 &opt, sizeof(opt)))
+	{
+		fprintf(stderr, "Signal error\n");
+		exit(1);
+	}
+    
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr(LV_SERVER_IP);
     addr.sin_port = htons(LV_SERVER_PORT);
