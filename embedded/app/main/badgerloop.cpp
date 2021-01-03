@@ -26,6 +26,7 @@ extern "C"
     #include "can_devices.h"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
+    #include "nav.h"
 
     // Software Parameter Loading
     #include "load_software_parameters.h"
@@ -81,6 +82,8 @@ int init(char* directory) {
     SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
 
+    initNav();
+
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
@@ -123,8 +126,7 @@ int main(int argc, char* argv[]) {
             setFlagsBrakeInit(false);
         }
         if (getFlagsClrMotionData()) {
-            printf("signal clear\n");
-            signalLV((char *) "clrMotion");
+            resetNav();
             setFlagsClrMotionData(false);
         }
         
