@@ -111,7 +111,7 @@ pod/
  
   1. Only .c and .cpp files should live in any given `src/` directory, and only .h files belong in the `include/` directories. Any other supporting files (e.g. READMEs) belong in at least one level above `src/` and `include/`. 
   2. The only source files containing a `main()` function should live either in `pod/embedded/app/main` or in any of the examples subdirectories. 
-  3. Only one source file should live in the `pod/embedded/app/main` directory: `badgerloopcpp`. If any other code is placed there it will either link incorrectly or fail to be compiled at all.
+  3. Only one source file should live in the `pod/embedded/app/main` directory: `badgerloop.cpp`. If any other code is placed there it will either link incorrectly or fail to be compiled at all.
   
 ### Coding Conventions
 

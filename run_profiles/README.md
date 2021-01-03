@@ -35,6 +35,6 @@ extern volatile int32_t MAXIMUM_CRAWL_TIME;
 
 ## Validating Run Profiles
 
-To assist in validating run profiles, a utility python tool has been created: [Validate Run Profile](../utils/validate_run_profile.py)
+To assist in validating run profiles, a utility python tool has been created: [Validate Run Profile](../../utils/validate_run_profile.py)
 
 This script takes in an optional command line argument: A filepath to a parameter to verify. If none is provided, the default run profile (`run_profiles/active_run_profile.txt`) will be used.
