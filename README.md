@@ -39,6 +39,16 @@ cmake ..
 make
 ```
 
+## Running the Executables
+
+All executable targets are placed in the `out` directory after a successful build.
+
+The main badgerloop executable will be placed in `out/badgerloop`
+
+A build to run all GTest Unit & Component Tests will be placed in `out/run_all_tests`
+
+Deprecated non-GTest examples & tests can be found under `out/tests`
+
 ## Cross-Compilation Make Instructions
 
 To install the toolchain needed for cross-compiling:
@@ -56,7 +66,7 @@ Then, to build the executable:
 
 ### Adding Tests
 
-In order to add a test or example, put a .c or .cpp file into the respective "example" folder. Make sure that your file contains a "main" function. Be sure to add to the file to the respective CMakeLists.txt file if necessary.
+BadgerLoop uses [GTest](https://github.com/google/googletest) for unit and component testing. A detailed introduction to GTest is available [here](https://github.com/google/googletest/blob/master/googletest/docs/primer.md). Tests should be placed within a respective folder under the `Test` directory. Be sure to add to a new file to the respective CMakeLists.txt file if necessary.
 
 ## Directory Structure
 ```
