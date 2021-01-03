@@ -11,9 +11,9 @@ set(dependecies src/bms_fault_checking.c
                 src/init.c
                 src/pressure_fault_checking.c
                 src/states.cpp
-                src/motor.c
+                src/motor.cpp
                 src/rms_fault_checking.c
-                src/transitions.c)
+                src/transitions.cpp)
 
 #required libraries for the main pod executables
 set(libraries middleware 

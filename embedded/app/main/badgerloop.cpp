@@ -6,6 +6,7 @@
 #include <TelemetryLoop.h>
 #include "HVTCPSocket.h"
 #include "data_dump.h"
+#include "hv_iox.h"
 
 // Temp
 #include <chrono>
@@ -19,7 +20,6 @@ extern "C"
     #include <signal.h>
     #include <rms.h>
     #include "motor.h"
-    #include "hv_iox.h"
     #include "motor.h"
     #include "proc_iox.h"
     #include "data.h"
@@ -28,9 +28,11 @@ extern "C"
     #include "NCD9830DBR2G.h"
 
 }
+
+HVIox *hv_iox;
 void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     printf("shutdown\n");
-    setMCUHVEnabled(false);
+    hv_iox->setMCUHVEnabled(false);
     rmsCmdNoTorque();
     sleep(1);
     rmsDischarge();
@@ -46,7 +48,7 @@ int init() {
     /* Init all drivers */
     SetupCANDevices();
     initProcIox(true);
-    initHVIox(true);
+    *hv_iox = new HVIox(true);
 
     SetupMotor();
 

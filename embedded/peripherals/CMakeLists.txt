@@ -5,7 +5,6 @@ project(peripheralslib VERSION 1.0
 add_library(peripherals src/batt.c
                         src/braking.c
                         src/lv_iox.c
-                        src/lv_iox.c
                         src/NCD9830DBR2G.c
                         src/retro.c
                         src/bms.c

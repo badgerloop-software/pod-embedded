@@ -19,6 +19,7 @@
 #define MSTR_SW_FDBK    MCP_GPIOA_0
 
 
+#ifdef __cplusplus
 class HVIox {
   public:
     HVIox(bool hardStart);
@@ -49,7 +50,16 @@ class HVIox {
     
     int setMCUHVEnabled(int val);
 };
+extern HVIox *hv_iox;
+#else
+  typedef struct HVIox hv_iox;
+  extern HVIox hv_iox;
+  #endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-extern HVIox hv_iox;
-
+#ifdef __cplusplus
+}
+#endif
 #endif
