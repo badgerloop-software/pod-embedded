@@ -10,7 +10,7 @@ set(dependecies src/bms_fault_checking.c
                 src/state_machine.c
                 src/init.c
                 src/pressure_fault_checking.c
-                src/states.c
+                src/states.cpp
                 src/motor.c
                 src/rms_fault_checking.c
                 src/transitions.c)
