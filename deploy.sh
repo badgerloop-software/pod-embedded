@@ -64,6 +64,16 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo cp *.a /usr/lib
 	
 	echo "GTest Install Complete"
+elif [ "$1" == "format" ]; then
+	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+	retVal=$?
+	if [ $retVal -ne 0 ]; then
+		echo "Failure detected during format"
+		echo "Make sure you have installed the package clang-format"
+		exit 1
+	else
+		echo "Format successful"
+	fi
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out
