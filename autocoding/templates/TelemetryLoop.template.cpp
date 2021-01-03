@@ -96,7 +96,7 @@ void* TelemetryLoop(void *arg) {
             addToBuffer(&buffer, &time);
 
             // Write 1 byte IMD status
-            uint8_t imdStatus = getIMDStatus();
+            uint8_t imdStatus = hv_iox.getIMDStatus();
             addToBuffer(&buffer, &imdStatus);
 
             // Write 4 byte primary brake
