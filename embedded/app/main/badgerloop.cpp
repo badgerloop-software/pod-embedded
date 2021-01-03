@@ -43,7 +43,7 @@ void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     exit(0);
 }
 
-int init() {
+int init(char* directory) {
     // Success status, return true by default
     int success_status = 0;
 
@@ -53,7 +53,7 @@ int init() {
     }
 
     /* Load Software Parameters */
-    if(loadParameters(ACTIVE_RUN_PROFILE)){
+    if(loadParameters(directory, ACTIVE_RUN_PROFILE)){
         success_status = 1;
     }
 
@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 	int i = 0;
 	char buffer[100];
     
-    if (init() == 1) {
+    if (init(argv[0]) == 1) {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}

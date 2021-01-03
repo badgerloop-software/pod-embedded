@@ -43,13 +43,26 @@ int is_empty(const char *s) {
   return 1;
 }
 
-int loadParameters(char* filepath){
+int loadParameters(char* directory, char* filepath){
     // Success status to return true by default
     int success_status = 0;
     FILE *fp;
 
+    // Strip the executable name from the filepath
+    char *exe;
+    exe = strrchr(directory, '/');
+    if(exe != NULL){
+        *exe = '\0';
+    }
+
+    // Append filepath and directory
+    char totalFP[128];
+    strcpy(totalFP, directory);
+    strcat(totalFP, "/");
+    strcat(totalFP, filepath);
+
     // Open file
-    fp = fopen(filepath, "r");
+    fp = fopen(totalFP, "r");
 
     // Verify non-null file
     if(fp != NULL){
@@ -64,7 +77,7 @@ int loadParameters(char* filepath){
         // Iterate over each line
         while ((read = getline(&line, &len, fp)) != -1){
             // Skip comments prefaced with # or are all whitespace
-            if(line[0] != '#' && !is_empty(line)){
+            if((line[0] != '#') && (is_empty(line) == 0)){
                 // Line buffers
                 char buffer[64];
                 char parameter[64];

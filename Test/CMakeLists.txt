@@ -16,6 +16,7 @@ set(libraries app
 # Configure tests library                
 add_library(tests ${dependencies})
 target_link_libraries(tests PRIVATE ${libraries})
+target_include_directories(tests PUBLIC include)
 
 # Run Autocoder
 add_dependencies(tests autocoder)

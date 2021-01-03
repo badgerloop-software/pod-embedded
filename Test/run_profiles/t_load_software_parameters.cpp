@@ -7,9 +7,10 @@ extern "C"{
     #include "load_software_parameters.h"
 }
 #include "software_parameters.h"
+#include "gtest_globals.h"
 
 TEST(LoadSoftwareParameters, VerifyNominalParameters){
-    int status = loadParameters(ACTIVE_RUN_PROFILE);
+    int status = loadParameters(executable_path, ACTIVE_RUN_PROFILE);
     
     // Verify successful status
     EXPECT_EQ(status, 0);
