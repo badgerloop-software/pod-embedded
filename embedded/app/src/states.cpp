@@ -180,7 +180,7 @@ stateTransition_t * brakingAction() {
         printf("EMERG BRAKE\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } 
-    if (!hv_iox->getIMDStatus()) {
+    if (!hv_iox.getIMDStatus()) {
         fprintf(stderr, "getIMDStatus()");
         return stateMachine.currState->fault;
     }
@@ -267,7 +267,7 @@ stateTransition_t * servPrechargeAction() {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     } else pErrs = 0;
     
-    if (!hv_iox->getIMDStatus()) {
+    if (!hv_iox.getIMDStatus()) {
         fprintf(stderr, "getIMDStatus()");
         return stateMachine.currState->fault;
     }
@@ -284,7 +284,7 @@ stateTransition_t * crawlAction() {
     setDataState(7);
  /* Check IMD status */
     prevRet = getMotionRetroCount();
-    if (!hv_iox->getIMDStatus()) {
+    if (!hv_iox.getIMDStatus()) {
         return stateMachine.currState->fault;
     }
 
@@ -402,7 +402,7 @@ stateTransition_t * nonRunFaultAction() {
         usleep(1000);
         rmsInvDis();
         usleep(1000);
-        hv_iox->setMCUHVEnabled(0);
+        hv_iox.setMCUHVEnabled(0);
         mcuDisPulse = 0;
     } else {
         mcuDisPulse += 1;
@@ -417,7 +417,7 @@ stateTransition_t * runFaultAction() {
     static int mcuDisPulse = 0;
     setDataState(11);
     if (mcuDisPulse >= 50) {
-        hv_iox->setMCUHVEnabled(0);
+        hv_iox.setMCUHVEnabled(0);
         clrMotorEn();
         usleep(1000);
        

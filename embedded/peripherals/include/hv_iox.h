@@ -22,7 +22,9 @@
 #ifdef __cplusplus
 class HVIox {
   public:
-    HVIox(bool hardStart);
+    HVIox(void);
+
+    int init(bool);
     
     i2c_settings getHVIoxDev(void);
     
@@ -50,7 +52,7 @@ class HVIox {
     
     int setMCUHVEnabled(int val);
 };
-extern HVIox *hv_iox;
+extern HVIox hv_iox;
 #else
   typedef struct HVIox hv_iox;
   extern HVIox hv_iox;

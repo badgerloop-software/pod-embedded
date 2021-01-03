@@ -155,10 +155,10 @@ void *TCPLoop(void *arg)
             setFlagsEmergencyBrake(1);
 		}
         if (!strncmp(buffer, "mcuLatchOn", MAX_COMMAND_SIZE)) {
-            hv_iox->setMCULatch(true);
+            hv_iox.setMCULatch(true);
         }
         if (!strncmp(buffer, "mcuLatchOff", MAX_COMMAND_SIZE)) {
-            hv_iox->setMCULatch(false);
+            hv_iox.setMCULatch(false);
         }
         if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
 /*            pthread_create(&hbT, NULL, hbLoop, NULL);*/
@@ -175,12 +175,12 @@ void *TCPLoop(void *arg)
 		if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE))
 		{
             /* Lets add a safety check here */
-			hv_iox->setMCUHVEnabled(true);
+			hv_iox.setMCUHVEnabled(true);
 		}
         
 		if (!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE))
 		{
-			hv_iox->setMCUHVEnabled(false);
+			hv_iox.setMCUHVEnabled(false);
 		}
 
 		if(!strncmp(buffer,"override", 8)){
