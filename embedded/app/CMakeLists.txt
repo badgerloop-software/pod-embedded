@@ -7,7 +7,7 @@ project(applib VERSION 1.0
 #and it's SUPER discouraged.
 set(dependecies src/bms_fault_checking.c
                 src/nav.c
-                src/state_machine.c
+                src/state_machine.cpp
                 src/init.c
                 src/pressure_fault_checking.c
                 src/states.cpp

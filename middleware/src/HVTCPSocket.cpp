@@ -10,15 +10,15 @@
 #include "HVTCPSocket.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include "motor.h"
+#include "state_machine.h"
 #define SA struct sockaddr
 
 extern "C"
 {
-#include "motor.h"
 #include "connStat.h"
 #include "rms.h"
 #include "data.h"
-#include "state_machine.h"
 #include "hv_iox.h"
 #include "braking.h"
 }

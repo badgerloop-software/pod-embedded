@@ -3,6 +3,7 @@
 #include <TelemetryLoop.h>
 #include <string.h>
 #include "connStat.h"
+#include <hv_iox.h>
 extern "C" {
 #include "imu.h"
 #include "braking.h"
@@ -11,6 +12,8 @@ extern "C" {
 }
 #define NUM_LIM_SWITCHES 2  /* In test */
 #define FOREVER while(1)
+
+HVIox hv_iox;
 
 void showBrakingInfo() {
     int i = 0;

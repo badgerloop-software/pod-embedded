@@ -15,9 +15,9 @@
 #include <PracticalSocket/PracticalSocket.h>
 #include <CRCpp/CRC.h>
 #include <chrono>
+#include <hv_iox.h>
 
 extern "C" {
-#include <hv_iox.h>
 #include <lv_iox.h>
 #include <data.h>
 }

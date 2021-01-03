@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <hv_iox.h>
-extern "C"
-{
-#include <motor.h>
-#include <data.h>
 #include <transitions.h>
 #include <state_machine.h>
+#include <motor.h>
+extern "C"
+{
+#include <data.h>
 #include <braking.h>
 #include <rms.h>
 }

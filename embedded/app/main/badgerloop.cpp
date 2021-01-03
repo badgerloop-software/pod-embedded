@@ -7,6 +7,8 @@
 #include "HVTCPSocket.h"
 #include "data_dump.h"
 #include "hv_iox.h"
+#include "motor.h"
+#include "state_machine.h"
 
 // Temp
 #include <chrono>
@@ -19,12 +21,9 @@ extern "C"
 #include "connStat.h"
 #include <signal.h>
 #include <rms.h>
-#include "motor.h"
-#include "motor.h"
 #include "proc_iox.h"
 #include "data.h"
 #include "can_devices.h"
-#include "state_machine.h"
 #include "NCD9830DBR2G.h"
 }
 

@@ -15,16 +15,20 @@
 #include <math.h>
 
 #include "state_machine.h"
-#include "data.h"
 #include "states.h"
 #include <hv_iox.h>
 #include <math.h>
+#include "motor.h"
+
+extern "C" {
+#include "rms.h"
 #include "bms_fault_checking.h"
 #include "rms_fault_checking.h"
 #include "pressure_fault_checking.h"
-#include "rms.h"
+#include "data.h"
 #include "connStat.h"
-#include "motor.h"
+
+}
 /*#define NO_FAULT*/
 
 #define NUM_FAIL 10

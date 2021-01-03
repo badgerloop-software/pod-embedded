@@ -2,8 +2,13 @@
 #define __HV_IOX_H__
 
 #include <stdbool.h>
-#include <mcp23017.h>
+
+extern "C" {
+#include <proc_iox.h>
+#include <data.h>
 #include <i2c.h>
+#include <mcp23017.h>
+}
 
 #define HV_IND_EN       MCP_GPIOB_0
 #define MCU_LATCH       MCP_GPIOB_1
@@ -25,6 +30,8 @@ class HVIox {
     HVIox(void);
 
     int init(bool);
+
+    int setupIox(void);
     
     i2c_settings getHVIoxDev(void);
     
@@ -51,6 +58,8 @@ class HVIox {
     int getMasterSwFeedback(void);
     
     int setMCUHVEnabled(int val);
+
+    int emergencyDisableMCU(void);
 };
 extern HVIox hv_iox;
 #else

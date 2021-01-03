@@ -2,11 +2,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <hv_iox.h>
+
+extern "C"
+{
+#include <proc_iox.h>
 #include <data.h>
 #include <i2c.h>
 #include <mcp23017.h>
-#include <proc_iox.h>
-#include <hv_iox.h>
+}
 
 #define HV_IO_ADDR 0x24
 
@@ -29,7 +33,7 @@ HVIox::HVIox()
 {
 }
 
-int init(bool hardStart)
+int HVIox::init(bool hardStart)
 {
     if (setupMCP(&iox, HV_IO_ADDR) != 0)
         isInit = false;
@@ -37,9 +41,13 @@ int init(bool hardStart)
     {
         if (clearSettingsMCP(&iox) != 0)
             isInit = false;
-        if (setupIox() != 0)
+        if (this->setupIox() != 0)
             isInit = false;
     }
+}
+
+int HVIox::setupIox()
+{
     // static int setupIox() moved into constructor:
     setDir(&iox, HV_IND_EN, MCP_DIR_IN);
     setDir(&iox, MCU_LATCH, MCP_DIR_OUT);
@@ -52,16 +60,16 @@ int init(bool hardStart)
     setDir(&iox, BMS_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, E_STOP_FDBK, MCP_DIR_IN);
     setDir(&iox, MSTR_SW_FDBK, MCP_DIR_IN);
-    
+
     return 0;
 }
 
-i2c_settings getHVIoxDev()
+i2c_settings HVIox::getHVIoxDev()
 {
     return iox;
 }
 
-int isHVIndicatorEnabled()
+int HVIox::isHVIndicatorEnabled()
 {
 #ifdef NOI2C
     return 1;
@@ -69,7 +77,7 @@ int isHVIndicatorEnabled()
     return getState(&iox, HV_IND_EN);
 }
 
-int setMCULatch(bool val)
+int HVIox::setMCULatch(bool val)
 {
 #ifdef NOI2C
     return 0;
@@ -77,7 +85,7 @@ int setMCULatch(bool val)
     return setState(&iox, MCU_LATCH, val);
 }
 
-int getBMSMultiIn()
+int HVIox::getBMSMultiIn()
 {
 #ifdef NOI2C
     return 1;
@@ -85,7 +93,7 @@ int getBMSMultiIn()
     return getState(&iox, BMS_MULTI_IN);
 }
 
-int getIMDStatus()
+int HVIox::getIMDStatus()
 {
 #ifdef NOI2C
     return 1;
@@ -93,7 +101,7 @@ int getIMDStatus()
     return getBmsImdStatus() >= 4; //getState(&iox, IMD_STAT_FDBK);
 }
 
-int getINRTStatus()
+int HVIox::getINRTStatus()
 {
 #ifdef NOI2C
     return 1;
@@ -101,7 +109,7 @@ int getINRTStatus()
     return getState(&iox, INRT_STAT_FDBK);
 }
 
-int isHVEnabled()
+int HVIox::isHVEnabled()
 {
 #ifdef NOI2C
     return 0;
@@ -109,7 +117,7 @@ int isHVEnabled()
     return getState(&iox, HV_EN_FDBK);
 }
 
-int setMCUHVEnabled(int val)
+int HVIox::setMCUHVEnabled(int val)
 {
 #ifdef NOI2C
     return 0;
@@ -118,7 +126,7 @@ int setMCUHVEnabled(int val)
     return setState(&iox, MCU_HV_EN, val);
 }
 
-int isMCUHVEnabled()
+int HVIox::isMCUHVEnabled()
 {
 #ifdef NOI2C
     return 1;
@@ -127,7 +135,7 @@ int isMCUHVEnabled()
     return getState(&iox, MCU_HV_EN);
 }
 
-int emergencyDisableMCU()
+int HVIox::emergencyDisableMCU()
 {
 #ifdef NOI2C
     return 1;
@@ -136,7 +144,7 @@ int emergencyDisableMCU()
     return setState(&iox, MCU_HV_EN, true);
 }
 
-int getPsStatus()
+int HVIox::getPsStatus()
 {
 #ifdef NOI2C
     return 1;
@@ -144,7 +152,7 @@ int getPsStatus()
     return getState(&iox, PS_FDBK);
 }
 
-int getBMSStatus()
+int HVIox::getBMSStatus()
 {
 #ifdef NOI2C
     return 1;
@@ -152,7 +160,7 @@ int getBMSStatus()
     return getState(&iox, BMS_STAT_FDBK);
 }
 
-int isEStopOn()
+int HVIox::isEStopOn()
 {
 #ifdef NOI2C
     return 0;
@@ -160,7 +168,7 @@ int isEStopOn()
     return getState(&iox, E_STOP_FDBK);
 }
 
-int getMasterSwFeedback()
+int HVIox::getMasterSwFeedback()
 {
 #ifdef NOI2C
     return 1;
