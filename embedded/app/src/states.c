@@ -9,44 +9,43 @@
  */
 
 /* Includes */
-#include <stdio.h>
+#include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <time.h>
-#include <math.h>
 
-#include "state_machine.h"
-#include "data.h"
-#include "states.h"
-#include "hv_iox.h"
-#include <math.h>
 #include "bms_fault_checking.h"
-#include "rms_fault_checking.h"
+#include "connStat.h"
+#include "data.h"
+#include "hv_iox.h"
+#include "motor.h"
 #include "pressure_fault_checking.h"
 #include "rms.h"
-#include "connStat.h"
-#include "motor.h"
+#include "rms_fault_checking.h"
 #include "software_parameters.h"
+#include "state_machine.h"
+#include "states.h"
+#include <math.h>
 /*#define NO_FAULT*/
 
 #define NUM_FAIL 10
-#define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + \
-        pow(78.334      * (x), 5) - \
-        pow(2280.5      * (x), 4) + \
-        pow(35181.0     * (x), 3) - \
-        pow(303240.0    * (x), 2) - (1000000.0 * (x)))
+#define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + pow(78.334 * (x), 5) - pow(2280.5 * (x), 4) + pow(35181.0 * (x), 3) - pow(303240.0 * (x), 2) - (1000000.0 * (x)))
 
 #define MAX_PACKET_LOSS 500
 /* Imports/Externs */
 extern int internalCount;
 extern stateMachine_t stateMachine;
-extern stateTransition_t *findTransition(state_t *currState, char *name);
+extern stateTransition_t* findTransition(state_t* currState, char* name);
 int bErrs, pErrs, rErrs;
-int checkNetwork() {
+int checkNetwork()
+{
     static int errs = 0;
-    if(!checkUDPStat() || !checkTCPStat()) {
-        if (checkUDPStat() == 0) fprintf(stderr, "UDP ");
-        if (checkTCPStat() == 0) fprintf(stderr, "TCP ");
-        fprintf(stderr,"CONNECTION DROPPED\n");
+    if (!checkUDPStat() || !checkTCPStat()) {
+        if (checkUDPStat() == 0)
+            fprintf(stderr, "UDP ");
+        if (checkTCPStat() == 0)
+            fprintf(stderr, "TCP ");
+        fprintf(stderr, "CONNECTION DROPPED\n");
         errs += 1;
     } else {
         errs = 0;
@@ -76,9 +75,10 @@ static bool checkStopped(void) {
  *
  */
 
-stateTransition_t * idleAction() {
+stateTransition_t* idleAction()
+{
     setDataState(1);
-    
+
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
@@ -86,70 +86,79 @@ stateTransition_t * idleAction() {
     return NULL;
 }
 
-stateTransition_t * pumpdownAction() {
+stateTransition_t* pumpdownAction()
+{
     // First check for nominal values?
     setDataState(2);
-    
+
     /* Check IMD status */
-    
+
     if (getuSTimestamp() - stateMachine.start > PUMPDOWN_TIMEOUT)
         return stateMachine.currState->fault;
 
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } 
+    }
 
     // CHECK PRESSURE
-    if(!checkPrerunPressures()){
+    if (!checkPrerunPressures()) {
         fprintf(stderr, "Pressure failure\n");
         pErrs += 1;
-    } else pErrs = 0;
-    
-    if(!checkPrerunBattery()){
+    } else
+        pErrs = 0;
+
+    if (!checkPrerunBattery()) {
         fprintf(stderr, "prerun batt fault\n");
         bErrs += 1;
-    } else bErrs = 0;
+    } else
+        bErrs = 0;
 
-    if(!checkPrerunRMS()){
+    if (!checkPrerunRMS()) {
         fprintf(stderr, "prerun rms fault\n");
         rErrs += 1;
-    } else rErrs = 0;
-    /* FIXME, need to fix robust failure cases */    
+    } else
+        rErrs = 0;
+    /* FIXME, need to fix robust failure cases */
     if (pErrs >= NUM_FAIL || bErrs >= NUM_FAIL || rErrs >= NUM_FAIL)
         return stateMachine.currState->fault;
 
     return NULL;
 }
 
-stateTransition_t * propulsionAction() {
+stateTransition_t* propulsionAction()
+{
     setDataState(3);
     /* Check IMD status */
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } 
+    }
 
     /* Check HV Indicator light */
 
-    if (checkNetwork() != 0) return stateMachine.currState->fault;
+    if (checkNetwork() != 0)
+        return stateMachine.currState->fault;
 
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
-    if (!checkPrerunPressures()) { 
+    if (!checkPrerunPressures()) {
         fprintf(stderr, "Pressure failing\n");
         pErrs += 1;
-    } else pErrs = 0;
-    
-    if(!checkRunBattery()){
+    } else
+        pErrs = 0;
+
+    if (!checkRunBattery()) {
         printf("Failed battery\n");
         bErrs += 1;
-    } bErrs = 0;
-    
-    if(!checkRunRMS()){
+    }
+    bErrs = 0;
+
+    if (!checkRunRMS()) {
         printf("run rms failed\n");
         rErrs += 1;
-    } rErrs = 0;
+    }
+    rErrs = 0;
 
-    if (getuSTimestamp() - getTimersStartTime() > MAXIMUM_RUN_TIME){
+    if (getuSTimestamp() - getTimersStartTime() > MAXIMUM_RUN_TIME) {
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }
@@ -160,202 +169,218 @@ stateTransition_t * propulsionAction() {
     }
 
     // CHECK TRANSITION CRITERIA
-    if(getFlagsShouldStop()){
+    if (getFlagsShouldStop()) {
         printf("Should Stop\n");
         return stateMachine.currState->next;
     }
 
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL)
         return stateMachine.currState->fault;
-    
+
     return NULL;
 }
 
-stateTransition_t * brakingAction() {
+stateTransition_t* brakingAction()
+{
     setDataState(4);
     // TODO Do we differenciate between primary and secondary braking systems?
     // TODO Add logic to handle switches / actuate both
-    
+
     if (getFlagsEmergencyBrake()) {
         printf("EMERG BRAKE\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } 
+    }
     if (!getIMDStatus()) {
         fprintf(stderr, "getIMDStatus()");
         return stateMachine.currState->fault;
     }
 
-   
     if (checkNetwork() != 0) {
         printf("lost connection\n");
         return stateMachine.currState->fault;
     }
 
     // CHECK FAULT CRITERIA
-    
+
     if (getuSTimestamp() - stateMachine.start > BRAKING_CHECK_PRESSURE_TIMEOUT) {
-            if(!checkBrakingPressures()){
-                printf("braking==================\n");
-                pErrs += 1;
-        } else pErrs = 0;
+        if (!checkBrakingPressures()) {
+            printf("braking==================\n");
+            pErrs += 1;
+        } else
+            pErrs = 0;
     }
 
-    if(!checkBrakingBattery()){
+    if (!checkBrakingBattery()) {
         printf("battery bad\n");
         bErrs += 1;
-    } else bErrs = 0;
+    } else
+        bErrs = 0;
 
     if (getuSTimestamp() - stateMachine.start > BRAKING_CHECK_RMS_TIMEOUT) {
-        if(!checkBrakingRMS()){
+        if (!checkBrakingRMS()) {
             printf("rms bad\n");
             rErrs += 1;
-        } else rErrs = 0;         
+        } else
+            rErrs = 0;
     }
-   
 
-    if ((getuSTimestamp() - stateMachine.start)  > BRAKING_TRANSITION_STOPPED_TIMEOUT) {
+    if ((getuSTimestamp() - stateMachine.start) > BRAKING_TRANSITION_STOPPED_TIMEOUT) {
         printf("going to stopped\n");
         return findTransition(stateMachine.currState, STOPPED_NAME);
     }
-    
+
     if (pErrs >= NUM_FAIL || bErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
-        fprintf(stderr,"NUM FAILS: pErrs - %d | bErrs - %d | rErrs - %d\n", pErrs, bErrs, rErrs);
-        
+        fprintf(stderr, "NUM FAILS: pErrs - %d | bErrs - %d | rErrs - %d\n", pErrs, bErrs, rErrs);
+
         return stateMachine.currState->fault;
     }
-    
+
     return NULL;
 }
 
-stateTransition_t * stoppedAction() {
+stateTransition_t* stoppedAction()
+{
     setDataState(5);
-     /* Check IMD status */
+    /* Check IMD status */
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } 
-    
-   
+    }
 
-    if (checkNetwork() != 0) return stateMachine.currState->fault;
+    if (checkNetwork() != 0)
+        return stateMachine.currState->fault;
     // CHECK FAULT CRITERIA
-    
-    if(!checkBrakingPressures()){ // Still unchanged
+
+    if (!checkBrakingPressures()) { // Still unchanged
         printf("Pressures failing\n");
-        pErrs += 1; 
-    } else pErrs = 0;
-    
-    if(!checkBrakingBattery()){ // Still unchanged
+        pErrs += 1;
+    } else
+        pErrs = 0;
+
+    if (!checkBrakingBattery()) { // Still unchanged
         fprintf(stderr, "Battery error\n");
         bErrs += 1;
-    } else bErrs = 0;
-    
-    if(!checkStoppedRMS()){ // Still unchanged
+    } else
+        bErrs = 0;
+
+    if (!checkStoppedRMS()) { // Still unchanged
         printf("failrms\n");
         rErrs += 1;
-    } else rErrs = 0;
-    
+    } else
+        rErrs = 0;
+
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL)
         return stateMachine.currState->fault;
-	
+
     return NULL;
 }
 
-stateTransition_t * servPrechargeAction() {
+stateTransition_t* servPrechargeAction()
+{
     setDataState(6);
     if (!checkBrakingPressures()) {
         fprintf(stderr, "Pressure failed\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } else pErrs = 0;
-    
+    } else
+        pErrs = 0;
+
     if (!getIMDStatus()) {
         fprintf(stderr, "getIMDStatus()");
         return stateMachine.currState->fault;
     }
     if (getFlagsEmergencyBrake()) {
-        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
-    } 
-    if (checkNetwork() != 0) return stateMachine.currState->fault;
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
+    if (checkNetwork() != 0)
+        return stateMachine.currState->fault;
     return NULL;
 }
 
 static int prevRet = 0;
 
-stateTransition_t * crawlAction() {
+stateTransition_t* crawlAction()
+{
     setDataState(7);
- /* Check IMD status */
+    /* Check IMD status */
     prevRet = getMotionRetroCount();
     if (!getIMDStatus()) {
         return stateMachine.currState->fault;
     }
 
-    if (checkNetwork() != 0) return stateMachine.currState->fault;
+    if (checkNetwork() != 0)
+        return stateMachine.currState->fault;
 
     if (getFlagsEmergencyBrake()) {
-        return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
-    } 
+        return findTransition(stateMachine.currState, RUN_FAULT_NAME);
+    }
 
     if ((getMotionRetroCount() - internalCount) >= CRAWL_RETRO_COUNT) {
         printf("retro transition\n");
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
 
-    if(!checkCrawlPostrunPressures()){
+    if (!checkCrawlPostrunPressures()) {
         printf("pres fail\n");
-        pErrs += 1;    
-    } else pErrs = 0;
+        pErrs += 1;
+    } else
+        pErrs = 0;
 
-    if(!checkCrawlBattery()){
+    if (!checkCrawlBattery()) {
         printf("batt fail\n");
         bErrs += 1;
-    } else bErrs = 0;
+    } else
+        bErrs = 0;
 
-    if(!checkCrawlRMS()){ // Still unchanged
+    if (!checkCrawlRMS()) { // Still unchanged
         printf("rms fail\n");
         rErrs += 1;
-    } else rErrs = 0;
+    } else
+        rErrs = 0;
 
     // CHECK TRANSITION CRITERIA
-    
-    if (getuSTimestamp() - stateMachine.start > MAXIMUM_CRAWL_TIME){
-        return findTransition(stateMachine.currState, POST_RUN_NAME );
+
+    if (getuSTimestamp() - stateMachine.start > MAXIMUM_CRAWL_TIME) {
+        return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
-    
-    if(getFlagsShouldStop()){
+
+    if (getFlagsShouldStop()) {
 
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
-    
+
     printf("PRIM LINE: %f\n", getPressurePrimLine());
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
         printf("fail\n");
         return stateMachine.currState->fault;
     }
 
-
     return NULL;
 }
 
-stateTransition_t * postRunAction() {
+stateTransition_t* postRunAction()
+{
     setDataState(8);
- /* Check IMD status */
+    /* Check IMD status */
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
-    } 
+    }
     // TODO fixme there is a seg fault around here lol
     /* Check HV Indicator light */
     printf("FAILURE STATE: %p\n", stateMachine.currState);
-    
-    if (checkNetwork() != 0) findTransition(stateMachine.currState, RUN_FAULT_NAME);
 
-    if(!checkPostrunBattery()){
+    if (checkNetwork() != 0)
+        findTransition(stateMachine.currState, RUN_FAULT_NAME);
+
+    if (!checkPostrunBattery()) {
         printf("battfail\n");
         bErrs += 1;
-    } else bErrs = 0;
+    } else
+        bErrs = 0;
 
-    if(!checkPostRMS()){
+    if (!checkPostRMS()) {
         printf("rmsfail\n");
         rErrs += 1;
-    } else rErrs = 0;
+    } else
+        rErrs = 0;
 
     if (bErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
         printf("postFail\n");
@@ -364,32 +389,29 @@ stateTransition_t * postRunAction() {
     return NULL;
 }
 
-stateTransition_t * safeToApproachAction() {
-/*    if (isHVEnabled()) {*/
-/*        return stateMachine.currState->fault;*/
-/*    } */
-    if (getPressurePrimTank() > 30 || getPressurePrimTank() < -15 ||
-        getPressurePrimLine() > 20 || getPressurePrimLine() < -10 ||
-        getPressurePrimAct()  > 20 || getPressurePrimAct()  < -10 ||
-        getPressureSecTank()  > 30 || getPressureSecTank()  < -15 ||
-        getPressureSecLine()  > 20 || getPressureSecLine()  < -10 ||
-        getPressureSecAct()   > 20 || getPressureSecAct()   < -10 ||
-        getPressurePv()       > 20 || getPressurePv()       <  13 ){
-       fprintf(stderr, "Pressures are out of the safe range\n");
-       return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
+stateTransition_t* safeToApproachAction()
+{
+    /*    if (isHVEnabled()) {*/
+    /*        return stateMachine.currState->fault;*/
+    /*    } */
+    if (getPressurePrimTank() > 30 || getPressurePrimTank() < -15 || getPressurePrimLine() > 20 || getPressurePrimLine() < -10 || getPressurePrimAct() > 20 || getPressurePrimAct() < -10 || getPressureSecTank() > 30 || getPressureSecTank() < -15 || getPressureSecLine() > 20 || getPressureSecLine() < -10 || getPressureSecAct() > 20 || getPressureSecAct() < -10 || getPressurePv() > 20 || getPressurePv() < 13) {
+        fprintf(stderr, "Pressures are out of the safe range\n");
+        return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
     }
-    
-    if (checkNetwork() != 0) return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
+
+    if (checkNetwork() != 0)
+        return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
     if (getFlagsEmergencyBrake()) {
-        return findTransition(stateMachine.currState ,NON_RUN_FAULT_NAME);
+        return findTransition(stateMachine.currState, NON_RUN_FAULT_NAME);
     }
     setDataState(9);
-	return NULL;
+    return NULL;
 }
-// 
-//  We're removing pre and post faults and making them non run faults. 
+//
+//  We're removing pre and post faults and making them non run faults.
 // When you change this make 11 the non run fault action. Ty - EU
-stateTransition_t * nonRunFaultAction() {
+stateTransition_t* nonRunFaultAction()
+{
     setFlagsEmergencyBrake(false);
     fprintf(stderr, "NON RUN FAULT\n");
     static int mcuDisPulse = 0;
@@ -408,11 +430,12 @@ stateTransition_t * nonRunFaultAction() {
         mcuDisPulse += 1;
     }
     setDataState(10);
-	return NULL;
+    return NULL;
 }
 
-stateTransition_t * runFaultAction() {
-	printf("RUN FAULT\n");
+stateTransition_t* runFaultAction()
+{
+    printf("RUN FAULT\n");
     setFlagsEmergencyBrake(false);
     static int mcuDisPulse = 0;
     setDataState(11);
@@ -420,7 +443,7 @@ stateTransition_t * runFaultAction() {
         setMCUHVEnabled(0);
         clrMotorEn();
         usleep(1000);
-       
+
         rmsCmdNoTorque();
         usleep(1000);
         rmsDischarge();
@@ -431,11 +454,12 @@ stateTransition_t * runFaultAction() {
     } else {
         mcuDisPulse += 1;
     }
-    
+
     return NULL;
 }
 
-stateTransition_t * brakingFault() {
+stateTransition_t* brakingFault()
+{
     //TODO
     setDataState(12);
     return NULL;

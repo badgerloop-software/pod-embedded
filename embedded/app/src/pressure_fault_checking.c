@@ -7,145 +7,147 @@
  *
  */
 
-#include <stdio.h>
-#include <stdbool.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 #include "data.h"
 #include "states.h"
 
 #include "pressure_fault_checking.h"
 
-bool checkIdlePressures(void) {
+bool checkIdlePressures(void)
+{
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_IDLE || getPressurePrimTank() > PS1_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "primTank pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_IDLE || getPressurePrimLine() > PS2_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "primLine pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_IDLE || getPressurePrimAct() > PS3_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "primAct pressure failing\n");
-		return false;
-	}
-	if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_IDLE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "Secondary primTank pressure failing\n");
-		return false;
-	}
-	if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_IDLE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "Secondary primLine pressure failing\n");
-		return false;
-	}
-	if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT_IDLE || getPressureSecAct() > SEC_PS3_TOP_LIMIT_IDLE) {
-		fprintf(stderr, "Secondary primAct pressure failing\n");
-		return false;
-	}
-	if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
+        fprintf(stderr, "primTank pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_IDLE || getPressurePrimLine() > PS2_TOP_LIMIT_IDLE) {
+        fprintf(stderr, "primLine pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_IDLE || getPressurePrimAct() > PS3_TOP_LIMIT_IDLE) {
+        fprintf(stderr, "primAct pressure failing\n");
+        return false;
+    }
+    if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_IDLE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_IDLE) {
+        fprintf(stderr, "Secondary primTank pressure failing\n");
+        return false;
+    }
+    if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_IDLE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_IDLE) {
+        fprintf(stderr, "Secondary primLine pressure failing\n");
+        return false;
+    }
+    if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT_IDLE || getPressureSecAct() > SEC_PS3_TOP_LIMIT_IDLE) {
+        fprintf(stderr, "Secondary primAct pressure failing\n");
+        return false;
+    }
+    if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-  
-	return true;
+
+    return true;
 }
 
-bool checkPrerunPressures(void) {
+bool checkPrerunPressures(void)
+{
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_PRE || getPressurePrimTank() > PS1_TOP_LIMIT_PRE) {
-		fprintf(stderr, "primTank pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_PRE || getPressurePrimLine() > PS2_TOP_LIMIT_PRE) {
-		fprintf(stderr, "primLine pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_PRE || getPressurePrimAct() > PS3_TOP_LIMIT_PRE) {
-		fprintf(stderr, "primAct pressure failing\n");
-		return false;
-	}
-	if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_PRE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_PRE) {
-		fprintf(stderr, "Secondary primTank pressure failing\n");
-		return false;
-	}
-	if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_PRE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_PRE) {
-		fprintf(stderr, "Secondary primLine pressure failing\n");
-		return false;
-	}
-	if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
-		fprintf(stderr, "Secondary primAct pressure failing\n");
-		return false;
-	}
-	if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
+        fprintf(stderr, "primTank pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_PRE || getPressurePrimLine() > PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "primLine pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_PRE || getPressurePrimAct() > PS3_TOP_LIMIT_PRE) {
+        fprintf(stderr, "primAct pressure failing\n");
+        return false;
+    }
+    if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_PRE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary primTank pressure failing\n");
+        return false;
+    }
+    if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_PRE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary primLine pressure failing\n");
+        return false;
+    }
+    if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
+        fprintf(stderr, "Secondary primAct pressure failing\n");
+        return false;
+    }
+    if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    
-	return true;
+
+    return true;
 }
 
-bool checkBrakingPressures(void) {
+bool checkBrakingPressures(void)
+{
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_PRE || getPressurePrimTank() > PS1_TOP_LIMIT_PRE) {
-		fprintf(stderr, "primTank pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_PRE || getPressurePrimLine() > PS2_TOP_LIMIT_PRE) {
-		fprintf(stderr, "primLine pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_BRAKING || getPressurePrimAct() > PS3_TOP_LIMIT_BRAKING) {
-		fprintf(stderr, "primAct pressure failing\n");
-		return false;
-	}
-	if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_PRE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_PRE) {
-		fprintf(stderr, "Secondary primTank pressure failing\n");
-		return false;
-	}
-	if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_PRE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_PRE) {
-		fprintf(stderr, "Secondary primLine pressure failing\n");
-		return false;
-	}
-	if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
-		fprintf(stderr, "Secondary primAct pressure failing\n");
-		return false;
-	}
-	if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
+        fprintf(stderr, "primTank pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_PRE || getPressurePrimLine() > PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "primLine pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_BRAKING || getPressurePrimAct() > PS3_TOP_LIMIT_BRAKING) {
+        fprintf(stderr, "primAct pressure failing\n");
+        return false;
+    }
+    if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_PRE || getPressureSecTank() > SEC_PS1_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary primTank pressure failing\n");
+        return false;
+    }
+    if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_PRE || getPressureSecLine() > SEC_PS2_TOP_LIMIT_PRE) {
+        fprintf(stderr, "Secondary primLine pressure failing\n");
+        return false;
+    }
+    if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
+        fprintf(stderr, "Secondary primAct pressure failing\n");
+        return false;
+    }
+    if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    
 
-	return true;
+    return true;
 }
 
-bool checkCrawlPostrunPressures(void) {
+bool checkCrawlPostrunPressures(void)
+{
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimTank() > PS1_TOP_LIMIT_CRAWLPOST) {
-		fprintf(stderr, "primTank pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimLine() > PS2_TOP_LIMIT_CRAWLPOST) {
-		fprintf(stderr, "primLine pressure failing\n");
-		return false;
-	}
-	if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimAct() > PS3_TOP_LIMIT_CRAWLPOST) {
-		fprintf(stderr, "primAct pressure failing\n");
-		return false;
-	}
-	if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_CRAWLPOST || getPressureSecTank() > SEC_PS1_TOP_LIMIT_CRAWLPOST) {
-		fprintf(stderr, "Secondary primTank pressure failing\n");
-		return false;
-	}
-	if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_CRAWLPOST || getPressureSecLine() > SEC_PS2_TOP_LIMIT_CRAWLPOST) {
-		fprintf(stderr, "Secondary primLine pressure failing\n");
-		return false;
-	}
-	if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
-		fprintf(stderr, "Secondary primAct pressure failing\n");
-		return false;
-	}
-	if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
+        fprintf(stderr, "primTank pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimLine() > PS2_TOP_LIMIT_CRAWLPOST) {
+        fprintf(stderr, "primLine pressure failing\n");
+        return false;
+    }
+    if (getPressurePrimAct() < PS3_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimAct() > PS3_TOP_LIMIT_CRAWLPOST) {
+        fprintf(stderr, "primAct pressure failing\n");
+        return false;
+    }
+    if (getPressureSecTank() < SEC_PS1_BOTTOM_LIMIT_CRAWLPOST || getPressureSecTank() > SEC_PS1_TOP_LIMIT_CRAWLPOST) {
+        fprintf(stderr, "Secondary primTank pressure failing\n");
+        return false;
+    }
+    if (getPressureSecLine() < SEC_PS2_BOTTOM_LIMIT_CRAWLPOST || getPressureSecLine() > SEC_PS2_TOP_LIMIT_CRAWLPOST) {
+        fprintf(stderr, "Secondary primLine pressure failing\n");
+        return false;
+    }
+    if (getPressureSecAct() < SEC_PS3_BOTTOM_LIMIT || getPressureSecAct() > SEC_PS3_TOP_LIMIT) {
+        fprintf(stderr, "Secondary primAct pressure failing\n");
+        return false;
+    }
+    if (getPressurePv() < PV_BOTTOM_LIMIT || getPressurePv() > PV_TOP_LIMIT) {
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    
 
-	return true;
+    return true;
 }

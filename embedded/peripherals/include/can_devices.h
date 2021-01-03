@@ -6,6 +6,6 @@
 extern sem_t canSem;
 
 void SetupCANDevices();
-void *CANLoop(void *arg);
+void* CANLoop(void* arg);
 
 #endif

@@ -1,4 +1,4 @@
-#include <pthread.h>
 #include "data.h"
+#include <pthread.h>
 
 /**!!AUTO-GENERATE HERE!!**/

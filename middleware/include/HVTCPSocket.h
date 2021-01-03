@@ -6,7 +6,7 @@
 #endif
 
 void SetupHVTCPServer();
-void *TCPLoop(void *arg);
-void signalLV(char *cmd);
+void* TCPLoop(void* arg);
+void signalLV(char* cmd);
 
 #endif

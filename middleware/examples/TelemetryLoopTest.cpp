@@ -1,13 +1,14 @@
-#include <iostream>
 #include "TelemetryLoop.h"
+#include <iostream>
 
-#define LOCALHOST (char *) "0.0.0.0"
+#define LOCALHOST (char*)"0.0.0.0"
 
 extern "C" {
-    #include "data.h"
+#include "data.h"
 }
 
-int main() {
+int main()
+{
 
     initData();
 

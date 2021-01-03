@@ -8,5 +8,4 @@ bool checkStoppedRMS(void);
 bool checkCrawlRMS(void);
 bool checkPostRMS(void);
 
-
 #endif
