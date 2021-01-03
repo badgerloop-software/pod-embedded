@@ -26,8 +26,13 @@ extern "C"
     #include "can_devices.h"
     #include "state_machine.h"
     #include "NCD9830DBR2G.h"
+    #include "nav.h"
 
+    // Software Parameter Loading
+    #include "load_software_parameters.h"
+    #include "software_parameters.h"
 }
+
 void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     printf("shutdown\n");
     setMCUHVEnabled(false);
@@ -39,14 +44,31 @@ void emergQuitter(int sig, siginfo_t* inf, void *nul) {
     exit(0);
 }
 
-int init() {
+int init(char* directory) {
+    // Success status, return true by default
+    int success_status = 0;
+
     /* Init Data struct */
-    initData();
+    if(initData()){
+        success_status = 1;
+    }
+
+    /* Load Software Parameters */
+    if(loadParameters(directory, ACTIVE_RUN_PROFILE)){
+        success_status = 1;
+    }
 
     /* Init all drivers */
     SetupCANDevices();
-    initProcIox(true);
-    initHVIox(true);
+
+    if(initProcIox(true)){
+        success_status = 1;
+    }
+
+    if(initHVIox(true)){
+        success_status = 1;
+    }
+
 
     SetupMotor();
 
@@ -60,22 +82,24 @@ int init() {
     SetupTelemetry((char *) DASHBOARD_IP, DASHBOARD_PORT);
 	SetupHVTCPServer();
 
+    initNav();
+
 	struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
 
     /* Start 'black box' data saving */
-/*    SetupDataDump();*/
+    /* SetupDataDump(); */
 	
-    return 0;	
+    return success_status;	
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 	/* Create the big data structures to house pod data */
 	int i = 0;
 	char buffer[100];
     
-    if (init() == 1) {
+    if (init(argv[0]) == 1) {
 		fprintf(stderr, "Error in initialization! Exiting...\r\n");
 		exit(1);
 	}
@@ -102,8 +126,7 @@ int main() {
             setFlagsBrakeInit(false);
         }
         if (getFlagsClrMotionData()) {
-            printf("signal clear\n");
-            signalLV((char *) "clrMotion");
+            resetNav();
             setFlagsClrMotionData(false);
         }
         

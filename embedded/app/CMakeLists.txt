@@ -9,6 +9,7 @@ set(dependecies src/bms_fault_checking.c
                 src/nav.c
                 src/state_machine.c
                 src/init.c
+                src/load_software_parameters.c
                 src/pressure_fault_checking.c
                 src/states.c
                 src/motor.c

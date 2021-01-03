@@ -202,6 +202,7 @@ void *TCPLoop(void *arg)
 
 void signalLV(char *cmd)
 {
+	fprintf(stderr, "THERE IS NOTHING TO SIGNAL TO DO NOT SIGNAL LV\n");
 	int srvFd;
 
 	int opt = 1;

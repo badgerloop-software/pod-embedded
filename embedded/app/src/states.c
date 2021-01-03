@@ -25,6 +25,7 @@
 #include "rms.h"
 #include "connStat.h"
 #include "motor.h"
+#include "software_parameters.h"
 /*#define NO_FAULT*/
 
 #define NUM_FAIL 10
@@ -34,7 +35,6 @@
         pow(35181.0     * (x), 3) - \
         pow(303240.0    * (x), 2) - (1000000.0 * (x)))
 
-#define MAX_RETRO 3
 #define MAX_PACKET_LOSS 500
 /* Imports/Externs */
 extern int internalCount;
@@ -92,7 +92,7 @@ stateTransition_t * pumpdownAction() {
     
     /* Check IMD status */
     
-    if (getuSTimestamp() - stateMachine.start > 300000000)
+    if (getuSTimestamp() - stateMachine.start > PUMPDOWN_TIMEOUT)
         return stateMachine.currState->fault;
 
     if (getFlagsEmergencyBrake()) {
@@ -149,12 +149,12 @@ stateTransition_t * propulsionAction() {
         rErrs += 1;
     } rErrs = 0;
 
-    if (getuSTimestamp() - getTimersStartTime() > 30000000/*MAX_RUN_TIME*/){
+    if (getuSTimestamp() - getTimersStartTime() > MAXIMUM_RUN_TIME){
         fprintf(stderr, "Prop timeout\n");
         return stateMachine.currState->next;
     }
 
-    if (getMotionRetroCount() >= MAX_RETRO && getFlagsReadyToBrake()) {
+    if (getMotionRetroCount() >= RUN_RETRO_COUNT && getFlagsReadyToBrake()) {
         printf("retro transition\n");
         return findTransition(stateMachine.currState, BRAKING_NAME);
     }
@@ -193,7 +193,7 @@ stateTransition_t * brakingAction() {
 
     // CHECK FAULT CRITERIA
     
-    if (getuSTimestamp() - stateMachine.start > 5000000) {
+    if (getuSTimestamp() - stateMachine.start > BRAKING_CHECK_PRESSURE_TIMEOUT) {
             if(!checkBrakingPressures()){
                 printf("braking==================\n");
                 pErrs += 1;
@@ -205,7 +205,7 @@ stateTransition_t * brakingAction() {
         bErrs += 1;
     } else bErrs = 0;
 
-    if (getuSTimestamp() - stateMachine.start > 10000000) {
+    if (getuSTimestamp() - stateMachine.start > BRAKING_CHECK_RMS_TIMEOUT) {
         if(!checkBrakingRMS()){
             printf("rms bad\n");
             rErrs += 1;
@@ -213,7 +213,7 @@ stateTransition_t * brakingAction() {
     }
    
 
-    if ((getuSTimestamp() - stateMachine.start)  > 15000000) {
+    if ((getuSTimestamp() - stateMachine.start)  > BRAKING_TRANSITION_STOPPED_TIMEOUT) {
         printf("going to stopped\n");
         return findTransition(stateMachine.currState, STOPPED_NAME);
     }
@@ -294,7 +294,7 @@ stateTransition_t * crawlAction() {
         return findTransition(stateMachine.currState ,RUN_FAULT_NAME);
     } 
 
-    if ((getMotionRetroCount() - internalCount) >= 2) {
+    if ((getMotionRetroCount() - internalCount) >= CRAWL_RETRO_COUNT) {
         printf("retro transition\n");
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
@@ -316,7 +316,7 @@ stateTransition_t * crawlAction() {
 
     // CHECK TRANSITION CRITERIA
     
-    if (getuSTimestamp() - stateMachine.start > 5000000){
+    if (getuSTimestamp() - stateMachine.start > MAXIMUM_CRAWL_TIME){
         return findTransition(stateMachine.currState, POST_RUN_NAME );
     }
     

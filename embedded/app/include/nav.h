@@ -5,6 +5,8 @@ void initNav(void);
 
 void showNavData(void);
 
+void resetNav(void);
+
 typedef struct rawMotionNode_t {
     float *data;
     int head;
