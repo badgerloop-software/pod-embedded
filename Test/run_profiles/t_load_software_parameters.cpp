@@ -33,9 +33,30 @@ class LoadSoftwareParameters_fixture : public ::testing::Test {
 };
 
 /**
- * Test nominal paramater loading case
+ * Test nominal parameter loading
+ * This is what's called by the actual production code
 */
 TEST_F(LoadSoftwareParameters_fixture, VerifyNominalParameters_ExpectSuccess){
+    int status = loadParameters(executable_path, ACTIVE_RUN_PROFILE);
+    
+    // Verify successful status
+    EXPECT_EQ(status, 0);
+
+    // Verify expected values
+    EXPECT_EQ(PUMPDOWN_TIMEOUT, 300000000);
+    EXPECT_EQ(MAXIMUM_RUN_TIME, 30000000);
+    EXPECT_EQ(RUN_RETRO_COUNT, 3);
+    EXPECT_EQ(BRAKING_CHECK_PRESSURE_TIMEOUT, 5000000);
+    EXPECT_EQ(BRAKING_CHECK_RMS_TIMEOUT, 10000000);
+    EXPECT_EQ(BRAKING_TRANSITION_STOPPED_TIMEOUT, 15000000);
+    EXPECT_EQ(CRAWL_RETRO_COUNT, 2);
+    EXPECT_EQ(MAXIMUM_CRAWL_TIME, 5000000);
+}
+
+/**
+ * Test parameter loading against a constant static file case
+*/
+TEST_F(LoadSoftwareParameters_fixture, VerifyKnownParameters_ExpectSuccess){
     int status = loadParameters(executable_path, (char*) "../Test/run_profiles/Test_profiles/nominal_profile.txt");
     
     // Verify successful status

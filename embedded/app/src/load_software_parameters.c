@@ -36,7 +36,7 @@ volatile int32_t MAXIMUM_CRAWL_TIME                     = 0;
  * 
  * Returns 0 if valid line, 1 if whitespace
 */
-int is_empty(const char *s) {
+static int is_empty(const char *s) {
   while (*s != '\0') {
     if (!isspace((unsigned char)*s))
       return 0;
