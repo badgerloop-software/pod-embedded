@@ -16,12 +16,14 @@ class ImuTest : public ::testing::Test {
     protected: void SetUp() override {
         SetupIMU();
         initData();
+        getDeltaVData(dvd);
     }
+    float dvd[3];
 
 
 };
 
 // testing to see if fixture works, beginning
 TEST_F(ImuTest, Zeros){
-    // EXPECT_EQ(getDeltaVX(), 0);
+    EXPECT_EQ(getDeltaVX(), 0);
 }
