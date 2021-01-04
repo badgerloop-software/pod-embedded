@@ -9,16 +9,19 @@
 #include <unistd.h>
 #include <imu.h>
 #include <data.h>
+#include <i2c.h>
 
-
+// a fixture class to setup
 class ImuTest : public ::testing::Test {
     protected: void SetUp() override {
-        SetupIMU(); // setupIMU from imu.h
+        SetupIMU();
+        initData();
     }
+
+
 };
 
-
-
-TEST(imuTest, VerifyWorkingGTest){
-
+// testing to see if fixture works, beginning
+TEST_F(ImuTest, Zeros){
+    // EXPECT_EQ(getDeltaVX(), 0);
 }
