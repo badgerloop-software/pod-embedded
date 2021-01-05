@@ -6,10 +6,10 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cinttypes>
-#include <pthread>
-#include <cunistd>
-#include <imu>
-#include <i2c>
+#include <pthread.h>
+#include <unistd.h>
+#include "../include/imu.h"
+#include "../../drivers/include/i2c.h"
 
 #define _POSIX_C_SOURCE 199309L // for CLOCK_MONOTONIC
 #include <ctime>
