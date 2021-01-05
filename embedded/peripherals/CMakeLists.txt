@@ -11,7 +11,7 @@ add_library(peripherals src/batt.c
                         src/retro.c
                         src/bms.c
                         src/can_devices.c
-                        src/imu.c
+                        src/imu.cpp
                         src/mcp23017.c
                         src/proc_iox.c
                         src/rms.c)
