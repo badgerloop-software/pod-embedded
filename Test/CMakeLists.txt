@@ -4,6 +4,7 @@ project(testlib VERSION 1.0
 
 # Define sources
 set(dependencies example/Test_GTest.cpp)
+set(dependencies Test_embedded.cpp)
 
 set(libraries middleware 
               data 
