@@ -32,12 +32,21 @@ static inline uint64_t getuSTimestamp() {
     return _tempTs;
 }
 
-//Global Variables
-static IMU_data * imudata;
+// IMU Definition
+
+class IMU {
+  static IMU_data * imudata;
 static i2c_settings * i2c;
-static pthread_t IMUThread;
-void SetupIMU(){
-    i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
+static pthread_t IMUThread;  
+
+// It's best practice in embedded software to keep the constructor and setup methods seperate
+
+IMU::IMU() {
+
+}
+
+void IMU::SetupIMU() {
+i2c = (i2c_settings *) malloc(sizeof(i2c_settings));
     i2c->bus = 2;
     i2c->deviceAddress = I2C_ADDRESS;
     i2c->openMode = O_RDWR;
@@ -72,6 +81,9 @@ void SetupIMU(){
 
     sem_init(&imudata->mutex, 0, 1);
 }
+}
+
+
 
 void *IMULoop(void *arg){
     (void) arg;

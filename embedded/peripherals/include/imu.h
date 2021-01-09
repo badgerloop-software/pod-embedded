@@ -13,21 +13,9 @@
 #include <semaphore.h> 
 
 
-namespace Imu
+class IMU
 {
-	class IMU_data
-	{
-		public:
-			//Delta velocity
-			float dVx, dVy, dVz;
-			// Vel
-			float velX, velY, velZ;
-			//Acceleration (Based off of dV)
-			float accelX, accelY, accelZ;
-			float posX, posY, posZ;
-			// Mutex
-			sem_t mutex;
-	};
+
 
 	void SetupIMU();
 	void *IMULoop(void *arg);
@@ -55,7 +43,19 @@ namespace Imu
 	float getAccelY();
 	float getAccelZ();
 }
-
+	class IMUData // Classes should follow UpperCamelCase
+	{
+		public:
+			//Delta velocity
+			float dVx, dVy, dVz;
+			// Vel
+			float velX, velY, velZ;
+			//Acceleration (Based off of dV)
+			float accelX, accelY, accelZ;
+			float posX, posY, posZ;
+			// Mutex
+			sem_t mutex;
+	};
 
 #endif
 
