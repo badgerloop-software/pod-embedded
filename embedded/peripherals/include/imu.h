@@ -16,7 +16,7 @@
 class IMU
 {
 
-
+	IMU(void);
 	void SetupIMU();
 	void *IMULoop(void *arg);
 

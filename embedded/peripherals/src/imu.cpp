@@ -31,8 +31,6 @@ static inline uint64_t getuSTimestamp() {
 }
 
 // IMU Definition
-
-class IMU {
     static IMUData * imudata;
     static i2c_settings * i2c;
     static pthread_t IMUThread;  
@@ -56,7 +54,7 @@ class IMU {
             return;
         }
 
-        if (pthread_create(&IMUThread, NULL, IMULoop, NULL)){
+        if (pthread_create(&IMUThread, NULL, (void* (*) (void*))&IMU::IMULoop, NULL)){
             fprintf(stderr, "Error creating IMU thread\n");
         }
 
@@ -213,8 +211,9 @@ class IMU {
         sem_post(&imudata->mutex);
     }
 
+
     // The IMULoop
-    void *IMULoop(void *arg){
+    void IMULoop(void *arg){
         (void) arg;
 
         unsigned char res1[4];
@@ -268,8 +267,4 @@ class IMU {
         }
         free(i2c);
         free(imudata);
-
     }
-
-
-};
