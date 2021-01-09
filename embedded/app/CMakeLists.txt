@@ -6,7 +6,7 @@ project(applib VERSION 1.0
 #yeah, it's annoying, but glob has problems with needing to run cmake again,
 #and it's SUPER discouraged.
 set(dependecies src/bms_fault_checking.c
-                src/nav.c
+                src/nav.cpp
                 src/state_machine.c
                 src/init.c
                 src/pressure_fault_checking.c

@@ -9,7 +9,7 @@ add_executable(oldMotorTest oldMotorTest.c)
 add_executable(retroTest retroTest.c)
 add_executable(stateTest stateTest.c)
 add_executable(can_test can_test.c)
-add_executable(imu_test imu_test.c)
+add_executable(imu_test imu_test.cpp)
 add_executable(presTest presTest.c)
 
 #Link library dependencies for each example

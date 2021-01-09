@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "imu.h"
+
+extern "C" {
 #include <data.h>
+
+}
 
 
 int main() {
