@@ -3,8 +3,8 @@
 #include <TelemetryLoop.h>
 #include <string.h>
 #include "connStat.h"
-extern "C" {
 #include "imu.h"
+extern "C" {
 #include "braking.h"
 #include "lv_iox.h"
 #include "data.h"

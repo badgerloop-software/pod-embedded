@@ -8,8 +8,11 @@
 #include <cinttypes>
 #include <pthread.h>
 #include <unistd.h>
-#include "../include/imu.h"
-#include "../../drivers/include/i2c.h"
+#include "imu.h"
+
+extern "C" {
+    #include "i2c.h"
+}
 
 #define _POSIX_C_SOURCE 199309L // for CLOCK_MONOTONIC
 #include <ctime>

@@ -3,10 +3,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <data.h>
 #include <imu.h>
 #include <nav.h>
+
+extern "C" {
+#include <data.h>
 #include <connStat.h>
+
+}
 
 #define FEET_TO_METERS(x) ((x) * 0.3048)
 #define USEC_TO_SEC(x)    ((x) / 1000000)
@@ -47,7 +51,7 @@ void initNav() {
         fprintf(stderr, "Error creating nav mutex\n");
     }
 
-    if (pthread_create(&navThread, NULL, (void *)(navLoop), NULL) != 0) {
+    if (pthread_create(&navThread, NULL, (void* (*) (void*))(void *)(navLoop), NULL) != 0) {
         fprintf(stderr, "Error creating nav thread\n");
     }
 }

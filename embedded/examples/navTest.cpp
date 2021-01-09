@@ -3,10 +3,10 @@ extern "C"
 #include <stdio.h>
 #include <data.h>
 #include <retro.h>
-#include <imu.h>
 #include <string.h>
-#include <nav.h>
 }
+#include <imu.h>
+#include <nav.h>
 #include <TelemetryLoop.h>
 #include "connStat.h"
 #define ROLL "roll"
