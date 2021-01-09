@@ -212,7 +212,7 @@ void IMU::setPosZ(float val) {
 }
 
 // The IMULoop
-void *IMULoop(void *arg){
+static void *IMULoop(void *arg){
     (void) arg;
 
     unsigned char res1[4];

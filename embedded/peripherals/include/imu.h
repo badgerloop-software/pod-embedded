@@ -20,7 +20,7 @@ class IMU
 
 
 	void SetupIMU();
-	void *IMULoop(void *arg);
+	static void *IMULoop(void *arg);
 
 	void getPosData(float *fData);
 	float getPosX();
