@@ -42,20 +42,21 @@ class IMU
 	float getAccelX();
 	float getAccelY();
 	float getAccelZ();
-}
-	class IMUData // Classes should follow UpperCamelCase
-	{
-		public:
-			//Delta velocity
-			float dVx, dVy, dVz;
-			// Vel
-			float velX, velY, velZ;
-			//Acceleration (Based off of dV)
-			float accelX, accelY, accelZ;
-			float posX, posY, posZ;
-			// Mutex
-			sem_t mutex;
-	};
+};
+
+class IMUData // Classes should follow UpperCamelCase
+{
+	public:
+		//Delta velocity
+		float dVx, dVy, dVz;
+		// Vel
+		float velX, velY, velZ;
+		//Acceleration (Based off of dV)
+		float accelX, accelY, accelZ;
+		float posX, posY, posZ;
+		// Mutex
+		sem_t mutex;
+};
 
 #endif
 
