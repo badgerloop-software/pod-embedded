@@ -19,6 +19,8 @@ extern "C" {
 #define _POSIX_C_SOURCE 199309L // for CLOCK_MONOTONIC
 #include <ctime>
 
+using Imu::IMU_data; // brings the Imu namespace and just IMU_data into scope for the whole file
+
 static inline uint64_t convertTouS(timespec *currTime) {
     return (uint64_t)((currTime->tv_sec * 1000000) + (currTime->tv_nsec / 1000));
 }
