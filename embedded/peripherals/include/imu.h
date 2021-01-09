@@ -12,57 +12,52 @@
 
 #include <semaphore.h> 
 
-typedef struct {
-	//Delta velocity
-	float dVx;
-	float dVy;
-	float dVz;
 
-    // Vel
-    float velX;
-    float velY;
-    float velZ;
+namespace Imu
+{
+	class IMU_data
+	{
+		private:
+			//Delta velocity
+			float dVx, dVy, dVz;
+			// Vel
+			float velX, velY, velZ;
+			//Acceleration (Based off of dV)
+			float accelX, accelY, accelZ;
+			float posX, posY, posZ;
+			// Mutex
+			sem_t mutex;
+		
+		public:
+		
+			void SetupIMU();
+			void *IMULoop(void *arg);
 
-	//Acceleration (Based off of dV)
-	float accelX;
-	float accelY;
-	float accelZ;
+			void getPosData(float *fData);
+			float getPosX();
+			float getPosY();
+			float getPosZ();
 
-    float posX;
-    float posY;
-    float posZ;
+			void setPosX(float val);
+			void setPosY(float val);
+			void setPosZ(float val);
 
-	// Mutex
-	sem_t mutex;
-	
-} IMU_data;
+			void getDeltaVData(float *fData);
+			float getDeltaVX();
+			float getDeltaVY();
+			float getDeltaVZ();
 
-void SetupIMU();
-void *IMULoop(void *arg);
+			float getVelX();
+			float getVelY();
+			float getVelZ();
 
-void getPosData(float *fData);
-float getPosX();
-float getPosY();
-float getPosZ();
+			void getAccelData(float *fData);
+			float getAccelX();
+			float getAccelY();
+			float getAccelZ();
+	};
+}
 
-void setPosX(float val);
-void setPosY(float val);
-void setPosZ(float val);
-
-void getDeltaVData(float *fData);
-float getDeltaVX();
-float getDeltaVY();
-float getDeltaVZ();
-
-float getVelX();
-float getVelY();
-float getVelZ();
-
-void getAccelData(float *fData);
-float getAccelX();
-float getAccelY();
-float getAccelZ();
- 
 
 #endif
 

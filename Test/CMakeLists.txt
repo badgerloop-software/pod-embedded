@@ -5,7 +5,8 @@ project(testlib VERSION 1.0
 
 # Define sources
 set(dependencies ./example/Test_GTest.cpp
-                ./example/Test_imu.cpp)
+                ./example/Test_imu.cpp
+                ../embedded/peripherals/include/imu.h)
 
 set(libraries middleware 
               data 
