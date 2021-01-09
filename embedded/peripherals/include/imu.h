@@ -17,7 +17,7 @@ namespace Imu
 {
 	class IMU_data
 	{
-		private:
+		public:
 			//Delta velocity
 			float dVx, dVy, dVz;
 			// Vel
@@ -27,35 +27,33 @@ namespace Imu
 			float posX, posY, posZ;
 			// Mutex
 			sem_t mutex;
-		
-		public:
-		
-			void SetupIMU();
-			void *IMULoop(void *arg);
-
-			void getPosData(float *fData);
-			float getPosX();
-			float getPosY();
-			float getPosZ();
-
-			void setPosX(float val);
-			void setPosY(float val);
-			void setPosZ(float val);
-
-			void getDeltaVData(float *fData);
-			float getDeltaVX();
-			float getDeltaVY();
-			float getDeltaVZ();
-
-			float getVelX();
-			float getVelY();
-			float getVelZ();
-
-			void getAccelData(float *fData);
-			float getAccelX();
-			float getAccelY();
-			float getAccelZ();
 	};
+
+	void SetupIMU();
+	void *IMULoop(void *arg);
+
+	void getPosData(float *fData);
+	float getPosX();
+	float getPosY();
+	float getPosZ();
+
+	void setPosX(float val);
+	void setPosY(float val);
+	void setPosZ(float val);
+
+	void getDeltaVData(float *fData);
+	float getDeltaVX();
+	float getDeltaVY();
+	float getDeltaVZ();
+
+	float getVelX();
+	float getVelY();
+	float getVelZ();
+
+	void getAccelData(float *fData);
+	float getAccelX();
+	float getAccelY();
+	float getAccelZ();
 }
 
 
