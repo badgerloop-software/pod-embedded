@@ -83,7 +83,7 @@ class IMU {
 
     // getters for the IMU data
     // DeltaV data
-    void getDeltaVData(float *fData){
+    void IMU::getDeltaVData(float *fData){
         sem_wait(&imudata->mutex);
         fData[0] = imudata->dVx;
         fData[1] = imudata->dVy;
@@ -91,21 +91,21 @@ class IMU {
         sem_post(&imudata->mutex);
     }
 
-    float getDeltaVX(){
+    float IMU::getDeltaVX(){
         sem_wait(&imudata->mutex);
         float ans = imudata->dVx;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getDeltaVY(){
+    float IMU::getDeltaVY(){
         sem_wait(&imudata->mutex);
         float ans = imudata->dVy;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getDeltaVZ(){
+    float IMU::getDeltaVZ(){
         sem_wait(&imudata->mutex);
         float ans = imudata->dVz;
         sem_post(&imudata->mutex);
@@ -113,21 +113,21 @@ class IMU {
     }
 
     // Velocity data
-    float getVelX(){
+    float IMU::getVelX(){
         sem_wait(&imudata->mutex);
         float ans = imudata->velX;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getVelY(){
+    float IMU::getVelY(){
         sem_wait(&imudata->mutex);
         float ans = imudata->velY;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getVelZ(){
+    float IMU::getVelZ(){
         sem_wait(&imudata->mutex);
         float ans = imudata->velZ;
         sem_post(&imudata->mutex);
@@ -135,7 +135,7 @@ class IMU {
     }
 
     // Accel data
-    void getAccelData(float *fData){
+    void IMU::getAccelData(float *fData){
         sem_wait(&imudata->mutex);
         fData[0] = imudata->accelX;
         fData[1] = imudata->accelY;
@@ -143,21 +143,21 @@ class IMU {
         sem_post(&imudata->mutex);
     }
 
-    float getAccelX(){
+    float IMU::getAccelX(){
         sem_wait(&imudata->mutex);
         float ans = imudata->accelX;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getAccelY(){
+    float IMU::getAccelY(){
         sem_wait(&imudata->mutex);
         float ans = imudata->accelY;
         sem_post(&imudata->mutex);
         return ans;
     }
 
-    float getAccelZ(){
+    float IMU::getAccelZ(){
         sem_wait(&imudata->mutex);
         float ans = imudata->accelZ;
         sem_post(&imudata->mutex);
@@ -165,7 +165,7 @@ class IMU {
     }
 
     // position data
-    void getPosData(float *fData) {
+    void IMU::getPosData(float *fData) {
         sem_wait(&imudata->mutex);
         fData[0] = imudata->posX;
         fData[1] = imudata->posY;
@@ -173,21 +173,21 @@ class IMU {
         sem_post(&imudata->mutex);
     }
 
-    float getPosX() {
+    float IMU::getPosX() {
         sem_wait(&imudata->mutex);
         float ret = imudata->posX;
         sem_post(&imudata->mutex);
         return ret;
     }
 
-    float getPosY() {
+    float IMU::getPosY() {
         sem_wait(&imudata->mutex);
         float ret = imudata->posY;
         sem_post(&imudata->mutex);
         return ret;
     }   
 
-    float getPosZ() {
+    float IMU::getPosZ() {
         sem_wait(&imudata->mutex);
         float ret = imudata->posZ;
         sem_post(&imudata->mutex);
@@ -195,19 +195,19 @@ class IMU {
     }
 
     // setters for the IMU data
-    void setPosX(float val) {
+    void IMU::setPosX(float val) {
         sem_wait(&imudata->mutex);
         imudata->posX = val;
         sem_post(&imudata->mutex);
     }
 
-    void setPosY(float val) {
+    void IMU::setPosY(float val) {
         sem_wait(&imudata->mutex);
         imudata->posY = val;
         sem_post(&imudata->mutex);
     }
 
-    void setPosZ(float val) {
+    void IMU::setPosZ(float val) {
         sem_wait(&imudata->mutex);
         imudata->posZ = val;
         sem_post(&imudata->mutex);
