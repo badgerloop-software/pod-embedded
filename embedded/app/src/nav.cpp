@@ -21,6 +21,9 @@ extern "C" {
 
 #define WINDOW_SIZE    2
 
+using namespace Imu;
+
+
 static pthread_t navThread;
 static pthread_mutex_t lock;
 
