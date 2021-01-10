@@ -4,6 +4,7 @@
 #include <hv_iox.h>
 
 TEST(ComponentTests, VerifyHVIox) {
+    HVIox hv_iox;
     hv_iox.init(true);
     EXPECT_EQ(hv_iox.setupIox(), 0);
 }
