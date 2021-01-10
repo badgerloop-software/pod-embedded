@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../../embedded/peripherals/include/imu.h"
+#include "imu.h"
 #include "data.h"
 
 
@@ -13,7 +13,8 @@ class ImuTest : public ::testing::Test {
     protected: 
     void SetUp() override {
         initData();
-        SetupIMU();
+        IMU imu;
+        imu.SetupIMU();
     }
 
 
