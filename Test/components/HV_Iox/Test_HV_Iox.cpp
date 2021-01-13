@@ -33,10 +33,26 @@ TEST(HV_IOX, HVIOX_STATES) {
     EXPECT_EQ(hv_iox.getBMSMultiIn(), 1);
     EXPECT_EQ(hv_iox.getIMDStatus(), 1);
     EXPECT_EQ(hv_iox.getINRTStatus(), 1);
+    EXPECT_EQ(hv_iox.isHVEnabled(), 0);
 #else
     EXPECT_NE(hv_iox.getBMSMultiIn(), -1);
-// Not sure what the expected behavior should be... is it just a true bool?
-//  EXPECT_EQ(hv_iox.getIMDStatus(), -1);
-    EXPECT_EQ(hv_iox.getINRTStatus(), -1);
+    EXPECT_EQ(hv_iox.getIMDStatus(), true);
+    EXPECT_NE(hv_iox.getINRTStatus(), -1);
+    EXPECT_NE(hv_iox.isHVEnabled(), -1);
 #endif
 }
+
+TEST(HV_IOX, HVIOX_MCUHV) {
+    HVIox hv_iox;
+    hv_iox.init(true);
+#ifdef NOI2C
+    EXPECT_EQ(hv_iox.setMCUHVEnabled(true), 1);
+    EXPECT_EQ(hv_iox.isMCUHVEnabled(), 1);
+    EXPECT_EQ(hv_iox.emergencyDisableMCU(), 1);
+#else
+    EXPECT_NE(hv_iox.setMCUHVEnabled(true), -1);
+    EXPECT_NE(hv_iox.isMCUHVEnabled(), -1);
+    EXPECT_NE(hv_iox.emergencyDisableMCU(), -1);
+#endif
+}
+
