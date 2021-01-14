@@ -267,3 +267,6 @@ cmake-build-debug/
 
 # Autocoder Python
 *.pyc
+
+# Compile Commands for ccls
+compile_commands.json
