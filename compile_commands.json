@@ -1,322 +1,322 @@
 [
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/main/badgerloop.cpp.o -c /data/embedded/app/main/badgerloop.cpp",
-  "file": "/data/embedded/app/main/badgerloop.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/main/badgerloop.cpp.o -c /data/pod-embedded/embedded/app/main/badgerloop.cpp",
+  "file": "/data/pod-embedded/embedded/app/main/badgerloop.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/bms_fault_checking.c.o   -c /data/embedded/app/src/bms_fault_checking.c",
-  "file": "/data/embedded/app/src/bms_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/bms_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/bms_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/bms_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/nav.c.o   -c /data/embedded/app/src/nav.c",
-  "file": "/data/embedded/app/src/nav.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/nav.c.o   -c /data/pod-embedded/embedded/app/src/nav.c",
+  "file": "/data/pod-embedded/embedded/app/src/nav.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/state_machine.cpp.o -c /data/embedded/app/src/state_machine.cpp",
-  "file": "/data/embedded/app/src/state_machine.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/state_machine.cpp.o -c /data/pod-embedded/embedded/app/src/state_machine.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/state_machine.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/init.c.o   -c /data/embedded/app/src/init.c",
-  "file": "/data/embedded/app/src/init.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/init.c.o   -c /data/pod-embedded/embedded/app/src/init.c",
+  "file": "/data/pod-embedded/embedded/app/src/init.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/pressure_fault_checking.c.o   -c /data/embedded/app/src/pressure_fault_checking.c",
-  "file": "/data/embedded/app/src/pressure_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/pressure_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/pressure_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/pressure_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/states.cpp.o -c /data/embedded/app/src/states.cpp",
-  "file": "/data/embedded/app/src/states.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/states.cpp.o -c /data/pod-embedded/embedded/app/src/states.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/states.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/motor.cpp.o -c /data/embedded/app/src/motor.cpp",
-  "file": "/data/embedded/app/src/motor.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/motor.cpp.o -c /data/pod-embedded/embedded/app/src/motor.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/motor.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/rms_fault_checking.c.o   -c /data/embedded/app/src/rms_fault_checking.c",
-  "file": "/data/embedded/app/src/rms_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/badgerloop.dir/src/rms_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/rms_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/rms_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/transitions.cpp.o -c /data/embedded/app/src/transitions.cpp",
-  "file": "/data/embedded/app/src/transitions.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/badgerloop.dir/src/transitions.cpp.o -c /data/pod-embedded/embedded/app/src/transitions.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/transitions.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/app.dir/src/bms_fault_checking.c.o   -c /data/embedded/app/src/bms_fault_checking.c",
-  "file": "/data/embedded/app/src/bms_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/app.dir/src/bms_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/bms_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/bms_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/app.dir/src/nav.c.o   -c /data/embedded/app/src/nav.c",
-  "file": "/data/embedded/app/src/nav.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/app.dir/src/nav.c.o   -c /data/pod-embedded/embedded/app/src/nav.c",
+  "file": "/data/pod-embedded/embedded/app/src/nav.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/state_machine.cpp.o -c /data/embedded/app/src/state_machine.cpp",
-  "file": "/data/embedded/app/src/state_machine.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/state_machine.cpp.o -c /data/pod-embedded/embedded/app/src/state_machine.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/state_machine.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/app.dir/src/init.c.o   -c /data/embedded/app/src/init.c",
-  "file": "/data/embedded/app/src/init.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/app.dir/src/init.c.o   -c /data/pod-embedded/embedded/app/src/init.c",
+  "file": "/data/pod-embedded/embedded/app/src/init.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/app.dir/src/pressure_fault_checking.c.o   -c /data/embedded/app/src/pressure_fault_checking.c",
-  "file": "/data/embedded/app/src/pressure_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/app.dir/src/pressure_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/pressure_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/pressure_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/states.cpp.o -c /data/embedded/app/src/states.cpp",
-  "file": "/data/embedded/app/src/states.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/states.cpp.o -c /data/pod-embedded/embedded/app/src/states.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/states.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/motor.cpp.o -c /data/embedded/app/src/motor.cpp",
-  "file": "/data/embedded/app/src/motor.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/motor.cpp.o -c /data/pod-embedded/embedded/app/src/motor.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/motor.cpp"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/cc  -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/app.dir/src/rms_fault_checking.c.o   -c /data/embedded/app/src/rms_fault_checking.c",
-  "file": "/data/embedded/app/src/rms_fault_checking.c"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/app.dir/src/rms_fault_checking.c.o   -c /data/pod-embedded/embedded/app/src/rms_fault_checking.c",
+  "file": "/data/pod-embedded/embedded/app/src/rms_fault_checking.c"
 },
 {
-  "directory": "/data/embedded/app",
-  "command": "/usr/bin/c++   -I/data/embedded/app/include -I/data/Test/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/transitions.cpp.o -c /data/embedded/app/src/transitions.cpp",
-  "file": "/data/embedded/app/src/transitions.cpp"
+  "directory": "/data/pod-embedded/embedded/app",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/app.dir/src/transitions.cpp.o -c /data/pod-embedded/embedded/app/src/transitions.cpp",
+  "file": "/data/pod-embedded/embedded/app/src/transitions.cpp"
 },
 {
-  "directory": "/data/embedded/data",
-  "command": "/usr/bin/cc  -I/data/embedded/data/include    -o CMakeFiles/data.dir/src/filters.c.o   -c /data/embedded/data/src/filters.c",
-  "file": "/data/embedded/data/src/filters.c"
+  "directory": "/data/pod-embedded/embedded/data",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/data.dir/src/filters.c.o   -c /data/pod-embedded/embedded/data/src/filters.c",
+  "file": "/data/pod-embedded/embedded/data/src/filters.c"
 },
 {
-  "directory": "/data/embedded/data",
-  "command": "/usr/bin/cc  -I/data/embedded/data/include    -o CMakeFiles/data.dir/src/data.c.o   -c /data/embedded/data/src/data.c",
-  "file": "/data/embedded/data/src/data.c"
+  "directory": "/data/pod-embedded/embedded/data",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/data.dir/src/data.c.o   -c /data/pod-embedded/embedded/data/src/data.c",
+  "file": "/data/pod-embedded/embedded/data/src/data.c"
 },
 {
-  "directory": "/data/embedded/drivers",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/bbgpio.c.o   -c /data/embedded/drivers/src/bbgpio.c",
-  "file": "/data/embedded/drivers/src/bbgpio.c"
+  "directory": "/data/pod-embedded/embedded/drivers",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/bbgpio.c.o   -c /data/pod-embedded/embedded/drivers/src/bbgpio.c",
+  "file": "/data/pod-embedded/embedded/drivers/src/bbgpio.c"
 },
 {
-  "directory": "/data/embedded/drivers",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/can.c.o   -c /data/embedded/drivers/src/can.c",
-  "file": "/data/embedded/drivers/src/can.c"
+  "directory": "/data/pod-embedded/embedded/drivers",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/can.c.o   -c /data/pod-embedded/embedded/drivers/src/can.c",
+  "file": "/data/pod-embedded/embedded/drivers/src/can.c"
 },
 {
-  "directory": "/data/embedded/drivers",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/i2c.c.o   -c /data/embedded/drivers/src/i2c.c",
-  "file": "/data/embedded/drivers/src/i2c.c"
+  "directory": "/data/pod-embedded/embedded/drivers",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/drivers.dir/src/i2c.c.o   -c /data/pod-embedded/embedded/drivers/src/i2c.c",
+  "file": "/data/pod-embedded/embedded/drivers/src/i2c.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include    -std=gnu++11 -o CMakeFiles/bmsDisplay.dir/bmsDisplay.cpp.o -c /data/embedded/examples/bmsDisplay.cpp",
-  "file": "/data/embedded/examples/bmsDisplay.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include    -std=gnu++11 -o CMakeFiles/bmsDisplay.dir/bmsDisplay.cpp.o -c /data/pod-embedded/embedded/examples/bmsDisplay.cpp",
+  "file": "/data/pod-embedded/embedded/examples/bmsDisplay.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/navTest.dir/navTest.cpp.o -c /data/embedded/examples/navTest.cpp",
-  "file": "/data/embedded/examples/navTest.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/navTest.dir/navTest.cpp.o -c /data/pod-embedded/embedded/examples/navTest.cpp",
+  "file": "/data/pod-embedded/embedded/examples/navTest.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/dashTest.dir/dashTest.cpp.o -c /data/embedded/examples/dashTest.cpp",
-  "file": "/data/embedded/examples/dashTest.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/dashTest.dir/dashTest.cpp.o -c /data/pod-embedded/embedded/examples/dashTest.cpp",
+  "file": "/data/pod-embedded/embedded/examples/dashTest.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/embedded/peripherals/include -I/data/embedded/data/include    -o CMakeFiles/solenoidTest.dir/solenoidTest.c.o   -c /data/embedded/examples/solenoidTest.c",
-  "file": "/data/embedded/examples/solenoidTest.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/solenoidTest.dir/solenoidTest.c.o   -c /data/pod-embedded/embedded/examples/solenoidTest.c",
+  "file": "/data/pod-embedded/embedded/examples/solenoidTest.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/embedded/drivers/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/data/include    -std=gnu++11 -o CMakeFiles/brakingTest.dir/brakingTest.cpp.o -c /data/embedded/examples/brakingTest.cpp",
-  "file": "/data/embedded/examples/brakingTest.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -std=gnu++11 -o CMakeFiles/brakingTest.dir/brakingTest.cpp.o -c /data/pod-embedded/embedded/examples/brakingTest.cpp",
+  "file": "/data/pod-embedded/embedded/examples/brakingTest.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/embedded/drivers/include -I/data/embedded/peripherals/include -I/data/embedded/data/include    -std=gnu++11 -o CMakeFiles/gpioHvTest.dir/gpioHvTest.cpp.o -c /data/embedded/examples/gpioHvTest.cpp",
-  "file": "/data/embedded/examples/gpioHvTest.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -std=gnu++11 -o CMakeFiles/gpioHvTest.dir/gpioHvTest.cpp.o -c /data/pod-embedded/embedded/examples/gpioHvTest.cpp",
+  "file": "/data/pod-embedded/embedded/examples/gpioHvTest.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include    -o CMakeFiles/presTest.dir/presTest.c.o   -c /data/embedded/examples/presTest.c",
-  "file": "/data/embedded/examples/presTest.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/presTest.dir/presTest.c.o   -c /data/pod-embedded/embedded/examples/presTest.c",
+  "file": "/data/pod-embedded/embedded/examples/presTest.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/peripherals/include -I/data/embedded/data/include    -o CMakeFiles/oldMotorTest.dir/oldMotorTest.c.o   -c /data/embedded/examples/oldMotorTest.c",
-  "file": "/data/embedded/examples/oldMotorTest.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/oldMotorTest.dir/oldMotorTest.c.o   -c /data/pod-embedded/embedded/examples/oldMotorTest.c",
+  "file": "/data/pod-embedded/embedded/examples/oldMotorTest.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/embedded/peripherals/include -I/data/embedded/data/include    -o CMakeFiles/retroTest.dir/retroTest.c.o   -c /data/embedded/examples/retroTest.c",
-  "file": "/data/embedded/examples/retroTest.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/retroTest.dir/retroTest.c.o   -c /data/pod-embedded/embedded/examples/retroTest.c",
+  "file": "/data/pod-embedded/embedded/examples/retroTest.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/c++   -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/stateTest.dir/stateTest.cpp.o -c /data/embedded/examples/stateTest.cpp",
-  "file": "/data/embedded/examples/stateTest.cpp"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/stateTest.dir/stateTest.cpp.o -c /data/pod-embedded/embedded/examples/stateTest.cpp",
+  "file": "/data/pod-embedded/embedded/examples/stateTest.cpp"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/embedded/peripherals/include -I/data/embedded/data/include    -o CMakeFiles/can_test.dir/can_test.c.o   -c /data/embedded/examples/can_test.c",
-  "file": "/data/embedded/examples/can_test.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/can_test.dir/can_test.c.o   -c /data/pod-embedded/embedded/examples/can_test.c",
+  "file": "/data/pod-embedded/embedded/examples/can_test.c"
 },
 {
-  "directory": "/data/embedded/examples",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/data/include    -o CMakeFiles/imu_test.dir/imu_test.c.o   -c /data/embedded/examples/imu_test.c",
-  "file": "/data/embedded/examples/imu_test.c"
+  "directory": "/data/pod-embedded/embedded/examples",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/imu_test.dir/imu_test.c.o   -c /data/pod-embedded/embedded/examples/imu_test.c",
+  "file": "/data/pod-embedded/embedded/examples/imu_test.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/batt.c.o   -c /data/embedded/peripherals/src/batt.c",
-  "file": "/data/embedded/peripherals/src/batt.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/batt.c.o   -c /data/pod-embedded/embedded/peripherals/src/batt.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/batt.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/braking.c.o   -c /data/embedded/peripherals/src/braking.c",
-  "file": "/data/embedded/peripherals/src/braking.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/braking.c.o   -c /data/pod-embedded/embedded/peripherals/src/braking.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/braking.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/lv_iox.c.o   -c /data/embedded/peripherals/src/lv_iox.c",
-  "file": "/data/embedded/peripherals/src/lv_iox.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/lv_iox.c.o   -c /data/pod-embedded/embedded/peripherals/src/lv_iox.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/lv_iox.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/NCD9830DBR2G.c.o   -c /data/embedded/peripherals/src/NCD9830DBR2G.c",
-  "file": "/data/embedded/peripherals/src/NCD9830DBR2G.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/NCD9830DBR2G.c.o   -c /data/pod-embedded/embedded/peripherals/src/NCD9830DBR2G.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/NCD9830DBR2G.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/retro.c.o   -c /data/embedded/peripherals/src/retro.c",
-  "file": "/data/embedded/peripherals/src/retro.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/retro.c.o   -c /data/pod-embedded/embedded/peripherals/src/retro.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/retro.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/bms.c.o   -c /data/embedded/peripherals/src/bms.c",
-  "file": "/data/embedded/peripherals/src/bms.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/bms.c.o   -c /data/pod-embedded/embedded/peripherals/src/bms.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/bms.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/can_devices.c.o   -c /data/embedded/peripherals/src/can_devices.c",
-  "file": "/data/embedded/peripherals/src/can_devices.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/can_devices.c.o   -c /data/pod-embedded/embedded/peripherals/src/can_devices.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/can_devices.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/imu.c.o   -c /data/embedded/peripherals/src/imu.c",
-  "file": "/data/embedded/peripherals/src/imu.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/imu.c.o   -c /data/pod-embedded/embedded/peripherals/src/imu.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/imu.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/mcp23017.c.o   -c /data/embedded/peripherals/src/mcp23017.c",
-  "file": "/data/embedded/peripherals/src/mcp23017.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/mcp23017.c.o   -c /data/pod-embedded/embedded/peripherals/src/mcp23017.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/mcp23017.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/proc_iox.c.o   -c /data/embedded/peripherals/src/proc_iox.c",
-  "file": "/data/embedded/peripherals/src/proc_iox.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/proc_iox.c.o   -c /data/pod-embedded/embedded/peripherals/src/proc_iox.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/proc_iox.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/cc  -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/rms.c.o   -c /data/embedded/peripherals/src/rms.c",
-  "file": "/data/embedded/peripherals/src/rms.c"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/peripherals.dir/src/rms.c.o   -c /data/pod-embedded/embedded/peripherals/src/rms.c",
+  "file": "/data/pod-embedded/embedded/peripherals/src/rms.c"
 },
 {
-  "directory": "/data/embedded/peripherals",
-  "command": "/usr/bin/c++   -I/data/embedded/peripherals/include -I/data/embedded/data/include -I/data/embedded/app/include -I/data/Test/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/peripherals.dir/src/hv_iox.cpp.o -c /data/embedded/peripherals/src/hv_iox.cpp",
-  "file": "/data/embedded/peripherals/src/hv_iox.cpp"
+  "directory": "/data/pod-embedded/embedded/peripherals",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/peripherals.dir/src/hv_iox.cpp.o -c /data/pod-embedded/embedded/peripherals/src/hv_iox.cpp",
+  "file": "/data/pod-embedded/embedded/peripherals/src/hv_iox.cpp"
 },
 {
-  "directory": "/data/embedded/utils",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/embedded/peripherals/include -I/data/embedded/data/include    -o CMakeFiles/rmsProg.dir/rmsProg.c.o   -c /data/embedded/utils/rmsProg.c",
-  "file": "/data/embedded/utils/rmsProg.c"
+  "directory": "/data/pod-embedded/embedded/utils",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/data/include    -o CMakeFiles/rmsProg.dir/rmsProg.c.o   -c /data/pod-embedded/embedded/utils/rmsProg.c",
+  "file": "/data/pod-embedded/embedded/utils/rmsProg.c"
 },
 {
-  "directory": "/data/embedded/utils",
-  "command": "/usr/bin/cc  -I/data/embedded/drivers/include -I/data/embedded/peripherals/include    -o CMakeFiles/gpioUtil.dir/gpioUtil.c.o   -c /data/embedded/utils/gpioUtil.c",
-  "file": "/data/embedded/utils/gpioUtil.c"
+  "directory": "/data/pod-embedded/embedded/utils",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/peripherals/include    -o CMakeFiles/gpioUtil.dir/gpioUtil.c.o   -c /data/pod-embedded/embedded/utils/gpioUtil.c",
+  "file": "/data/pod-embedded/embedded/utils/gpioUtil.c"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++  -DTELEMETRY_LOOP_TEST -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/TelemetryLoopTest.dir/examples/TelemetryLoopTest.cpp.o -c /data/middleware/examples/TelemetryLoopTest.cpp",
-  "file": "/data/middleware/examples/TelemetryLoopTest.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++  -DTELEMETRY_LOOP_TEST -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/TelemetryLoopTest.dir/examples/TelemetryLoopTest.cpp.o -c /data/pod-embedded/middleware/examples/TelemetryLoopTest.cpp",
+  "file": "/data/pod-embedded/middleware/examples/TelemetryLoopTest.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++  -DTELEMETRY_LOOP_TEST -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/TelemetryLoopTest.dir/src/TelemetryLoop.cpp.o -c /data/middleware/src/TelemetryLoop.cpp",
-  "file": "/data/middleware/src/TelemetryLoop.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++  -DTELEMETRY_LOOP_TEST -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/TelemetryLoopTest.dir/src/TelemetryLoop.cpp.o -c /data/pod-embedded/middleware/src/TelemetryLoop.cpp",
+  "file": "/data/pod-embedded/middleware/src/TelemetryLoop.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/cc -DTELEMETRY_LOOP_TEST -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -o CMakeFiles/TelemetryLoopTest.dir/__/embedded/app/src/init.c.o   -c /data/embedded/app/src/init.c",
-  "file": "/data/embedded/app/src/init.c"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/cc -DTELEMETRY_LOOP_TEST -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -o CMakeFiles/TelemetryLoopTest.dir/__/embedded/app/src/init.c.o   -c /data/pod-embedded/embedded/app/src/init.c",
+  "file": "/data/pod-embedded/embedded/app/src/init.c"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/LV_TCP_test.dir/examples/LV_TCP_test.cpp.o -c /data/middleware/examples/LV_TCP_test.cpp",
-  "file": "/data/middleware/examples/LV_TCP_test.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/LV_TCP_test.dir/examples/LV_TCP_test.cpp.o -c /data/pod-embedded/middleware/examples/LV_TCP_test.cpp",
+  "file": "/data/pod-embedded/middleware/examples/LV_TCP_test.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/LV_TCP_test.dir/src/LVTCPSocket.cpp.o -c /data/middleware/src/LVTCPSocket.cpp",
-  "file": "/data/middleware/src/LVTCPSocket.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/LV_TCP_test.dir/src/LVTCPSocket.cpp.o -c /data/pod-embedded/middleware/src/LVTCPSocket.cpp",
+  "file": "/data/pod-embedded/middleware/src/LVTCPSocket.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/cc  -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -o CMakeFiles/middleware.dir/src/connStat.c.o   -c /data/middleware/src/connStat.c",
-  "file": "/data/middleware/src/connStat.c"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/cc  -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -o CMakeFiles/middleware.dir/src/connStat.c.o   -c /data/pod-embedded/middleware/src/connStat.c",
+  "file": "/data/pod-embedded/middleware/src/connStat.c"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/HVTCPSocket.cpp.o -c /data/middleware/src/HVTCPSocket.cpp",
-  "file": "/data/middleware/src/HVTCPSocket.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/HVTCPSocket.cpp.o -c /data/pod-embedded/middleware/src/HVTCPSocket.cpp",
+  "file": "/data/pod-embedded/middleware/src/HVTCPSocket.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/data_dump.cpp.o -c /data/middleware/src/data_dump.cpp",
-  "file": "/data/middleware/src/data_dump.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/data_dump.cpp.o -c /data/pod-embedded/middleware/src/data_dump.cpp",
+  "file": "/data/pod-embedded/middleware/src/data_dump.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/LVTCPSocket.cpp.o -c /data/middleware/src/LVTCPSocket.cpp",
-  "file": "/data/middleware/src/LVTCPSocket.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/LVTCPSocket.cpp.o -c /data/pod-embedded/middleware/src/LVTCPSocket.cpp",
+  "file": "/data/pod-embedded/middleware/src/LVTCPSocket.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/libs/PracticalSocket/PracticalSocket.cpp.o -c /data/middleware/libs/PracticalSocket/PracticalSocket.cpp",
-  "file": "/data/middleware/libs/PracticalSocket/PracticalSocket.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/libs/PracticalSocket/PracticalSocket.cpp.o -c /data/pod-embedded/middleware/libs/PracticalSocket/PracticalSocket.cpp",
+  "file": "/data/pod-embedded/middleware/libs/PracticalSocket/PracticalSocket.cpp"
 },
 {
-  "directory": "/data/middleware",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include -I/data/embedded/app/include -I/data/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/TelemetryLoop.cpp.o -c /data/middleware/src/TelemetryLoop.cpp",
-  "file": "/data/middleware/src/TelemetryLoop.cpp"
+  "directory": "/data/pod-embedded/middleware",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include -I/data/pod-embedded/embedded/app/include -I/data/pod-embedded/Test/include    -std=gnu++11 -o CMakeFiles/middleware.dir/src/TelemetryLoop.cpp.o -c /data/pod-embedded/middleware/src/TelemetryLoop.cpp",
+  "file": "/data/pod-embedded/middleware/src/TelemetryLoop.cpp"
 },
 {
-  "directory": "/data/Test",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/run_all_tests.dir/run_all_tests.cpp.o -c /data/Test/run_all_tests.cpp",
-  "file": "/data/Test/run_all_tests.cpp"
+  "directory": "/data/pod-embedded/Test",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/run_all_tests.dir/run_all_tests.cpp.o -c /data/pod-embedded/Test/run_all_tests.cpp",
+  "file": "/data/pod-embedded/Test/run_all_tests.cpp"
 },
 {
-  "directory": "/data/Test",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/run_all_tests.dir/components/HV_Iox/Test_HV_Iox.cpp.o -c /data/Test/components/HV_Iox/Test_HV_Iox.cpp",
-  "file": "/data/Test/components/HV_Iox/Test_HV_Iox.cpp"
+  "directory": "/data/pod-embedded/Test",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/run_all_tests.dir/components/HV_Iox/Test_HV_Iox.cpp.o -c /data/pod-embedded/Test/components/HV_Iox/Test_HV_Iox.cpp",
+  "file": "/data/pod-embedded/Test/components/HV_Iox/Test_HV_Iox.cpp"
 },
 {
-  "directory": "/data/Test",
-  "command": "/usr/bin/c++   -I/data/middleware/include -I/data/middleware/libs -I/data/embedded/data/include -I/data/embedded/peripherals/include -I/data/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/tests.dir/components/HV_Iox/Test_HV_Iox.cpp.o -c /data/Test/components/HV_Iox/Test_HV_Iox.cpp",
-  "file": "/data/Test/components/HV_Iox/Test_HV_Iox.cpp"
+  "directory": "/data/pod-embedded/Test",
+  "command": "/usr/bin/c++   -I/data/pod-embedded/middleware/include -I/data/pod-embedded/middleware/libs -I/data/pod-embedded/embedded/data/include -I/data/pod-embedded/embedded/peripherals/include -I/data/pod-embedded/embedded/drivers/include    -std=gnu++11 -o CMakeFiles/tests.dir/components/HV_Iox/Test_HV_Iox.cpp.o -c /data/pod-embedded/Test/components/HV_Iox/Test_HV_Iox.cpp",
+  "file": "/data/pod-embedded/Test/components/HV_Iox/Test_HV_Iox.cpp"
 }
 ]
