@@ -45,7 +45,7 @@ extern "C"
 {
 }
 #else
-    typedef struct RMS rms;
-    extern RMS rms;
+    extern struct RMS rms;
 #endif
 #endif
+
