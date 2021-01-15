@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "can.h"
 #include <stdint.h>
-#include "rms.h"
+#include <rms.h>
 #include "data.h"
 #include "can_devices.h"
 
@@ -20,7 +20,11 @@
 
 /* TODO figure out if heartbeat values may just be torque */
 /* 1 */
-int rmsEnHeartbeat() {
+RMS::RMS()
+{
+}
+
+int RMS::rmsEnHeartbeat() {
     uint8_t payload[] = {0x92, 0x0, 0x1, 0x0, 0x1, 0x0, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_HB_ID, payload, 8);
@@ -29,7 +33,7 @@ int rmsEnHeartbeat() {
 }
 
 /* 2 */
-int rmsClrFaults() {
+int RMS::rmsClrFaults() {
     uint8_t payload[] = {0x14, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_CLR_FAULTS_ID, payload, 8);
@@ -38,7 +42,7 @@ int rmsClrFaults() {
 }
 
 /* 3 */
-int rmsInvDis() {
+int RMS::rmsInvDis() {
     uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_INV_DIS_ID, payload, 8);
@@ -47,7 +51,7 @@ int rmsInvDis() {
 }
 
 /* 4 */
-int rmsInvEn() {
+int RMS::rmsInvEn() {
     uint8_t payload[] = {40/*TORQUE_SCALE_LWR(1)*/, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_INV_EN_ID, payload, 8);
@@ -55,7 +59,7 @@ int rmsInvEn() {
     return ret;
 }
 
-int rmsInvEnNoTorque () {
+int RMS::rmsInvEnNoTorque () {
 	uint8_t payload[] =  {0x0, 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
 	sem_wait(&canSem);
     int ret = canSend(RMS_INV_EN_ID, payload, 8);
@@ -64,7 +68,7 @@ int rmsInvEnNoTorque () {
 }
 
 /* 5 */
-int rmsInvForward20() {
+int RMS::rmsInvForward20() {
     uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_INV_FW_20_ID, payload, 8);
@@ -73,7 +77,7 @@ int rmsInvForward20() {
 }
 
 /* 6 not even going to bother setting these high ones because I am too scared */
-int rmsInvForward30() {
+int RMS::rmsInvForward30() {
     uint8_t payload[] = {TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_INV_FW_30_ID, payload, 8);
@@ -82,7 +86,7 @@ int rmsInvForward30() {
 }
 
 /* 7 */
-int rmsCmdNoTorque() {
+int RMS::rmsCmdNoTorque() {
     uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_CMD_0_NM_ID, payload, 8);
@@ -91,7 +95,7 @@ int rmsCmdNoTorque() {
 }
 
 /* 8 */
-int rmsDischarge() {
+int RMS::rmsDischarge() {
     uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x1, 0x2, 0x0, 0x0};
     sem_wait(&canSem);
     int ret =  canSend(RMS_INV_DISCHARGE_ID, payload, 8);
@@ -99,7 +103,7 @@ int rmsDischarge() {
     return ret;
 }
 
-int rmsIdleHb() {
+int RMS::rmsIdleHb() {
     uint8_t payload[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
     sem_wait(&canSem);
     int ret = canSend(RMS_HB_ID, payload, 8);
@@ -107,23 +111,23 @@ int rmsIdleHb() {
     return ret;
 }
 
-int rmsWriteEeprom(uint16_t addr, uint16_t val) {
+int RMS::rmsWriteEeprom(uint16_t addr, uint16_t val) {
     uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x1, 0x0,
         val & 0xff, (val >> 8), 0x0, 0x0};
     return canSend(RMS_EEPROM_SEND_ID, payload, 8);
 }
 
-int rmsReadEeprom(uint16_t addr) {
+int RMS::rmsReadEeprom(uint16_t addr) {
     uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x0, 0x0,
         0x0, 0x0, 0x0, 0x0};
     return canSend(RMS_EEPROM_SEND_ID, payload, 8);
 }
 
-static uint16_t convRmsDataFormat(uint8_t byte1, uint8_t byte2) {
+static uint16_t RMS::convRmsDataFormat(uint8_t byte1, uint8_t byte2) {
     return byte1 | (byte2 << 8);
 }
 
-int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
+int RMS::rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
     /* Eeprom message */
  #ifdef DEBUG_RMS
     int i = 0;
@@ -147,7 +151,7 @@ int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write) {
 
     return convRmsDataFormat(rmsData[4], rmsData[5]);
 }
-int rmsSendHbMsg(uint16_t torque) {
+int RMS::rmsSendHbMsg(uint16_t torque) {
 	
 	uint8_t payload[] = {TORQUE_SCALE_LWR(torque), TORQUE_SCALE_UPR(torque), 0x0, 0x0, 
         0x1, 0x1, 0x0, 0x0};
@@ -163,7 +167,7 @@ int rmsSendHbMsg(uint16_t torque) {
  *      Based on the CAN ID passed, parsing out the data bytes into
  *      their respective values in the RMS data struct
  */
-int rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
+int RMS::rms_parser(uint32_t id, uint8_t *rmsData, uint32_t filter){
     if (filter != 0 && filter != id) {
         return 1;
     }
