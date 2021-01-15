@@ -37,11 +37,11 @@ void *hbLoop(void *nul) {
 	
 	while (1) {
 		if (motorIsEnabled) {
-			rmsInvEn();
+			rms.rmsInvEn();
 		} else if (noTorqueMode) {
-			rmsInvEnNoTorque();
+			rms.rmsInvEnNoTorque();
 		} else {
-			rmsIdleHb();
+			rms.rmsIdleHb();
 		}
 
 		usleep(10000);
@@ -162,9 +162,9 @@ void *TCPLoop(void *arg)
         }
         if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
 /*            pthread_create(&hbT, NULL, hbLoop, NULL);*/
-            rmsEnHeartbeat();
-            rmsClrFaults();
-            rmsInvDis();
+            rms.rmsEnHeartbeat();
+            rms.rmsClrFaults();
+            rms.rmsInvDis();
 /*            noTorqueMode = true;*/
         }
         
