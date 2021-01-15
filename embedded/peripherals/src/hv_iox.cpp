@@ -44,6 +44,9 @@ int HVIox::init(bool hardStart)
         if (this->setupIox() != 0)
             isInit = false;
     }
+    if (isInit)
+        return 0;
+    return -1;
 }
 
 int HVIox::setupIox()
