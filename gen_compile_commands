@@ -1,3 +1,5 @@
-echo making compile commands...
+echo "making compile commands..."
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
+echo "cleaning git tree..."
+git clean -fxd
 echo done
