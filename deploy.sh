@@ -57,6 +57,7 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo apt-get update
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y cmake libgtest-dev
+    sudo apt-get install -y python3 python3-pip python-is-python3 clang-format
 	
 	echo "Building GTest"
 	cd /usr/src/gtest
