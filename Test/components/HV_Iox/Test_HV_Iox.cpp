@@ -34,11 +34,19 @@ TEST(HV_IOX, HVIOX_STATES) {
     EXPECT_EQ(hv_iox.getIMDStatus(), 1);
     EXPECT_EQ(hv_iox.getINRTStatus(), 1);
     EXPECT_EQ(hv_iox.isHVEnabled(), 0);
+    EXPECT_EQ(hv_iox.getPsStatus(), 1);
+    EXPECT_EQ(hv_iox.getBMSStatus(), 1);
+    EXPECT_EQ(hv_iox.isEStopOn(), 0);
+    EXPECT_EQ(hv_iox.getMasterSwFeedback(), 1);
 #else
     EXPECT_NE(hv_iox.getBMSMultiIn(), -1);
     EXPECT_EQ(hv_iox.getIMDStatus(), true);
     EXPECT_NE(hv_iox.getINRTStatus(), -1);
     EXPECT_NE(hv_iox.isHVEnabled(), -1);
+    EXPECT_NE(hv_iox.getPsStatus(), -1);
+    EXPECT_NE(hv_iox.getBMSStatus(), -1);
+    EXPECT_NE(hv_iox.isEStopOn(), -1);
+    EXPECT_NE(hv_iox.getMasterSwFeedback(), -1);
 #endif
 }
 
