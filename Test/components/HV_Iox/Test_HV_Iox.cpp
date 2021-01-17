@@ -7,9 +7,17 @@ TEST(HV_IOX, VerifyHVIox)
     HVIox hv_iox;
     hv_iox.init(true);
     EXPECT_EQ(hv_iox.setupIox(), 0);
+// The expected output of the functions is generic
+// when not connected to the I2C bus
 #ifdef NOI2C
+    // expected to equal 1
     EXPECT_EQ(hv_iox.isHVIndicatorEnabled(), 1);
+// The expected output of the functions is
+// != -1 because the function returns
+// the getState method when connected
+// to the I2C bus
 #else
+    // expected to not equal -1
     hv_iox.setMCUHVEnabled(false);
     EXPECT_NE(hv_iox.isHVIndicatorEnabled(), -1);
 #endif

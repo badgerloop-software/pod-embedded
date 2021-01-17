@@ -34,16 +34,14 @@ HVIox::HVIox()
 int HVIox::init(bool hardStart)
 {
     if (setupMCP(&iox, HV_IO_ADDR) != 0)
-        isInit = false;
-    if (hardStart) {
+        return -1;
+    else if (hardStart) {
         if (clearSettingsMCP(&iox) != 0)
-            isInit = false;
-        if (this->setupIox() != 0)
-            isInit = false;
+            return -1;
+        else if (this->setupIox() != 0)
+            return -1;
     }
-    if (isInit)
-        return 0;
-    return -1;
+    return 0;
 }
 
 int HVIox::setupIox()
