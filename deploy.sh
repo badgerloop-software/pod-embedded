@@ -3,17 +3,19 @@
 fileName=${0##*/}
 if [ "$#" -ne 1 ]; then
 	echo "one argument expected after './$fileName'"
+	echo "Options are: build, cross-setup, cross, clean, gtest-setup"
 	exit 1
 elif [ "$1" == "build" ]; then
+    ./deploy.sh clean
 	mkdir build && cd build
-	
+
 	cmake ..
 	retVal=$?
 	if [ $retVal -ne 0 ]; then
 		echo "failure detected during cmake"
 		exit 1
 	fi
-	
+
 	make
 	retVal=$?
 	if [ $retVal -ne 0 ]; then
@@ -22,17 +24,18 @@ elif [ "$1" == "build" ]; then
 	fi
 	echo "build finished"
 elif [ "$1" == "cross-setup" ]; then
-	# This part of the script is not checked for errors
 	cd /tmp/
-	
 	wget -c https://releases.linaro.org/components/toolchain/binaries/6.5-2018.12/arm-linux-gnueabihf/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf.tar.xz
-	
+	if [ $? -ne 0 ]; then
+		echo "Failure to get arm-linux-gnueabihf"
+	fi
 	sudo tar xf gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf.tar.xz -C /opt/
-	
+
 	rm gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf.tar.xz
 
 	echo "cross build setup finished"
 elif [ "$1" == "cross" ]; then
+    ./deploy.sh clean
 	mkdir build && cd build
 
 	cmake -DCMAKE_TOOLCHAIN_FILE=../toolchains/beaglebone.cmake ../
@@ -62,6 +65,9 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo cp *.a /usr/lib
 	
 	echo "GTest Install Complete"
+elif [ "$1" == "format" ]; then
+	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
+	echo "Format successful"
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out

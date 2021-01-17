@@ -2,7 +2,8 @@
 #include <gtest/gtest.h>
 #include <hv_iox.h>
 
-TEST(HV_IOX, VerifyHVIox) {
+TEST(HV_IOX, VerifyHVIox)
+{
     HVIox hv_iox;
     hv_iox.init(true);
     EXPECT_EQ(hv_iox.setupIox(), 0);
@@ -14,7 +15,8 @@ TEST(HV_IOX, VerifyHVIox) {
 #endif
 }
 
-TEST(HV_IOX, HVIOX_MCU_LATCH) {
+TEST(HV_IOX, HVIOX_MCU_LATCH)
+{
     HVIox hv_iox;
     hv_iox.init(true);
 #ifdef NOI2C
@@ -26,7 +28,8 @@ TEST(HV_IOX, HVIOX_MCU_LATCH) {
 #endif
 }
 
-TEST(HV_IOX, HVIOX_STATES) {
+TEST(HV_IOX, HVIOX_STATES)
+{
     HVIox hv_iox;
     hv_iox.init(true);
 #ifdef NOI2C
@@ -50,7 +53,8 @@ TEST(HV_IOX, HVIOX_STATES) {
 #endif
 }
 
-TEST(HV_IOX, HVIOX_MCUHV) {
+TEST(HV_IOX, HVIOX_MCUHV)
+{
     HVIox hv_iox;
     hv_iox.init(true);
 #ifdef NOI2C
@@ -63,4 +67,3 @@ TEST(HV_IOX, HVIOX_MCUHV) {
     EXPECT_NE(hv_iox.emergencyDisableMCU(), -1);
 #endif
 }
-

@@ -4,24 +4,22 @@
 
 #include "TelemetryLoop.h"
 
-#include <iostream>
-#include <unistd.h>
+#include <CRCpp/CRC.h>
+#include <PracticalSocket/PracticalSocket.h>
+#include <bitset>
+#include <chrono>
 #include <cstdio>
+#include <iostream>
+#include <memory.h>
 #include <pthread.h>
 #include <stdint.h>
-#include <memory.h>
+#include <unistd.h>
 #include <vector>
-#include <bitset>
-#include <PracticalSocket/PracticalSocket.h>
-#include <CRCpp/CRC.h>
-#include <chrono>
-#include <hv_iox.h>
 
+#include <hv_iox.h>
 extern "C" {
 #include <lv_iox.h>
-#include <data.h>
 }
-
 
 #define BUFFER_SIZE 500
 #define ENDIAN "LITTLE" // TODO: Is there a way to check this during compile-time or something?
@@ -29,12 +27,11 @@ extern "C" {
 // Because it kind of looks like "BADGER"
 #define HEADER 0xBAD6E4
 
-
-
 pthread_t telemetryThread;
 
 template <typename type>
-void addToBuffer(std::vector<uint8_t>* buffer, type value, uint8_t size = 0){
+void addToBuffer(std::vector<uint8_t>* buffer, type value, uint8_t size = 0)
+{
     // TODO: Find some way to send information about the CPU-dependent sizes to standardize things
 
     // If not explicitly stated, the number of bits is the size of the contents of the pointer
@@ -42,34 +39,36 @@ void addToBuffer(std::vector<uint8_t>* buffer, type value, uint8_t size = 0){
 
     const uint8_t* byteArray = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>(&value));
 
-    for(int i = 0; i < bytes; i++)
-        if(ENDIAN == "BIG") // NOLINT(misc-redundant-expression)
+    for (int i = 0; i < bytes; i++)
+        if (ENDIAN == "BIG") // NOLINT(misc-redundant-expression)
             buffer->push_back(byteArray[(bytes - 1) - i]);
         else
             buffer->push_back(byteArray[i]);
 }
 
-void SetupTelemetry(char* ip, int port){
-    TelemArgs *args = (TelemArgs*) malloc(sizeof(TelemArgs));
+void SetupTelemetry(char* ip, int port)
+{
+    TelemArgs* args = (TelemArgs*)malloc(sizeof(TelemArgs));
 
     // Ensure memory was actually allocated
-    if(args == NULL){
+    if (args == NULL) {
         fprintf(stderr, "MALLOC ERROR\n");
         exit(1);
     }
 
     // Assign the telemetry arguments
-    args -> ipaddr = strdup(ip);
-    args -> port = port;
+    args->ipaddr = strdup(ip);
+    args->port = port;
 
     // Create a thread for the telemetry loop to run in
     if (pthread_create(&telemetryThread, NULL, TelemetryLoop, args))
         fprintf(stderr, "Error creating LV Telemetry thread\n");
 }
 
-void* TelemetryLoop(void *arg) {
+void* TelemetryLoop(void* arg)
+{
     // Cast the argument
-    TelemArgs *sarg = (TelemArgs *) arg;
+    TelemArgs* sarg = (TelemArgs*)arg;
 
     try {
         // Create a UDP socket which telemetry packets are rapidly sent to
@@ -95,8 +94,8 @@ void* TelemetryLoop(void *arg) {
 
             // Write 8 byte time
             uint64_t time = chrono::duration_cast<chrono::milliseconds>(
-                    std::chrono::system_clock::now().time_since_epoch()
-            ).count();
+                std::chrono::system_clock::now().time_since_epoch())
+                                .count();
             addToBuffer(&buffer, &time);
 
             // Write 1 byte IMD status
@@ -105,16 +104,16 @@ void* TelemetryLoop(void *arg) {
 
             // Write 4 byte primary brake
             int32_t primBrake = 0;
-            #ifndef TELEMETRY_LOOP_TEST
-                primBrake = limSwitchGet(PRIM_LIM_SWITCH);
-            #endif
+#ifndef TELEMETRY_LOOP_TEST
+            primBrake = limSwitchGet(PRIM_LIM_SWITCH);
+#endif
             addToBuffer(&buffer, &primBrake);
 
             // Write 4 byte secondary brake
             int32_t secBrake = 0;
-            #ifndef TELEMETRY_LOOP_TEST
-                secBrake = limSwitchGet(SEC_LIM_SWITCH);
-            #endif
+#ifndef TELEMETRY_LOOP_TEST
+            secBrake = limSwitchGet(SEC_LIM_SWITCH);
+#endif
             addToBuffer(&buffer, &secBrake);
 
             
@@ -209,19 +208,19 @@ void* TelemetryLoop(void *arg) {
             sock.sendTo(buffer.data(), buffer.size(), sarg->ipaddr, sarg->port);
             buffer.clear();
 
-            packetNumber ++;
+            packetNumber++;
 
-            #ifdef TELEMETRY_LOOP_TEST
-                if(packetNumber % 100 == 0){
-                    cout << packetNumber << " packets have been sent.\n";
-                    cout.flush();
-                }
-            #endif
+#ifdef TELEMETRY_LOOP_TEST
+            if (packetNumber % 100 == 0) {
+                cout << packetNumber << " packets have been sent.\n";
+                cout.flush();
+            }
+#endif
 
             // Pause for 30 milliseconds before sending the next packet
             usleep(30000);
         }
-    } catch (SocketException &e) {
+    } catch (SocketException& e) {
         cerr << e.what() << endl;
         exit(1);
     }

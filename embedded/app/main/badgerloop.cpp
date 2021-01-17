@@ -1,36 +1,42 @@
 // Includes
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <TelemetryLoop.h>
 #include "HVTCPSocket.h"
 #include "data_dump.h"
 #include "hv_iox.h"
 #include "motor.h"
 #include "state_machine.h"
+#include <TelemetryLoop.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "hv_iox.h"
+#include "state_machine.h"
+#include "motor.h"
 
 // Temp
 #include <chrono>
 #include <ctime>
 #include <iostream>
 
-extern "C"
-{
-#include "bbgpio.h"
-#include "connStat.h"
-#include <signal.h>
-#include <rms.h>
-#include "proc_iox.h"
-#include "data.h"
-#include "can_devices.h"
+extern "C" {
 #include "NCD9830DBR2G.h"
+#include "bbgpio.h"
+#include "can_devices.h"
+#include "connStat.h"
+#include "data.h"
+#include "nav.h"
+#include "proc_iox.h"
+#include <rms.h>
+#include <signal.h>
+
+// Software Parameter Loading
+#include "load_software_parameters.h"
+#include "software_parameters.h"
 }
 
 HVIox hv_iox;
 
-
-void emergQuitter(int sig, siginfo_t *inf, void *nul)
+void emergQuitter(int sig, siginfo_t* inf, void* nul)
 {
     printf("shutdown\n");
     hv_iox.setMCUHVEnabled(false);
@@ -42,15 +48,31 @@ void emergQuitter(int sig, siginfo_t *inf, void *nul)
     exit(0);
 }
 
-int init()
+int init(char* directory)
 {
+    // Success status, return true by default
+    int success_status = 0;
+
     /* Init Data struct */
-    initData();
+    if (initData()) {
+        success_status = 1;
+    }
+
+    /* Load Software Parameters */
+    if (loadParameters(directory, ACTIVE_RUN_PROFILE)) {
+        success_status = 1;
+    }
 
     /* Init all drivers */
     SetupCANDevices();
-    initProcIox(true);
-    hv_iox.init(true);
+
+    if (initProcIox(true)) {
+        success_status = 1;
+    }
+
+    if (hv_iox.init(true)) {
+        success_status = 1;
+    }
 
     SetupMotor();
 
@@ -61,33 +83,33 @@ int init()
     buildStateMachine();
 
     /* Init telemetry */
-    SetupTelemetry((char *)DASHBOARD_IP, DASHBOARD_PORT);
+    SetupTelemetry((char*)DASHBOARD_IP, DASHBOARD_PORT);
     SetupHVTCPServer();
+
+    initNav();
 
     struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
 
     /* Start 'black box' data saving */
-    /*    SetupDataDump();*/
+    /* SetupDataDump(); */
 
-    return 0;
+    return success_status;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     /* Create the big data structures to house pod data */
     int i = 0;
     char buffer[100];
 
-    if (init() == 1)
-    {
+    if (init(argv[0]) == 1) {
         fprintf(stderr, "Error in initialization! Exiting...\r\n");
         exit(1);
     }
 
-    while (1)
-    {
+    while (1) {
 
         runStateMachine();
 
@@ -95,36 +117,29 @@ int main()
         /*                checkTCPStat(),*/
         /*                checkUDPStat());*/
 
-        if (getFlagsShouldBrake())
-        {
+        if (getFlagsShouldBrake()) {
             printf("signalling\n");
-            signalLV((char *)"brake");
+            signalLV((char*)"brake");
             setFlagsShouldBrake(false);
             printf("signallingDone\n");
         }
-        if (getFlagsBrakeInit())
-        {
+        if (getFlagsBrakeInit()) {
             printf("Cancelling brake\n");
-            signalLV((char *)"primBrakeOff");
+            signalLV((char*)"primBrakeOff");
             usleep(1000);
-            signalLV((char *)"secBrakeOff");
+            signalLV((char*)"secBrakeOff");
             setFlagsBrakeInit(false);
         }
-        if (getFlagsClrMotionData())
-        {
-            printf("signal clear\n");
-            signalLV((char *)"clrMotion");
+        if (getFlagsClrMotionData()) {
+            resetNav();
             setFlagsClrMotionData(false);
         }
 
-        if (i >= 50)
-        {
+        if (i >= 50) {
             sprintf(buffer, "state%d\n", getDataState() == 1);
-            signalLV((char *)buffer);
+            signalLV((char*)buffer);
             i = 0;
-        }
-        else
-        {
+        } else {
             i += 1;
         }
         // fprintf(stderr, "%d,%d,%d\n", getRmsActualTorque(), getRmsMotorSpeed(), getuSTimestamp());

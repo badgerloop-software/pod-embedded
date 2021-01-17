@@ -20,8 +20,8 @@
 #ifndef __PRACTICALSOCKET_INCLUDED__
 #define __PRACTICALSOCKET_INCLUDED__
 
-#include <string>            // For string
-#include <exception>         // For exception class
+#include <exception> // For exception class
+#include <string> // For string
 
 using namespace std;
 
@@ -36,7 +36,7 @@ public:
      *   @param incSysMsg true if system message (from strerror(errno))
      *   should be postfixed to the user provided message
      */
-    SocketException(const string &message, bool inclSysMsg = false) throw();
+    SocketException(const string& message, bool inclSysMsg = false) throw();
 
     /**
      *   Provided just to guarantee that no exceptions are thrown.
@@ -47,10 +47,10 @@ public:
      *   Get the exception message
      *   @return exception message
      */
-    const char *what() const throw();
+    const char* what() const throw();
 
 private:
-    string userMessage;  // Exception message
+    string userMessage; // Exception message
 };
 
 /**
@@ -93,8 +93,8 @@ public:
      *   @param localPort local port
      *   @exception SocketException thrown if setting local port or address fails
      */
-    void setLocalAddressAndPort(const string &localAddress,
-                                unsigned short localPort = 0);
+    void setLocalAddressAndPort(const string& localAddress,
+        unsigned short localPort = 0);
 
     /**
      *   If WinSock, unload the WinSock DLLs; otherwise do nothing.  We ignore
@@ -117,16 +117,16 @@ public:
      *   @param service service to resolve (e.g., "http")
      *   @param protocol protocol of service to resolve.  Default is "tcp".
      */
-    static unsigned short resolveService(const string &service,
-                                         const string &protocol = "tcp");
+    static unsigned short resolveService(const string& service,
+        const string& protocol = "tcp");
 
 private:
     // Prevent the user from trying to use value semantics on this object
-    Socket(const Socket &sock);
-    void operator=(const Socket &sock);
+    Socket(const Socket& sock);
+    void operator=(const Socket& sock);
 
 protected:
-    int sockDesc;              // Socket descriptor
+    int sockDesc; // Socket descriptor
     Socket(int type, int protocol);
     Socket(int sockDesc);
 };
@@ -143,7 +143,7 @@ public:
      *   @param foreignPort foreign port
      *   @exception SocketException thrown if unable to establish connection
      */
-    void connect(const string &foreignAddress, unsigned short foreignPort);
+    void connect(const string& foreignAddress, unsigned short foreignPort);
 
     /**
      *   Write the given buffer to this socket.  Call connect() before
@@ -152,7 +152,7 @@ public:
      *   @param bufferLen number of bytes from buffer to be written
      *   @exception SocketException thrown if unable to send data
      */
-    void send(const void *buffer, int bufferLen);
+    void send(const void* buffer, int bufferLen);
 
     /**
      *   Read into the given buffer up to bufferLen bytes data from this
@@ -162,7 +162,7 @@ public:
      *   @return number of bytes read, 0 for EOF, and -1 for error
      *   @exception SocketException thrown if unable to receive data
      */
-    int recv(void *buffer, int bufferLen);
+    int recv(void* buffer, int bufferLen);
 
     /**
      *   Get the foreign address.  Call connect() before calling recv()
@@ -201,8 +201,7 @@ public:
      *   @param foreignPort foreign port
      *   @exception SocketException thrown if unable to create TCP socket
      */
-    TCPSocket(const string &foreignAddress, unsigned short foreignPort)
-   ;
+    TCPSocket(const string& foreignAddress, unsigned short foreignPort);
 
 private:
     // Access for TCPServerSocket::accept() connection creation
@@ -224,8 +223,7 @@ public:
      *                   connection requests (default 5)
      *   @exception SocketException thrown if unable to create TCP server socket
      */
-    TCPServerSocket(unsigned short localPort, int queueLen = 5)
-   ;
+    TCPServerSocket(unsigned short localPort, int queueLen = 5);
 
     /**
      *   Construct a TCP socket for use with a server, accepting connections
@@ -236,15 +234,15 @@ public:
      *                   connection requests (default 5)
      *   @exception SocketException thrown if unable to create TCP server socket
      */
-    TCPServerSocket(const string &localAddress, unsigned short localPort,
-                    int queueLen = 5);
+    TCPServerSocket(const string& localAddress, unsigned short localPort,
+        int queueLen = 5);
 
     /**
      *   Blocks until a new connection is established on this socket or error
      *   @return new connection socket
      *   @exception SocketException thrown if attempt to accept a new connection fails
      */
-    TCPSocket *accept();
+    TCPSocket* accept();
 
 private:
     void setListen(int queueLen);
@@ -274,8 +272,7 @@ public:
      *   @param localPort local port
      *   @exception SocketException thrown if unable to create UDP socket
      */
-    UDPSocket(const string &localAddress, unsigned short localPort)
-   ;
+    UDPSocket(const string& localAddress, unsigned short localPort);
 
     /**
      *   Unset foreign address and port
@@ -294,8 +291,8 @@ public:
      *   @return true if send is successful
      *   @exception SocketException thrown if unable to send datagram
      */
-    void sendTo(const void *buffer, int bufferLen, const string &foreignAddress,
-                unsigned short foreignPort);
+    void sendTo(const void* buffer, int bufferLen, const string& foreignAddress,
+        unsigned short foreignPort);
 
     /**
      *   Read read up to bufferLen bytes data from this socket.  The given buffer
@@ -307,8 +304,8 @@ public:
      *   @return number of bytes received and -1 for error
      *   @exception SocketException thrown if unable to receive datagram
      */
-    int recvFrom(void *buffer, int bufferLen, string &sourceAddress,
-                 unsigned short &sourcePort);
+    int recvFrom(void* buffer, int bufferLen, string& sourceAddress,
+        unsigned short& sourcePort);
 
     /**
      *   Set the multicast TTL
@@ -322,14 +319,14 @@ public:
      *   @param multicastGroup multicast group address to join
      *   @exception SocketException thrown if unable to join group
      */
-    void joinGroup(const string &multicastGroup);
+    void joinGroup(const string& multicastGroup);
 
     /**
      *   Leave the specified multicast group
      *   @param multicastGroup multicast group address to leave
      *   @exception SocketException thrown if unable to leave group
      */
-    void leaveGroup(const string &multicastGroup);
+    void leaveGroup(const string& multicastGroup);
 
 private:
     void setBroadcast();

@@ -1,0 +1,17 @@
+# Run Profile Format
+# VARIABLE : <VALUE>
+# NOTE: This is NOT a correlation between variable name and value. The ordering between software parameters here and in
+# software_parameters.h MUST match.
+# To ensure the right ordering is used, please validate the run_profile file
+# via utils/validate_run_profile.py
+
+# Nominal run - Uses original codebase values
+
+PUMPDOWN_TIMEOUT                   : 300000000
+MAXIMUM_RUN_TIME                   : 30000000
+RUN_RETRO_COUNT                    : 3
+BRAKING_CHECK_PRESSURE_TIMEOUT     : 5000000
+BRAKING_CHECK_RMS_TIMEOUT          : 10000000
+BRAKING_TRANSITION_STOPPED_TIMEOUT : 15000000
+CRAWL_RETRO_COUNT                  : 2
+MAXIMUM_CRAWL_TIME                 : 5000000

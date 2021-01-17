@@ -1,14 +1,15 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include <hv_iox.h>
-#include <transitions.h>
-#include <state_machine.h>
 #include <motor.h>
-extern "C"
-{
+#include <state_machine.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <transitions.h>
+
+extern "C" {
 #include <data.h>
-#include <braking.h>
 #include <rms.h>
+#include <braking.h>
+
 }
 
 extern stateMachine_t stateMachine;
@@ -72,8 +73,7 @@ int genBraking()
 {
     printf("BRAKING!\n");
     clrMotorEn();
-    if (getRmsDcBusVoltage() > 60)
-    {
+    if (getRmsDcBusVoltage() > 60) {
         usleep(50000);
         rmsCmdNoTorque();
         usleep(50000);
@@ -91,8 +91,7 @@ int genBraking()
 
 int genStopped()
 {
-    if (getRmsDcBusVoltage() > 60)
-    {
+    if (getRmsDcBusVoltage() > 60) {
         rmsCmdNoTorque();
         rmsDischarge();
         rmsInvDis();
@@ -115,8 +114,7 @@ int genCrawl()
 int genPostRun()
 {
     clrMotorEn();
-    if (getRmsDcBusVoltage() > 60)
-    {
+    if (getRmsDcBusVoltage() > 60) {
         usleep(1000);
         rmsCmdNoTorque();
         usleep(1000);

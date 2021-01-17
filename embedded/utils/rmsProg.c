@@ -1,28 +1,27 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <rms.h>
-#include <data.h>
 #include <can.h>
+#include <data.h>
 #include <errno.h>
-#include <stdlib.h>
 #include <pthread.h>
+#include <rms.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
+void* listenForResponse(void* addr);
 
-void *listenForResponse(void *addr);
+const char* RMS_CAN_CODES_URL = "https://app.box.com/s/4fb49r9p6lzfz4uwcb5izkxpcwh768vc";
 
-const char *RMS_CAN_CODES_URL =
-    "https://app.box.com/s/4fb49r9p6lzfz4uwcb5izkxpcwh768vc";
-
-void printUsage() {
+void printUsage()
+{
     printf("Usage: ./rmsProg [w|r] [parameter ID] [value]\n\n");
     printf("Help:\n\tSelect either (w)rite or (r)ead ");
     printf("then enter the parameter address found here: \n\t\t%s)\n", RMS_CAN_CODES_URL);
     printf("\n\tIf you are writing, add a value, otherwise ignore the last parameter\n");
 }
 
-
-uint16_t safeConvert(char *input) {
+uint16_t safeConvert(char* input)
+{
     errno = 0;
     uint16_t ret = strtol(input, NULL, 0);
     if (errno != 0 && ret == 0) {
@@ -32,7 +31,8 @@ uint16_t safeConvert(char *input) {
     return ret;
 }
 
-int confirmInput(uint16_t addr, int val) {
+int confirmInput(uint16_t addr, int val)
+{
     printf("You are about to write (in decimal) value: %d to address: %d\n", val, addr);
     printf("Is this what you intended? (y/n)\n");
     char c = getchar();
@@ -41,10 +41,11 @@ int confirmInput(uint16_t addr, int val) {
 
 static bool writeEeprom = false;
 
-void *listenForResponse(void *arg) {
-    uint16_t addr = *((uint16_t*) arg);
+void* listenForResponse(void* arg)
+{
+    uint16_t addr = *((uint16_t*)arg);
     uint16_t val;
-    while(1) {
+    while (1) {
         struct can_frame canMesg;
         if (!canRead(&canMesg)) {
             if (canMesg.can_id == 0xC2) {
@@ -64,7 +65,8 @@ void *listenForResponse(void *arg) {
     return NULL;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     if (argc < 3) {
         printUsage();
         return 0;
@@ -83,7 +85,7 @@ int main(int argc, char *argv[]) {
 
     uint16_t addr = safeConvert(argv[2]);
     pthread_t canRxThread;
-    pthread_create(&canRxThread, NULL, &listenForResponse, (void *)&addr);
+    pthread_create(&canRxThread, NULL, &listenForResponse, (void*)&addr);
     if (writeEeprom) {
         if (argc < 4) {
             printf("Please enter a parameter address and a value\n");

@@ -1,15 +1,13 @@
+#include "hv_iox.h"
+#include <TelemetryLoop.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
-#include <TelemetryLoop.h>
-#include "hv_iox.h"
-extern "C"
-{
-#include "motor.h"
+extern "C" {
+#include "can_devices.h"
+#include "data.h"
 #include "motor.h"
 #include "proc_iox.h"
-#include "data.h"
-#include "can_devices.h"
 #include "state_machine.h"
 }
 
@@ -17,12 +15,12 @@ HVIox hv_iox;
 
 int init()
 {
-  initData();
-  SetupTelemetry((char *)"127.0.0.1", 33333);
+    initData();
+    SetupTelemetry((char*)"127.0.0.1", 33333);
 }
 int main()
 {
-  init();
-  while (1)
-    ;
+    init();
+    while (1)
+        ;
 }

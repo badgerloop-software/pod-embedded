@@ -1,30 +1,30 @@
-extern "C"
-{
-#include <stdio.h>
+extern "C" {
 #include <data.h>
-#include <retro.h>
 #include <imu.h>
-#include <string.h>
 #include <nav.h>
+#include <retro.h>
+#include <stdio.h>
+#include <string.h>
 }
-#include <hv_iox.h>
-#include <TelemetryLoop.h>
 #include "connStat.h"
+#include <TelemetryLoop.h>
+#include <hv_iox.h>
 #define ROLL "roll"
 #define EXP "exp"
 #define RAW "raw"
 
 extern void initNav();
 HVIox hv_iox;
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-  initData();
-/*  SetupIMU();*/
-  initRetros();
-  initNav();
-  
-  SetupTelemetry((char *)DASHBOARD_IP, 33333);
-  joinRetroThreads();
+    initData();
+    /*  SetupIMU();*/
+    initRetros();
+    initNav();
 
-  while(1);
+    SetupTelemetry((char*)DASHBOARD_IP, 33333);
+    joinRetroThreads();
+
+    while (1)
+        ;
 }

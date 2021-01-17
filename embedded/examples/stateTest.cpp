@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include <hv_iox.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <state_machine.h>
 #include <states.h>
-#include <hv_iox.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
 extern "C" {
 #include <data.h>
@@ -14,7 +14,7 @@ extern "C" {
 #define PASS 0
 #define FAIL 1
 
-#define WAIT(x) (usleep((x) * 1000000.0))
+#define WAIT(x) (usleep((x)*1000000.0))
 
 /* So that we don't have any changes made to the statemachine reverted mid-setup */
 #define FREEZE_SM (sem_wait(&smSem))
@@ -23,12 +23,14 @@ extern "C" {
 #define PASS_STR "\033[1;32m[PASS]\033[0m "
 #define FAIL_STR "\033[1;31m[FAIL]\033[0m "
 
-#define ASSERT_STATE_IS(x) \
-        (!strcmp((getCurrState()->name), (findState(x)->name)) \
-        ? PASS : FAIL)
+#define ASSERT_STATE_IS(x)                                 \
+    (!strcmp((getCurrState()->name), (findState(x)->name)) \
+            ? PASS                                         \
+            : FAIL)
 
-#define RUN_TEST(x) (x() == PASS \
-    ? printf(PASS_STR #x "\n\n") : printf(FAIL_STR #x " @ state %s\n\n", getCurrState()->name))
+#define RUN_TEST(x) (x() == PASS     \
+        ? printf(PASS_STR #x "\n\n") \
+        : printf(FAIL_STR #x " @ state %s\n\n", getCurrState()->name))
 
 #define BANNER(x) (printf("----STARTING %s----\n", (x)))
 
@@ -36,9 +38,9 @@ static pthread_t smThread;
 static sem_t smSem;
 HVIox hv_iox;
 
-static void genericInit(char *name);
-static void goToState(char *name);
-static int checkForChange(char *name);
+static void genericInit(char* name);
+static void goToState(char* name);
+static int checkForChange(char* name);
 extern stateMachine_t stateMachine;
 
 /***********************************
@@ -77,81 +79,84 @@ extern stateMachine_t stateMachine;
  */
 
 /* Battery low */
-static int hvBattSOCLowTest() 
-    {
+static int hvBattSOCLowTest()
+{
     FREEZE_SM;
     genericInit("High V SOC Low Test");
     goToState(PUMPDOWN_NAME);
     UNFREEZE_SM;
 
-    WAIT(0.5);    
-    
-    if (checkForChange(PUMPDOWN_NAME) != PASS) return FAIL;
-    
-    setBmsSoc(50);
-    
     WAIT(0.5);
-    
-    return ASSERT_STATE_IS(NON_RUN_FAULT_NAME);
-    }
 
-static int bmsTest() {
+    if (checkForChange(PUMPDOWN_NAME) != PASS)
+        return FAIL;
+
+    setBmsSoc(50);
+
+    WAIT(0.5);
+
+    return ASSERT_STATE_IS(NON_RUN_FAULT_NAME);
+}
+
+static int bmsTest()
+{
     //min voltage, max temp, SOC, Current, packV
     FREEZE_SM;
     genericInit("BMS passes health checks");
     UNFREEZE_SM;
-    
 
     WAIT(0.5);
-    return 0;    
+    return 0;
 }
 
 /* Voltage Low, pack and cell */
-static int hvBattLowVoltTest() 
-    {
+static int hvBattLowVoltTest()
+{
     FREEZE_SM;
     genericInit("High V Low Voltage Test");
     goToState(PROPULSION_NAME);
     UNFREEZE_SM;
     WAIT(0.5);
-    
-    if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
+
+    if (checkForChange(PROPULSION_NAME) != PASS)
+        return FAIL;
 
     setBmsPackVoltage(200);
 
     WAIT(0.5);
 
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
+}
 
 static int rmsOverheatTest()
-    {
+{
     FREEZE_SM;
     genericInit("RMS Overheating Test");
     goToState(PROPULSION_NAME);
     UNFREEZE_SM;
-    
+
     WAIT(.5);
-   
-    if (checkForChange(PROPULSION_NAME) != PASS) return FAIL;
+
+    if (checkForChange(PROPULSION_NAME) != PASS)
+        return FAIL;
 
     setRmsIgbtTemp(150);
     WAIT(.5);
 
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
+}
 
 /* Missed 5 tape strips in a row */
 static int navMissedRetroTest()
-    {
+{
 
     genericInit("Nav Missed 5 Retro Test");
 
     return ASSERT_STATE_IS(RUN_FAULT_NAME);
-    }
+}
 
 static int crawlTimerTest()
-    {
+{
     FREEZE_SM;
     genericInit("Crawl Timer Test");
     goToState(CRAWL_NAME);
@@ -159,31 +164,28 @@ static int crawlTimerTest()
 
     WAIT(.5);
 
-    if (checkForChange(CRAWL_NAME) != PASS) return FAIL;
-    
+    if (checkForChange(CRAWL_NAME) != PASS)
+        return FAIL;
 
     printf("check\n");
 
     uint64_t offset = getuSTimestamp();
-    
+
     for (int i = 0; i < (30 * 5); i++) {
         printf("crawl timer: %llu\r", getuSTimestamp() - getTimersCrawlTimer());
         fflush(stdin);
         usleep(200000);
     }
-   
+
     WAIT(.2);
 
     return ASSERT_STATE_IS(BRAKING_NAME);
-
-    }
-
+}
 
 /* PV depressurizing.*/
 static int pvDepressurizingTest()
-    {
-    char *statesToTest[] = 
-        {
+{
+    char* statesToTest[] = {
         PUMPDOWN_NAME,
         PROPULSION_NAME,
         BRAKING_NAME,
@@ -191,12 +193,11 @@ static int pvDepressurizingTest()
         CRAWL_NAME,
         POST_RUN_NAME,
         NULL
-        };
+    };
     int i = 0;
     char testName[100];
 
-    for (i = 0; statesToTest[i] != NULL; i++) 
-        {
+    for (i = 0; statesToTest[i] != NULL; i++) {
         FREEZE_SM;
         sprintf(testName, "PV Losing Pressure in %s", statesToTest[i]);
         genericInit(testName);
@@ -204,40 +205,38 @@ static int pvDepressurizingTest()
         UNFREEZE_SM;
         WAIT(.2);
 
-/*        if (checkForChange(statesToTest[i]) == FAIL) return FAIL;*/
-        
-        setPressurePv(5);
-        
-        WAIT(.5);
-        
-        if (ASSERT_STATE_IS(NON_RUN_FAULT_NAME) != PASS &&
-                ASSERT_STATE_IS(RUN_FAULT_NAME) != PASS)
-            return FAIL;
-        printf(PASS_STR"in %s\n",statesToTest[i]);
-        }
-    return PASS;
-    }
+        /*        if (checkForChange(statesToTest[i]) == FAIL) return FAIL;*/
 
-void *stateMachineLoop() 
-    {
-    while(1)
-        {
+        setPressurePv(5);
+
+        WAIT(.5);
+
+        if (ASSERT_STATE_IS(NON_RUN_FAULT_NAME) != PASS && ASSERT_STATE_IS(RUN_FAULT_NAME) != PASS)
+            return FAIL;
+        printf(PASS_STR "in %s\n", statesToTest[i]);
+    }
+    return PASS;
+}
+
+void* stateMachineLoop()
+{
+    while (1) {
         sem_wait(&smSem);
         runStateMachine();
         sem_post(&smSem);
         WAIT(.1);
-        }
-    return NULL;
     }
+    return NULL;
+}
 
-        
-/* Drives the tests */        
-int main() {
+/* Drives the tests */
+int main()
+{
     initData();
     buildStateMachine();
-/*    genericInit();*/
+    /*    genericInit();*/
     if (sem_init(&smSem, 0, 1) != 0) {
-        return -1;   
+        return -1;
     }
     if (pthread_create(&smThread, NULL, (void* (*)(void*))stateMachineLoop, NULL) != 0)
         return -1;
@@ -251,10 +250,10 @@ int main() {
     sem_destroy(&smSem);
 }
 
-
 /* Helpers for each test */
 
-static void genericInit(char *name) {
+static void genericInit(char* name)
+{
     BANNER(name);
     goToState(IDLE_NAME);
 
@@ -265,11 +264,11 @@ static void genericInit(char *name) {
     setFlagsEmergencyBrake(0);
     setFlagsShouldStop(0);
     setFlagsShutdown(0);
-    
+
     setTimersStartTime(getuSTimestamp());
     setTimersOldRetro(0);
     setTimersLastRetro(0);
-    
+
     setPressurePrimTank(1500);
     setPressurePrimLine(200);
     setPressurePrimAct(1);
@@ -283,7 +282,6 @@ static void genericInit(char *name) {
     setMotionAccel(0);
     setMotionRetroCount(0);
 
-    
     setBmsPackCurrent(0);
     setBmsPackVoltage(270);
     setBmsPackDCL(0);
@@ -328,15 +326,16 @@ static void genericInit(char *name) {
     setRmsKeyMode(0);
 }
 
-static void goToState(char *name) {
+static void goToState(char* name)
+{
     stateMachine.currState = findState(name);
 }
 
-static int checkForChange(char *name) {
-    if (ASSERT_STATE_IS(name) != PASS)
-        {
+static int checkForChange(char* name)
+{
+    if (ASSERT_STATE_IS(name) != PASS) {
         fprintf(stderr, "Failed to stay in state: %s\n", name);
         return FAIL;
-        }
+    }
     return PASS;
 }

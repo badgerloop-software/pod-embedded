@@ -1,17 +1,17 @@
 #ifndef __LV_IOX_H__
 #define __LV_IOX_H__
 
-#include <stdbool.h>
 #include <mcp23017.h>
+#include <stdbool.h>
 
-#define SOLENOID_0  MCP_GPIOB_0
-#define SOLENOID_1  MCP_GPIOB_1
-#define SOLENOID_2  MCP_GPIOB_2
-#define SOLENOID_3  MCP_GPIOB_3
-#define SOLENOID_4  MCP_GPIOB_4
-#define SOLENOID_5  MCP_GPIOB_5
-#define SOLENOID_6  MCP_GPIOB_6
-#define SOLENOID_7  MCP_GPIOB_7
+#define SOLENOID_0 MCP_GPIOB_0
+#define SOLENOID_1 MCP_GPIOB_1
+#define SOLENOID_2 MCP_GPIOB_2
+#define SOLENOID_3 MCP_GPIOB_3
+#define SOLENOID_4 MCP_GPIOB_4
+#define SOLENOID_5 MCP_GPIOB_5
+#define SOLENOID_6 MCP_GPIOB_6
+#define SOLENOID_7 MCP_GPIOB_7
 
 #define SEC_LIM_SWITCH MCP_GPIOA_1
 #define PRIM_LIM_SWITCH MCP_GPIOA_3

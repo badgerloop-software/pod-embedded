@@ -5,8 +5,11 @@ project(testlib VERSION 1.0
 # Define sources
 set(dependencies example/Test_GTest.cpp)
 set(dependencies components/HV_Iox/Test_HV_Iox.cpp)
+set(dependencies example/Test_GTest.cpp
+                 run_profiles/Test_load_software_parameters.cpp)
 
-set(libraries middleware 
+set(libraries app
+              middleware 
               data 
               peripherals 
               drivers
@@ -15,6 +18,7 @@ set(libraries middleware
 # Configure tests library                
 add_library(tests ${dependencies})
 target_link_libraries(tests PRIVATE ${libraries})
+target_include_directories(tests PUBLIC include)
 
 # Run Autocoder
 add_dependencies(tests autocoder)

@@ -20,7 +20,7 @@ will make a list.)
 
 Eg:
 
-```
+```Makefile
 #set importantDirectory to /usr/local/bin
 set(importantDirectory /usr/local/bin) 
 
@@ -37,7 +37,7 @@ executables and libraries.
 
 To create a library that is imported by other executables, we use the following
 
-```
+```Makefile
 #Define the project for the library
 project(foobarlib VERSION 1.0
                   DESCRIPTION "The foobar library"
@@ -85,7 +85,7 @@ Dependencies for executables should always be `PRIVATE`.
 
 To make an executable, simply use
 
-```
+```Makefile
 add_executable(binaryName, sourceFile1.c
                            sourceFile2.c
                            sourceFileN.c) 

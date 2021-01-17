@@ -1,8 +1,8 @@
 #ifndef __PROC_IOX_H__
 #define __PROC_IOX_H__
 
-#include <stdbool.h>
 #include <mcp23017.h>
+#include <stdbool.h>
 
 #define DEBUG_LED_0 MCP_GPIOB_4
 #define DEBUG_LED_1 MCP_GPIOB_5

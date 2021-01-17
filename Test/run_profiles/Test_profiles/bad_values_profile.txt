@@ -1,0 +1,14 @@
+# Bad profile
+
+PUMPDOWN_TIMEOUT                   : 300000000
+MAXIMUM_RUN_TIME                   : 30000000
+RUN_RETRO_COUNT                    : 3
+BRAKING_CHECK_PRESSURE_TIMEOUT     : 5000000
+
+# Following is bad
+BRAKING_CHECK_RMS_TIMEOUT          : abcdefg
+
+# Rest are good
+BRAKING_TRANSITION_STOPPED_TIMEOUT : 15000000
+CRAWL_RETRO_COUNT                  : 2
+MAXIMUM_CRAWL_TIME                 : 5000000

@@ -1,15 +1,13 @@
-#include <stdio.h>
+#include <hv_iox.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include <hv_iox.h>
+#include <stdio.h>
 
-extern "C"
-{
-#include <proc_iox.h>
+extern "C" {
 #include <data.h>
 #include <i2c.h>
 #include <mcp23017.h>
+#include <proc_iox.h>
 }
 
 #define HV_IO_ADDR 0x24
@@ -37,8 +35,7 @@ int HVIox::init(bool hardStart)
 {
     if (setupMCP(&iox, HV_IO_ADDR) != 0)
         isInit = false;
-    if (hardStart)
-    {
+    if (hardStart) {
         if (clearSettingsMCP(&iox) != 0)
             isInit = false;
         if (this->setupIox() != 0)
