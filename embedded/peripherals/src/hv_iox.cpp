@@ -26,7 +26,6 @@ static int setupIox(void);
  *      state of everything.
  *
  */
-bool isInit = true;
 HVIox::HVIox()
 {
 }
