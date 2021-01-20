@@ -9,8 +9,8 @@
 /* Uncomment define for additional prints in the parser */
 /*#define DEBUG_RMS*/
 
-#define TORQUE_SCALE_LWR(x) (((x) & 0xFF) * 10.0)  /* Converts Nm to the value the RMS wants */
-#define TORQUE_SCALE_UPR(x) (((x) >> 8) * 10.0)
+#define TORQUE_SCALE_LWR(x) (((x) & 0xFF) * 10)  /* Converts Nm to the value the RMS wants */
+#define TORQUE_SCALE_UPR(x) (((x) >> 8) * 10)
 /* The following send functions are a series of cryptic steps
  * that just magically make the RMS (Motor Controller) work. 
  * If you question them too hard you may burst into flames (along with the motor
@@ -111,19 +111,19 @@ int RMS::rmsIdleHb() {
     return ret;
 }
 
-int RMS::rmsWriteEeprom(uint16_t addr, uint16_t val) {
+int RMS::rmsWriteEeprom(uint8_t addr, uint8_t val) {
     uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x1, 0x0,
         val & 0xff, (val >> 8), 0x0, 0x0};
     return canSend(RMS_EEPROM_SEND_ID, payload, 8);
 }
 
-int RMS::rmsReadEeprom(uint16_t addr) {
-    uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x0, 0x0,
+int RMS::rmsReadEeprom(uint8_t addr) {
+    uint8_t payload[] = {(uint8_t) addr & 0xff, (addr >> 8), 0x0, 0x0,
         0x0, 0x0, 0x0, 0x0};
     return canSend(RMS_EEPROM_SEND_ID, payload, 8);
 }
 
-static uint16_t RMS::convRmsDataFormat(uint8_t byte1, uint8_t byte2) {
+static uint16_t convRmsDataFormat(uint8_t byte1, uint8_t byte2) {
     return byte1 | (byte2 << 8);
 }
 

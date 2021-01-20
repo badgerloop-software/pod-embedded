@@ -32,8 +32,8 @@ class RMS {
         int rmsDischarge();
         int rmsIdleHb();
         int rmsSendHbMsg(uint16_t torque); 
-        int rmsWriteEeprom(uint16_t addr, uint16_t val);
-        int rmsReadEeprom(uint16_t addr);
+        int rmsWriteEeprom(uint8_t addr, uint8_t val);
+        int rmsReadEeprom(uint8_t addr);
         int rmsCmdResponseParse(uint8_t *rmsData, uint16_t filter, bool write);
         int rmsInvEnNoTorque();
 
