@@ -34,11 +34,11 @@ void emergQuitter(int sig, siginfo_t *inf, void *nul)
 {
     printf("shutdown\n");
     hv_iox.setMCUHVEnabled(false);
-    rmsCmdNoTorque();
+    rms.rmsCmdNoTorque();
     sleep(1);
-    rmsDischarge();
+    rms.rmsDischarge();
     sleep(1);
-    rmsInvDis();
+    rms.rmsInvDis();
     exit(0);
 }
 

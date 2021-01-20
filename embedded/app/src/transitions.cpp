@@ -22,13 +22,13 @@ int genTranAction()
 int genIdle()
 {
     setFlagsBrakeInit(true);
-    if (rmsCmdNoTorque() != 0)
+    if (rms.rmsCmdNoTorque() != 0)
         fprintf(stderr, "Failed in genIdle, 1\n");
     usleep(50000);
-    if (rmsDischarge() != 0)
+    if (rms.rmsDischarge() != 0)
         fprintf(stderr, "Failed in genIdle, 2\n");
     usleep(50000);
-    if (rmsInvDis() != 0)
+    if (rms.rmsInvDis() != 0)
         fprintf(stderr, "Failed in genIdle, 3\n");
     hv_iox.setMCUHVEnabled(false);
     return 0;
@@ -43,11 +43,11 @@ int genPumpdown()
     usleep(10000);
     hv_iox.setMCUHVEnabled(true);
     sleep(1);
-    if (rmsEnHeartbeat() != 0)
+    if (rms.rmsEnHeartbeat() != 0)
         printf("EEERR0\n");
-    if (rmsClrFaults() != 0)
+    if (rms.rmsClrFaults() != 0)
         printf("eeE1\n");
-    if (rmsInvDis() != 0)
+    if (rms.rmsInvDis() != 0)
         printf("EEERR2\n");
     stateMachine.start = getuSTimestamp();
     return 0;
@@ -75,11 +75,11 @@ int genBraking()
     if (getRmsDcBusVoltage() > 60)
     {
         usleep(50000);
-        rmsCmdNoTorque();
+        rms.rmsCmdNoTorque();
         usleep(50000);
-        rmsDischarge();
+        rms.rmsDischarge();
         usleep(50000);
-        rmsInvDis();
+        rms.rmsInvDis();
         usleep(50000);
     }
     hv_iox.setMCUHVEnabled(false);
@@ -93,9 +93,9 @@ int genStopped()
 {
     if (getRmsDcBusVoltage() > 60)
     {
-        rmsCmdNoTorque();
-        rmsDischarge();
-        rmsInvDis();
+        rms.rmsCmdNoTorque();
+        rms.rmsDischarge();
+        rms.rmsInvDis();
     }
     printf("Proper stopper\n");
     setFlagsBrakeInit(true);
@@ -118,11 +118,11 @@ int genPostRun()
     if (getRmsDcBusVoltage() > 60)
     {
         usleep(1000);
-        rmsCmdNoTorque();
+        rms.rmsCmdNoTorque();
         usleep(1000);
-        rmsDischarge();
+        rms.rmsDischarge();
         usleep(1000);
-        rmsInvDis();
+        rms.rmsInvDis();
         usleep(1000);
     }
     hv_iox.setMCUHVEnabled(0);
@@ -139,11 +139,11 @@ int genServPrecharge()
     hv_iox.setMCULatch(false);
     hv_iox.setMCUHVEnabled(true);
     sleep(1);
-    if (rmsEnHeartbeat() != 0)
+    if (rms.rmsEnHeartbeat() != 0)
         printf("EEERR0\n");
-    if (rmsClrFaults() != 0)
+    if (rms.rmsClrFaults() != 0)
         printf("eeE1\n");
-    if (rmsInvDis() != 0)
+    if (rms.rmsInvDis() != 0)
         printf("EEERR2\n");
     return 0;
 }
@@ -153,13 +153,13 @@ int genRunFault()
     printf("Entering here\n");
     clrMotorEn();
     usleep(1000);
-    rmsCmdNoTorque();
+    rms.rmsCmdNoTorque();
     printf("Entering here2\n");
     usleep(1000);
-    rmsDischarge();
+    rms.rmsDischarge();
     printf("Entering here3\n");
     usleep(1000);
-    rmsInvDis();
+    rms.rmsInvDis();
     usleep(1000);
 
     hv_iox.setMCUHVEnabled(0);
@@ -175,13 +175,13 @@ int genNonRunFault()
     clrMotorEn();
     printf("non run0\n");
     usleep(1000);
-    rmsCmdNoTorque();
+    rms.rmsCmdNoTorque();
     printf("non run0\n");
     usleep(1000);
-    rmsDischarge();
+    rms.rmsDischarge();
     printf("non run0\n");
     usleep(1000);
-    rmsInvDis();
+    rms.rmsInvDis();
     usleep(1000);
     hv_iox.setMCUHVEnabled(0);
     printf("non run0\n");

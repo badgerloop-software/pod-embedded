@@ -400,11 +400,11 @@ stateTransition_t * nonRunFaultAction() {
     if (mcuDisPulse >= 50) {
         clrMotorEn();
         usleep(1000);
-        rmsCmdNoTorque();
+        rms.rmsCmdNoTorque();
         usleep(1000);
-        rmsDischarge();
+        rms.rmsDischarge();
         usleep(1000);
-        rmsInvDis();
+        rms.rmsInvDis();
         usleep(1000);
         hv_iox.setMCUHVEnabled(0);
         mcuDisPulse = 0;
@@ -425,11 +425,11 @@ stateTransition_t * runFaultAction() {
         clrMotorEn();
         usleep(1000);
        
-        rmsCmdNoTorque();
+        rms.rmsCmdNoTorque();
         usleep(1000);
-        rmsDischarge();
+        rms.rmsDischarge();
         usleep(1000);
-        rmsInvDis();
+        rms.rmsInvDis();
         usleep(1000);
         mcuDisPulse = 0;
     } else {

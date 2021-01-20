@@ -55,11 +55,11 @@ static void *motorHbLoop(void *arg) {
     (void) arg;
     while(1) {
         if (motorEnabled)
-            rmsSendHbMsg(2);
+            rms.rmsSendHbMsg(2);
         else if (lowTorqueMode)
-            rmsSendHbMsg(2);
+            rms.rmsSendHbMsg(2);
         else
-            rmsIdleHb();
+            rms.rmsIdleHb();
         usleep(10000);
     }
     

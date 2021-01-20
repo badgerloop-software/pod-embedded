@@ -118,7 +118,7 @@ int RMS::rmsWriteEeprom(uint8_t addr, uint8_t val) {
 }
 
 int RMS::rmsReadEeprom(uint8_t addr) {
-    uint8_t payload[] = {(uint8_t) addr & 0xff, (addr >> 8), 0x0, 0x0,
+    uint8_t payload[] = {addr & 0xff, (addr >> 8), 0x0, 0x0,
         0x0, 0x0, 0x0, 0x0};
     return canSend(RMS_EEPROM_SEND_ID, payload, 8);
 }
