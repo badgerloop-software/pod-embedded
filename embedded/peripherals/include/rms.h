@@ -44,8 +44,5 @@ extern RMS rms;
 extern "C"
 {
 }
-#else
-    extern struct RMS rms;
 #endif
 #endif
-

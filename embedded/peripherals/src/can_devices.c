@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "can.h"
 #include "bms.h"
-#include "rms.h"
+#include <rms.h>
 #include "can_devices.h"
 #include "motor.h"
 #include "semaphore.h"

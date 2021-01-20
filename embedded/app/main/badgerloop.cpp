@@ -28,6 +28,7 @@ extern "C"
 }
 
 HVIox hv_iox;
+RMS rms;
 
 
 void emergQuitter(int sig, siginfo_t *inf, void *nul)
