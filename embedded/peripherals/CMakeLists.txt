@@ -8,7 +8,7 @@ add_library(peripherals src/batt.c
                         src/NCD9830DBR2G.c
                         src/retro.c
                         src/bms.c
-                        src/can_devices.c
+                        src/can_devices.cpp
                         src/imu.c
                         src/mcp23017.c
                         src/proc_iox.c

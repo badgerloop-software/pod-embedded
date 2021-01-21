@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "can.h"
 #include <stdint.h>
 #include <rms.h>
+extern "C" {
+#include "can.h"
 #include "data.h"
 #include "can_devices.h"
+}
 
 /* Uncomment define for additional prints in the parser */
 /*#define DEBUG_RMS*/
