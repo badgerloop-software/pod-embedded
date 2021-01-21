@@ -4,10 +4,10 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <rms.h>
+#include <can_devices.h>
 extern "C" {
 #include "motor.h"
 #include "semaphore.h"
-#include "can_devices.h"
 #include "can.h"
 #include "bms.h"
 }
@@ -35,6 +35,7 @@ void rx_recv(struct can_frame *can_mesg){
 		//		printf("RMS Data parsed successfully\n");
 				validRMSMesg = true;
 			}
+            
 			if(!validRMSMesg && bmsParseMsg(can_mesg->can_id, can_mesg->data)){
 /*				printf("BMS Data parsed successfully\n");*/
 /*				//dumpCells();*/

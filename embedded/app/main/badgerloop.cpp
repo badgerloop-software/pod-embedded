@@ -9,6 +9,8 @@
 #include "hv_iox.h"
 #include "motor.h"
 #include "state_machine.h"
+#include <can_devices.h>
+#include <rms.h>
 
 // Temp
 #include <chrono>
@@ -20,10 +22,8 @@ extern "C"
 #include "bbgpio.h"
 #include "connStat.h"
 #include <signal.h>
-#include <rms.h>
 #include "proc_iox.h"
 #include "data.h"
-#include "can_devices.h"
 #include "NCD9830DBR2G.h"
 }
 
