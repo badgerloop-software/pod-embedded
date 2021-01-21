@@ -41,8 +41,5 @@ class RMS {
         int rms_parser(uint32_t id, uint8_t *data, uint32_t filter);
 };
 extern RMS rms;
-extern "C"
-{
-}
 #endif
 #endif

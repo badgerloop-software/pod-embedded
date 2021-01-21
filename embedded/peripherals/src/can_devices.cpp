@@ -25,7 +25,7 @@ void SetupCANDevices(){
 	}
 }
 
-void rx_recv(struct can_frame *can_mesg){
+void rx_recv(struct can_frame *can_mesg) {
             
 	    if(!canRead(can_mesg)){ // Checks for a CAN message
 		//	printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
