@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <signal.h>
-#include "rms.h"
-#include "can.h"
+#include <rms.h>
+#include <can.h>
 
 extern "C" {
 #include <data_dump.h>
@@ -24,48 +24,49 @@ void motorHbs(void);
 void testLoop(void);
 
 data_t *data;
+RMS rms;
 
 void motorHbs() {
 	while (1) {
 		if (motorIsEnabled) {
-			rmsInvEn();
+			rms.rmsInvEn();
 		} else if (noTorqueMode) {
-			rmsInvEnNoTorque();
+			rms.rmsInvEnNoTorque();
 		} else {
-			rmsIdleHb();
+			rms.rmsIdleHb();
 		}
 
 		usleep(10000);
 	}
 }
 
-void quitHandler() {
+void quitHandler(int, siginfo_t*, void*) {
 	printf("\n\n\n\n\nSHUTDOWN \n\n\n");
 	motorIsEnabled = false;
 	noTorqueMode = false;
 	sleep(1);
-	rmsCmdNoTorque();
+	rms.rmsCmdNoTorque();
 	sleep(4);
-	rmsDischarge();
+	rms.rmsDischarge();
 	sleep(1);
-	rmsInvDis();
+	rms.rmsInvDis();
 	exit(0);
 }
 
 void testLoop() {
 	//	usleepm,(100);
-	rmsEnHeartbeat();
+	rms.rmsEnHeartbeat();
 	//  usleep(1000);
-	rmsClrFaults();
+	rms.rmsClrFaults();
 	//	usleep(1000);
-	rmsInvDis();
+	rms.rmsInvDis();
 	sleep(3);
 
-	//    rmsEepromMsg(143, 0, WR_EEPROM);
+	//    rms.rmsEepromMsg(143, 0, WR_EEPROM);
 	motorIsEnabled = true;
 	noTorqueMode = true;
 	usleep(100);
-	//	rmsEepromMsg(143, 0, RD_EEPROM);
+	//	rms.rmsEepromMsg(143, 0, RD_EEPROM);
 	usleep(100);
 	while(1);
 	//	while (getRmsVSMCode() != 5) {
@@ -80,16 +81,16 @@ void testLoop() {
 	   sleep(30);
 	   notorquemode = false;
 	   sleep(1);
-	   rmscmdnotorque();
+	   rms.rmscmdnotorque();
 	   sleep(4);
-	   rmsdischarge();
+	   rms.rmsdischarge();
 	   sleep(1);
-	   rmsinvdis(); */
+	   rms.rmsinvdis(); */
 }
 
 void spinMotor() {
-	pthread_create(&motorThreads[0], NULL, (void*) motorHbs, NULL);
-	pthread_create(&motorThreads[1], NULL, (void*) testLoop, NULL);
+	pthread_create(&motorThreads[0], NULL, (void* (*)(void*)) motorHbs, NULL);
+	pthread_create(&motorThreads[1], NULL, (void* (*)(void*)) testLoop, NULL);
 	//				pthread_create(&motorThreads[2], NULL, (void*) canRX, NULL);
 	printf("thread spawn\n");
 	//	pthread_join(motorThreads[2], NULL);
@@ -105,7 +106,7 @@ int main() {
 	initCan();
     printf("canINit\n");
 /*	SetupCANDevices();*/
-    //	rmsConfig();
+    //	rms.rmsConfig();
 	struct sigaction sig;
 	sig.sa_sigaction = quitHandler;
 	printf("SIGACTION %d\n",sigaction(SIGINT, &sig, NULL));

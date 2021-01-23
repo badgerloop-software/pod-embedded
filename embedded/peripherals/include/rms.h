@@ -1,4 +1,5 @@
 #ifndef _RMS__H__
+#ifdef __cplusplus
 #define _RMS__H__
 
 #include <stdint.h>
@@ -40,5 +41,6 @@ class RMS {
         int rms_parser(uint32_t id, uint8_t *data, uint32_t filter);
 };
 extern RMS rms;
+#endif
 #endif
 
