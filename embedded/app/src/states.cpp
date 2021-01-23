@@ -19,9 +19,9 @@
 #include <hv_iox.h>
 #include <math.h>
 #include "motor.h"
+#include "rms.h"
 
 extern "C" {
-#include "rms.h"
 #include "bms_fault_checking.h"
 #include "rms_fault_checking.h"
 #include "pressure_fault_checking.h"

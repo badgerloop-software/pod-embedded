@@ -18,7 +18,6 @@
 #define WR_SUCCESS_BIT          2
 #define NO_FILTER               0
 
-#ifdef __cplusplus
 class RMS {
     public:
         RMS(void);
@@ -42,4 +41,4 @@ class RMS {
 };
 extern RMS rms;
 #endif
-#endif
+

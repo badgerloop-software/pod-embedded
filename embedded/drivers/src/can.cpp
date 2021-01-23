@@ -47,16 +47,13 @@ static int init_can_connection(int *s) {
     return 0;
 }
 
-static int init_can_timer(const struct itimerval *new, struct itimerval *old) {
-    struct sigaction *action = malloc(sizeof(struct sigaction));
-    void (*canirq)(void) = &can_rx_irq;
-    action->sa_handler = (void *)(canirq);
-    sigaction(SIGALRM, action, NULL);
-    setitimer(ITIMER_REAL, new, old);
+static int init_can_timer(const struct itimerval *updated, struct itimerval *old) {
+    signal(SIGALRM, (__sighandler_t)can_rx_irq);
+    setitimer(ITIMER_REAL, updated, old);
     return 0;
 }
 
-inline int canRead(struct can_frame *recvd_msg) {
+int canRead(struct can_frame *recvd_msg) {
     int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
     /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
@@ -66,7 +63,7 @@ inline int canRead(struct can_frame *recvd_msg) {
 }
 
 
-inline int canSend(uint32_t id, uint8_t *data, uint8_t size) {
+int canSend(uint32_t id, uint8_t *data, uint8_t size) {
     struct can_frame tx_msg;
 
     tx_msg.can_dlc = size;

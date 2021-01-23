@@ -12,14 +12,14 @@
 #include <arpa/inet.h>
 #include "motor.h"
 #include "state_machine.h"
+#include "rms.h"
+#include "hv_iox.h"
 #define SA struct sockaddr
 
 extern "C"
 {
 #include "connStat.h"
-#include "rms.h"
 #include "data.h"
-#include "hv_iox.h"
 #include "braking.h"
 }
 

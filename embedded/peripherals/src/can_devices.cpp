@@ -3,14 +3,16 @@
 #include <inttypes.h>
 #include <pthread.h>
 #include <unistd.h>
-#include <rms.h>
-#include <can_devices.h>
-extern "C" {
-#include "motor.h"
-#include "semaphore.h"
+#include "can_devices.h"
 #include "can.h"
+#include "rms.h"
+
+extern "C" {
+#include "semaphore.h"
 #include "bms.h"
 }
+
+#define NO_FILTER               0
 
 //Global Variables
 pthread_t CANThread;

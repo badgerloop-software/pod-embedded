@@ -1,6 +1,6 @@
 #Define exectutables
 add_executable(gpioUtil gpioUtil.c)
-add_executable(rmsProg rmsProg.c)
+add_executable(rmsProg rmsProg.cpp)
 
 #Link library dependencies
 target_link_libraries(gpioUtil PRIVATE drivers peripherals)

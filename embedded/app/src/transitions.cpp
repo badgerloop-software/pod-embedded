@@ -4,11 +4,12 @@
 #include <transitions.h>
 #include <state_machine.h>
 #include <motor.h>
+#include <rms.h>
+
 extern "C"
 {
 #include <data.h>
 #include <braking.h>
-#include <rms.h>
 }
 
 extern stateMachine_t stateMachine;

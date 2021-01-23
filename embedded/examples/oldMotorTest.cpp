@@ -6,12 +6,16 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdint.h>
-#include <data_dump.h>
 #include <signal.h>
-#include "connStat.h"
-#include "data.h"
 #include "rms.h"
 #include "can.h"
+
+extern "C" {
+#include <data_dump.h>
+#include "data.h"
+#include "connStat.h"
+
+}
 
 static pthread_t motorThreads[3];
 static bool motorIsEnabled = false;

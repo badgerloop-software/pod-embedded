@@ -6,10 +6,10 @@
 #include <motor.h>
 #include <unistd.h>
 #include <hv_iox.h>
+#include <rms.h>
 
 extern "C" {
 #include <data.h>
-#include <rms.h>
 }
 /***
  * The high level interface for the motor

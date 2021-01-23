@@ -9,7 +9,7 @@
 #include "hv_iox.h"
 #include "motor.h"
 #include "state_machine.h"
-#include <can_devices.h>
+#include "can_devices.h"
 #include <rms.h>
 
 // Temp

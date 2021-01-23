@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bms.h"
+
 #include "can.h"
+
+extern "C" {
 #include "data.h"
+#include "bms.h"
+
+}
 
 extern data_t *data;
 float cells[72] = {0};

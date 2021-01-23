@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+
 #include <rms.h>
 #include <can_devices.h>
+
 extern "C" {
-#include "can.h"
 #include "data.h"
 }
 

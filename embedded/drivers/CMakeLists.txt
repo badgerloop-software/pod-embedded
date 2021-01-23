@@ -3,7 +3,7 @@ project(driverslib VERSION 1.0
                    LANGUAGES C)
 
 add_library(drivers src/bbgpio.c
-                    src/can.c
+                    src/can.cpp
                     src/i2c.c)
 
 # Run Autocoder
