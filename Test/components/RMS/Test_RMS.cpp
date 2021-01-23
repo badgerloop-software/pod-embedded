@@ -14,7 +14,4 @@ TEST(RMS, RMS_CANSEND) {
     EXPECT_EQ(rms.rmsCmdNoTorque(), 0);
     EXPECT_EQ(rms.rmsDischarge(), 0);
     EXPECT_EQ(rms.rmsIdleHb(), 0);
-    EXPECT_EQ(rms.rmsWriteEeprom(), 0);
-    EXPECT_EQ(rms.rmsReadEeprom(), 0);
-    EXPECT_EQ(rms.rmsCmdNoTorque(), 0);
 }
