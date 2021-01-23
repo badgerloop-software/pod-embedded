@@ -6,6 +6,7 @@
 #include <state_machine.h>
 #include <states.h>
 #include <hv_iox.h>
+#include <rms.h>
 
 extern "C" {
 #include <data.h>
@@ -35,6 +36,7 @@ extern "C" {
 static pthread_t smThread;
 static sem_t smSem;
 HVIox hv_iox;
+RMS rms;
 
 static void genericInit(char *name);
 static void goToState(char *name);
