@@ -19,7 +19,7 @@
 #include <hv_iox.h>
 #include <math.h>
 #include "motor.h"
-#include <rms.h>
+#include "rms.h"
 
 extern "C" {
 #include "bms_fault_checking.h"

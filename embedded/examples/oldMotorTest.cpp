@@ -7,8 +7,8 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <signal.h>
-#include <rms.h>
-#include <can.h>
+#include "rms.h"
+#include "can.h"
 
 extern "C" {
 #include <data_dump.h>
