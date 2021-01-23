@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <can.h>
 
 extern "C"
 {
 #include <data.h>
-#include <can.h>
 }
 
 void *listenForResponse(void *addr);
-
+RMS rms;
 const char *RMS_CAN_CODES_URL =
     "https://app.box.com/s/4fb49r9p6lzfz4uwcb5izkxpcwh768vc";
 
@@ -58,7 +58,7 @@ void *listenForResponse(void *arg)
         {
             if (canMesg.can_id == 0xC2)
             {
-                if ((val = rmsCmdResponseParse(canMesg.data, addr, writeEeprom)) != -1)
+                if ((val = rms.rmsCmdResponseParse(canMesg.data, addr, writeEeprom)) != -1)
                 {
                     if (writeEeprom)
                     {
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
         uint16_t val = safeConvert(argv[3]);
 
         if (confirmInput(addr, (int)val))
-            rmsWriteEeprom(addr, val);
+            rms.rmsWriteEeprom(addr, val);
         else
         {
             printf("Aborting...\n");
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     else
     {
         printf("Reading address: %d\n", addr);
-        rmsReadEeprom(addr);
+        rms.rmsReadEeprom(addr);
     }
     pthread_join(canRxThread, NULL);
 }

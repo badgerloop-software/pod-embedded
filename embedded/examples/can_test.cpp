@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "can.h"
 #include "rms.h"
 
 extern "C"
 {
-#include "can.h"
 #include "data.h"
 #include "bms.h"
 }
 
 #define NUM_BYTES 4
 #define TEST_LEN 10
+RMS rms;
 int msgRecv = 0;
 
 void rx_test(struct can_frame *can_mesg)
@@ -21,7 +21,7 @@ void rx_test(struct can_frame *can_mesg)
         printf("ID: %#X || ", (unsigned int)can_mesg->can_id);
         printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
         bool validRMSMesg = false;
-        if (rms_parser(can_mesg->can_id, can_mesg->data, NO_FILTER))
+        if (rms.rms_parser(can_mesg->can_id, can_mesg->data, NO_FILTER))
         {
             printf("RMS Data parsed successfully\n");
             validRMSMesg = true;
@@ -41,14 +41,14 @@ void rx_test(struct can_frame *can_mesg)
 
 void txTest()
 {
-    rmsEnHeartbeat();
-    rmsClrFaults();
-    rmsInvDis();
-    rmsInvEn();
-    rmsInvForward20();
-    rmsInvForward30();
-    rmsCmdNoTorque();
-    rmsDischarge();
+    rms.rmsEnHeartbeat();
+    rms.rmsClrFaults();
+    rms.rmsInvDis();
+    rms.rmsInvEn();
+    rms.rmsInvForward20();
+    rms.rmsInvForward30();
+    rms.rmsCmdNoTorque();
+    rms.rmsDischarge();
 }
 
 int main(int argc, char *argv[])
