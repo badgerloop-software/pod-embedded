@@ -19,7 +19,7 @@ pthread_t CANThread;
 sem_t canSem;
 
 void SetupCANDevices(){
-	initCan();
+	can.initCan();
     sem_init(&canSem, 0, 1);
 /*	initMotor();*/
     if (pthread_create(&CANThread, NULL, CANLoop, NULL)){
@@ -29,7 +29,7 @@ void SetupCANDevices(){
 
 void rx_recv(struct can_frame *can_mesg) {
             
-	    if(!canRead(can_mesg)){ // Checks for a CAN message
+	    if(!can.canRead(can_mesg)){ // Checks for a CAN message
 		//	printf("ID: %#X || ", (unsigned int) can_mesg->can_id);
 		//	printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
 			bool validRMSMesg = false;

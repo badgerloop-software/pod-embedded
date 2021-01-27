@@ -25,6 +25,7 @@ void testLoop(void);
 
 data_t *data;
 RMS rms;
+CAN can;
 
 void motorHbs() {
 	while (1) {
@@ -103,7 +104,7 @@ int main() {
 	initData();
 	printf("initData\n");
 	//	SetupDataDump();
-	initCan();
+	can.initCan();
     printf("canINit\n");
 /*	SetupCANDevices();*/
     //	rms.rmsConfig();

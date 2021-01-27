@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
-#include <can.h>
+#include "can.h"
 
 extern "C"
 {
@@ -14,6 +14,7 @@ extern "C"
 
 void *listenForResponse(void *addr);
 RMS rms;
+CAN can;
 const char *RMS_CAN_CODES_URL =
     "https://app.box.com/s/4fb49r9p6lzfz4uwcb5izkxpcwh768vc";
 
@@ -54,7 +55,7 @@ void *listenForResponse(void *arg)
     while (1)
     {
         struct can_frame canMesg;
-        if (!canRead(&canMesg))
+        if (!can.canRead(&canMesg))
         {
             if (canMesg.can_id == 0xC2)
             {
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
         printUsage();
         return 0;
     }
-    initCan();
+    can.initCan();
     initData();
 
     if (!strcmp(argv[1], "w"))

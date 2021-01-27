@@ -24,6 +24,9 @@ static const struct itimerval new_val = {
     {0, 10000}
 };
 
+CAN::CAN()
+{
+}
 
 void can_rx_irq(){
     NEW_CAN_MESSAGE = true;
@@ -53,7 +56,7 @@ static int init_can_timer(const struct itimerval *updated, struct itimerval *old
     return 0;
 }
 
-int canRead(struct can_frame *recvd_msg) {
+int CAN::canRead(struct can_frame *recvd_msg) {
     int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
     /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
@@ -63,7 +66,7 @@ int canRead(struct can_frame *recvd_msg) {
 }
 
 
-int canSend(uint32_t id, uint8_t *data, uint8_t size) {
+int CAN::canSend(uint32_t id, uint8_t *data, uint8_t size) {
     struct can_frame tx_msg;
 
     tx_msg.can_dlc = size;
@@ -78,7 +81,7 @@ int canSend(uint32_t id, uint8_t *data, uint8_t size) {
 }
 
 
-int initCan() {
+int CAN::initCan() {
     if (init_can_connection(&can_sock)) {
         fprintf(stderr, "Failed to init\n\r");
         return 1;

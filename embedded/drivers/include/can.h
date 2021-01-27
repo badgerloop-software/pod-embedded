@@ -1,4 +1,5 @@
 #ifndef __CAN_H__
+#ifdef __cplusplus
 #define __CAN_H__
 
 #include <linux/can.h>
@@ -16,18 +17,20 @@
 #else
  #define CAN_INTF "can0"
 #endif
-
-extern volatile bool NEW_CAN_MESSAGE;
-
-int initCan();
-
-int canRead(struct can_frame *can_mesg);
-
-int canSend(uint32_t id, uint8_t *data, uint8_t size);
+class CAN {
+    public:
+        CAN(void);
+        int initCan();
+        int canRead(struct can_frame *can_mesg);
+        int canSend(uint32_t id, uint8_t *data, uint8_t size);
+};
 
 /* Potential ideas for a future API */
 // bool start_can_read();
 
 // bool stop_can_read();
 
+extern CAN can;
+extern volatile bool NEW_CAN_MESSAGE;
+#endif
 #endif

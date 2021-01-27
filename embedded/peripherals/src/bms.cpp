@@ -28,7 +28,7 @@ int bmsClearFaults(void){
 	TxData[6] = 0x00;
 	TxData[7] = 0x00;
 
-	canSend(can_id, TxData, length);
+	can.canSend(can_id, TxData, length);
 
 	return 0;
 }

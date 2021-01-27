@@ -12,11 +12,12 @@ extern "C"
 #define NUM_BYTES 4
 #define TEST_LEN 10
 RMS rms;
+CAN can;
 int msgRecv = 0;
 
 void rx_test(struct can_frame *can_mesg)
 {
-    if (!canRead(can_mesg))
+    if (!can.canRead(can_mesg))
     { // Checks for a CAN message
         printf("ID: %#X || ", (unsigned int)can_mesg->can_id);
         printf("Data: [%#X.%#X.%#X.%#X.%#X.%#X.%#X.%#X]\n\r", can_mesg->data[0], can_mesg->data[1], can_mesg->data[2], can_mesg->data[3], can_mesg->data[4], can_mesg->data[5], can_mesg->data[6], can_mesg->data[7]);
@@ -54,7 +55,7 @@ void txTest()
 int main(int argc, char *argv[])
 {
     initData();
-    initCan();
+    can.initCan();
     struct can_frame can_mesg;
     txTest(); // test RMS Commands
     printf("---Begin %d second CAN test---\n", TEST_LEN);

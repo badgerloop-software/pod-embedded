@@ -16,6 +16,7 @@ extern "C" {
 
 HVIox hv_iox;
 RMS rms;
+CAN can;
 int main() {
     initData();
     initPressureSensors();
