@@ -4,7 +4,9 @@ project(testlib VERSION 1.0
 
 # Define sources
 set(dependencies example/Test_GTest.cpp)
+set(dependencies components/CAN/Test_CAN.cpp)
 set(dependencies components/HV_Iox/Test_HV_Iox.cpp)
+set(dependencies components/RMS/Test_RMS.cpp)
 
 set(libraries middleware 
               data 

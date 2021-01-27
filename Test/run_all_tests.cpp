@@ -1,9 +1,12 @@
 #include <gtest/gtest.h>
+#include "can.h"
+#include "rms.h"
 
 extern "C" {
 #include <data.h>
 }
-
+CAN can;
+RMS rms;
 // Run all GTest Tests
 int main(int argc, char **argv) {
     initData();
