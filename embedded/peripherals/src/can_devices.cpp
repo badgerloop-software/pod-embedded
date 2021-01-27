@@ -43,7 +43,7 @@ void rx_recv(struct can_frame *can_mesg) {
 /*				//dumpCells();*/
 /*                bmsDump();*/
 		}
-		NEW_CAN_MESSAGE = false;
+		can.NEW_CAN_MESSAGE = false;
 	}
 }
 

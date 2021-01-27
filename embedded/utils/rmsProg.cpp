@@ -72,7 +72,7 @@ void *listenForResponse(void *arg)
                     return NULL;
                 }
             }
-            NEW_CAN_MESSAGE = false;
+            can.NEW_CAN_MESSAGE = false;
         }
         usleep(1000);
     }

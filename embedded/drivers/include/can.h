@@ -19,8 +19,14 @@
 #endif
 class CAN {
     public:
+        struct sockaddr_can addr;
+        struct ifreq ifr;
+        volatile bool NEW_CAN_MESSAGE;
+        int can_sock;
+        const struct itimerval new_val;
         CAN(void);
         int initCan();
+        void can_rx_irq();
         int canRead(struct can_frame *can_mesg);
         int canSend(uint32_t id, uint8_t *data, uint8_t size);
 };
@@ -31,6 +37,5 @@ class CAN {
 // bool stop_can_read();
 
 extern CAN can;
-extern volatile bool NEW_CAN_MESSAGE;
 #endif
 #endif

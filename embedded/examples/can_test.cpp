@@ -36,7 +36,7 @@ void rx_test(struct can_frame *can_mesg)
             msgRecv = 1;
         }
 
-        NEW_CAN_MESSAGE = false;
+        can.NEW_CAN_MESSAGE = false;
     }
 }
 

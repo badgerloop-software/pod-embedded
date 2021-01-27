@@ -13,45 +13,37 @@
 #include <stdlib.h> 
 
 
-static struct sockaddr_can addr;
-static struct ifreq ifr;  // Used to look at flags on the network interface
-
-volatile bool NEW_CAN_MESSAGE = false;
-
-static int can_sock;
-static const struct itimerval new_val = {
-    {0, 10000},
-    {0, 10000}
+CAN::CAN():new_val({{0, 10000},
+                    {0, 10000}})
+{
+NEW_CAN_MESSAGE = false;
 };
 
-CAN::CAN()
-{
+
+void CAN::can_rx_irq(){
+    this->NEW_CAN_MESSAGE = true;
 }
 
-void can_rx_irq(){
-    NEW_CAN_MESSAGE = true;
-}
-
-static int init_can_connection(int *s) {
+static int init_can_connection(int *s, CAN c) {
     *s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
-    strcpy(ifr.ifr_name, CAN_INTF);
+    strcpy(c.ifr.ifr_name, CAN_INTF);
         //printf("Failed to copy bus name into network interface\n\r");
         //return 1;
     
-    if (ioctl(*s, SIOCGIFINDEX, &ifr) == -1) {
+    if (ioctl(*s, SIOCGIFINDEX, &c.ifr) == -1) {
         printf("Failed to find bus\n\r");
         return 1;
     }
 
-    addr.can_family = AF_CAN;
-    addr.can_ifindex = ifr.ifr_ifindex;
+    c.addr.can_family = AF_CAN;
+    c.addr.can_ifindex = c.ifr.ifr_ifindex;
 
-    bind(*s, (struct sockaddr *)&addr, sizeof(addr));
+    bind(*s, (struct sockaddr *)&c.addr, sizeof(c.addr));
     return 0;
 }
 
-static int init_can_timer(const struct itimerval *updated, struct itimerval *old) {
-    signal(SIGALRM, (__sighandler_t)can_rx_irq);
+static int init_can_timer(const struct itimerval *updated, struct itimerval *old, CAN c) {
+    signal(SIGALRM, (__sighandler_t)can_rx_irq());
     setitimer(ITIMER_REAL, updated, old);
     return 0;
 }
