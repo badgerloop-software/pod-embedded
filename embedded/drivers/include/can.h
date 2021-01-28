@@ -19,18 +19,19 @@
 #endif
 class CAN {
     public:
+        CAN(void);
         struct sockaddr_can addr;
         struct ifreq ifr;
         volatile bool NEW_CAN_MESSAGE;
         int can_sock;
         const struct itimerval new_val;
-        CAN(void);
         int initCan();
         void can_rx_irq();
         static void static_can_rx_irq();
         int canRead(struct can_frame *can_mesg);
         int canSend(uint32_t id, uint8_t *data, uint8_t size);
         static CAN instance;
+        static int init_can_timer(const struct itimerval *updated, struct itimerval *old);
 };
 extern CAN can;
 /* Potential ideas for a future API */
