@@ -32,12 +32,10 @@ class CAN {
         int canSend(uint32_t id, uint8_t *data, uint8_t size);
         static CAN instance;
 };
-
+extern CAN can;
 /* Potential ideas for a future API */
 // bool start_can_read();
 
 // bool stop_can_read();
-
-extern CAN can;
 #endif
 #endif
