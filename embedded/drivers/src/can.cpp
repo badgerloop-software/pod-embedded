@@ -42,8 +42,12 @@ static int init_can_connection(int *s, CAN c) {
     return 0;
 }
 
+static void static_can_rx_irq() {
+    CAN::instance.can_rx_irq();
+}
+
 static int init_can_timer(const struct itimerval *updated, struct itimerval *old, CAN c) {
-    signal(SIGALRM, (__sighandler_t)can_rx_irq());
+    signal(SIGALRM, (__sighandler_t)CAN::static_can_rx_irq);
     setitimer(ITIMER_REAL, updated, old);
     return 0;
 }

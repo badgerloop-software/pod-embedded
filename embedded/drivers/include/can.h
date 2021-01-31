@@ -27,8 +27,10 @@ class CAN {
         CAN(void);
         int initCan();
         void can_rx_irq();
+        static void static_can_rx_irq();
         int canRead(struct can_frame *can_mesg);
         int canSend(uint32_t id, uint8_t *data, uint8_t size);
+        static CAN instance;
 };
 
 /* Potential ideas for a future API */
