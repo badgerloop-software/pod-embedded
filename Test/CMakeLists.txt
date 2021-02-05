@@ -4,7 +4,8 @@ project(testlib VERSION 1.0
 
 # Define sources
 set(dependencies example/Test_GTest.cpp
-                 run_profiles/Test_load_software_parameters.cpp)
+                 run_profiles/Test_load_software_parameters.cpp
+                 functional/Test_State_Machine.cpp)
 
 set(libraries app
               middleware 
