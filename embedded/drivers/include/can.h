@@ -31,7 +31,6 @@ class CAN {
         int canRead(struct can_frame *can_mesg);
         int canSend(uint32_t id, uint8_t *data, uint8_t size);
         static CAN instance;
-        static int init_can_timer(const struct itimerval *updated, struct itimerval *old);
 };
 extern CAN can;
 /* Potential ideas for a future API */

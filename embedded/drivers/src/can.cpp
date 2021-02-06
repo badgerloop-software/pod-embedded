@@ -21,35 +21,30 @@ NEW_CAN_MESSAGE = false;
 };
 
 
-void CAN::can_rx_irq(){
-    this->NEW_CAN_MESSAGE = true;
+static void can_rx_irq(){
+    can.NEW_CAN_MESSAGE = true;
 }
 
 static int init_can_connection(int *s) {
-    CAN this_instance = CAN::instance;
     *s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
-    strcpy(this_instance.ifr.ifr_name, CAN_INTF);
+    strcpy(can.ifr.ifr_name, CAN_INTF);
         //printf("Failed to copy bus name into network interface\n\r");
         //return 1;
     
-    if (ioctl(*s, SIOCGIFINDEX, &this_instance) == -1) {
+    if (ioctl(*s, SIOCGIFINDEX, &can) == -1) {
         printf("Failed to find bus\n\r");
         return 1;
     }
 
-    this_instance.addr.can_family = AF_CAN;
-    this_instance.addr.can_ifindex = this_instance.ifr.ifr_ifindex;
+    can.addr.can_family = AF_CAN;
+    can.addr.can_ifindex = can.ifr.ifr_ifindex;
 
-    bind(*s, (struct sockaddr *)&this_instance.addr, sizeof(this_instance.addr));
+    bind(*s, (struct sockaddr *)&can.addr, sizeof(can.addr));
     return 0;
 }
 
-void CAN::static_can_rx_irq() {
-    CAN::instance.can_rx_irq();
-}
-
-int CAN::init_can_timer(const struct itimerval *updated, struct itimerval *old) {
-    signal(SIGALRM, (__sighandler_t)CAN::static_can_rx_irq);
+static int init_can_timer(const struct itimerval *updated, struct itimerval *old) {
+    signal(SIGALRM, (__sighandler_t)can_rx_irq);
     setitimer(ITIMER_REAL, updated, old);
     return 0;
 }
