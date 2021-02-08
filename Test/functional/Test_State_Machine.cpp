@@ -107,6 +107,15 @@ void assertStateIsNot(char* test_name)
     }
 }
 
+void assertStateIsFault() {
+       if (strcmp(getCurrState()->name, NON_RUN_FAULT_NAME) || strcmp(getCurrState()->name, RUN_FAULT_NAME)) {
+        return;
+    } else {
+        fprintf(stderr, "Expected to be in a fault state but was in %s\n", getCurrState()->name);
+        FAIL() << "Fault Error";
+    } 
+}
+
 int checkForChange(char* name)
 {
     assertStateIsNot(name);
@@ -288,4 +297,34 @@ TEST_F(StateTest, Crawl_Timer_Test) {
     WAIT(.2);
 
     return assertStateIs(STOPPED_NAME);
+}
+
+TEST_F(StateTest, Pressure_Vessel_Depressure_Test) {
+    char* statesToTest[] = {
+        PUMPDOWN_NAME,
+        PROPULSION_NAME,
+        BRAKING_NAME,
+        STOPPED_NAME,
+        CRAWL_NAME,
+        POST_RUN_NAME,
+        NULL
+    };
+    int i = 0;
+    char testName[100];
+
+    for (i = 0; statesToTest[i] != NULL; i++) {
+        FREEZE_SM;
+        genericInit();
+        fprintf(stderr, "[LOG] Going into %s\n", statesToTest[i]);
+        GO_TO_STATE(statesToTest[i]);
+        UNFREEZE_SM;
+        WAIT(.2);
+
+
+        setPressurePv(5);
+
+        WAIT(.5);
+
+        assertStateIsFault();
+    }
 }
