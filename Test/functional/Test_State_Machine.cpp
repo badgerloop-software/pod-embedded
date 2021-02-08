@@ -237,3 +237,21 @@ TEST_F(StateTest, HV_Battery_Low_Voltage_Test) {
 
     assertStateIs(RUN_FAULT_NAME);
 }
+
+TEST_F(StateTest, RMS_Overheat_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] GOING INTO PROPULSION\n");
+    GO_TO_STATE(PROPULSION_NAME);
+    UNFREEZE_SM;
+
+    WAIT(0.5);
+
+    assertStateIs(PROPULSION_NAME);
+
+    setRmsIgbtTemp(150);
+
+    WAIT(0.5);
+
+    assertStateIs(RUN_FAULT_NAME);
+}
