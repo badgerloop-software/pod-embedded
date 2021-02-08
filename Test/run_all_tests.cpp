@@ -11,6 +11,8 @@ int main(int argc, char** argv)
     strcpy(executable_path, argv[0]);
 
     testing::InitGoogleTest(&argc, argv);
+
+    
     return RUN_ALL_TESTS();
     // std::string output = testing::internal::GetCapturedStderr();
 

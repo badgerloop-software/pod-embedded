@@ -52,13 +52,17 @@ protected:
 
     void SetUp()
     {
+        // Restart state machine timer
+        FREEZE_SM;
+        stateMachine.start = getuSTimestamp();
+        UNFREEZE_SM;
     }
 
     void TearDown()
     {
+        // Revert back to idle
         FREEZE_SM;
         GO_TO_STATE(IDLE_NAME);
-        stateMachine.start = getuSTimestamp();
         UNFREEZE_SM;
         WAIT(0.5);
     }
@@ -66,7 +70,7 @@ protected:
     static void TearDownTestSuite()
     {
         // Executes after entire test suite
-        // destroyStateMachine();   
+        // destroyStateMachine();
         pthread_kill(smThread, 0);
         sem_destroy(&smSem);
     }
@@ -95,7 +99,12 @@ void assertStateIs(char* test_name)
 
 void assertStateIsNot(char* test_name)
 {
-    EXPECT_NE(strcmp(getCurrState()->name, findState(test_name)->name), 0);
+    if (strcmp(getCurrState()->name, findState(test_name)->name)) {
+        return;
+    } else {
+        fprintf(stderr, "Expected transition out of state %s but was still in state %s\n", test_name, getCurrState()->name);
+        FAIL() << "State Transition Failure";
+    }
 }
 
 int checkForChange(char* name)
@@ -119,11 +128,11 @@ static void genericInit(void)
     setTimersOldRetro(0);
     setTimersLastRetro(0);
 
-    setPressurePrimTank(1500);
+    setPressurePrimTank(1200);
     setPressurePrimLine(200);
     setPressurePrimAct(1);
-    setPressureSecTank(1500);
-    setPressureSecLine(200);
+    setPressureSecTank(1200);
+    setPressureSecLine(100);
     setPressureSecAct(1);
     setPressurePv(14);
 
@@ -201,9 +210,30 @@ TEST_F(StateTest, HV_Battery_SOC_Test)
 
     assertStateIs(PUMPDOWN_NAME); // Ensure we have transitioned
 
-    setBmsSoc(50); // Make our soc too low
+    setBmsSoc(10); // Make our soc too low
 
     WAIT(0.5); // Give time for transition
 
     assertStateIs(NON_RUN_FAULT_NAME);
+}
+
+/**
+ * Battery Voltage is too low during run
+ * Start state: propulsion      Expected end state: run-fault
+ */
+TEST_F(StateTest, HV_Battery_Low_Voltage_Test) {
+    FREEZE_SM;
+    fprintf(stderr, "[LOG] GOING INTO PROPULSION\n");
+    genericInit();
+    GO_TO_STATE(PROPULSION_NAME);
+    UNFREEZE_SM;
+    WAIT(0.5);
+
+    assertStateIs(PROPULSION_NAME);
+
+    setBmsPackVoltage(200);
+
+    WAIT(0.5);
+
+    assertStateIs(RUN_FAULT_NAME);
 }

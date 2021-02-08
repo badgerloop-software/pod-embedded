@@ -28,7 +28,10 @@
 #include <math.h>
 /*#define NO_FAULT*/
 
-#define NUM_FAIL 10
+#define NO_PRESSURES
+
+
+#define NUM_FAIL 4
 #define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + pow(78.334 * (x), 5) - pow(2280.5 * (x), 4) + pow(35181.0 * (x), 3) - pow(303240.0 * (x), 2) - (1000000.0 * (x)))
 
 #define MAX_PACKET_LOSS 500
@@ -138,8 +141,10 @@ stateTransition_t* propulsionAction()
 
     /* Check HV Indicator light */
 
-    if (checkNetwork() != 0)
+    if (checkNetwork() != 0) {
+        fprintf(stderr, "[FAULT] LOST NETWORK CONNECTION");
         return stateMachine.currState->fault;
+    }
 
     // CHECK FAULT CRITERIA
     // CHECK PRESSURE -- PreRun function still valid here
@@ -152,13 +157,13 @@ stateTransition_t* propulsionAction()
     if (!checkRunBattery()) {
         printf("Failed battery\n");
         bErrs += 1;
-    }
+    } else
     bErrs = 0;
 
     if (!checkRunRMS()) {
         printf("run rms failed\n");
         rErrs += 1;
-    }
+    } else
     rErrs = 0;
 
     if (getuSTimestamp() - getTimersStartTime() > MAXIMUM_RUN_TIME) {
@@ -176,7 +181,7 @@ stateTransition_t* propulsionAction()
         printf("Should Stop\n");
         return stateMachine.currState->next;
     }
-
+    fprintf(stderr, "BMS ERRS: %d\t PRESSURE ERRS: %d\t RMS ERRS: %d\n", bErrs, pErrs, rErrs);
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL)
         return stateMachine.currState->fault;
 
