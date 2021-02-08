@@ -180,7 +180,7 @@ static int initServPrecharge(state_t* servPrecharge)
 static int initCrawl(state_t* crawl)
 {
 
-    initTransition(crawl->transitions[0], findState(POST_RUN_NAME), genPostRun);
+    initTransition(crawl->transitions[0], findState(BRAKING_NAME), genBraking);
     initTransition(crawl->transitions[1], findState(RUN_FAULT_NAME), genRunFault);
     addTransition(CRAWL_NAME, crawl->transitions[0]);
     addTransition(CRAWL_NAME, crawl->transitions[1]);

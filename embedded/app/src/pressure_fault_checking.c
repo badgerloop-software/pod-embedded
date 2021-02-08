@@ -131,6 +131,7 @@ bool checkCrawlPostrunPressures(void)
     #ifndef NOPRESSURE
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimTank() > PS1_TOP_LIMIT_CRAWLPOST) {
         fprintf(stderr, "primTank pressure failing\n");
+        fprintf(stderr, "\t pressure is %d\n", getPressurePrimTank());
         return false;
     }
     if (getPressurePrimLine() < PS2_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimLine() > PS2_TOP_LIMIT_CRAWLPOST) {

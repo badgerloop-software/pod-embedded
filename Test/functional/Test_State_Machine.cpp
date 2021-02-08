@@ -238,6 +238,10 @@ TEST_F(StateTest, HV_Battery_Low_Voltage_Test) {
     assertStateIs(RUN_FAULT_NAME);
 }
 
+/**
+ * RMS overheats during run
+ * Start state: propusion       Expected end state: run-fault
+ */
 TEST_F(StateTest, RMS_Overheat_Test) {
     FREEZE_SM;
     genericInit();
@@ -254,4 +258,34 @@ TEST_F(StateTest, RMS_Overheat_Test) {
     WAIT(0.5);
 
     assertStateIs(RUN_FAULT_NAME);
+}
+
+/**
+ * Make sure the SM transitions into stopped after going past crawl threshold
+ * Start state: crawl       Expected end state: stopped
+ */
+TEST_F(StateTest, Crawl_Timer_Test) {
+    FREEZE_SM;
+    genericInit();
+    setPressurePrimTank(500);
+    setPressurePrimLine(100);
+    fprintf(stderr, "[LOG] GOING INTO CRAWL\n");
+    GO_TO_STATE(CRAWL_NAME);
+    UNFREEZE_SM;
+
+    WAIT(0.5);
+
+    assertStateIs(CRAWL_NAME);
+
+    uint64_t offset = getuSTimestamp();
+
+    for (int i = 0; i < (30 * 5); i++) {
+        printf("crawl timer: %llu\r", getuSTimestamp() - getTimersCrawlTimer());
+        fflush(stdin);
+        usleep(200000);
+    }
+
+    WAIT(.2);
+
+    return assertStateIs(STOPPED_NAME);
 }

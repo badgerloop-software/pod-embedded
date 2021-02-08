@@ -28,8 +28,7 @@
 #include <math.h>
 /*#define NO_FAULT*/
 
-#define NO_PRESSURES
-
+#define NO_DASHBOARD
 
 #define NUM_FAIL 4
 #define LV_BATT_SOC_CALC(x) (pow(-1.1142 * (x), 6) + pow(78.334 * (x), 5) - pow(2280.5 * (x), 4) + pow(35181.0 * (x), 3) - pow(303240.0 * (x), 2) - (1000000.0 * (x)))
@@ -42,6 +41,7 @@ extern stateTransition_t* findTransition(state_t* currState, char* name);
 int bErrs, pErrs, rErrs;
 int checkNetwork()
 {
+    #ifndef NO_DASHBOARD
     static int errs = 0;
     if (!checkUDPStat() || !checkTCPStat()) {
         if (checkUDPStat() == 0)
@@ -57,6 +57,7 @@ int checkNetwork()
     if (errs >= MAX_PACKET_LOSS) {
         return -1;
     }
+    #endif
     return 0;
 }
 
@@ -347,7 +348,7 @@ stateTransition_t* crawlAction()
     // CHECK TRANSITION CRITERIA
 
     if (getuSTimestamp() - stateMachine.start > MAXIMUM_CRAWL_TIME) {
-        return findTransition(stateMachine.currState, POST_RUN_NAME);
+        return findTransition(stateMachine.currState, BRAKING_NAME);
     }
 
     if (getFlagsShouldStop()) {
@@ -355,7 +356,7 @@ stateTransition_t* crawlAction()
         return findTransition(stateMachine.currState, POST_RUN_NAME);
     }
 
-    printf("PRIM LINE: %f\n", getPressurePrimLine());
+    // printf("PRIM LINE: %f\n", getPressurePrimLine());
     if (bErrs >= NUM_FAIL || pErrs >= NUM_FAIL || rErrs >= NUM_FAIL) {
         printf("fail\n");
         return stateMachine.currState->fault;
@@ -373,7 +374,7 @@ stateTransition_t* postRunAction()
     }
     // TODO fixme there is a seg fault around here lol
     /* Check HV Indicator light */
-    printf("FAILURE STATE: %p\n", stateMachine.currState);
+    // printf("FAILURE STATE: %p\n", stateMachine.currState);
 
     if (checkNetwork() != 0)
         findTransition(stateMachine.currState, RUN_FAULT_NAME);
