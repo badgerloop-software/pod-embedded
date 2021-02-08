@@ -32,7 +32,7 @@ extern stateTransition_t* nonRunFaultAction(void);
 
 volatile stateMachine_t stateMachine;
 
-/***
+/**
  * findState - Searches all the created states and returns the one with a matching name
  *
  * ARGS: char *stateName - Name of the state we are searching for. Check out state_machine.h
@@ -50,6 +50,15 @@ state_t* findState(char* stateName)
         }
     }
     return NULL;
+}
+
+/**
+ * getNumStates - Returns the number of created states
+ * 
+ * RETURNS: int, the number of created states
+ */
+int getNumStates(void) {
+    return sizeof(stateMachine.allStates) / sizeof(stateMachine.allStates[0]);
 }
 
 /***
@@ -122,7 +131,7 @@ static int initIdle(state_t* idle)
 static int initPumpdown(state_t* pumpdown)
 {
 
-    initTransition(pumpdown->transitions[0], findState(RUN_FAULT_NAME), genRunFault);
+    initTransition(pumpdown->transitions[0], findState(NON_RUN_FAULT_NAME), genNonRunFault);
     addTransition(PUMPDOWN_NAME, pumpdown->transitions[0]);
     pumpdown->fault = pumpdown->transitions[0];
     pumpdown->next = NULL;
@@ -291,13 +300,13 @@ void runStateMachine(void)
 void buildStateMachine(void)
 {
     /* Create all of the states*/
-
+    // printf("Begin Allocation of states\n");
     stateMachine.allStates = malloc(sizeof(state_t*) * NUM_STATES);
 
     for (int i = 0; i < NUM_STATES; i++) {
         stateMachine.allStates[i] = malloc(sizeof(state_t));
     }
-
+    // printf("Begin Initalization of states\n");
     initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 1);
     initState(stateMachine.allStates[1], PUMPDOWN_NAME, pumpdownAction, 1);
     initState(stateMachine.allStates[2], PROPULSION_NAME, propulsionAction, 2);
@@ -310,6 +319,7 @@ void buildStateMachine(void)
     initState(stateMachine.allStates[9], NON_RUN_FAULT_NAME, nonRunFaultAction, 0);
     initState(stateMachine.allStates[10], RUN_FAULT_NAME, runFaultAction, 0);
 
+    // printf("Begin Initalization of indiv. states\n");
     initIdle(stateMachine.allStates[0]);
     initPumpdown(stateMachine.allStates[1]);
     initPropulsion(stateMachine.allStates[2]);
@@ -320,13 +330,30 @@ void buildStateMachine(void)
     initPostRun(stateMachine.allStates[7]);
     initSafeToApproach(stateMachine.allStates[8]);
 
+    // printf("Set current state\n");
     stateMachine.currState = stateMachine.allStates[0];
+    // printf("begin\n");
     stateMachine.currState->begin();
 
+    // printf("Allocate overide state name\n");
     stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
     strcpy(stateMachine.overrideStateName, BLANK_NAME);
     if (stateMachine.overrideStateName == NULL) {
         fprintf(stderr, "Malloc error -- state machine override state machine name\n");
         exit(1);
     }
+}
+
+void destroyStateMachine(void) {
+    
+    /* Free all of the states */
+    /* Unrelated to the events of 1861 - 1865 */
+    // printf("DESTROYING STATE MACHINE\n");
+    for (int i = 0; i < NUM_STATES; i++) {
+        free(stateMachine.allStates[i]);
+    }
+    free(stateMachine.allStates);
+
+    stateMachine.currState = NULL;
+    free(stateMachine.overrideStateName);
 }

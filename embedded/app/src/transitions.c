@@ -46,6 +46,7 @@ int genPumpdown()
         printf("eeE1\n");
     if (rmsInvDis() != 0)
         printf("EEERR2\n");
+    printf("SETTING START\n");
     stateMachine.start = getuSTimestamp();
     return 0;
 }

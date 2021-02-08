@@ -26,6 +26,7 @@
 #define BLANK_NAME "none"
 
 void buildStateMachine(void);
+void destroyStateMachine(void);
 
 void runStateMachine();
 
@@ -38,6 +39,8 @@ state_t* getCurrState(void);
 
 state_t* setCurrState(state_t* state);
 state_t* findState(char* name);
+
+int getNumStates(void);
 /*
 * The state machine is a directed graph. Each edge is a transition
 * The state_t handles the nodes and stateTransition_t is an edge

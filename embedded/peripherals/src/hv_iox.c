@@ -9,6 +9,8 @@
 
 #define HV_IO_ADDR 0x24
 
+#define NOI2C
+
 #ifdef NOI2C
 #define VI2C
 #endif

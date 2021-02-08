@@ -93,8 +93,11 @@ stateTransition_t* pumpdownAction()
 
     /* Check IMD status */
 
-    if (getuSTimestamp() - stateMachine.start > PUMPDOWN_TIMEOUT)
+    if (getuSTimestamp() - stateMachine.start > PUMPDOWN_TIMEOUT) {
+        fprintf(stderr, "[FAULT] EXCEEDED PUMPDOWN TIMEOUT OF %d USECONDS\n", PUMPDOWN_TIMEOUT);
+        fprintf(stderr, "\tTOOK %d USECONDS\n", getuSTimestamp() - stateMachine.start);
         return stateMachine.currState->fault;
+    }
 
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
