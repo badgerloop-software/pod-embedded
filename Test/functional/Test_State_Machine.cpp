@@ -328,3 +328,17 @@ TEST_F(StateTest, Pressure_Vessel_Depressure_Test) {
         assertStateIsFault();
     }
 }
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: idle        Expected state: pumpdown
+ */
+TEST_F(StateTest, Idle_To_Pumpdown_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Pumpdown\n");
+    GO_TO_STATE(PUMPDOWN_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(PUMPDOWN_NAME);
+}
