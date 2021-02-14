@@ -24,10 +24,11 @@ elif [ "$1" == "build" ]; then
 	fi
 	echo "build finished"
 elif [ "$1" == "test" ]; then
+	./deploy.sh build
 	rm -rf coverage
 	mkdir coverage
 	./out/run_all_tests
-	gcovr -r . --html --html-details -o coverage/coverage-report.html
+	gcovr -r . --html --html-details -o coverage/coverage-report.html -e Test/
 	echo "Open ${PWD}/coverage/coverage-report.html to view coverage report"
 elif [ "$1" == "cross-setup" ]; then
 	cd /tmp/
