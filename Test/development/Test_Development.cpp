@@ -1,7 +1,44 @@
-#include <gtest/gtest.h>
+#include <stdio.h>
+#include "gtest/gtest.h"
+
+
+using ::testing::EmptyTestEventListener;
+using ::testing::InitGoogleTest;
+using ::testing::Test;
+using ::testing::TestCase;
+using ::testing::TestEventListeners;
+using ::testing::TestInfo;
+using ::testing::TestPartResult;
+using ::testing::UnitTest;
+namespace {
+class LogPrinter : public EmptyTestEventListener {
+    virtual void OnTestStart(const testing::TestInfo& test_info) {
+      printf("*** Test %s.%s starting.\n",
+             test_info.test_suite_name(), test_info.name());
+      testing::internal::CaptureStdout();
+    }
+
+    // Called after a failed assertion or a SUCCESS().
+    virtual void OnTestPartResult(const testing::TestPartResult& test_part_result) {
+      printf("%s in %s:%d\n%s\n",
+             test_part_result.failed() ? "*** Failure" : "Success",
+             test_part_result.file_name(),
+             test_part_result.line_number(),
+             test_part_result.summary());
+    }
+
+    // Called after a test ends.
+    virtual void OnTestEnd(const testing::TestInfo& test_info) {
+      printf("*** Test %s.%s ending.\n",
+             test_info.test_suite_name(), test_info.name());
+      std::string output = testing::internal::GetCapturedStdout();
+      std::cout << output << std::endl;
+    }
+};
+
+
+}
 // Basic tests to use when developing the logging infastructure
-
-
 TEST(DevelopmentTest, Test_stdout)
 {
    for(int i=0; i < 5; i++) {
@@ -13,5 +50,17 @@ TEST(DevelopmentTest, Test_stderr) {
     for(int i=0; i < 5; i++) {
         fprintf(stderr, "Printing to stderr\n");
     }
+}
+
+int main(int argc, char **argv) {
+    InitGoogleTest(&argc, argv);
+
+    UnitTest& unit_test = *UnitTest::GetInstance();
+    TestEventListeners& listeners = unit_test.listeners();
+    delete listeners.Release(listeners.default_result_printer());
+    listeners.Append(new LogPrinter);
+
+    int ret_val = RUN_ALL_TESTS();
+    return ret_val;
 }
 
