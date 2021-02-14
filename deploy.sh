@@ -23,6 +23,12 @@ elif [ "$1" == "build" ]; then
 		exit 1
 	fi
 	echo "build finished"
+elif [ "$1" == "test" ]; then
+	rm -rf coverage
+	mkdir coverage
+	./out/run_all_tests
+	gcovr -r . --html --html-details -o coverage/coverage-report.html
+	echo "Open ${PWD}/coverage/coverage-report.html to view coverage report"
 elif [ "$1" == "cross-setup" ]; then
 	cd /tmp/
 	wget -c https://releases.linaro.org/components/toolchain/binaries/6.5-2018.12/arm-linux-gnueabihf/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf.tar.xz
