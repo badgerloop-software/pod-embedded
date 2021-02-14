@@ -3,6 +3,20 @@ cmake_minimum_required(VERSION 3.1)
 project(PodEmbedded VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
+
+
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
+if(CMAKE_COMPILER_IS_GNUCXX)
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+    setup_target_for_coverage_gcovr_html(NAME pod_coverage
+                                         EXECUTABLE ${PROJECT_SOURCE_DIR}/out/run_all_tests
+                                        )
+endif()
+
+# if(CMAKE_COMPILER_IS_GNUCXX)
+#     target_link_libraries(${PROJECT_TEST_NAME} gcov)
+# endif()
 # Run Autocoder when CMake is run
 execute_process(COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
 
@@ -24,6 +38,7 @@ add_subdirectory(embedded/examples)
 add_subdirectory(embedded/peripherals)
 add_subdirectory(embedded/utils)
 add_subdirectory(middleware)
+
 
 # Do not compile tests when cross-compiling until we determine best way to include cross compiled GTest libs
 # Cross-compiled system name is "BeagleBone"
