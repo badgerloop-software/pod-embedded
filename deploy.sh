@@ -64,7 +64,7 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo apt-get update
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y cmake libgtest-dev
-	
+    sudo apt-get install gcov gcovr	
 	echo "Building GTest"
 	cd /usr/src/gtest
 	sudo cmake CMakeLists.txt
