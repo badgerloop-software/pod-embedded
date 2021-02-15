@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ]; then
 	echo "Options are: build, cross-setup, cross, clean, gtest-setup"
 	exit 1
 elif [ "$1" == "build" ]; then
-    ./deploy.sh clean
+	./deploy.sh clean
 	mkdir build && cd build
 
 	cmake ..
@@ -64,7 +64,8 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo apt-get update
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y cmake libgtest-dev
-    sudo apt-get install -y gcovr	
+	sudo apt-get install -y gcovr	
+	
 	echo "Building GTest"
 	cd /usr/src/gtest
 	sudo cmake CMakeLists.txt
@@ -78,6 +79,7 @@ elif [ "$1" == "format" ]; then
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out
+	rm -rf coverage
 	echo "clean finished"
 else
 	echo "Invalid argument: please put it in the form './$fileName build' or './$fileName cross-setup' or './$fileName cross' or './$fileName clean'"
