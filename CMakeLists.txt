@@ -14,9 +14,6 @@ if(CMAKE_COMPILER_IS_GNUCXX)
                                         )
 endif()
 
-# if(CMAKE_COMPILER_IS_GNUCXX)
-#     target_link_libraries(${PROJECT_TEST_NAME} gcov)
-# endif()
 # Run Autocoder when CMake is run
 execute_process(COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
 
