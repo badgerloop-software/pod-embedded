@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Setup CodeCov
+      run:  bash <(curl -s https://codecov.io/bash) 
     - name: Install GTest
       run: ./deploy.sh gtest-setup
     - name: Build Executables
