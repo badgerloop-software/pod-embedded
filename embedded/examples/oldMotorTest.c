@@ -19,7 +19,6 @@ static bool noTorqueMode = false;
 void motorHbs(void);
 void testLoop(void);
 
-data_t* data;
 
 void motorHbs()
 {
