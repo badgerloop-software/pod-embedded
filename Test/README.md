@@ -29,3 +29,7 @@ TEST(ExampleTest, VerifyWorkingGTest){
     ASSERT_EQ(0,0);
 }
 ```
+
+## Code Coverage
+
+Running `./deploy.sh` automatically runs a coverage report. Open `pod-embedded/coverage/coverage-report.html` in a web browser to view a full report.
