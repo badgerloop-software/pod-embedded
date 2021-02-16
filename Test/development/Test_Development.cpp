@@ -16,6 +16,7 @@ class LogPrinter : public EmptyTestEventListener {
       printf("*** Test %s.%s starting.\n",
              test_info.test_suite_name(), test_info.name());
       testing::internal::CaptureStdout();
+      testing::internal::CaptureStderr();
     }
 
     // Called after a failed assertion or a SUCCESS().
@@ -29,15 +30,15 @@ class LogPrinter : public EmptyTestEventListener {
 
     // Called after a test ends.
     virtual void OnTestEnd(const testing::TestInfo& test_info) {
+      std::string stdout_output = testing::internal::GetCapturedStdout();
+      std::string stderr_output = testing::internal::GetCapturedStderr();
+      std::cout << "STDOUT: {" << stdout_output << "}" << std::endl;
+      std::cout << "STDERR: {" << stderr_output << "}" << std::endl;
       printf("*** Test %s.%s ending.\n",
              test_info.test_suite_name(), test_info.name());
-      std::string output = testing::internal::GetCapturedStdout();
-      std::cout << output << std::endl;
     }
 };
 
-
-}
 // Basic tests to use when developing the logging infastructure
 TEST(DevelopmentTest, Test_stdout)
 {
@@ -50,6 +51,7 @@ TEST(DevelopmentTest, Test_stderr) {
     for(int i=0; i < 5; i++) {
         fprintf(stderr, "Printing to stderr\n");
     }
+}
 }
 
 int main(int argc, char **argv) {
