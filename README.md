@@ -1,6 +1,7 @@
 # Badgerloop Pod V
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
+[![codecov](https://codecov.io/gh/badgerloop-software/pod-embedded/branch/master/graph/badge.svg?token=R9oEyMGVd1)](https://codecov.io/gh/badgerloop-software/pod-embedded)
 
 *Developers: Eric Udlis, Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia, Ezra Freeman*
 
