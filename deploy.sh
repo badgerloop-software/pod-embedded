@@ -82,7 +82,7 @@ elif [ "$1" == "clean" ]; then
 	rm -rf coverage
 	echo "clean finished"
 elif [ "$1" == "codecov" ]; then
-	gcovr -r . --xml-pretty -o coverage.xml -e Test/
+	gcovr -r . -x --xml-pretty -o coverage.xml -e Test/
 else
 	echo "Invalid argument: please put it in the form './$fileName build' or './$fileName cross-setup' or './$fileName cross' or './$fileName clean'"
 	exit 1
