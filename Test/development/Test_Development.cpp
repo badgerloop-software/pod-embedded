@@ -14,7 +14,7 @@ namespace {
 class LogPrinter : public EmptyTestEventListener {
     virtual void OnTestStart(const testing::TestInfo& test_info) {
       printf("*** Test %s.%s starting.\n",
-             test_info.test_suite_name(), test_info.name());
+             test_info.test_case_name(), test_info.name());
       testing::internal::CaptureStdout();
       testing::internal::CaptureStderr();
     }
@@ -35,7 +35,7 @@ class LogPrinter : public EmptyTestEventListener {
       std::cout << "STDOUT: {" << stdout_output << "}" << std::endl;
       std::cout << "STDERR: {" << stderr_output << "}" << std::endl;
       printf("*** Test %s.%s ending.\n",
-             test_info.test_suite_name(), test_info.name());
+             test_info.test_case_name(), test_info.name());
     }
 };
 
@@ -54,15 +54,15 @@ TEST(DevelopmentTest, Test_stderr) {
 }
 }
 
-int main(int argc, char **argv) {
-    InitGoogleTest(&argc, argv);
-
-    UnitTest& unit_test = *UnitTest::GetInstance();
-    TestEventListeners& listeners = unit_test.listeners();
-    delete listeners.Release(listeners.default_result_printer());
-    listeners.Append(new LogPrinter);
-
-    int ret_val = RUN_ALL_TESTS();
-    return ret_val;
-}
+// int main(int argc, char **argv) {
+//     InitGoogleTest(&argc, argv);
+// 
+//     UnitTest& unit_test = *UnitTest::GetInstance();
+//     TestEventListeners& listeners = unit_test.listeners();
+//     delete listeners.Release(listeners.default_result_printer());
+//     listeners.Append(new LogPrinter);
+// 
+//     int ret_val = RUN_ALL_TESTS();
+//     return ret_val;
+// }
 
