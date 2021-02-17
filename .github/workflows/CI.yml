@@ -12,4 +12,8 @@ jobs:
     - name: Build Executables
       run: ./deploy.sh build
     - name: Run Tests
-      run: ./out/run_all_tests
+      run: ./deploy.sh test
+    - name: Get Coverage Report
+      run: ./deploy.sh codecov
+    - name: Upload Coverage
+      run:  bash <(curl -s https://codecov.io/bash) 
