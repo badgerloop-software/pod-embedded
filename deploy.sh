@@ -7,7 +7,6 @@ if [ "$#" -ne 1 ]; then
 	exit 1
 elif [ "$1" == "build" ]; then
     ./deploy.sh clean
-    ./deploy.sh gtest-setup
 	mkdir build && cd build
 
 	cmake ..
