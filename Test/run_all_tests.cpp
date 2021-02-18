@@ -1,5 +1,5 @@
 #include "gtest_globals.h"
-#include "development/LogPrinter.h"
+#include "LogPrinter.h"
 #include <gtest/gtest.h>
 
 char executable_path[128];
