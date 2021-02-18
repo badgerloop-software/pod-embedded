@@ -342,3 +342,108 @@ TEST_F(StateTest, Idle_To_Pumpdown_Test) {
 
     assertStateIs(PUMPDOWN_NAME);
 }
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: pumpdown        Expected state: propulsion
+ */
+TEST_F(StateTest, Pumpdown_to_Propulsion_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Propulsion\n");
+    GO_TO_STATE(PUMPDOWN_NAME)
+    GO_TO_STATE(PROPULSION_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(PROPULSION_NAME);
+}
+/**
+ * Test the nominal transition from propulsion to braking
+ * Start state: propulsion        Expected state: braking
+ */
+TEST_F(StateTest, Propulsion_to_Braking_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Braking\n");
+    GO_TO_STATE(PROPULSION_NAME);
+    GO_TO_STATE(BRAKING_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(BRAKING_NAME);
+}
+/**
+ * Test the nominal transition from braking to stopped
+ * Start state: braking        Expected state: stopped
+ */
+TEST_F(StateTest, Braking_To_Stopped_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Stopped\n");
+    GO_TO_STATE(BRAKING_NAME);
+    GO_TO_STATE(STOPPED_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(STOPPED_NAME);
+}
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: stopped        Expected state: service precharge
+ */
+TEST_F(StateTest, Stopped_to_Service_Precharge_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Stopped\n");
+    GO_TO_STATE(STOPPED_NAME);
+    GO_TO_STATE(SERV_PRECHARGE_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(SERV_PRECHARGE_NAME);
+}
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: service precharge         Expected state: service propulsion
+ */
+TEST_F(StateTest, Service_Precharge_To_Service_Propulsion_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Stopped\n");
+    GO_TO_STATE(SERV_PRECHARGE_NAME);
+    GO_TO_STATE(CRAWL_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(CRAWL_NAME);
+}
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: service propulsion        Expected state: post run
+ */
+TEST_F(StateTest, Service_Propulsion_to_Post_Run_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Stopped\n");
+    GO_TO_STATE(CRAWL_NAME);
+    GO_TO_STATE(POST_RUN_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(POST_RUN_NAME);
+}
+/**
+ * Test the nominal transition from idle to pumpdown
+ * Start state: post run        Expected state: safe to approach
+ */
+TEST_F(StateTest, Post_Run_To_Safe_To_Approach_Test) {
+    FREEZE_SM;
+    genericInit();
+    fprintf(stderr, "[LOG] Going into Stopped\n");
+    GO_TO_STATE(POST_RUN_NAME);
+    GO_TO_STATE(SAFE_TO_APPROACH_NAME);
+    UNFREEZE_SM;
+    WAIT(.5);
+
+    assertStateIs(SAFE_TO_APPROACH_NAME);
+}
