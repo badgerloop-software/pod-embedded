@@ -3,6 +3,13 @@ cmake_minimum_required(VERSION 3.1)
 project(PodEmbedded VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
+# Setup coverage flags
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+endif()
+
 # Run Autocoder when CMake is run
 execute_process(COMMAND python ${PROJECT_SOURCE_DIR}/autocoding/autocode.py)
 
@@ -30,12 +37,7 @@ add_subdirectory(middleware)
 # Cross-compiled system name is "BeagleBone"
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_subdirectory(Test)
-    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
-if(CMAKE_COMPILER_IS_GNUCXX)
-    include(CodeCoverage)
-    append_coverage_compiler_flags()
     setup_target_for_coverage_gcovr_html(NAME pod_coverage
                                          EXECUTABLE ${PROJECT_SOURCE_DIR}/out/run_all_tests
                                         )
-endif()
 endif()
