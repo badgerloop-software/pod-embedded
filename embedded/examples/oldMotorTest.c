@@ -19,7 +19,6 @@ static bool noTorqueMode = false;
 void motorHbs(void);
 void testLoop(void);
 
-
 void motorHbs()
 {
     while (1) {

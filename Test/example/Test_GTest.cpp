@@ -14,4 +14,3 @@ TEST(ExampleTest, VerifyWorkingGTest)
 
     ASSERT_EQ(0, 0);
 }
-
