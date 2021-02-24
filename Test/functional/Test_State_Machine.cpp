@@ -107,13 +107,14 @@ void assertStateIsNot(char* test_name)
     }
 }
 
-void assertStateIsFault() {
-       if (strcmp(getCurrState()->name, NON_RUN_FAULT_NAME) || strcmp(getCurrState()->name, RUN_FAULT_NAME)) {
+void assertStateIsFault()
+{
+    if (strcmp(getCurrState()->name, NON_RUN_FAULT_NAME) || strcmp(getCurrState()->name, RUN_FAULT_NAME)) {
         return;
     } else {
         fprintf(stderr, "Expected to be in a fault state but was in %s\n", getCurrState()->name);
         FAIL() << "Fault Error";
-    } 
+    }
 }
 
 int checkForChange(char* name)
@@ -193,11 +194,12 @@ static void genericInit(void)
     setRmsVSMCode(0);
     setRmsKeyMode(0);
 }
-void debuggingHelper(){
-    fprintf(stderr, "[LOG] getRmsCommandedTorque(): %d\n", getRmsCommandedTorque() );
-    fprintf(stderr, "[LOG] getFlagsShouldBrake():   %d\n", getFlagsShouldBrake() );
-    fprintf(stderr, "[LOG] getFlagsBrakePrimAct():  %d\n", getFlagsBrakePrimAct() );
-    fprintf(stderr, "[LOG] getFlagsBrakePrimRetr(): %d\n", getFlagsBrakePrimRetr() );
+void debuggingHelper()
+{
+    fprintf(stderr, "[LOG] getRmsCommandedTorque(): %d\n", getRmsCommandedTorque());
+    fprintf(stderr, "[LOG] getFlagsShouldBrake():   %d\n", getFlagsShouldBrake());
+    fprintf(stderr, "[LOG] getFlagsBrakePrimAct():  %d\n", getFlagsBrakePrimAct());
+    fprintf(stderr, "[LOG] getFlagsBrakePrimRetr(): %d\n", getFlagsBrakePrimRetr());
 }
 /**
  * Ensure SetUp ran correctly and we are placed in the idle state
@@ -235,7 +237,8 @@ TEST_F(StateTest, HV_Battery_SOC_Test)
  * Battery Voltage is too low during run
  * Start state: propulsion      Expected end state: run-fault
  */
-TEST_F(StateTest, HV_Battery_Low_Voltage_Test) {
+TEST_F(StateTest, HV_Battery_Low_Voltage_Test)
+{
     FREEZE_SM;
     fprintf(stderr, "[LOG] GOING INTO PROPULSION\n");
     genericInit();
@@ -256,7 +259,8 @@ TEST_F(StateTest, HV_Battery_Low_Voltage_Test) {
  * RMS overheats during run
  * Start state: propusion       Expected end state: run-fault
  */
-TEST_F(StateTest, RMS_Overheat_Test) {
+TEST_F(StateTest, RMS_Overheat_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] GOING INTO PROPULSION\n");
@@ -278,7 +282,8 @@ TEST_F(StateTest, RMS_Overheat_Test) {
  * Make sure the SM transitions into stopped after going past crawl threshold
  * Start state: crawl       Expected end state: stopped
  */
-TEST_F(StateTest, Crawl_Timer_Test) {
+TEST_F(StateTest, Crawl_Timer_Test)
+{
     FREEZE_SM;
     genericInit();
     setPressurePrimTank(500);
@@ -304,7 +309,8 @@ TEST_F(StateTest, Crawl_Timer_Test) {
     return assertStateIs(STOPPED_NAME);
 }
 
-TEST_F(StateTest, Pressure_Vessel_Depressure_Test) {
+TEST_F(StateTest, Pressure_Vessel_Depressure_Test)
+{
     char* statesToTest[] = {
         PUMPDOWN_NAME,
         PROPULSION_NAME,
@@ -325,7 +331,6 @@ TEST_F(StateTest, Pressure_Vessel_Depressure_Test) {
         UNFREEZE_SM;
         WAIT(.2);
 
-
         setPressurePv(5);
 
         WAIT(.5);
@@ -337,7 +342,8 @@ TEST_F(StateTest, Pressure_Vessel_Depressure_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: idle        Expected state: pumpdown
  */
-TEST_F(StateTest, Idle_To_Pumpdown_Test) {
+TEST_F(StateTest, Idle_To_Pumpdown_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Pumpdown\n");
@@ -354,7 +360,8 @@ TEST_F(StateTest, Idle_To_Pumpdown_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: pumpdown        Expected state: propulsion
  */
-TEST_F(StateTest, Pumpdown_to_Propulsion_Test) {
+TEST_F(StateTest, Pumpdown_to_Propulsion_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Propulsion\n");
@@ -362,7 +369,7 @@ TEST_F(StateTest, Pumpdown_to_Propulsion_Test) {
     GO_TO_STATE(PROPULSION_NAME);
     UNFREEZE_SM;
     WAIT(.5);
-    
+
     debuggingHelper();
     ASSERT_EQ(getFlagsShouldBrake(), false);
     EXPECT_NE(getRmsCommandedTorque(), 0);
@@ -372,7 +379,8 @@ TEST_F(StateTest, Pumpdown_to_Propulsion_Test) {
  * Test the nominal transition from propulsion to braking
  * Start state: propulsion        Expected state: braking
  */
-TEST_F(StateTest, Propulsion_to_Braking_Test) {
+TEST_F(StateTest, Propulsion_to_Braking_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Braking\n");
@@ -389,7 +397,8 @@ TEST_F(StateTest, Propulsion_to_Braking_Test) {
  * Test the nominal transition from braking to stopped
  * Start state: braking        Expected state: stopped
  */
-TEST_F(StateTest, Braking_To_Stopped_Test) {
+TEST_F(StateTest, Braking_To_Stopped_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Stopped\n");
@@ -407,7 +416,8 @@ TEST_F(StateTest, Braking_To_Stopped_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: stopped        Expected state: service precharge
  */
-TEST_F(StateTest, Stopped_to_Service_Precharge_Test) {
+TEST_F(StateTest, Stopped_to_Service_Precharge_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Stopped\n");
@@ -424,7 +434,8 @@ TEST_F(StateTest, Stopped_to_Service_Precharge_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: service precharge         Expected state: service propulsion
  */
-TEST_F(StateTest, Service_Precharge_To_Service_Propulsion_Test) {
+TEST_F(StateTest, Service_Precharge_To_Service_Propulsion_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Stopped\n");
@@ -442,7 +453,8 @@ TEST_F(StateTest, Service_Precharge_To_Service_Propulsion_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: service propulsion        Expected state: post run
  */
-TEST_F(StateTest, Service_Propulsion_to_Post_Run_Test) {
+TEST_F(StateTest, Service_Propulsion_to_Post_Run_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Stopped\n");
@@ -458,7 +470,8 @@ TEST_F(StateTest, Service_Propulsion_to_Post_Run_Test) {
  * Test the nominal transition from idle to pumpdown
  * Start state: post run        Expected state: safe to approach
  */
-TEST_F(StateTest, Post_Run_To_Safe_To_Approach_Test) {
+TEST_F(StateTest, Post_Run_To_Safe_To_Approach_Test)
+{
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Stopped\n");
