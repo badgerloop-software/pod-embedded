@@ -193,7 +193,12 @@ static void genericInit(void)
     setRmsVSMCode(0);
     setRmsKeyMode(0);
 }
-
+void debuggingHelper(){
+    fprintf(stderr, "[LOG] getRmsCommandedTorque(): %d\n", getRmsCommandedTorque() );
+    fprintf(stderr, "[LOG] getFlagsShouldBrake():   %d\n", getFlagsShouldBrake() );
+    fprintf(stderr, "[LOG] getFlagsBrakePrimAct():  %d\n", getFlagsBrakePrimAct() );
+    fprintf(stderr, "[LOG] getFlagsBrakePrimRetr(): %d\n", getFlagsBrakePrimRetr() );
+}
 /**
  * Ensure SetUp ran correctly and we are placed in the idle state
  */
@@ -339,6 +344,9 @@ TEST_F(StateTest, Idle_To_Pumpdown_Test) {
     GO_TO_STATE(PUMPDOWN_NAME);
     UNFREEZE_SM;
     WAIT(.5);
+    ASSERT_EQ(getFlagsShouldBrake(), false);
+
+    debuggingHelper();
 
     assertStateIs(PUMPDOWN_NAME);
 }
@@ -350,11 +358,14 @@ TEST_F(StateTest, Pumpdown_to_Propulsion_Test) {
     FREEZE_SM;
     genericInit();
     fprintf(stderr, "[LOG] Going into Propulsion\n");
-    GO_TO_STATE(PUMPDOWN_NAME)
+    GO_TO_STATE(PUMPDOWN_NAME);
     GO_TO_STATE(PROPULSION_NAME);
     UNFREEZE_SM;
     WAIT(.5);
-
+    
+    debuggingHelper();
+    ASSERT_EQ(getFlagsShouldBrake(), false);
+    EXPECT_NE(getRmsCommandedTorque(), 0);
     assertStateIs(PROPULSION_NAME);
 }
 /**
@@ -370,6 +381,8 @@ TEST_F(StateTest, Propulsion_to_Braking_Test) {
     UNFREEZE_SM;
     WAIT(.5);
 
+    debuggingHelper();
+    ASSERT_EQ(getFlagsBrakePrimAct(), true); // check if brakes are primary actuated
     assertStateIs(BRAKING_NAME);
 }
 /**
@@ -384,6 +397,9 @@ TEST_F(StateTest, Braking_To_Stopped_Test) {
     GO_TO_STATE(STOPPED_NAME);
     UNFREEZE_SM;
     WAIT(.5);
+
+    debuggingHelper();
+    ASSERT_EQ(getFlagsBrakePrimRetr(), true);
 
     assertStateIs(STOPPED_NAME);
 }
@@ -400,6 +416,8 @@ TEST_F(StateTest, Stopped_to_Service_Precharge_Test) {
     UNFREEZE_SM;
     WAIT(.5);
 
+    debuggingHelper();
+    ASSERT_EQ(getFlagsShouldBrake(), false);
     assertStateIs(SERV_PRECHARGE_NAME);
 }
 /**
@@ -415,6 +433,9 @@ TEST_F(StateTest, Service_Precharge_To_Service_Propulsion_Test) {
     UNFREEZE_SM;
     WAIT(.5);
 
+    debuggingHelper();
+    ASSERT_EQ(getFlagsShouldBrake(), false);
+    EXPECT_NE(getRmsCommandedTorque(), 0);
     assertStateIs(CRAWL_NAME);
 }
 /**
@@ -430,6 +451,7 @@ TEST_F(StateTest, Service_Propulsion_to_Post_Run_Test) {
     UNFREEZE_SM;
     WAIT(.5);
 
+    debuggingHelper();
     assertStateIs(POST_RUN_NAME);
 }
 /**
@@ -444,6 +466,7 @@ TEST_F(StateTest, Post_Run_To_Safe_To_Approach_Test) {
     GO_TO_STATE(SAFE_TO_APPROACH_NAME);
     UNFREEZE_SM;
     WAIT(.5);
+    debuggingHelper();
 
     assertStateIs(SAFE_TO_APPROACH_NAME);
 }
