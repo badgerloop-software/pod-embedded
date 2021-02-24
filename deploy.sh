@@ -3,10 +3,10 @@
 fileName=${0##*/}
 if [ "$#" -ne 1 ]; then
 	echo "one argument expected after './$fileName'"
-	echo "Options are: build, cross-setup, cross, clean, gtest-setup"
+	echo "Options are: build, cross-setup, cross, clean, gtest-setup, setup"
 	exit 1
 elif [ "$1" == "build" ]; then
-    ./deploy.sh clean
+	./deploy.sh clean
 	mkdir build && cd build
 
 	cmake ..
@@ -23,6 +23,13 @@ elif [ "$1" == "build" ]; then
 		exit 1
 	fi
 	echo "build finished"
+elif [ "$1" == "test" ]; then
+	./deploy.sh build
+	rm -rf coverage
+	mkdir coverage
+	./out/run_all_tests
+	gcovr -r . --html --html-details -o coverage/coverage-report.html -e Test/
+	echo "Open ${PWD}/coverage/coverage-report.html to view coverage report"
 elif [ "$1" == "cross-setup" ]; then
 	cd /tmp/
 	wget -c https://releases.linaro.org/components/toolchain/binaries/6.5-2018.12/arm-linux-gnueabihf/gcc-linaro-6.5.0-2018.12-x86_64_arm-linux-gnueabihf.tar.xz
@@ -52,11 +59,13 @@ elif [ "$1" == "cross" ]; then
 		exit 1
 	fi
 	echo "cross build finished"
+
 elif [ "$1" == "gtest-setup" ]; then
 	echo "Installing Dependencies (Assumes Debian based System) - Sudo access required"
 	sudo apt-get update
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y cmake libgtest-dev
+	sudo apt-get install -y gcovr	
 	
 	echo "Building GTest"
 	cd /usr/src/gtest
@@ -65,13 +74,30 @@ elif [ "$1" == "gtest-setup" ]; then
 	sudo cp *.a /usr/lib
 	
 	echo "GTest Install Complete"
+
+elif [ "$1" == "setup" ]; then
+	echo "Installing Dependencies (Assumes Debian based System) - Sudo access required"
+	sudo apt-get update
+	sudo apt-get install -y build-essential
+	sudo apt-get install -y cmake libgtest-dev
+    sudo apt-get install -y python3 python3-pip python-is-python3 clang-format
+	
+	if [ $? -ne 0 ]; then
+		echo "failure detected during dependency installation"
+		exit 1
+	fi
+	echo "setup finished"
+
 elif [ "$1" == "format" ]; then
 	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -style=file -i {} \;
 	echo "Format successful"
 elif [ "$1" == "clean" ]; then
 	rm -rf build
 	rm -rf out
+	rm -rf coverage
 	echo "clean finished"
+elif [ "$1" == "codecov" ]; then
+	gcovr -r . -x --xml-pretty -o coverage.xml -e Test/
 else
 	echo "Invalid argument: please put it in the form './$fileName build' or './$fileName cross-setup' or './$fileName cross' or './$fileName clean'"
 	exit 1
