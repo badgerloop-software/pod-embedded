@@ -14,15 +14,3 @@ TEST(DevelopmentTest, Test_stderr)
         fprintf(stderr, "Printing to stderr\n");
     }
 }
-
-// int main(int argc, char **argv) {
-//     InitGoogleTest(&argc, argv);
-//
-//     UnitTest& unit_test = *UnitTest::GetInstance();
-//     TestEventListeners& listeners = unit_test.listeners();
-//     delete listeners.Release(listeners.default_result_printer());
-//     listeners.Append(new LogPrinter);
-//
-//     int ret_val = RUN_ALL_TESTS();
-//     return ret_val;
-// }
