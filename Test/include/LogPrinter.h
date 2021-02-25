@@ -11,6 +11,7 @@ using ::testing::TestPartResult;
 using ::testing::UnitTest;
 class LogPrinter : public EmptyTestEventListener {
     public:
+    virtual void OnTestProgramEnd(const UnitTest& unit_test);
     virtual void OnTestStart(const testing::TestInfo& test_info);
     // Called after a failed assertion or a SUCCESS().
     virtual void OnTestPartResult(const testing::TestPartResult& test_part_result);

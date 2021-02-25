@@ -11,6 +11,10 @@ using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
+    void LogPrinter::OnTestProgramEnd(const UnitTest& unit_test) {
+        fprintf(stdout, "TEST %s\n", unit_test.Passed() ? "PASSED" : "FAILED");
+        fflush(stdout);
+    }
     void LogPrinter::OnTestStart(const testing::TestInfo& test_info)
     {
         printf("*** Test %s.%s starting.\n",
@@ -38,6 +42,7 @@ using ::testing::UnitTest;
         std::cout << "STDERR: {" << stderr_output << "}" << std::endl;
         printf("*** Test %s.%s ending.\n",
             test_info.test_case_name(), test_info.name());
+        test_info.EmptyTestEventListener
     }
 /**
  * UNCOMMENT THIS FOR A DEMO
