@@ -12,25 +12,23 @@
 #include <ctime>
 #include <iostream>
 
-extern "C" 
-{
-    #include "bbgpio.h"
-    #include "connStat.h"
-    #include <signal.h>
-    #include <rms.h>
-    #include "motor.h"
-    #include "hv_iox.h"
-    #include "motor.h"
-    #include "proc_iox.h"
-    #include "data.h"
-    #include "can_devices.h"
-    #include "state_machine.h"
-    #include "NCD9830DBR2G.h"
-    #include "nav.h"
+extern "C" {
+#include "NCD9830DBR2G.h"
+#include "bbgpio.h"
+#include "can_devices.h"
+#include "connStat.h"
+#include "data.h"
+#include "hv_iox.h"
+#include "motor.h"
+#include "nav.h"
+#include "proc_iox.h"
+#include "state_machine.h"
+#include <rms.h>
+#include <signal.h>
 
-    // Software Parameter Loading
-    #include "load_software_parameters.h"
-    #include "software_parameters.h"
+// Software Parameter Loading
+#include "load_software_parameters.h"
+#include "software_parameters.h"
 }
 
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
@@ -85,7 +83,7 @@ int init(char* directory)
 
     initNav();
 
-	struct sigaction sig;
+    struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
 

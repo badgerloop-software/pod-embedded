@@ -41,7 +41,7 @@ extern stateTransition_t* findTransition(state_t* currState, char* name);
 int bErrs, pErrs, rErrs;
 int checkNetwork()
 {
-    #ifndef NO_DASHBOARD
+#ifndef NO_DASHBOARD
     static int errs = 0;
     if (!checkUDPStat() || !checkTCPStat()) {
         if (checkUDPStat() == 0)
@@ -57,7 +57,7 @@ int checkNetwork()
     if (errs >= MAX_PACKET_LOSS) {
         return -1;
     }
-    #endif
+#endif
     return 0;
 }
 
@@ -159,13 +159,13 @@ stateTransition_t* propulsionAction()
         printf("Failed battery\n");
         bErrs += 1;
     } else
-    bErrs = 0;
+        bErrs = 0;
 
     if (!checkRunRMS()) {
         printf("run rms failed\n");
         rErrs += 1;
     } else
-    rErrs = 0;
+        rErrs = 0;
 
     if (getuSTimestamp() - getTimersStartTime() > MAXIMUM_RUN_TIME) {
         fprintf(stderr, "Prop timeout\n");

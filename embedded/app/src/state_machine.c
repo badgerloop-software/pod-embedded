@@ -57,7 +57,8 @@ state_t* findState(char* stateName)
  * 
  * RETURNS: int, the number of created states
  */
-int getNumStates(void) {
+int getNumStates(void)
+{
     return sizeof(stateMachine.allStates) / sizeof(stateMachine.allStates[0]);
 }
 
@@ -344,8 +345,9 @@ void buildStateMachine(void)
     }
 }
 
-void destroyStateMachine(void) {
-    
+void destroyStateMachine(void)
+{
+
     /* Free all of the states */
     /* Unrelated to the events of 1861 - 1865 */
     // printf("DESTROYING STATE MACHINE\n");

@@ -20,7 +20,7 @@
 
 bool checkIdlePressures(void)
 {
-    #ifndef NOPRESSURE
+#ifndef NOPRESSURE
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_IDLE || getPressurePrimTank() > PS1_TOP_LIMIT_IDLE) {
         fprintf(stderr, "primTank pressure failing\n");
         return false;
@@ -49,14 +49,14 @@ bool checkIdlePressures(void)
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    #endif
+#endif
 
     return true;
 }
 
 bool checkPrerunPressures(void)
 {
-    #ifndef NOPRESSURE
+#ifndef NOPRESSURE
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_PRE || getPressurePrimTank() > PS1_TOP_LIMIT_PRE) {
         fprintf(stderr, "primTank pressure failing\n");
         return false;
@@ -85,14 +85,14 @@ bool checkPrerunPressures(void)
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    #endif
+#endif
 
     return true;
 }
 
 bool checkBrakingPressures(void)
 {
-    #ifndef NOPRESSURE
+#ifndef NOPRESSURE
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_PRE || getPressurePrimTank() > PS1_TOP_LIMIT_PRE) {
         fprintf(stderr, "primTank pressure failing\n");
         return false;
@@ -121,14 +121,14 @@ bool checkBrakingPressures(void)
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    #endif
+#endif
 
     return true;
 }
 
 bool checkCrawlPostrunPressures(void)
 {
-    #ifndef NOPRESSURE
+#ifndef NOPRESSURE
     if (getPressurePrimTank() < PS1_BOTTOM_LIMIT_CRAWLPOST || getPressurePrimTank() > PS1_TOP_LIMIT_CRAWLPOST) {
         fprintf(stderr, "primTank pressure failing\n");
         fprintf(stderr, "\t pressure is %d\n", getPressurePrimTank());
@@ -158,7 +158,7 @@ bool checkCrawlPostrunPressures(void)
         fprintf(stderr, "Pressure vessel depressurizing\n");
         return false;
     }
-    #endif
+#endif
 
     return true;
 }

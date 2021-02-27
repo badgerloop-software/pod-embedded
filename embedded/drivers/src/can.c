@@ -32,20 +32,18 @@ void can_rx_irq()
 
 static int init_can_connection(int* s)
 {
-    #ifdef NOCAN
+#ifdef NOCAN
     return 0;
-    #endif
+#endif
     *s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     strcpy(ifr.ifr_name, CAN_INTF);
     //printf("Failed to copy bus name into network interface\n\r");
     //return 1;
-    
+
     if (ioctl(*s, SIOCGIFINDEX, &ifr) == -1) {
         printf("Failed to find bus\n\r");
         return 1;
     }
-
-
 
     addr.can_family = AF_CAN;
     addr.can_ifindex = ifr.ifr_ifindex;
@@ -66,9 +64,9 @@ static int init_can_timer(const struct itimerval* new, struct itimerval* old)
 
 inline int canRead(struct can_frame* recvd_msg)
 {
-    #ifdef NOCAN
+#ifdef NOCAN
     return 0;
-    #endif
+#endif
     int nBytes = recv(can_sock, recvd_msg, sizeof(struct can_frame), MSG_DONTWAIT);
     /* This is actually ok if it fails here, it just means no new info */
     if (nBytes < 0) {
@@ -79,9 +77,9 @@ inline int canRead(struct can_frame* recvd_msg)
 
 inline int canSend(uint32_t id, uint8_t* data, uint8_t size)
 {
-    #ifdef NOCAN
+#ifdef NOCAN
     return 0;
-    #endif
+#endif
     struct can_frame tx_msg;
 
     tx_msg.can_dlc = size;
@@ -97,9 +95,9 @@ inline int canSend(uint32_t id, uint8_t* data, uint8_t size)
 
 int initCan()
 {
-    #ifdef NOCAN
+#ifdef NOCAN
     return 0;
-    #endif
+#endif
     if (init_can_connection(&can_sock)) {
         fprintf(stderr, "Failed to init\n\r");
         return 1;
