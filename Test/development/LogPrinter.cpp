@@ -1,6 +1,7 @@
 #include "LogPrinter.h"
 #include "gtest/gtest.h"
 #include <stdio.h>
+#include <string>
 
 using ::testing::EmptyTestEventListener;
 using ::testing::InitGoogleTest;
@@ -37,4 +38,15 @@ void LogPrinter::OnTestEnd(const testing::TestInfo& test_info)
     if (test_info.result()->Failed()) {
         Logs.push_back(log);
     }
+}
+
+std::string formatTitle(std::string title, std::string style) {
+    int length_of_bar = (70 - title.size())/2-1;
+    std::string formated_title;
+    int count = 0;
+    for (; count<length_of_bar; count++) {
+        formated_title += "=";
+    }
+    formated_title.append(" ");
+    return formated_title;
 }
