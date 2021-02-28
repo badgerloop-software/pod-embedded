@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     testing::InitGoogleTest(&argc, argv);
     testing::UnitTest& unit_test = *testing::UnitTest::GetInstance();
     testing::TestEventListeners& listeners = unit_test.listeners();
-    delete listeners.Release(listeners.default_result_printer());
+    // delete listeners.Release(listeners.default_result_printer());
     listeners.Append(new LogPrinter);
     return RUN_ALL_TESTS();
 }

@@ -10,12 +10,15 @@ using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
 class LogPrinter : public EmptyTestEventListener {
+    struct Log {
+        std::string TestName;
+        std::string STDOUT;
+        std::string STDERR;
+    };
+    std::vector<Log> Logs;
     public:
     virtual void OnTestProgramEnd(const UnitTest& unit_test);
     virtual void OnTestStart(const testing::TestInfo& test_info);
-    // Called after a failed assertion or a SUCCESS().
-    virtual void OnTestPartResult(const testing::TestPartResult& test_part_result);
-    // Called after a test ends.
     virtual void OnTestEnd(const testing::TestInfo& test_info);
 };
 

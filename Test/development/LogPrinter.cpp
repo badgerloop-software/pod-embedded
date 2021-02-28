@@ -12,25 +12,17 @@ using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
 void LogPrinter::OnTestProgramEnd(const UnitTest& unit_test) {
-    fprintf(stdout, "TEST %s\n", unit_test.Passed() ? "PASSED" : "FAILED");
+    fprintf(stdout, "UNIT TEST: %s\n", unit_test.Passed() ? "PASSED" : "FAILED");
+    for (Log l : Logs) {
+        std::cout << "***" << l.TestName << "\n---STDOUT---\n" << l.STDOUT <<
+            "\n---STDERR---\n" << l.STDERR << std::endl;
+    }
     fflush(stdout);
 }
 void LogPrinter::OnTestStart(const testing::TestInfo& test_info)
 {
-    printf("*** Test %s.%s starting.\n",
-        test_info.test_case_name(), test_info.name());
     testing::internal::CaptureStdout();
     testing::internal::CaptureStderr();
-}
-
-// Called after a failed assertion or a SUCCESS().
-void LogPrinter::OnTestPartResult(const testing::TestPartResult& test_part_result)
-{
-    printf("%s in %s:%d\n%s\n",
-        test_part_result.failed() ? "*** Failure" : "Success",
-        test_part_result.file_name(),
-        test_part_result.line_number(),
-        test_part_result.summary());
 }
 
 // Called after a test ends.
@@ -38,8 +30,8 @@ void LogPrinter::OnTestEnd(const testing::TestInfo& test_info)
 {
     std::string stdout_output = testing::internal::GetCapturedStdout();
     std::string stderr_output = testing::internal::GetCapturedStderr();
-    std::cout << "STDOUT: {" << stdout_output << "}" << std::endl;
-    std::cout << "STDERR: {" << stderr_output << "}" << std::endl;
-    printf("*** Test %s.%s ending.\n",
-        test_info.test_case_name(), test_info.name());
+    LogPrinter::Log log = {test_info.name(), stdout_output, stderr_output};
+    if (test_info.result()->Failed()) {
+        Logs.push_back(log);
+    }
 }
