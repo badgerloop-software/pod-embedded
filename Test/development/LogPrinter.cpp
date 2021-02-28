@@ -10,12 +10,15 @@ using ::testing::TestEventListeners;
 using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
+// "\033[{FORMAT_ATTRIBUTE};{FORGROUND_COLOR};{BACKGROUND_COLOR}m{TEXT}\033[{RESET_FORMATE_ATTRIBUTE}m"
 
 void LogPrinter::OnTestProgramEnd(const UnitTest& unit_test) {
-    fprintf(stdout, "UNIT TEST: %s\n", unit_test.Passed() ? "PASSED" : "FAILED");
     for (Log l : Logs) {
-        std::cout << "***" << l.TestName << "\n---STDOUT---\n" << l.STDOUT <<
-            "\n---STDERR---\n" << l.STDERR << std::endl;
+        std::cout << "\033[1;94;49m-<(   " << l.TestName << "   )>-\033[0m\n" <<
+            "\n\t\033[4;34;49mstdout\033[0m\n" <<
+            "\033[0;39;49m"<< l.STDOUT <<"\033[0m" <<
+            "\t\033[4;95;49mstderr\033[0m\n" <<
+            "\033[0;39;49m"<< l.STDERR <<"\033[0m"; 
     }
     fflush(stdout);
 }
