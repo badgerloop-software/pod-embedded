@@ -41,21 +41,31 @@ protected:
         SetupCANDevices();
         loadParameters(executable_path, (char*)"../Test/run_profiles/Test_profiles/nominal_profile.txt");
         /*    genericInit();*/
+        printf("Build state machine ...");
         buildStateMachine();
+        printf("OK\n");
+        printf("Init Semaphore ...");
         if (sem_init(&smSem, 0, 1) != 0) {
             FAIL();
         }
+        printf("OK\n");
+        printf("Pthread create ...");
         if (pthread_create(&smThread, NULL, &StateTest::stateMachineLoop, NULL) != 0) {
             FAIL();
         }
+        printf("OK\n");
     }
 
     void SetUp()
     {
         // Restart state machine timer
+        printf("Freeze SM ...");
         FREEZE_SM;
+        printf("OK\n");
         stateMachine.start = getuSTimestamp();
+        printf("Unfreeze SM ...");
         UNFREEZE_SM;
+        printf("OK\n");
     }
 
     void TearDown()
@@ -206,7 +216,9 @@ void debuggingHelper()
  */
 TEST_F(StateTest, StateMachineInit)
 {
+    printf("Made it out of setup\n");
     assertStateIs(IDLE_NAME);
+    printf("Going into teardown\n");
 }
 
 /**
