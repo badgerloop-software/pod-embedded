@@ -4,8 +4,9 @@ project(PodEmbedded VERSION 1.0
                     DESCRIPTION "Pod embedded")
 
 
+# Setup coverage flags
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules/)
+    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
     include(CodeCoverage)
     append_coverage_compiler_flags()
 endif()
@@ -37,7 +38,7 @@ add_subdirectory(middleware)
 # Cross-compiled system name is "BeagleBone"
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_subdirectory(Test)
- setup_target_for_coverage_gcovr_html(NAME pod_coverage
+    setup_target_for_coverage_gcovr_html(NAME pod_coverage
                                          EXECUTABLE ${PROJECT_SOURCE_DIR}/out/run_all_tests
                                          )
 
