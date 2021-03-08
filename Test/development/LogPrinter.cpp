@@ -15,15 +15,15 @@ using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
-void formatTitle(char line, std::string lStyle, std::string title, std::string rStyle, int strlen) {
+void linePrinter(char line, std::string lStyle, std::string title, std::string rStyle) {
 	struct winsize size;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
-	std::string space = strlen > 0 ? "   " : "";
-	for (int i = 0; i<(size.ws_col - strlen)/2 - space.length(); i++) {
+	std::string space = title.length() > 0 ? "   " : "";
+	for (int i = 0; i<(size.ws_col - title.length())/2 - space.length(); i++) {
 		std::cout << lStyle << line << rStyle;
 	}
 	std::cout << space << lStyle << title << rStyle << space;
-	for (int i = (size.ws_col - strlen)/2 + space.length() + strlen; i<size.ws_col; i++) {
+	for (int i = (size.ws_col - title.length())/2 + space.length() + title.length(); i<size.ws_col; i++) {
 		std::cout << lStyle << line << rStyle;
 	}
 	std::cout << std::endl;
@@ -31,16 +31,16 @@ void formatTitle(char line, std::string lStyle, std::string title, std::string r
 
 void LogPrinter::OnTestProgramEnd(const UnitTest& unit_test) {
 	std::string failstr = "FAILURES:";
-	formatTitle('=', "\033[0;31;49m", failstr, "\033[0m", failstr.length());
+	linePrinter('=', "\033[0;39;49m", failstr, "\033[0m");
 
     for (Log l : Logs) {
 	std::cout << std::endl;
-	formatTitle('-', "\033[1;33;49m", l.TestName, "\033[0m", l.TestName.length());
+	linePrinter('-', "\033[1;33;49m", l.TestName, "\033[0m");
         std::cout << 
-            "\033[0;33;49m"<< l.STDOUT <<"\033[0m\n" <<
-            "\033[0;31;49m"<< l.STDERR <<"\033[0m"; 
+            "\033[0;31;49m"<< l.STDERR <<"\033[0m" <<
+            "\033[0;33;49m"<< l.STDOUT <<"\033[0m";
+    	linePrinter('-',"\033[1;33;49m","","\033[0m");
     }
-    formatTitle('-',"\033[1;33;49m","","\033[0m",0);
     fflush(stdout);
 }
 void LogPrinter::OnTestStart(const testing::TestInfo& test_info)

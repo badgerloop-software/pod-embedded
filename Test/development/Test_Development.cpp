@@ -3,7 +3,7 @@
 // Basic tests to use when developing the logging infastructure
 TEST(DevelopmentTest, Test_stdout)
 {
-    EXPECT_EQ(1,1); // Should Pass
+    EXPECT_EQ(1,2); // Should Pass
     for (int i = 0; i < 5; i++) {
         fprintf(stdout, "Printing to stdout\n");
     }
