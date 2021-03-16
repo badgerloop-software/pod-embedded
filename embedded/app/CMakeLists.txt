@@ -7,14 +7,14 @@ project(applib VERSION 1.0
 #and it's SUPER discouraged.
 set(dependecies src/bms_fault_checking.c
                 src/nav.c
-                src/state_machine.c
+                src/state_machine.cpp
                 src/init.c
                 src/load_software_parameters.c
                 src/pressure_fault_checking.c
-                src/states.c
-                src/motor.c
+                src/states.cpp
+                src/motor.cpp
                 src/rms_fault_checking.c
-                src/transitions.c)
+                src/transitions.cpp)
 
 #required libraries for the main pod executables
 set(libraries middleware 

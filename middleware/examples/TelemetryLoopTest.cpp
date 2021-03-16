@@ -1,11 +1,15 @@
 #include "TelemetryLoop.h"
+#include <hv_iox.h>
 #include <iostream>
 
 #define LOCALHOST (char*)"0.0.0.0"
 
-extern "C" {
+extern "C"
+{
 #include "data.h"
 }
+
+HVIox hv_iox;
 
 int main()
 {

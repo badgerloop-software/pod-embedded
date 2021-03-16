@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include "hv_iox.h"
+
 extern "C" {
 #include "braking.h"
 #include "data.h"
@@ -11,6 +13,8 @@ extern "C" {
 }
 #define NUM_LIM_SWITCHES 2 /* In test */
 #define FOREVER while (1)
+
+HVIox hv_iox;
 
 void showBrakingInfo()
 {

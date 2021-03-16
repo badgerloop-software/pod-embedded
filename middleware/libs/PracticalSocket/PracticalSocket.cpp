@@ -255,7 +255,7 @@ unsigned short CommunicatingSocket::getForeignPort()
 
 TCPSocket::TCPSocket()
     : CommunicatingSocket(SOCK_STREAM,
-          IPPROTO_TCP)
+        IPPROTO_TCP)
 {
 }
 
@@ -308,7 +308,7 @@ void TCPServerSocket::setListen(int queueLen)
 
 UDPSocket::UDPSocket()
     : CommunicatingSocket(SOCK_DGRAM,
-          IPPROTO_UDP)
+        IPPROTO_UDP)
 {
     setBroadcast();
 }
