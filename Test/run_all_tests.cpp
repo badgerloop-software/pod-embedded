@@ -1,11 +1,15 @@
 #include "gtest_globals.h"
 #include <gtest/gtest.h>
 
-char executable_path[128];
+extern "C" {
+#include <data.h>
+}
 
+char executable_path[128];
 // Run all GTest Tests
 int main(int argc, char** argv)
 {
+    initData();
     // Set executable path
     strcpy(executable_path, argv[0]);
 

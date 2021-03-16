@@ -12,9 +12,8 @@
 #include <unistd.h>
 #include <vector>
 
-extern "C" {
-#include <data.h>
 #include <hv_iox.h>
+extern "C" {
 #include <lv_iox.h>
 }
 
@@ -96,7 +95,7 @@ void* TelemetryLoop(void* arg)
             addToBuffer(&buffer, &time);
 
             // Write 1 byte IMD status
-            uint8_t imdStatus = getIMDStatus();
+            uint8_t imdStatus = hv_iox.getIMDStatus();
             addToBuffer(&buffer, &imdStatus);
 
             // Write 4 byte primary brake

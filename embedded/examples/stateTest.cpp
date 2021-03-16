@@ -1,4 +1,4 @@
-#include <data.h>
+#include <hv_iox.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <state_machine.h>
@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+
+extern "C" {
+#include <data.h>
+}
 
 #define PASS 0
 #define FAIL 1
@@ -32,6 +36,7 @@
 
 static pthread_t smThread;
 static sem_t smSem;
+HVIox hv_iox;
 
 static void genericInit(char* name);
 static void goToState(char* name);
@@ -233,7 +238,7 @@ int main()
     if (sem_init(&smSem, 0, 1) != 0) {
         return -1;
     }
-    if (pthread_create(&smThread, NULL, stateMachineLoop, NULL) != 0)
+    if (pthread_create(&smThread, NULL, (void* (*)(void*))stateMachineLoop, NULL) != 0)
         return -1;
     WAIT(.5);
     RUN_TEST(crawlTimerTest);

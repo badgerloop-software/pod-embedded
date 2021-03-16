@@ -8,12 +8,13 @@ extern "C" {
 }
 #include "connStat.h"
 #include <TelemetryLoop.h>
+#include <hv_iox.h>
 #define ROLL "roll"
 #define EXP "exp"
 #define RAW "raw"
 
 extern void initNav();
-
+HVIox hv_iox;
 int main(int argc, char* argv[])
 {
     initData();

@@ -2,12 +2,16 @@
 #include <hv_iox.h>
 #include <motor.h>
 #include <pthread.h>
-#include <rms.h>
 #include <semaphore.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
+
+extern "C" {
+#include <data.h>
+#include <rms.h>
+}
 /***
  * The high level interface for the motor
  */
