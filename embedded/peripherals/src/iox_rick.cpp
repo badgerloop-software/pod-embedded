@@ -118,61 +118,84 @@ int iox_rick::getIMBStat()
     return getState(&iox, IMD_STAT_FDBK);
 }
 
-int iox_rick::isMCUHVEnabled()
+int iox_rick::getIMBStat()
 {
 #ifdef NOI2C
     return 1;
 #endif
-    setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
+    // setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
     return getState(&iox, MCU_HV_EN);
 }
 
-int iox_rick::emergencyDisableMCU()
+int iox_rick::getIRTStat()
 {
 #ifdef NOI2C
     return 1;
 #endif
-    setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
-    return setState(&iox, MCU_HV_EN, true);
+    // setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
+    return getState(&iox, INRT_STAT_FDBK, true);
 }
 
-int iox_rick::getPsStatus()
+int iox_rick::getMCUStat()
 {
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, PS_FDBK);
+    return getState(&iox, MCU_STAT_FDBK);
 }
 
-int iox_rick::getBMSStatus()
-{
-#ifdef NOI2C
-    return 1;
-#endif
-    return getState(&iox, BMS_STAT_FDBK);
-}
-
-int iox_rick::isEStopOn()
+int iox_rick::setMCUHvEn(bool val)
 {
 #ifdef NOI2C
     return 0;
 #endif
-    return getState(&iox, E_STOP_FDBK);
-}
-
-int iox_rick::getMasterSwFeedback()
-{
-#ifdef NOI2C
-    return 1;
-#endif
-    return getState(&iox, MSTR_SW_FDBK);
-}
-
-int iox_rick::setMCUHVEnabled(int val)
-{
-#ifdef NOI2C
-    return 0;
-#endif
-    setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
     return setState(&iox, MCU_HV_EN, val);
+}
+
+int iox_rick::setBMS_MPI1(bool val)
+{
+#ifdef NOI2C
+    return 0;
+#endif
+    return setState(&iox, BMS_MPI1, val);
+}
+
+int iox_rick::getLIM_MCU3()
+{
+#ifdef NOI2C
+    return 1;
+#endif
+    return get(&iox, getLIM_MCU3,);
+}
+
+int iox_rick::getLIM_MCU2()
+{
+#ifdef NOI2C
+    return 1;
+#endif
+    return get(&iox, getLIM_MCU2);
+}
+
+int iox_rick::getLIM_MCU1()
+{
+#ifdef NOI2C
+    return 1;
+#endif
+    return get(&iox, getLIM_MCU1);
+}
+
+int iox_rick::getLIM_MCU0()
+{
+#ifdef NOI2C
+    return 1;
+#endif
+    return get(&iox, getLIM_MCU0);
+}
+
+int iox_rick::ChargeLV(int val)
+{
+#ifdef NOI2C
+    return 1;
+#endif
+    return setState(&iox, Charge_LV, val);
 }
