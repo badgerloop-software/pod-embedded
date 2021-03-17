@@ -9,7 +9,6 @@ add_executable(retroTest retroTest.c)
 add_executable(stateTest stateTest.cpp)
 add_executable(can_test can_test.c)
 add_executable(imu_test imu_test.c)
-add_executable(presTest presTest.cpp)
 
 #Link library dependencies for each example
 target_link_libraries(imu_test PRIVATE peripherals data)
@@ -17,7 +16,6 @@ target_link_libraries(can_test PRIVATE drivers peripherals data)
 target_link_libraries(stateTest PRIVATE peripherals data app)
 target_link_libraries(retroTest PRIVATE drivers peripherals data)
 target_link_libraries(oldMotorTest PRIVATE drivers middleware peripherals data)
-target_link_libraries(presTest PRIVATE middleware peripherals data)
 target_link_libraries(dashTest PRIVATE middleware peripherals data app)
 target_link_libraries(navTest PRIVATE middleware peripherals data app)
 target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
@@ -30,7 +28,6 @@ add_dependencies(can_test autocoder)
 add_dependencies(stateTest autocoder)
 add_dependencies(retroTest autocoder)
 add_dependencies(oldMotorTest autocoder)
-add_dependencies(presTest autocoder)
 add_dependencies(dashTest autocoder)
 add_dependencies(navTest autocoder)
 add_dependencies(brakingTest autocoder)
@@ -48,6 +45,5 @@ set_target_properties(bmsDisplay
                       stateTest
                       can_test
                       imu_test
-                      presTest
                       PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out/tests)
