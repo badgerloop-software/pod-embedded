@@ -84,7 +84,6 @@ int genBraking()
     }
     hv_iox.setMCUHVEnabled(false);
 
-    brakeHV();
     stateMachine.start = getuSTimestamp();
     return 0;
 }
@@ -124,7 +123,6 @@ int genPostRun()
         usleep(1000);
     }
     hv_iox.setMCUHVEnabled(0);
-    brakeHV();
 
     return 0;
 }
@@ -162,7 +160,6 @@ int genRunFault()
 
     hv_iox.setMCUHVEnabled(0);
     printf("Entering here4\n");
-    brakeHV();
     printf("Entering here\n");
     return 0;
 }
