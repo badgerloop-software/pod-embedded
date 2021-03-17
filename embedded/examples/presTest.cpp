@@ -1,6 +1,9 @@
 #include <braking.h>
-#include <data.h>
 #include <stdio.h>
+
+extern "C" {
+    #include <data.h>
+}
 
 int main()
 {

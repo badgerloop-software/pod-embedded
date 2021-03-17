@@ -2,14 +2,11 @@
 #include "HVTCPSocket.h"
 #include "data_dump.h"
 #include "hv_iox.h"
-#include "motor.h"
-#include "state_machine.h"
 #include <TelemetryLoop.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "hv_iox.h"
 #include "state_machine.h"
 #include "motor.h"
 

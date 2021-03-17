@@ -1,4 +1,5 @@
 #include <NCD9830DBR2G.h>
+#include "buart.h"
 #include <semaphore.h>
 #define PS_TANK CHANNEL_0
 #define PS_LINE CHANNEL_1
@@ -26,7 +27,7 @@ double readSecLine(void);
 
 double readSecActuator(void);
 
-void* pressureMonitor(void);
+void* pressureMonitor(void*);
 
 int initPressureMonitor(void);
 
@@ -34,18 +35,18 @@ void showPressures(void);
 
 int joinPressureMonitor(void);
 
-int brake(void);
-
-void brakeHV(void);
-
-int brakePrimaryUnactuate(void);
-
-int brakeSecondaryUnactuate(void);
-
 int brakePrimaryActuate(void);
 
 int brakeSecondaryActuate(void);
 
-int brakePrimaryVent(void);
+int brakePrimaryUnactuate(void);
 
-int brakeSecondaryVent(void);
+int brakeSecondaryActuate(void);
+
+int brakeSecondaryUnactuate(void);
+
+int brake(void);
+
+int unbrake(void);
+
+void brakeHV(void);

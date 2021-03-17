@@ -1,10 +1,13 @@
-#include <NCD9830DBR2G.h>
+
 #include <braking.h>
-#include <data.h>
-#include <lv_iox.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
+
+extern "C" {
+    #include <data.h>
+    #include <NCD9830DBR2G.h>
+}
 
 #define VOLTAGE_2000_SCALING(x) ((((((x / 256.0) * 5.0) - 0.5) / 4.0) * 2000.0))
 #define CURRENT_500_SCALING(x) (((((x / 256.0) * 5.0) - 0.6) / 2.4) * 500.0)
@@ -13,13 +16,37 @@
 #define RING_SIZE 200
 #define LOOP_PERIOD 20000
 
+#define BAUDRATE 9600
+#define UART_TIMEOUT_MS 5
+
 static double avgDouble(double* arr, int size);
 double readPressureVessel();
 
 double readPressureVessel();
 static pthread_t presMonThread;
 
+buart nucleo;
+BPacket cmd_ack = BPacket::ACK;
+BPacket cmd_ackack = BPacket::ACKACK;
+BPacket cmd_brake = BPacket::BRAKE;
+BPacket cmd_unbrake = BPacket::UNBRAKE;
+
+
+
 sem_t bigSem;
+
+int initComms()
+{
+    char buff[3];
+
+    nucleo.openDevice(5, BAUDRATE);
+    nucleo.writeCommand(&cmd_ack);
+    nucleo.readString(buff, 3, UART_TIMEOUT_MS);
+
+    if(buff[2] != 'k') return 1;
+    return 0;
+}
+
 
 int initPressureMonitor()
 {
@@ -28,14 +55,14 @@ int initPressureMonitor()
         fprintf(stderr, "Failed to init ADCs\n");
         return (-1);
     }
-    if (pthread_create(&presMonThread, NULL, (void*)(pressureMonitor), NULL) != 0) {
+    if (pthread_create(&presMonThread, NULL, pressureMonitor, NULL) != 0) {
         fprintf(stderr, "Failed to init pressure monitor\n");
         return (-1);
     }
     return 0;
 }
 
-void* pressureMonitor()
+void* pressureMonitor(void*)
 {
     double primTankRing[RING_SIZE];
     double primLineRing[RING_SIZE];
@@ -100,96 +127,45 @@ static double avgDouble(double* arr, int size)
 
 int brake()
 {
-    brakePrimaryActuate();
-    usleep(5000000);
-    if (limSwitchGet(PRIM_LIM_SWITCH)) {
-        brakeSecondaryActuate();
-    }
+    char buff[3];
+    nucleo.writeCommand(&cmd_brake);
+    nucleo.readString(buff, 3, UART_TIMEOUT_MS);
+    
+    if (buff[2] != 'a') return 1;
     return 0;
+
+}
+
+int brakePrimaryActuate(){
+    brake();
+}
+
+int brakeSecondaryActuate(){
+    brake();
+}
+
+
+
+int unbrake()
+{
+    char buff[3];
+    nucleo.writeCommand(&cmd_unbrake);
+    nucleo.readString(buff, 3, UART_TIMEOUT_MS);
+    
+    if (buff[2] != 'a') return 1;
+    return 0;
+}
+
+int brakePrimaryUnactuate(){
+    unbrake();
+}
+
+int brakeSecondaryUnactuate(){
+    unbrake();
 }
 
 void brakeHV()
 {
-}
-
-int brakePrimaryUnactuate()
-{
-    if (solenoidSet(SOLENOID_0, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_0\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_2, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_1\n");
-        return 1;
-    }
-
-    return 0;
-}
-
-int brakeSecondaryUnactuate()
-{
-    if (solenoidSet(SOLENOID_4, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_4\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_6, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_6\n");
-        return 1;
-    }
-
-    if (solenoidSet(SOLENOID_5, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_5\n");
-        return 1;
-    }
-    return 0;
-}
-
-int brakePrimaryActuate()
-{
-    if (solenoidSet(SOLENOID_0, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_0\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_2, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_1\n");
-        return 1;
-    }
-    return 0;
-}
-
-int brakeSecondaryActuate()
-{
-    if (solenoidSet(SOLENOID_4, 1) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_2\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_5, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_3\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_6, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_4\n");
-        return 1;
-    }
-    return 0;
-}
-
-int brakeSecondaryVent()
-{
-    if (solenoidSet(SOLENOID_4, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_2\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_5, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_3\n");
-        return 1;
-    }
-    if (solenoidSet(SOLENOID_6, 0) != 0) {
-        fprintf(stderr, "Failed to set SOLENOID_4\n");
-        return 1;
-    }
-
-    return 0;
 }
 
 //Voltage
