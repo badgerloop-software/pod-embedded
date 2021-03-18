@@ -25,7 +25,7 @@ extern "C" {
 #define LIM_MCU2 MCP_GPIOA_4
 #define LIM_MCU1 MCP_GPIOA_3
 #define LIM_MCU0 MCP_GPIOA_2
-#define Charge_LV MCP_GPIOA_1
+#define CHARGE_LV MCP_GPIOA_1
 
 
 class iox_rick {

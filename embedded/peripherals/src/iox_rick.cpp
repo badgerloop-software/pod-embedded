@@ -46,21 +46,21 @@ int iox_rick::init(bool hardStart)
 int iox_rick::setupIox()
 {
     // static int setupIox() moved into constructor:
-    setDir(&iox, MCU_LATCH, MCP_DIR_IN);
-    setDir(&iox, MSTR_SW_FDBK, MCP_DIR_OUT);
+    setDir(&iox, MCU_LATCH, MCP_DIR_OUT);
+    setDir(&iox, MSTR_SW_FDBK, MCP_DIR_IN);
     setDir(&iox, E_STOP_FDBK, MCP_DIR_IN);
     setDir(&iox, LMT_SW_FDBK, MCP_DIR_IN);
     setDir(&iox, BMS_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, IMD_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, INRT_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, MCU_STAT_FDBK, MCP_DIR_IN);
-    setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
-    setDir(&iox, BMS_MPI1, MCP_DIR_IN);
+    setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
+    setDir(&iox, BMS_MPI1, MCP_DIR_OUT);
     setDir(&iox, LIM_MCU3, MCP_DIR_IN);
     setDir(&iox, LIM_MCU2, MCP_DIR_IN);
     setDir(&iox, LIM_MCU1, MCP_DIR_IN);
     setDir(&iox, LIM_MCU0, MCP_DIR_IN);
-    setDir(&iox, Charge_LV, MCP_DIR_IN);
+    setDir(&iox, CHARGE_LV, MCP_DIR_OUT);
 
     return 0;
 }
@@ -187,5 +187,5 @@ int iox_rick::ChargeLV(int val)
 #ifdef NOI2C
     return 1;
 #endif
-    return setState(&iox, Charge_LV, val);
+    return setState(&iox, CHARGE_LV, val);
 }

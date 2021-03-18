@@ -14,6 +14,7 @@ add_library(peripherals src/batt.c
                         src/proc_iox.c
                         src/rms.c
                         src/hv_iox.cpp
+                        src/iox_morty.cpp
                         src/iox_rick.cpp)
 
 # Run Autocoder
