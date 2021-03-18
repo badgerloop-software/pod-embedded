@@ -1,5 +1,5 @@
-#ifndef __HV_IOX_H__
-#define __HV_IOX_H__
+#ifndef __IOX_RICK_H__
+#define __IOX_RICK_H__
 
 #include <stdbool.h>
 
@@ -56,7 +56,7 @@ public:
 
     int setMCUHvEn(bool val);
 
-    int setBMS_MPI2(bool val);
+    int setBMS_MPI1(bool val);
 
     int getLIM_MCU3(void);
 
@@ -67,9 +67,8 @@ public:
     int getLIM_MCU0(void);
 
     int ChargeLV(int val);
-
-    // Do we need this? => int emergencyDisableMCU(void);
 };
+
 extern iox_rick ioxRick;
 #endif
 

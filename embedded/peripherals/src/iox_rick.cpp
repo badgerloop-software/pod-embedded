@@ -73,7 +73,7 @@ i2c_settings iox_rick::getiox_rickDev()
 int iox_rick::setMCULatch(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, MCU_LATCH, val);
 }
@@ -113,7 +113,7 @@ int iox_rick::getBMSStat()
 int iox_rick::getIMBStat()
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return getState(&iox, IMD_STAT_FDBK);
 }
@@ -123,7 +123,6 @@ int iox_rick::getIMBStat()
 #ifdef NOI2C
     return 1;
 #endif
-    // setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
     return getState(&iox, MCU_HV_EN);
 }
 
@@ -132,8 +131,7 @@ int iox_rick::getIRTStat()
 #ifdef NOI2C
     return 1;
 #endif
-    // setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
-    return getState(&iox, INRT_STAT_FDBK, true);
+    return getState(&iox, INRT_STAT_FDBK);
 }
 
 int iox_rick::getMCUStat()
@@ -147,7 +145,7 @@ int iox_rick::getMCUStat()
 int iox_rick::setMCUHvEn(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, MCU_HV_EN, val);
 }
@@ -155,7 +153,7 @@ int iox_rick::setMCUHvEn(bool val)
 int iox_rick::setBMS_MPI1(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, BMS_MPI1, val);
 }
@@ -165,7 +163,7 @@ int iox_rick::getLIM_MCU3()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU3,);
+    return getState(&iox, getLIM_MCU3,);
 }
 
 int iox_rick::getLIM_MCU2()
@@ -173,7 +171,7 @@ int iox_rick::getLIM_MCU2()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU2);
+    return getState(&iox, getLIM_MCU2);
 }
 
 int iox_rick::getLIM_MCU1()
@@ -181,7 +179,7 @@ int iox_rick::getLIM_MCU1()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU1);
+    return getState(&iox, getLIM_MCU1);
 }
 
 int iox_rick::getLIM_MCU0()
@@ -189,7 +187,7 @@ int iox_rick::getLIM_MCU0()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU0);
+    return getState(&iox, getLIM_MCU0);
 }
 
 int iox_rick::ChargeLV(int val)
