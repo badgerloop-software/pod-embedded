@@ -10,7 +10,7 @@ extern "C" {
 #include <proc_iox.h>
 }
 
-#define HV_IO_ADDR 0x24
+#define IOX_RICK_ADDR 0x20
 
 #ifdef NOI2C
 #define VI2C
@@ -32,7 +32,7 @@ iox_rick::iox_rick()
 
 int iox_rick::init(bool hardStart)
 {
-    if (setupMCP(&iox, HV_IO_ADDR) != 0)
+    if (setupMCP(&iox, IOX_RICK_ADDR) != 0)
         return -1;
     else if (hardStart) {
         if (clearSettingsMCP(&iox) != 0)

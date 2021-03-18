@@ -1,4 +1,5 @@
 #include <iox_rick.h>
+#include <iox_morty.h>
 
 extern "C" {
 #include <data.h>
@@ -7,6 +8,7 @@ extern "C" {
 #include <proc_iox.h>
 }
 
+iox_morty ioxMorty;
 iox_rick ioxRick;
 int main()
 {
@@ -18,12 +20,12 @@ int main()
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
     }
 
-    initProcIox(true);
-    iox = getProcIoxDev();
-    printf("--Showing Proc IOX--\n");
+    ioxMorty.init(false);
+    iox = ioxMorty.getiox_mortyDev();
+    printf("---Showing IOX_RICK---\n");
     for (int i = 0; i < 16; i++) {
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
     }
-    return 0;
+
 }
 
