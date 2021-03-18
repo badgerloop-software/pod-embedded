@@ -5,7 +5,8 @@ project(driverslib VERSION 1.0
 add_library(drivers src/bbgpio.c
                     src/can.c
                     src/i2c.c
-                    src/buart.cpp)
+                    src/buart.cpp
+                    src/packet.cpp)
 
 # Run Autocoder
 add_dependencies(drivers autocoder)

@@ -4,7 +4,6 @@ project(peripheralslib VERSION 1.0
 #Define sources for library
 add_library(peripherals src/batt.c
                         src/braking.cpp
-                        src/NCD9830DBR2G.c
                         src/retro.c
                         src/bms.c
                         src/can_devices.c

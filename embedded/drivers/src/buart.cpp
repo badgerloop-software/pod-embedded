@@ -58,7 +58,7 @@ char buart::openDevice(int devNum, const unsigned int Bauds)
 {
     // Structure with the device's options
     struct termios options;
-    char* device;
+    char device[12];
     sprintf(device, "/dev/ttyS%d", devNum);
 
 

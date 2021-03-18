@@ -17,9 +17,7 @@
 #include <vector>
 
 #include <hv_iox.h>
-extern "C" {
-#include <lv_iox.h>
-}
+
 
 #define BUFFER_SIZE 500
 #define ENDIAN "LITTLE" // TODO: Is there a way to check this during compile-time or something?

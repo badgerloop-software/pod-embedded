@@ -16,7 +16,24 @@ extern "C" {
 
 
 int main(int argc, char* argv[])
-{
-    
+{   
+    printf("Run init\n");
+    if (initComms() != 0) {
+        printf("Failed to init comms\n");
+    }
+
+    sleep(2);
+    printf("Run brake.\n");
+    if (brake() != 0) {
+        printf("Failed to brake.\n");
+    }
+
+    sleep(2);
+
+    printf("Run unbrake.\n");
+    if (unbrake() != 0) {
+        printf("Failed to unbrake.\n");
+    }
+    printf("Braking test complete.\n");
     return 0;
 }

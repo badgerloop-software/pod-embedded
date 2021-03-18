@@ -3,7 +3,6 @@
 #include <hv_iox.h>
 #include <pthread.h>
 extern "C" {
-#include "NCD9830DBR2G.h"
 #include "bms.h"
 #include "can_devices.h"
 #include "data.h"
@@ -15,7 +14,7 @@ HVIox hv_iox;
 int main()
 {
     initData();
-    initPressureSensors();
+    // initPressureSensors();
     SetupCANDevices();
     SetupTelemetry((char*)DASHBOARD_IP, DASHBOARD_PORT);
     pthread_join(CANThread, NULL);

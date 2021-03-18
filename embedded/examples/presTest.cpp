@@ -7,7 +7,7 @@ extern "C" {
 
 int main()
 {
-    initData();
-    initPressureMonitor();
-    joinPressureMonitor();
+    // initData();
+    // initPressureMonitor();
+    // joinPressureMonitor();
 }

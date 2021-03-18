@@ -1,4 +1,3 @@
-#include "NCD9830DBR2G.h"
 #include <stdint.h>
 #include <stdio.h>
 
@@ -12,14 +11,14 @@ double getLVCurrent();
 double getLVBattVoltage()
 {
     uint8_t data[2] = { 0 };
-    readPressureSensor(ADC_0, VOLTAGE_SENSOR, data);
+    // readPressureSensor(ADC_0, VOLTAGE_SENSOR, data);
     return VOLT_SCALE((double)data[0]);
 }
 
 double getLVCurrent()
 {
     uint8_t data[2] = { 0 };
-    readPressureSensor(ADC_0, CURR_SENSOR, data);
+    // readPressureSensor(ADC_0, CURR_SENSOR, data);
 
     return CURR_SCALE(data[0]);
 }

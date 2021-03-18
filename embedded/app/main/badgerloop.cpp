@@ -16,7 +16,6 @@
 #include <iostream>
 
 extern "C" {
-#include "NCD9830DBR2G.h"
 #include "bbgpio.h"
 #include "can_devices.h"
 #include "connStat.h"
