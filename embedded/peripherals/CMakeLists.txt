@@ -13,7 +13,8 @@ add_library(peripherals src/batt.c
                         src/mcp23017.c
                         src/proc_iox.c
                         src/rms.c
-                        src/hv_iox.cpp)
+                        src/hv_iox.cpp
+                        src/iox_rick.cpp)
 
 # Run Autocoder
 add_dependencies(peripherals autocoder)

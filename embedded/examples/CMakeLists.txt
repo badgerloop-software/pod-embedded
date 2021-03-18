@@ -5,6 +5,7 @@ add_executable(navTest navTest.cpp)
 add_executable(solenoidTest solenoidTest.c)
 add_executable(brakingTest brakingTest.cpp)
 add_executable(gpioHvTest gpioHvTest.cpp)
+add_executable(gpioIOXRickTest gpioHvTest.cpp)
 add_executable(oldMotorTest oldMotorTest.c)
 add_executable(retroTest retroTest.c)
 add_executable(stateTest stateTest.cpp)
@@ -24,6 +25,7 @@ target_link_libraries(navTest PRIVATE middleware peripherals data app)
 target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
 target_link_libraries(bmsDisplay PRIVATE middleware peripherals data)
 target_link_libraries(gpioHvTest PRIVATE drivers peripherals data)
+target_link_libraries(gpioIOXRickTest PRIVATE drivers peripherals data)
 target_link_libraries(solenoidTest PRIVATE drivers peripherals data)
 
 # Run Autocoder
@@ -38,6 +40,7 @@ add_dependencies(navTest autocoder)
 add_dependencies(brakingTest autocoder)
 add_dependencies(bmsDisplay autocoder)
 add_dependencies(gpioHvTest autocoder)
+add_dependencies(gpioIOXRickTest autocoder)
 add_dependencies(solenoidTest autocoder)
 
 
@@ -48,6 +51,7 @@ set_target_properties(bmsDisplay
                       solenoidTest
                       brakingTest
                       gpioHvTest
+                      gpioIOXRickTest 
                       oldMotorTest
                       retroTest
                       stateTest

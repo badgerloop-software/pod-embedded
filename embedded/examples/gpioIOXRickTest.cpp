@@ -13,7 +13,7 @@ int main()
     initData();
     ioxRick.init(false);
     i2c_settings iox = iox_rick.getiox_rickDev();
-    printf("---Showing HV IOX---\n");
+    printf("---Showing IOX_RICK---\n");
     for (int i = 0; i < 16; i++) {
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
     }

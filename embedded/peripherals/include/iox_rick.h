@@ -48,7 +48,7 @@ public:
 
     int getBMSStat(void);
 
-    int getIMBStat(void);
+    int getIMDStat(void);
 
     int getIRTStat(void);
 

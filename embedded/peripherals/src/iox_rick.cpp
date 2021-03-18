@@ -110,20 +110,12 @@ int iox_rick::getBMSStat()
     return getState(&iox, BMS_STAT_FDBK);
 }
 
-int iox_rick::getIMBStat()
+int iox_rick::getIMDStat()
 {
 #ifdef NOI2C
     return 1;
 #endif
     return getState(&iox, IMD_STAT_FDBK);
-}
-
-int iox_rick::getIMBStat()
-{
-#ifdef NOI2C
-    return 1;
-#endif
-    return getState(&iox, MCU_HV_EN);
 }
 
 int iox_rick::getIRTStat()
@@ -163,7 +155,7 @@ int iox_rick::getLIM_MCU3()
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, getLIM_MCU3,);
+    return getState(&iox, LIM_MCU3);
 }
 
 int iox_rick::getLIM_MCU2()
@@ -171,7 +163,7 @@ int iox_rick::getLIM_MCU2()
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, getLIM_MCU2);
+    return getState(&iox, LIM_MCU2);
 }
 
 int iox_rick::getLIM_MCU1()
@@ -179,7 +171,7 @@ int iox_rick::getLIM_MCU1()
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, getLIM_MCU1);
+    return getState(&iox, LIM_MCU1);
 }
 
 int iox_rick::getLIM_MCU0()
@@ -187,7 +179,7 @@ int iox_rick::getLIM_MCU0()
 #ifdef NOI2C
     return 1;
 #endif
-    return getState(&iox, getLIM_MCU0);
+    return getState(&iox, LIM_MCU0);
 }
 
 int iox_rick::ChargeLV(int val)
