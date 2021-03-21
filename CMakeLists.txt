@@ -27,6 +27,6 @@ add_subdirectory(middleware)
 
 # Do not compile tests when cross-compiling until we determine best way to include cross compiled GTest libs
 # Cross-compiled system name is "BeagleBone"
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    add_subdirectory(Test)
-endif()
+#if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+#    add_subdirectory(Test)
+#endif()

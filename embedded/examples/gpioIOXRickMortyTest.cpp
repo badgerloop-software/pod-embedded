@@ -13,7 +13,8 @@ iox_rick ioxRick;
 int main()
 {
     initData();
-    ioxRick.init(false);
+    if (ioxRick.init(false) != 0)
+        std::count << "ioxRick doesn't return 0" << std::endl;
     i2c_settings iox = ioxRick.getiox_rickDev();
     printf("---Showing IOX_RICK---\n");
     for (int i = 0; i < 16; i++) {
@@ -22,7 +23,7 @@ int main()
 
     ioxMorty.init(false);
     iox = ioxMorty.getiox_mortyDev();
-    printf("---Showing IOX_RICK---\n");
+    printf("---Showing IOX_MORTY---\n");
     for (int i = 0; i < 16; i++) {
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
     }
