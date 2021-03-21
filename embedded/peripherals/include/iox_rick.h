@@ -1,5 +1,5 @@
-#ifndef __HV_IOX_H__
-#define __HV_IOX_H__
+#ifndef __IOX_RICK_H__
+#define __IOX_RICK_H__
 
 #include <stdbool.h>
 
@@ -25,10 +25,12 @@ extern "C" {
 #define LIM_MCU2 MCP_GPIOA_4
 #define LIM_MCU1 MCP_GPIOA_3
 #define LIM_MCU0 MCP_GPIOA_2
-#define Charge_LV MCP_GPIOA_1
+#define CHARGE_LV MCP_GPIOA_1
 
 
 class iox_rick {
+private:
+    i2c_settings iox;
 public:
     iox_rick(void);
 
@@ -48,7 +50,7 @@ public:
 
     int getBMSStat(void);
 
-    int getIMBStat(void);
+    int getIMDStat(void);
 
     int getIRTStat(void);
 
@@ -56,7 +58,7 @@ public:
 
     int setMCUHvEn(bool val);
 
-    int setBMS_MPI2(bool val);
+    int setBMS_MPI1(bool val);
 
     int getLIM_MCU3(void);
 
@@ -67,9 +69,8 @@ public:
     int getLIM_MCU0(void);
 
     int ChargeLV(int val);
-
-    // Do we need this? => int emergencyDisableMCU(void);
 };
+
 extern iox_rick ioxRick;
 #endif
 

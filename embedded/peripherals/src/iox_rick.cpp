@@ -10,13 +10,12 @@ extern "C" {
 #include <proc_iox.h>
 }
 
-#define HV_IO_ADDR 0x24
+#define IOX_RICK_ADDR 0x20
 
 #ifdef NOI2C
 #define VI2C
 #endif
 
-static i2c_settings iox;
 static int setupIox(void);
 
 /***
@@ -32,7 +31,7 @@ iox_rick::iox_rick()
 
 int iox_rick::init(bool hardStart)
 {
-    if (setupMCP(&iox, HV_IO_ADDR) != 0)
+    if (setupMCP(&iox, IOX_RICK_ADDR) != 0)
         return -1;
     else if (hardStart) {
         if (clearSettingsMCP(&iox) != 0)
@@ -46,21 +45,21 @@ int iox_rick::init(bool hardStart)
 int iox_rick::setupIox()
 {
     // static int setupIox() moved into constructor:
-    setDir(&iox, MCU_LATCH, MCP_DIR_IN);
-    setDir(&iox, MSTR_SW_FDBK, MCP_DIR_OUT);
+    setDir(&iox, MCU_LATCH, MCP_DIR_OUT);
+    setDir(&iox, MSTR_SW_FDBK, MCP_DIR_IN);
     setDir(&iox, E_STOP_FDBK, MCP_DIR_IN);
     setDir(&iox, LMT_SW_FDBK, MCP_DIR_IN);
     setDir(&iox, BMS_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, IMD_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, INRT_STAT_FDBK, MCP_DIR_IN);
     setDir(&iox, MCU_STAT_FDBK, MCP_DIR_IN);
-    setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
-    setDir(&iox, BMS_MPI1, MCP_DIR_IN);
+    setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
+    setDir(&iox, BMS_MPI1, MCP_DIR_OUT);
     setDir(&iox, LIM_MCU3, MCP_DIR_IN);
     setDir(&iox, LIM_MCU2, MCP_DIR_IN);
     setDir(&iox, LIM_MCU1, MCP_DIR_IN);
     setDir(&iox, LIM_MCU0, MCP_DIR_IN);
-    setDir(&iox, Charge_LV, MCP_DIR_IN);
+    setDir(&iox, CHARGE_LV, MCP_DIR_OUT);
 
     return 0;
 }
@@ -73,7 +72,7 @@ i2c_settings iox_rick::getiox_rickDev()
 int iox_rick::setMCULatch(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, MCU_LATCH, val);
 }
@@ -110,21 +109,12 @@ int iox_rick::getBMSStat()
     return getState(&iox, BMS_STAT_FDBK);
 }
 
-int iox_rick::getIMBStat()
-{
-#ifdef NOI2C
-    return 0;
-#endif
-    return getState(&iox, IMD_STAT_FDBK);
-}
-
-int iox_rick::getIMBStat()
+int iox_rick::getIMDStat()
 {
 #ifdef NOI2C
     return 1;
 #endif
-    // setDir(&iox, MCU_HV_EN, MCP_DIR_IN);
-    return getState(&iox, MCU_HV_EN);
+    return getState(&iox, IMD_STAT_FDBK);
 }
 
 int iox_rick::getIRTStat()
@@ -132,8 +122,7 @@ int iox_rick::getIRTStat()
 #ifdef NOI2C
     return 1;
 #endif
-    // setDir(&iox, MCU_HV_EN, MCP_DIR_OUT);
-    return getState(&iox, INRT_STAT_FDBK, true);
+    return getState(&iox, INRT_STAT_FDBK);
 }
 
 int iox_rick::getMCUStat()
@@ -147,7 +136,7 @@ int iox_rick::getMCUStat()
 int iox_rick::setMCUHvEn(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, MCU_HV_EN, val);
 }
@@ -155,7 +144,7 @@ int iox_rick::setMCUHvEn(bool val)
 int iox_rick::setBMS_MPI1(bool val)
 {
 #ifdef NOI2C
-    return 0;
+    return 1;
 #endif
     return setState(&iox, BMS_MPI1, val);
 }
@@ -165,7 +154,7 @@ int iox_rick::getLIM_MCU3()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU3,);
+    return getState(&iox, LIM_MCU3);
 }
 
 int iox_rick::getLIM_MCU2()
@@ -173,7 +162,7 @@ int iox_rick::getLIM_MCU2()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU2);
+    return getState(&iox, LIM_MCU2);
 }
 
 int iox_rick::getLIM_MCU1()
@@ -181,7 +170,7 @@ int iox_rick::getLIM_MCU1()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU1);
+    return getState(&iox, LIM_MCU1);
 }
 
 int iox_rick::getLIM_MCU0()
@@ -189,7 +178,7 @@ int iox_rick::getLIM_MCU0()
 #ifdef NOI2C
     return 1;
 #endif
-    return get(&iox, getLIM_MCU0);
+    return getState(&iox, LIM_MCU0);
 }
 
 int iox_rick::ChargeLV(int val)
@@ -197,5 +186,5 @@ int iox_rick::ChargeLV(int val)
 #ifdef NOI2C
     return 1;
 #endif
-    return setState(&iox, Charge_LV, val);
+    return setState(&iox, CHARGE_LV, val);
 }
