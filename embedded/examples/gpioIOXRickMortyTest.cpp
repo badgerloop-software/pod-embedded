@@ -10,38 +10,30 @@ extern "C" {
 
 iox_morty ioxMorty;
 iox_rick ioxRick;
-int testDirs(int dir, i2c_settings iox) {
+// sets every pin to ouput then changes vals specified by argv
+int testDirs(int lvl, i2c_settings iox) {
     printf("IIC settings:\nbus: %d\ndeviceAddress: %X\nopenMode %d",dir, iox.bus, iox.deviceAddress, iox.openMode);
     printf("Setting dir to %d\n",dir);
     for (int i = 0; i < 16; i++) {
         setDir(&iox, i, MCP_DIR_OUT);
-        setState(&iox, i, dir);
+        setState(&iox, i, lvl);
     }
 }
-int main()
+int main(int argc, char **argv)
 {
     initData();
-    if (ioxRick.init(false) != 0)
-            printf("ioxRick.init returned !0\n");
+    ioxRick.init(false)
     i2c_settings iox = ioxRick.getiox_rickDev();
-    printf("Writing all vals in Rick to low...");
-    testDirs(0, iox);
-    printf("Writing all vals in Rick to high...");
-    testDirs(1, iox);
+    if (argc == 2)
+        testDirs(argv[1], iox);
     printf("---Showing IOX_RICK---\n");
     for (int i = 0; i < 16; i++) {
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
     }
-
-
-
-    if (ioxMorty.init(false))
-            printf("ioxMorty.init returned !0\n");
+    ioxMorty.init(false)
     iox = ioxMorty.getiox_mortyDev();
-    printf("Writing all vals in Morty to low...");
-    testDirs(0, iox);
-    printf("Writing all vals in Morty to high...");
-    testDirs(1, iox);
+    if (argc == 2)
+        testDirs(argv[1], iox);
     printf("---Showing IOX_MORTY---\n");
     for (int i = 0; i < 16; i++) {
         printf("PIN: %d, VAL: %d, DIR: %d\n", i, getState(&iox, i), getDir(&iox, i));
