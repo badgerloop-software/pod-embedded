@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define HV_IO_ADDR 0x24
+#define HV_IO_ADDR 0x20
 
 #ifdef NOI2C
 #define VI2C

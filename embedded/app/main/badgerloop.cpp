@@ -49,26 +49,40 @@ int init(char* directory)
 {
     // Success status, return true by default
     int success_status = 0;
-
+    printf("Initting Data...");
     /* Init Data struct */
     if (initData()) {
         success_status = 1;
+        printf("FAIL\n");
+    } else {
+        printf("OK\n");
     }
 
+    printf("Loading Software Params...");
     /* Load Software Parameters */
     if (loadParameters(directory, ACTIVE_RUN_PROFILE)) {
         success_status = 1;
+        printf("FAIL\n");
+    } else {
+        printf("OK\n");
     }
 
     /* Init all drivers */
     SetupCANDevices();
 
+    printf("Initting IOX 1...");
     if (initProcIox(true)) {
         success_status = 1;
+        printf("FAIL\n");
+    } else {
+        printf("OK\n");
     }
-
+    printf("Initting IOX 2...");
     if (initHVIox(true)) {
         success_status = 1;
+        printf("FAIL\n");
+    } else {
+        printf("OK\n");
     }
 
     SetupMotor();
@@ -132,13 +146,6 @@ int main(int argc, char* argv[])
             setFlagsClrMotionData(false);
         }
 
-        if (i >= 50) {
-            sprintf(buffer, "state%d\n", getDataState() == 1);
-            signalLV((char*)buffer);
-            i = 0;
-        } else {
-            i += 1;
-        }
         // fprintf(stderr, "%d,%d,%d\n", getRmsActualTorque(), getRmsMotorSpeed(), getuSTimestamp());
         usleep(10000);
     }

@@ -251,6 +251,12 @@ state_t* getCurrState()
  */
 void runStateMachine(void)
 {
+    static int i = 0;
+    if (i % 100 == 0) {
+        i = 0;
+        printf("Current State: %s\n", stateMachine.currState->name);
+    }
+    i++;
     /* The cmd receiver will populate this field if we get an override */
     if (strcmp(stateMachine.overrideStateName, BLANK_NAME) != 0) {
         state_t* tempState = findState(stateMachine.overrideStateName);

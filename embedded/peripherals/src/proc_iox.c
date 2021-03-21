@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define PROC_IO_ADDR 0x20
+#define PROC_IO_ADDR 0x21
 
 static i2c_settings iox;
 static int setupIox();

@@ -19,7 +19,7 @@
 
 // Assumes that executable is being run from the out/ directory. If the final executable will live in a different location,
 // please rename this path accordingly. Uses run_profiles/active_run_profile.txt by default
-char* ACTIVE_RUN_PROFILE = "../run_profiles/active_run_profile.txt";
+char* ACTIVE_RUN_PROFILE = "./run_profiles/active_run_profile.txt";
 
 volatile int32_t PUMPDOWN_TIMEOUT = 0;
 volatile int32_t MAXIMUM_RUN_TIME = 0;
