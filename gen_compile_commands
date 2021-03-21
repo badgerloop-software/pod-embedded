@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "WARNING THIS WILL DELETE ALL UNTRACKED FILES!!!"
+read -n 1 -s -r -p "Press any key to continue or ctrl-c to quit..."
+echo "making compile commands..."
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .
+echo "done!"
+echo "cleaning git tree..."
+git clean -fd
+echo "done!"

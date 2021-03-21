@@ -4,8 +4,6 @@ project(peripheralslib VERSION 1.0
 #Define sources for library
 add_library(peripherals src/batt.c
                         src/braking.c
-                        src/hv_iox.c
-                        src/lv_iox.c
                         src/lv_iox.c
                         src/NCD9830DBR2G.c
                         src/retro.c
@@ -14,7 +12,8 @@ add_library(peripherals src/batt.c
                         src/imu.c
                         src/mcp23017.c
                         src/proc_iox.c
-                        src/rms.c)
+                        src/rms.c
+                        src/hv_iox.cpp)
 
 # Run Autocoder
 add_dependencies(peripherals autocoder)

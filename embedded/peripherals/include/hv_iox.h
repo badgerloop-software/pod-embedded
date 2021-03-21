@@ -1,9 +1,14 @@
 #ifndef __HV_IOX_H__
 #define __HV_IOX_H__
 
+#include <stdbool.h>
+
+extern "C" {
+#include <data.h>
 #include <i2c.h>
 #include <mcp23017.h>
-#include <stdbool.h>
+#include <proc_iox.h>
+}
 
 #define HV_IND_EN MCP_GPIOB_0
 #define MCU_LATCH MCP_GPIOB_1
@@ -17,33 +22,41 @@
 #define BMS_STAT_FDBK MCP_GPIOA_2
 #define E_STOP_FDBK MCP_GPIOA_1
 #define MSTR_SW_FDBK MCP_GPIOA_0
+class HVIox {
+public:
+    HVIox(void);
 
-int initHVIox(bool hardStart);
+    int init(bool);
 
-i2c_settings getHVIoxDev(void);
+    int setupIox(void);
 
-int isHVIndicatorEnabled(void);
+    i2c_settings getHVIoxDev(void);
 
-int setMCULatch(bool val);
+    int isHVIndicatorEnabled(void);
 
-int getBMSMultiIn(void);
+    int setMCULatch(bool val);
 
-int getIMDStatus(void);
+    int getBMSMultiIn(void);
 
-int getINRTStatus(void);
+    int getIMDStatus(void);
 
-int isHVEnabled(void);
+    int getINRTStatus(void);
 
-int isMCUHVEnabled(void);
+    int isHVEnabled(void);
 
-int getPsStatus(void);
+    int isMCUHVEnabled(void);
 
-int getBMSStatus(void);
+    int getPsStatus(void);
 
-int isEStopOn(void);
+    int getBMSStatus(void);
 
-int getMasterSwFeedback(void);
+    int isEStopOn(void);
 
-int setMCUHVEnabled(int val);
+    int getMasterSwFeedback(void);
 
+    int setMCUHVEnabled(int val);
+
+    int emergencyDisableMCU(void);
+};
+extern HVIox hv_iox;
 #endif

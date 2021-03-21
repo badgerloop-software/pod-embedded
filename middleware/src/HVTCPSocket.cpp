@@ -8,10 +8,16 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "HVTCPSocket.h"
+#include "motor.h"
+#include "state_machine.h"
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
 #define SA struct sockaddr
 
-extern "C" {
-#include "braking.h"
+extern "C"
+{
 #include "connStat.h"
 #include "data.h"
 #include "hv_iox.h"
@@ -144,10 +150,10 @@ void* TCPLoop(void* arg)
             setFlagsEmergencyBrake(1);
         }
         if (!strncmp(buffer, "mcuLatchOn", MAX_COMMAND_SIZE)) {
-            setMCULatch(true);
+            hv_iox.setMCULatch(true);
         }
         if (!strncmp(buffer, "mcuLatchOff", MAX_COMMAND_SIZE)) {
-            setMCULatch(false);
+            hv_iox.setMCULatch(false);
         }
         if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
             /*            pthread_create(&hbT, NULL, hbLoop, NULL);*/
@@ -163,11 +169,11 @@ void* TCPLoop(void* arg)
 
         if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE)) {
             /* Lets add a safety check here */
-            setMCUHVEnabled(true);
+            hv_iox.setMCUHVEnabled(true);
         }
 
         if (!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE)) {
-            setMCUHVEnabled(false);
+            hv_iox.setMCUHVEnabled(false);
         }
 
         if (!strncmp(buffer, "override", 8)) {
@@ -188,27 +194,25 @@ void* TCPLoop(void* arg)
 
 void signalLV(char* cmd)
 {
-	fprintf(stderr, "THERE IS NOTHING TO SIGNAL TO DO NOT SIGNAL LV\n");
-	int srvFd;
+    fprintf(stderr, "THERE IS NOTHING TO SIGNAL TO DO NOT SIGNAL LV\n");
+    int srvFd;
 
-	int opt = 1;
+    int opt = 1;
 
-	struct sockaddr_in addr;
-	int addrlen = sizeof(addr);
-    
-	if ((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
-	{
-		fprintf(stderr, "Error signalling\n");
-		exit(1);
-	}
+    struct sockaddr_in addr;
+    int addrlen = sizeof(addr);
 
-	if (setsockopt(srvFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
-								 &opt, sizeof(opt)))
-	{
-		fprintf(stderr, "Signal error\n");
-		exit(1);
-	}
-    
+    if ((srvFd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
+        fprintf(stderr, "Error signalling\n");
+        exit(1);
+    }
+
+    if (setsockopt(srvFd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+            &opt, sizeof(opt))) {
+        fprintf(stderr, "Signal error\n");
+        exit(1);
+    }
+
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr(LV_SERVER_IP);
     addr.sin_port = htons(LV_SERVER_PORT);

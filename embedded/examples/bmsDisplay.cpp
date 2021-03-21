@@ -1,7 +1,7 @@
 #include <TelemetryLoop.h>
 #include <connStat.h>
+#include <hv_iox.h>
 #include <pthread.h>
-#include <stdio.h>
 extern "C" {
 #include "NCD9830DBR2G.h"
 #include "bms.h"
@@ -11,6 +11,7 @@ extern "C" {
 extern pthread_t CANThread;
 }
 
+HVIox hv_iox;
 int main()
 {
     initData();

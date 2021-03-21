@@ -70,14 +70,14 @@ static void initState(state_t* state, char* name, stateTransition_t* (*action)()
         STATE_ERROR();
     }
 
-    state->name = malloc(1 + (strlen(name) * sizeof(char)));
+    state->name = (char*)malloc(1 + (strlen(name) * sizeof(char)));
     strcpy(state->name, name);
     state->action = action;
     state->transitionCounter = 0;
     state->numTransitions = numTransitions;
-    state->transitions = malloc(numTransitions * (sizeof(stateTransition_t*)));
+    state->transitions = (stateTransition_t**)malloc(numTransitions * (sizeof(stateTransition_t*)));
     for (i = 0; i < numTransitions; i++) {
-        state->transitions[i] = malloc(sizeof(stateTransition_t));
+        state->transitions[i] = (stateTransition_t*)malloc(sizeof(stateTransition_t));
     }
     stateMachine.allStates[indexInAllStates++] = state;
 }
@@ -298,10 +298,10 @@ void buildStateMachine(void)
 {
     /* Create all of the states*/
 
-    stateMachine.allStates = malloc(sizeof(state_t*) * NUM_STATES);
+    stateMachine.allStates = (state_t**)malloc(sizeof(state_t*) * NUM_STATES);
 
     for (int i = 0; i < NUM_STATES; i++) {
-        stateMachine.allStates[i] = malloc(sizeof(state_t));
+        stateMachine.allStates[i] = (state_t*)malloc(sizeof(state_t));
     }
 
     initState(stateMachine.allStates[0], IDLE_NAME, idleAction, 1);
@@ -329,7 +329,7 @@ void buildStateMachine(void)
     stateMachine.currState = stateMachine.allStates[0];
     stateMachine.currState->begin();
 
-    stateMachine.overrideStateName = malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
+    stateMachine.overrideStateName = (char*)malloc(21); // Longest state name is "readyForPropulsion" -- 18 char
     strcpy(stateMachine.overrideStateName, BLANK_NAME);
     if (stateMachine.overrideStateName == NULL) {
         fprintf(stderr, "Malloc error -- state machine override state machine name\n");

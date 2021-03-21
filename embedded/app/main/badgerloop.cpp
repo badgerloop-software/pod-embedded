@@ -1,42 +1,45 @@
 // Includes
 #include "HVTCPSocket.h"
 #include "data_dump.h"
+#include "hv_iox.h"
+#include "motor.h"
+#include "state_machine.h"
 #include <TelemetryLoop.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "hv_iox.h"
+#include "state_machine.h"
+#include "motor.h"
 
 // Temp
 #include <chrono>
 #include <ctime>
 #include <iostream>
 
-extern "C" 
-{
-    #include "bbgpio.h"
-    #include "connStat.h"
-    #include <signal.h>
-    #include <rms.h>
-    #include "motor.h"
-    #include "hv_iox.h"
-    #include "motor.h"
-    #include "proc_iox.h"
-    #include "data.h"
-    #include "can_devices.h"
-    #include "state_machine.h"
-    #include "NCD9830DBR2G.h"
-    #include "nav.h"
+extern "C" {
+#include "NCD9830DBR2G.h"
+#include "bbgpio.h"
+#include "can_devices.h"
+#include "connStat.h"
+#include "data.h"
+#include "nav.h"
+#include "proc_iox.h"
+#include <rms.h>
+#include <signal.h>
 
-    // Software Parameter Loading
-    #include "load_software_parameters.h"
-    #include "software_parameters.h"
+// Software Parameter Loading
+#include "load_software_parameters.h"
+#include "software_parameters.h"
 }
+
+HVIox hv_iox;
 
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
 {
     printf("shutdown\n");
-    setMCUHVEnabled(false);
+    hv_iox.setMCUHVEnabled(false);
     rmsCmdNoTorque();
     sleep(1);
     rmsDischarge();
@@ -78,7 +81,7 @@ int init(char* directory)
         printf("OK\n");
     }
     printf("Initting IOX 2...");
-    if (initHVIox(true)) {
+    if (hv_iox.init(true)) {
         success_status = 1;
         printf("FAIL\n");
     } else {
@@ -99,7 +102,7 @@ int init(char* directory)
 
     initNav();
 
-	struct sigaction sig;
+    struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
     sigaction(SIGINT, &sig, NULL);
 
