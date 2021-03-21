@@ -16,7 +16,6 @@ extern "C" {
 #define VI2C
 #endif
 
-static i2c_settings iox;
 static int setupIox(void);
 
 /***

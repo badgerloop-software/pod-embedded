@@ -29,6 +29,8 @@ extern "C" {
 
 
 class iox_rick {
+private:
+    i2c_settings iox;
 public:
     iox_rick(void);
 

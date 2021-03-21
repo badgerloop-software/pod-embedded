@@ -30,6 +30,8 @@ extern "C" {
 
 
 class iox_morty {
+private:
+    i2c_settings iox;
 public:
     iox_morty(void);
 
