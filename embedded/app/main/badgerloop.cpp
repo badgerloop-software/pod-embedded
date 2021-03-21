@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "hv_iox.h"
-#include "state_machine.h"
-#include "motor.h"
+#include "iox_rick.h"
+#include "iox_morty.h"
+
 
 // Temp
 #include <chrono>
@@ -35,6 +35,10 @@ extern "C" {
 }
 
 HVIox hv_iox;
+
+iox_morty iox_morty;
+
+iox_rick iox_rick;
 
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
 {
@@ -74,14 +78,14 @@ int init(char* directory)
     SetupCANDevices();
 
     printf("Initting IOX 1...");
-    if (initProcIox(true)) {
+    if (iox_rick.init(true) != 0) {
         success_status = 1;
         printf("FAIL\n");
     } else {
         printf("OK\n");
     }
     printf("Initting IOX 2...");
-    if (hv_iox.init(true)) {
+    if (iox_rick.init(true) != 0) {
         success_status = 1;
         printf("FAIL\n");
     } else {
