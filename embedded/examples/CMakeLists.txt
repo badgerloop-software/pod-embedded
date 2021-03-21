@@ -4,7 +4,6 @@ add_executable(dashTest dashTest.cpp)
 add_executable(navTest navTest.cpp)
 add_executable(solenoidTest solenoidTest.c)
 add_executable(brakingTest brakingTest.cpp)
-add_executable(gpioHvTest gpioHvTest.cpp)
 add_executable(gpioIOXRickMortyTest gpioIOXRickMortyTest.cpp)
 add_executable(oldMotorTest oldMotorTest.c)
 add_executable(retroTest retroTest.c)
@@ -24,7 +23,6 @@ target_link_libraries(dashTest PRIVATE middleware peripherals data app)
 target_link_libraries(navTest PRIVATE middleware peripherals data app)
 target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
 target_link_libraries(bmsDisplay PRIVATE middleware peripherals data)
-target_link_libraries(gpioHvTest PRIVATE drivers peripherals data)
 target_link_libraries(gpioIOXRickMortyTest PRIVATE drivers peripherals data)
 target_link_libraries(solenoidTest PRIVATE drivers peripherals data)
 
@@ -39,7 +37,6 @@ add_dependencies(dashTest autocoder)
 add_dependencies(navTest autocoder)
 add_dependencies(brakingTest autocoder)
 add_dependencies(bmsDisplay autocoder)
-add_dependencies(gpioHvTest autocoder)
 add_dependencies(gpioIOXRickMortyTest autocoder)
 add_dependencies(solenoidTest autocoder)
 
@@ -50,7 +47,6 @@ set_target_properties(bmsDisplay
                       navTest
                       solenoidTest
                       brakingTest
-                      gpioHvTest
                       gpioIOXRickMortyTest 
                       oldMotorTest
                       retroTest

@@ -17,7 +17,6 @@
 #include "bms_fault_checking.h"
 #include "connStat.h"
 #include "data.h"
-#include "hv_iox.h"
 #include "motor.h"
 #include "pressure_fault_checking.h"
 #include "rms.h"

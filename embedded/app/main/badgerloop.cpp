@@ -34,8 +34,6 @@ extern "C" {
 #include "software_parameters.h"
 }
 
-HVIox hv_iox;
-
 iox_morty iox_morty;
 
 iox_rick iox_rick;
@@ -43,7 +41,6 @@ iox_rick iox_rick;
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
 {
     printf("shutdown\n");
-    hv_iox.setMCUHVEnabled(false);
     rmsCmdNoTorque();
     sleep(1);
     rmsDischarge();
@@ -92,19 +89,28 @@ int init(char* directory)
         printf("OK\n");
     }
 
+    printf("Setting up Motor...");
     SetupMotor();
+    printf("OK\n");
 
     /*    initMotor();   */
     /*    initPressureSensors();*/
 
     /* Allocate needed memory for state machine and create graph */
+    printf("Building State Machine...");
     buildStateMachine();
+    printf("OK\n");
 
     /* Init telemetry */
+    printf("Setting up Telemetry...");
     SetupTelemetry((char*)DASHBOARD_IP, DASHBOARD_PORT);
     SetupHVTCPServer();
+    printf("OK\n");
 
+
+    printf("Initting Nav...");
     initNav();
+    printf("OK\n");
 
     struct sigaction sig;
     sig.sa_sigaction = emergQuitter;
