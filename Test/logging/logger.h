@@ -5,32 +5,30 @@
 
 #pragma once
 
-#define LOGGER_LEVEL_INFO 0
-#define LOGGER_LEVEL_WARN 1
-#define LOGGER_LEVEL_ERROR 2
+using namespace std::string_literals;
 
-#if !defined(LOGGER_ACTIVE_LEVEL)
-#define LOGGER_ACTIVE_LEVEL LOGGER_LEVEL_INFO
-#endif
+// #define LOGGER_LEVEL_INFO 0
+// #define LOGGER_LEVEL_WARN 1
+// #define LOGGER_LEVEL_ERROR 2
 
+// #if !defined(LOGGER_ACTIVE_LEVEL)
+// #define LOGGER_ACTIVE_LEVEL LOGGER_LEVEL_INFO
+// #endif
+
+// #ifndef LOGGER_LEVEL_NAMES
+// #define LOGGER_LEVEL_NAMES = ["info"s, "warn"s, "error"s]
+// #endif
 
 
 // Log Level Enum
 namespace level {
     enum level_enum : int
     {
-        info = LOGGER_LEVEL_INFO,
-        warn = LOGGER_LEVEL_WARN,
-        error = LOGGER_LEVEL_ERROR
+        info,
+        warn,
+        error
     };
-
-// #ifndef LOGGER_LEVEL_NAMES
-// #define LOGGER_LEVEL_NAMES
-//     {
-//         "info", "warn", "error"
-//     }
-// #endif
-
+    std::string LOGGER_LEVEL_NAMES[3]{"info", "warn", "error"};
 
 } // namespace level
 
@@ -56,11 +54,18 @@ namespace badger_logger {
         public: logger(std::string name)
         {
             std::string logger_name = name;
+            logger_clock = stopwatch();
         }
 
         void log(std::string message, level::level_enum lvl)
         {
-            std::wcout << message.c_str();
+            auto time = logger_clock.elapsed().count();
+            auto level = level::LOGGER_LEVEL_NAMES[(int)lvl].c_str();
+            printf("[%f] [%s] %s\n", time, level, message.c_str());
         }
+
+        private:
+            std::string logger_name;
+            badger_logger::stopwatch logger_clock;
     };
 } // nameespace badger_logger
