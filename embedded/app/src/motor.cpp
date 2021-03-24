@@ -1,5 +1,4 @@
 #include <data.h>
-#include <hv_iox.h>
 #include <motor.h>
 #include <pthread.h>
 #include <semaphore.h>

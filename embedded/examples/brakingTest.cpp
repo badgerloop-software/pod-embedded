@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "hv_iox.h"
 
 extern "C" {
 #include "braking.h"

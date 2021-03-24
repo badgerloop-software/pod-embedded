@@ -12,7 +12,6 @@ add_library(peripherals src/batt.c
                         src/imu.c
                         src/mcp23017.c
                         src/rms.c
-                        src/hv_iox.cpp
                         src/iox_morty.cpp
                         src/iox_rick.cpp)
 

@@ -13,11 +13,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "motor.h"
 #include "state_machine.h"
 #include "states.h"
-#include <hv_iox.h>
 #include <math.h>
 
 extern "C" {

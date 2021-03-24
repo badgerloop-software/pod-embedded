@@ -1,4 +1,5 @@
-#include "hv_iox.h"
+#include <iox_morty.h>
+#include <iox_rick.h>
 #include <TelemetryLoop.h>
 #include <signal.h>
 #include <stdio.h>
@@ -11,7 +12,8 @@ extern "C" {
 #include "state_machine.h"
 }
 
-HVIox hv_iox;
+iox_morty ioxMorty;
+iox_rick ioxRick;
 
 int init()
 {

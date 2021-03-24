@@ -1,7 +1,6 @@
 // Includes
 #include "HVTCPSocket.h"
 #include "data_dump.h"
-#include "hv_iox.h"
 #include "motor.h"
 #include "state_machine.h"
 #include <TelemetryLoop.h>
@@ -34,9 +33,9 @@ extern "C" {
 #include "software_parameters.h"
 }
 
-iox_morty iox_morty;
 
-iox_rick iox_rick;
+iox_rick ioxRick;
+iox_morty ioxMorty;
 
 void emergQuitter(int sig, siginfo_t* inf, void* nul)
 {
@@ -75,14 +74,14 @@ int init(char* directory)
     SetupCANDevices();
 
     printf("Initting IOX 1...");
-    if (iox_rick.init(true) != 0) {
+    if (ioxRick.init(true) != 0) {
         success_status = 1;
         printf("FAIL\n");
     } else {
         printf("OK\n");
     }
     printf("Initting IOX 2...");
-    if (iox_rick.init(true) != 0) {
+    if (ioxMorty.init(true) != 0) {
         success_status = 1;
         printf("FAIL\n");
     } else {

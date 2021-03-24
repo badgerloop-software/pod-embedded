@@ -20,7 +20,6 @@ extern "C"
 {
 #include "connStat.h"
 #include "data.h"
-#include "hv_iox.h"
 #include "motor.h"
 #include "rms.h"
 #include "state_machine.h"
