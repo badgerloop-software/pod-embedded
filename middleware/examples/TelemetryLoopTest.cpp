@@ -1,5 +1,6 @@
 #include "TelemetryLoop.h"
-#include <hv_iox.h>
+#include <iox_rick.h>
+#include <iox_morty.h>
 #include <iostream>
 
 #define LOCALHOST (char*)"0.0.0.0"
@@ -9,7 +10,8 @@ extern "C"
 #include "data.h"
 }
 
-HVIox hv_iox;
+iox_rick ioxRick;
+iox_morty ioxMorty;
 
 int main()
 {

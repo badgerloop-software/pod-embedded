@@ -1,4 +1,5 @@
-#include <hv_iox.h>
+#include <iox_rick.h>
+#include <iox_morty.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <state_machine.h>
@@ -36,7 +37,9 @@ extern "C" {
 
 static pthread_t smThread;
 static sem_t smSem;
-HVIox hv_iox;
+
+iox_rick ioxRick;
+iox_morty ioxMorty;
 
 static void genericInit(char* name);
 static void goToState(char* name);

@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "iox_rick.h"
 #include "iox_morty.h"
+#include "TelemetryLoop.h"
 
 
 // Temp
