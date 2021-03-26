@@ -18,6 +18,7 @@
 #include "motor.h"
 #include "state_machine.h"
 #include "states.h"
+#include "iox_rick.h"
 #include <math.h>
 
 extern "C" {
@@ -193,10 +194,10 @@ stateTransition_t* brakingAction()
         printf("EMERG BRAKE\n");
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
-//    if (!hv_iox.getIMDStatus()) {
-//        fprintf(stderr, "getIMDStatus()");
-//        return stateMachine.currState->fault;
-//    }
+    if (!ioxRick.getIMDStat()) {
+        fprintf(stderr, "getIMDStat()");
+        return stateMachine.currState->fault;
+    }
 
     if (checkNetwork() != 0) {
         printf("lost connection\n");
@@ -286,10 +287,10 @@ stateTransition_t* servPrechargeAction()
     } else
         pErrs = 0;
 
-//    if (!hv_iox.getIMDStatus()) {
-//        fprintf(stderr, "getIMDStatus()");
-//        return stateMachine.currState->fault;
-//    }
+    if (!ioxRick.getIMDStat()) {
+        fprintf(stderr, "getIMDStat()");
+        return stateMachine.currState->fault;
+    }
     if (getFlagsEmergencyBrake()) {
         return findTransition(stateMachine.currState, RUN_FAULT_NAME);
     }
@@ -305,9 +306,9 @@ stateTransition_t* crawlAction()
     setDataState(7);
     /* Check IMD status */
     prevRet = getMotionRetroCount();
-//    if (!hv_iox.getIMDStatus()) {
-//        return stateMachine.currState->fault;
-//    }
+    if (!ioxRick.getIMDStat()) {
+        return stateMachine.currState->fault;
+    }
 
     if (checkNetwork() != 0)
         return stateMachine.currState->fault;
@@ -427,7 +428,7 @@ stateTransition_t* nonRunFaultAction()
         usleep(1000);
         rmsInvDis();
         usleep(1000);
-        //hv_iox.setMCUHVEnabled(0);
+        ioxRick.setMCUHvEn(0);
         mcuDisPulse = 0;
     } else {
         mcuDisPulse += 1;
@@ -443,7 +444,7 @@ stateTransition_t* runFaultAction()
     static int mcuDisPulse = 0;
     setDataState(11);
     if (mcuDisPulse >= 50) {
-        //hv_iox.setMCUHVEnabled(0);
+        ioxRick.setMCUHvEn(0);
         clrMotorEn();
         usleep(1000);
 
