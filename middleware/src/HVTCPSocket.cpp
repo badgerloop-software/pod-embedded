@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <iox_rick.h>
 #define SA struct sockaddr
 
 extern "C"
@@ -149,10 +150,10 @@ void* TCPLoop(void* arg)
             setFlagsEmergencyBrake(1);
         }
         if (!strncmp(buffer, "mcuLatchOn", MAX_COMMAND_SIZE)) {
-          //  hv_iox.setMCULatch(true);
+            ioxRick.setMCULatch(true);
         }
         if (!strncmp(buffer, "mcuLatchOff", MAX_COMMAND_SIZE)) {
-           // hv_iox.setMCULatch(false);
+            ioxRick.setMCULatch(false);
         }
         if (!strncmp(buffer, "enPrecharge", MAX_COMMAND_SIZE)) {
             /*            pthread_create(&hbT, NULL, hbLoop, NULL);*/
@@ -168,11 +169,11 @@ void* TCPLoop(void* arg)
 
         if (!strncmp(buffer, "hvEnable", MAX_COMMAND_SIZE)) {
             /* Lets add a safety check here */
-            //hv_iox.setMCUHVEnabled(true);
+            ioxRick.setMCUHvEn(true);
         }
 
         if (!strncmp(buffer, "hvDisable", MAX_COMMAND_SIZE)) {
-            //hv_iox.setMCUHVEnabled(false);
+            ioxRick.setMCUHvEn(false);
         }
 
         if (!strncmp(buffer, "override", 8)) {

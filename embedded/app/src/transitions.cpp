@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <transitions.h>
 #include <unistd.h>
+#include <iox_rick.h>
 extern "C" {
 #include <data.h>
 #include <rms.h>
@@ -30,18 +31,18 @@ int genIdle()
     usleep(50000);
     if (rmsInvDis() != 0)
         fprintf(stderr, "Failed in genIdle, 3\n");
-//    hv_iox.setMCUHVEnabled(false);
+    ioxRick.setMCUHvEn(false);
     return 0;
 }
 
 int genPumpdown()
 {
     usleep(10000);
-  //  hv_iox.setMCULatch(true);
+    ioxRick.setMCULatch(true);
     usleep(10000);
-  //  hv_iox.setMCULatch(false);
+    ioxRick.setMCULatch(false);
     usleep(10000);
-  //  hv_iox.setMCUHVEnabled(true);
+    ioxRick.setMCUHvEn(true);
     sleep(1);
     if (rmsEnHeartbeat() != 0)
         printf("EEERR0\n");
@@ -81,7 +82,7 @@ int genBraking()
         rmsInvDis();
         usleep(50000);
     }
-    //hv_iox.setMCUHVEnabled(false);
+    ioxRick.setMCUHvEn(false);
 
     brakeHV();
     stateMachine.start = getuSTimestamp();
@@ -122,7 +123,7 @@ int genPostRun()
         rmsInvDis();
         usleep(1000);
     }
-    //hv_iox.setMCUHVEnabled(0);
+    ioxRick.setMCUHvEn(0);
     brakeHV();
 
     return 0;
@@ -131,10 +132,10 @@ int genPostRun()
 int genServPrecharge()
 {
     printf("PRE CHARGE\n");
-   // hv_iox.setMCULatch(true);
+    ioxRick.setMCULatch(true);
     usleep(10000);
-   // hv_iox.setMCULatch(false);
-   // hv_iox.setMCUHVEnabled(true);
+    ioxRick.setMCULatch(false);
+    ioxRick.setMCUHvEn(true);
     sleep(1);
     if (rmsEnHeartbeat() != 0)
         printf("EEERR0\n");
@@ -159,7 +160,7 @@ int genRunFault()
     rmsInvDis();
     usleep(1000);
 
-   // hv_iox.setMCUHVEnabled(0);
+    ioxRick.setMCUHvEn(0);
     printf("Entering here4\n");
     brakeHV();
     printf("Entering here\n");
@@ -180,7 +181,7 @@ int genNonRunFault()
     usleep(1000);
     rmsInvDis();
     usleep(1000);
-   // hv_iox.setMCUHVEnabled(0);
+    ioxRick.setMCUHvEn(0);
     printf("non run0\n");
     return 0;
 }
