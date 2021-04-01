@@ -4,10 +4,16 @@ on: [push, pull_request]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-    
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v1
-    - name: test
-      run: ./deploy.sh build && ./deploy.sh clean
+    - uses: actions/checkout@v2
+    - name: Install GTest
+      run: ./deploy.sh gtest-setup
+    - name: Build Executables
+      run: ./deploy.sh build
+    - name: Run Tests
+      run: ./deploy.sh test
+    - name: Get Coverage Report
+      run: ./deploy.sh codecov
+    - name: Upload Coverage
+      run:  bash <(curl -s https://codecov.io/bash) 

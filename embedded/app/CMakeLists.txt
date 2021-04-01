@@ -9,6 +9,7 @@ set(dependecies src/bms_fault_checking.c
                 src/nav.c
                 src/state_machine.c
                 src/init.c
+                src/load_software_parameters.c
                 src/pressure_fault_checking.c
                 src/states.c
                 src/motor.c
@@ -33,10 +34,8 @@ add_dependencies(app autocoder)
 #export app library so it can be used externally
 export(TARGETS app FILE AppLibConfig.cmake)
 
-#configure HV and LV executables
+#configure executable
 find_package(Threads REQUIRED)
 add_executable(badgerloop main/badgerloop.cpp ${dependecies})
-
 target_link_libraries(badgerloop PRIVATE ${libraries})
-
 target_include_directories(badgerloop PRIVATE include)

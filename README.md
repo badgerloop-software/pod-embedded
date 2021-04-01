@@ -1,6 +1,7 @@
 # Badgerloop Pod V
 
 [![Actions Status](https://github.com/badgerloop-software/pod-embedded/workflows/CI/badge.svg)](https://github.com/badgerloop-software/pod-embedded/actions)
+[![codecov](https://codecov.io/gh/badgerloop-software/pod-embedded/branch/master/graph/badge.svg?token=R9oEyMGVd1)](https://codecov.io/gh/badgerloop-software/pod-embedded)
 
 *Developers: Eric Udlis, Rohan Daruwala, Ezra Boley, Nic Hodlofski, Daniel Kouchekinia, Ezra Freeman*
 
@@ -39,6 +40,16 @@ cmake ..
 make
 ```
 
+## Running the Executables
+
+All executable targets are placed in the `out` directory after a successful build.
+
+The main badgerloop executable will be placed in `out/badgerloop`
+
+A build to run all GTest Unit & Component Tests will be placed in `out/run_all_tests`
+
+Deprecated non-GTest examples & tests can be found under `out/tests`
+
 ## Cross-Compilation Make Instructions
 
 To install the toolchain needed for cross-compiling:
@@ -56,7 +67,7 @@ Then, to build the executable:
 
 ### Adding Tests
 
-In order to add a test or example, put a .c or .cpp file into the respective "example" folder. Make sure that your file contains a "main" function.
+BadgerLoop uses [GTest](https://github.com/google/googletest) for unit and component testing. A detailed introduction to GTest is available [here](https://github.com/google/googletest/blob/master/googletest/docs/primer.md). Tests should be placed within a respective folder under the `Test` directory. Be sure to add to a new file to the respective CMakeLists.txt file if necessary.
 
 ## Directory Structure
 ```
@@ -88,6 +99,11 @@ pod/
  |--autocoding/          /* Auto-coding python scripts and data.xml */
  |  |--templates/        /* Template files to be autocoded */
  |
+ |--Test/                /* GTest Unit & Component Tests */
+ |  |--example/          /* Sample GTest Test */
+ |  |--include/          /* Global GTest-related headers & resources */
+ |  |--run_profiles/     /* Run profile Unit Tests */
+ |
  ```
  
  ### Structural Conventions
@@ -96,7 +112,7 @@ pod/
  
   1. Only .c and .cpp files should live in any given `src/` directory, and only .h files belong in the `include/` directories. Any other supporting files (e.g. READMEs) belong in at least one level above `src/` and `include/`. 
   2. The only source files containing a `main()` function should live either in `pod/embedded/app/main` or in any of the examples subdirectories. 
-  3. Only two source files should live in the `pod/embedded/app/main` directory: `badgerloop_HV.cpp` and `badgerloop_LV.cpp`. If any other code is placed there it will either link incorrectly or fail to be compiled at all.
+  3. Only one source file should live in the `pod/embedded/app/main` directory: `badgerloop.cpp`. If any other code is placed there it will either link incorrectly or fail to be compiled at all.
   
 ### Coding Conventions
 

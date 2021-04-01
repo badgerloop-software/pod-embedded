@@ -1,32 +1,38 @@
-#include <hv_iox.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <motor.h>
-#include <data.h>
-#include <transitions.h>
-#include <state_machine.h>
 #include <braking.h>
+#include <data.h>
+#include <hv_iox.h>
+#include <motor.h>
 #include <rms.h>
+#include <state_machine.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <transitions.h>
 
 extern stateMachine_t stateMachine;
 int internalCount = 0;
 /* If there is nothing special to do */
-int genTranAction() {
+int genTranAction()
+{
     return 0;
 }
 /* Gen == general */
-int genIdle() {
+int genIdle()
+{
     setFlagsBrakeInit(true);
-    if (rmsCmdNoTorque() != 0) fprintf(stderr, "Failed in genIdle, 1\n");
+    if (rmsCmdNoTorque() != 0)
+        fprintf(stderr, "Failed in genIdle, 1\n");
     usleep(50000);
-    if (rmsDischarge() != 0) fprintf(stderr, "Failed in genIdle, 2\n");
+    if (rmsDischarge() != 0)
+        fprintf(stderr, "Failed in genIdle, 2\n");
     usleep(50000);
-    if (rmsInvDis() != 0) fprintf(stderr, "Failed in genIdle, 3\n");
+    if (rmsInvDis() != 0)
+        fprintf(stderr, "Failed in genIdle, 3\n");
     setMCUHVEnabled(false);
     return 0;
 }
 
-int genPumpdown() {
+int genPumpdown()
+{
     usleep(10000);
     setMCULatch(true);
     usleep(10000);
@@ -34,20 +40,24 @@ int genPumpdown() {
     usleep(10000);
     setMCUHVEnabled(true);
     sleep(1);
-    if(rmsEnHeartbeat() != 0) printf("EEERR0\n");
-    if (rmsClrFaults() != 0) printf("eeE1\n");
-    if(rmsInvDis() != 0) printf("EEERR2\n");
+    if (rmsEnHeartbeat() != 0)
+        printf("EEERR0\n");
+    if (rmsClrFaults() != 0)
+        printf("eeE1\n");
+    if (rmsInvDis() != 0)
+        printf("EEERR2\n");
     stateMachine.start = getuSTimestamp();
     return 0;
 }
 
-int genPropulsion() {
+int genPropulsion()
+{
     uint64_t timestamp = getuSTimestamp();
     setTimersStartTime(timestamp);
     stateMachine.start = timestamp;
     setFlagsClrMotionData(true);
     setMotorEn();
-    /* FIXME  I need a way to tell if this was successful */    
+    /* FIXME  I need a way to tell if this was successful */
     //
     // Wait for a timeout to see success?
     //
@@ -55,8 +65,8 @@ int genPropulsion() {
     return 0;
 }
 
-
-int genBraking() {
+int genBraking()
+{
     printf("BRAKING!\n");
     clrMotorEn();
     if (getRmsDcBusVoltage() > 60) {
@@ -67,15 +77,16 @@ int genBraking() {
         usleep(50000);
         rmsInvDis();
         usleep(50000);
-    }   
+    }
     setMCUHVEnabled(false);
-    
+
     brakeHV();
     stateMachine.start = getuSTimestamp();
     return 0;
 }
 
-int genStopped() {
+int genStopped()
+{
     if (getRmsDcBusVoltage() > 60) {
         rmsCmdNoTorque();
         rmsDischarge();
@@ -86,18 +97,18 @@ int genStopped() {
     return 0;
 }
 
-
-
-int genCrawl() {
+int genCrawl()
+{
     printf("gen crawl\n");
-    setMotorCrawl(); 
+    setMotorCrawl();
     internalCount = getMotionRetroCount();
     setTimersCrawlTimer(getuSTimestamp());
-    stateMachine.start = getuSTimestamp();    
+    stateMachine.start = getuSTimestamp();
     return 0;
 }
 
-int genPostRun() {
+int genPostRun()
+{
     clrMotorEn();
     if (getRmsDcBusVoltage() > 60) {
         usleep(1000);
@@ -110,25 +121,29 @@ int genPostRun() {
     }
     setMCUHVEnabled(0);
     brakeHV();
-    
+
     return 0;
 }
 
-int genServPrecharge() {
+int genServPrecharge()
+{
     printf("PRE CHARGE\n");
     setMCULatch(true);
     usleep(10000);
     setMCULatch(false);
     setMCUHVEnabled(true);
     sleep(1);
-    if(rmsEnHeartbeat() != 0) printf("EEERR0\n");
-    if (rmsClrFaults() != 0) printf("eeE1\n");
-    if(rmsInvDis() != 0) printf("EEERR2\n");
+    if (rmsEnHeartbeat() != 0)
+        printf("EEERR0\n");
+    if (rmsClrFaults() != 0)
+        printf("eeE1\n");
+    if (rmsInvDis() != 0)
+        printf("EEERR2\n");
     return 0;
 }
 
-
-int genRunFault() {
+int genRunFault()
+{
     printf("Entering here\n");
     clrMotorEn();
     usleep(1000);
@@ -140,7 +155,7 @@ int genRunFault() {
     usleep(1000);
     rmsInvDis();
     usleep(1000);
- 
+
     setMCUHVEnabled(0);
     printf("Entering here4\n");
     brakeHV();
@@ -148,7 +163,8 @@ int genRunFault() {
     return 0;
 }
 
-int genNonRunFault() {
+int genNonRunFault()
+{
     printf("non run0\n");
     clrMotorEn();
     printf("non run0\n");

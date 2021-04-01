@@ -1,17 +1,18 @@
+#include "i2c.h"
+#include "mcp23017.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
-#include "mcp23017.h"
-#include "i2c.h"
 
 #define LIST 0
-#define GET  1
-#define SET  2
+#define GET 1
+#define SET 2
 
 extern const int NUM_PINS;
 
-void printUsage(void) {
+void printUsage(void)
+{
     printf("USAGE: bloopGpio <CMD> <DEV NUM> <PIN> <VAL>\n");
     printf("\t<CMD>     : \n\t\tlist\n\t\tset\n\t\tget\n");
     printf("\t<DEV NUM> : \n\t\tGPIO Device number, try list to check\n");
@@ -19,14 +20,15 @@ void printUsage(void) {
     printf("\t<VAL>     : \n\t\tUsed with the set command, sets a pin to val, should be 0 or 1\n");
 }
 
-void printPin(i2c_settings *dev, uint8_t pin) {
+void printPin(i2c_settings* dev, uint8_t pin)
+{
     int val = getState(dev, pin);
     int dir = getDir(dev, pin);
     if (val == -1 || dir == -1) {
         fprintf(stderr, "Error, exiting\n");
         exit(-1);
     }
-    char *bank;
+    char* bank;
     if (pin < 8) {
         bank = "A";
     } else {
@@ -36,7 +38,8 @@ void printPin(i2c_settings *dev, uint8_t pin) {
     printf("Bank %s, Pin %d\n\tstate = %d\n\tdir = %d\n", bank, pin, val, dir);
 }
 
-int parseCommand(char *cmd, int argc) {
+int parseCommand(char* cmd, int argc)
+{
     if (strcmp(cmd, "list") == 0) {
         return LIST;
     } else if (strcmp(cmd, "get") == 0) {
@@ -58,27 +61,30 @@ int parseCommand(char *cmd, int argc) {
     }
 }
 
-void printAllDevs(void) {
+void printAllDevs(void)
+{
     int addr = 0x20;
-    FILE *fp = fopen("/dev/null", "w");
-    stderr = fp;    // So that we dont get killed by I2C errors
+    FILE* fp = fopen("/dev/null", "w");
+    stderr = fp; // So that we dont get killed by I2C errors
     i2c_settings dev;
     for (addr = 0x20; addr < 0x28; addr++) {
-        if (setupMCP(&dev, (uint8_t) addr) == 0) {
+        if (setupMCP(&dev, (uint8_t)addr) == 0) {
             // TODO: Add all kinds of helpful info here (states);
             printf("DEV @ %d\n", addr);
         }
     }
 }
 
-void printAllPins(i2c_settings *dev) {
+void printAllPins(i2c_settings* dev)
+{
     int pin = 0;
     for (pin = 0; pin < NUM_PINS; pin++) {
         printPin(dev, pin);
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     if (argc > 5 || argc <= 1) {
         printUsage();
         exit(-1);
