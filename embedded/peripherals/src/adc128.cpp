@@ -1,5 +1,5 @@
-#include "i2c.h"
 #include "adc128.h"
+
 
 i2c_settings u2 = {
     .fd = 0,
@@ -15,8 +15,8 @@ i2c_settings u4 = {
     .openMode = O_RDWR
 };
 
-u2_adc = new Adc(&u2, U2_ADDR);
-u4_adc = new Adc(&u4, U4_ADDR);
+Adc u2_adc = Adc(&u2, U2_ADDR);
+Adc u4_adc = Adc(&u4, U4_ADDR);
 
 
 Adc::Adc(i2c_settings *i2c, int addr7) {
@@ -26,12 +26,12 @@ Adc::Adc(i2c_settings *i2c, int addr7) {
 }
 
 int Adc::init() {
-    char cmd[2];
-    char reg[1];
-    char data[1];
+    unsigned char cmd[2];
+    unsigned char reg[1];
+    unsigned char data[1];
     /* Adv Config Reg */
     reg[0] = 0x0B;
-    if (write_data_i2c(i2c, reg, 1)) {
+    if (write_data_i2c(i2c, *reg, 1)) {
         return 1;
     }
 
@@ -46,16 +46,16 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];  /* Ext ref, Mode 1 */
 
-    if (write_data_i2c(i2c, cmd, 2)) {
+    if (write_data_i2c(i2c, *cmd, 2)) {
         return 1;
     }
 
-    wait_us(10000);
+    usleep(10000);
 
     /* Conv rate reg*/
     reg[0] = 0x07;
 
-    if (write_data_i2c(i2c, reg, 1)) {
+    if (write_data_i2c(i2c, *reg, 1)) {
         return 1;    
     }
 
@@ -69,11 +69,11 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_data_i2c(i2c, cmd, 2)) {
+    if (write_data_i2c(i2c, *cmd, 2)) {
         return 1;
     }
 
-    wait_us(10000);
+    usleep(10000);
 
     /* Limit Regs */
     /*    reg[0] = */
@@ -82,27 +82,27 @@ int Adc::init() {
 
     /* Config Reg */
     reg[0] = 0x00;
-    if (write_data_i2c(i2c, reg, 1)) {
+    if (write_data_i2c(i2c, *reg, 1)) {
         return 1;
     }
 
     if (read_i2c(i2c, data, 1)) {
         return 1;
     }
-    wait_us(10000);
+    usleep(10000);
     data[0] &= ~(0x09);
     data[0] |= 0x01;
 
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_data_i2c(i2c, cmd, 2)) {
+    if (write_data_i2c(i2c, *cmd, 2)) {
         return 1;
     }
 
-    wait_us(10000);
+    usleep(10000);
 
-    if (write_data_i2c(i2c, reg, 1)) {
+    if (write_data_i2c(i2c, *reg, 1)) {
         return 1;
     }
 
@@ -116,14 +116,14 @@ int Adc::init() {
 /* TODO: Possible optimization, if we store as 2 8 bit ints, we could then
  * directly send rather than converting back */
 uint16_t Adc::readChannel(AdcChan chan) {
-    char cmd[1] = {(char) chan};
-    char d[2];
+    unsigned char cmd[1] = {(char) chan};
+    unsigned char d[2];
 
     if (!this->isInit) {
         return 0;
     }
 
-    if (write_data_i2c(i2c, cmd, 1)) {
+    if (write_data_i2c(i2c, *cmd, 1)) {
         return 0;
     }
 
@@ -135,18 +135,18 @@ uint16_t Adc::readChannel(AdcChan chan) {
 }
 
 int Adc::get8BitAddress() {
-    return i2c;
+    return i2c->deviceAddress;
 }
 
 int Adc::isBusy() {
-    char cmd[1];
+    unsigned char cmd[1];
     cmd[0] = 0x0C;
     
     if (!this->isInit) {
         return 0;
     }
 
-    if (write_data_i2c(i2c, cmd, 1)) {
+    if (write_data_i2c(i2c, *cmd, 1)) {
         return 1;    
     }
 

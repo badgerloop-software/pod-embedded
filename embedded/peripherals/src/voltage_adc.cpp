@@ -5,7 +5,7 @@
 #include "data.h"
 #include <stdint.h>
 
-int initBoardVoltage() {
+int initVoltageSensors() {
     return (u2_adc.init() && u4_adc.init());
 }
 

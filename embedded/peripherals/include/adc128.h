@@ -1,6 +1,10 @@
 #ifndef __ADC128_H__
 #define __ADC128_H__
 
+#include "stdint.h"
+#include "unistd.h"
+#include "i2c.h"
+
 #define U2_ADDR 0x2D
 #define U4_ADDR 0x1D 
 
@@ -22,6 +26,8 @@ class Adc {
         bool isInit;
     public:
         Adc(i2c_settings *i2c, int addr7);
+        int init(void);
+        uint16_t readChannel(AdcChan chan);
         int initPressureSensors(void);
         int readPressureSensor(int sensor, uint8_t channel, uint8_t* data);
         int get8BitAddress(void);
