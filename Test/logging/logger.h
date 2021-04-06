@@ -28,7 +28,7 @@ namespace level {
         warn,
         error
     };
-    std::string LOGGER_LEVEL_NAMES[3]{"info", "warn", "error"};
+    std::string LOGGER_LEVEL_NAMES[3]{"INFO", "WARN", "ERROR"};
 
 } // namespace level
 
@@ -61,7 +61,7 @@ namespace badger_logger {
         {
             auto time = logger_clock.elapsed().count();
             auto level = level::LOGGER_LEVEL_NAMES[(int)lvl].c_str();
-            printf("[%f] [%s] %s\n", time, level, message.c_str());
+            printf("[%.2f] [%s] %s\n", time, level, message.c_str());
         }
 
         private:
