@@ -1,7 +1,7 @@
 # Testing
 
 
-- Link to GTest Primer [Click here!](https://github.com/google/googletest/blob/master/googletest/docs/primer.md)
+- Link to GTest Primer [Click here!](https://github.com/google/googletest/blob/master/docs/primer.md)
 
 ## Creating a Test
 
