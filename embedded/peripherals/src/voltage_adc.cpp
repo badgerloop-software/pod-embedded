@@ -5,27 +5,13 @@
 #include "data.h"
 #include <stdint.h>
 
-#define SCALAR (1.6) //(0.00097656/2) 
-
 extern i2c_settings i2c;
-extern Data data;
 
 static Adc u2_adc(&u2, U2_ADDR);
 static Adc u4_adc(&u4, U4_ADDR);
 
-int initBoardTelem() {
+int initBoardVoltage() {
     return (u2_adc.init() && u4_adc.init());
-}
-
-void harvestBoardTelem() {
-    data.boardTelem[BUS_V]      = readBusV();
-    data.boardTelem[BUS_A]      = readBusA();
-    data.boardTelem[V5_RAIL_V]  = read5VRailV();
-    data.boardTelem[V5_RAIL_A]  = read5VRailA();
-    data.boardTelem[V7_RAIL_V]  = read7VRailV();
-    data.boardTelem[V7_RAIL_A]  = read7VRailA();
-    data.boardTelem[THERM_1]    = readTherm1();
-    data.boardTelem[THERM_2]    = readTherm2();
 }
 
 uint16_t readTelem_V_24V() {

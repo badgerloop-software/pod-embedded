@@ -3,8 +3,7 @@
 
 #include <stdint.h>
 
-int initBoardTelem();
-void harvestBoardTelem();
+int initBoardVoltage();
 uint16_t readTelem_V_24V();
 uint16_t readBusA();
 uint16_t read5VRailV();
