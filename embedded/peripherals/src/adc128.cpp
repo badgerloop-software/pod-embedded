@@ -26,12 +26,31 @@ Adc::Adc(i2c_settings *i2c, int addr7) {
 }
 
 int Adc::init() {
+    if (this->isInit) {
+        return 0;
+    }
+    uint8_t flush[1];
     unsigned char cmd[2];
     unsigned char reg[1];
     unsigned char data[1];
+
+    printf("I2C Init\n");
+
+    if(i2c_begin(this->i2c) == -1) {
+        fprintf(stderr, "Could not open i2c bus.\n");
+        return -1;
+    }
+
+    /* check if there actually is a device there */
+    if (read_i2c(i2c, flush, 1) != 0) {
+        fprintf(stderr, "There is not device at bus");
+        return -1;
+    }
+
     /* Adv Config Reg */
     reg[0] = 0x0B;
-    if (write_data_i2c(i2c, *reg, 1)) {
+    if (write_byte_i2c(i2c, reg)) {
+        fprintf(stderr, "Failed to write to adv config reg\n");
         return 1;
     }
 
@@ -45,8 +64,8 @@ int Adc::init() {
 
     cmd[0] = reg[0];
     cmd[1] = data[0];  /* Ext ref, Mode 1 */
-
-    if (write_data_i2c(i2c, *cmd, 2)) {
+    printf("[ADC128] Ext ref, Mode 1");
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
@@ -55,7 +74,7 @@ int Adc::init() {
     /* Conv rate reg*/
     reg[0] = 0x07;
 
-    if (write_data_i2c(i2c, *reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;    
     }
 
@@ -69,7 +88,7 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_data_i2c(i2c, *cmd, 2)) {
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
@@ -82,7 +101,7 @@ int Adc::init() {
 
     /* Config Reg */
     reg[0] = 0x00;
-    if (write_data_i2c(i2c, *reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;
     }
 
@@ -96,13 +115,13 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_data_i2c(i2c, *cmd, 2)) {
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
     usleep(10000);
 
-    if (write_data_i2c(i2c, *reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;
     }
 
@@ -123,7 +142,7 @@ uint16_t Adc::readChannel(AdcChan chan) {
         return 0;
     }
 
-    if (write_data_i2c(i2c, *cmd, 1)) {
+    if (write_data_i2c(i2c, cmd, 1)) {
         return 0;
     }
 
@@ -146,7 +165,7 @@ int Adc::isBusy() {
         return 0;
     }
 
-    if (write_data_i2c(i2c, *cmd, 1)) {
+    if (write_data_i2c(i2c, cmd, 1)) {
         return 1;    
     }
 

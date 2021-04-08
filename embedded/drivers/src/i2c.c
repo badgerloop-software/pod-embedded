@@ -24,8 +24,9 @@ int i2c_begin(i2c_settings* i2c)
     return 0;
 }
 
-int write_byte_i2c(i2c_settings* i2c, unsigned char reg)
+int write_byte_i2c(i2c_settings* i2c, unsigned char* reg)
 {
+    // printf("[I2C] Writing %x\n", reg);
     int response = i2c_smbus_write_byte(i2c->fd, reg);
     if (response < 0) {
         fprintf(stderr, "I2C write byte error\n");
@@ -34,11 +35,12 @@ int write_byte_i2c(i2c_settings* i2c, unsigned char reg)
     return 0;
 }
 
-int write_data_i2c(i2c_settings* i2c, unsigned char reg, char value)
+int write_data_i2c(i2c_settings* i2c, unsigned char* reg, char value)
 {
     unsigned char buf[2];
     buf[0] = reg;
     buf[1] = value;
+    printf("[I2C] Writing %x, %x to %x\n", buf[0], buf[1], i2c->deviceAddress);
     if (write(i2c->fd, buf, 2) != 2) {
         fprintf(stderr, "I2C write data error\n");
         return 1;
@@ -52,5 +54,6 @@ int read_i2c(i2c_settings* i2c, unsigned char* readBuffer, int bufferSize)
         fprintf(stderr, "I2C data read error\n");
         return 1;
     }
+    // fprintf(stdout, "[I2C] Read %x\n", readBuffer);
     return 0;
 }

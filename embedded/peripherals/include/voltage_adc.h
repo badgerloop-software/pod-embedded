@@ -3,13 +3,19 @@
 
 #include <stdint.h>
 
-int initBoardVoltage();
-uint16_t readTelem_V_24V();
-uint16_t readBusA();
-uint16_t read5VRailV();
-uint16_t read5VRailA();
-uint16_t read7VRailA();
-uint16_t read7VRailV();
-uint16_t readTherm1();
-uint16_t readTherm2();
+int initVoltageSensors(void);
+
+uint16_t readTelem_V_24V(void);
+uint16_t readTelem_I_24V(void);
+
+uint16_t readTelem_V_12V(void);
+uint16_t readTelem_I_12V(void);
+
+uint16_t readTelem_V_5V(void);
+uint16_t readTelem_I_5V(void);
+
+uint16_t readTelem_I_28V(void);
+
+uint16_t* harvestBoardData(void);
+
 #endif

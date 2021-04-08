@@ -4,7 +4,10 @@
 
 int main()
 {
+    printf("INITTING DATA\n");
     initData();
+    printf("INITTING PRESSURE MONITOR\n");
     initPressureMonitor();
+    printf("JOINING PRESURE MONITOR\n");
     joinPressureMonitor();
 }

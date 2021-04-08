@@ -21,7 +21,7 @@
 #define CHANNEL_6 0x3
 #define CHANNEL_7 0x7
 
-int readPressureSensor(int sensor, uint8_t channel, uint8_t* data);
+int readPressureSensor(int sensor, uint8_t channel, uint16_t* data);
 int initPressureSensors(void);
 
 #endif

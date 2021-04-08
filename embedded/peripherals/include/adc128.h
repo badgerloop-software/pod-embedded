@@ -3,7 +3,10 @@
 
 #include "stdint.h"
 #include "unistd.h"
+
+extern "C" {
 #include "i2c.h"
+}
 
 #define U2_ADDR 0x2D
 #define U4_ADDR 0x1D 
