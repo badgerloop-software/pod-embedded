@@ -5,7 +5,7 @@
 
 int initBoardTelem();
 void harvestBoardTelem();
-uint16_t readBusV();
+uint16_t readTelem_V_24V();
 uint16_t readBusA();
 uint16_t read5VRailV();
 uint16_t read5VRailA();

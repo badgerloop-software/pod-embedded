@@ -1,8 +1,8 @@
-#include "mbed.h"
+#include "i2c.h"
 #include "adc128.h"
 
 Adc::Adc(i2c_settings *i2c, int addr7) {
-    this->addr8 = addr7 << 1;
+    this->i2c = addr7 << 1;
     this->i2c = i2c;
     this->isInit = false;
 }
@@ -13,11 +13,11 @@ int Adc::init() {
     char data[1];
     /* Adv Config Reg */
     reg[0] = 0x0B;
-    if (i2c->write(addr8, reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;
     }
 
-    if (i2c->read(addr8, data, 1)) {
+    if (read_i2c(i2c, data, 1)) {
         return 1;
     }
 
@@ -28,7 +28,7 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];  /* Ext ref, Mode 1 */
 
-    if (i2c->write(addr8, cmd, 2)) {
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
@@ -37,11 +37,11 @@ int Adc::init() {
     /* Conv rate reg*/
     reg[0] = 0x07;
 
-    if (i2c->write(addr8, reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;    
     }
 
-    if (i2c->read(addr8, data, 1)) {
+    if (read_i2c(i2c, data, 1)) {
         return 1;    
     }
 
@@ -51,7 +51,7 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (i2c->write(addr8, cmd, 2)) {
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
@@ -64,11 +64,11 @@ int Adc::init() {
 
     /* Config Reg */
     reg[0] = 0x00;
-    if (i2c->write(addr8, reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;
     }
 
-    if (i2c->read(addr8, data, 1)) {
+    if (read_i2c(i2c, data, 1)) {
         return 1;
     }
     wait_us(10000);
@@ -78,17 +78,17 @@ int Adc::init() {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (i2c->write(addr8, cmd, 2)) {
+    if (write_data_i2c(i2c, cmd, 2)) {
         return 1;
     }
 
     wait_us(10000);
 
-    if (i2c->write(addr8, reg, 1)) {
+    if (write_data_i2c(i2c, reg, 1)) {
         return 1;
     }
 
-    if (i2c->read(addr8, data, 1)) {
+    if (read_i2c(i2c, data, 1)) {
         return 1;
     }
     this->isInit = true; 
@@ -97,7 +97,7 @@ int Adc::init() {
 
 /* TODO: Possible optimization, if we store as 2 8 bit ints, we could then
  * directly send rather than converting back */
-uint16_t Adc::readChannel(AdcChan chan, uint8_t devNum, uint8_t channel, uint8_t* data) {
+uint16_t Adc::readChannel(AdcChan chan) {
     char cmd[1] = {(char) chan};
     char d[2];
 
@@ -105,17 +105,11 @@ uint16_t Adc::readChannel(AdcChan chan, uint8_t devNum, uint8_t channel, uint8_t
         return 0;
     }
 
-    uint8_t cmdByte = 0;
-    cmdByte = SD_BIT | CHANNEL(channel) | PD_BITS;
-
-    if (write_byte_i2c(adcs[devNum], cmdByte) != 0) {
-        fprintf(stderr, "Failed to write channel select byte: %#x\n", cmdByte);
-        return 0
+    if (write_data_i2c(i2c, cmd, 1)) {
+        return 0;
     }
 
-    selectChannel(devNum, channel);
-    if (read_i2c((i2c_settings*)adcs[devNum], data, 1) != 0) {
-        fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
+    if (read_i2c(i2c, d, 2)) {
         return 0;
     }
     uint16_t ret = ((( (uint16_t) d[1]) & 0xf) << 8) | ((uint16_t) d[0]);
@@ -123,7 +117,7 @@ uint16_t Adc::readChannel(AdcChan chan, uint8_t devNum, uint8_t channel, uint8_t
 }
 
 int Adc::get8BitAddress() {
-    return addr8;
+    return i2c;
 }
 
 int Adc::isBusy() {
@@ -134,18 +128,12 @@ int Adc::isBusy() {
         return 0;
     }
 
-    uint8_t cmdByte = 0;
-    cmdByte = SD_BIT | CHANNEL(channel) | PD_BITS;
-
-    if (write_byte_i2c(adcs[devNum], cmdByte) != 0) {
-        fprintf(stderr, "Failed to write channel select byte: %#x\n", cmdByte);
-        return 0
+    if (write_data_i2c(i2c, cmd, 1)) {
+        return 1;    
     }
 
-    selectChannel(devNum, channel);
-    if (read_i2c((i2c_settings*)adcs[devNum], data, 1) != 0) {
-        fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
-        return 0;
+    if (read_i2c(i2c, cmd, 1)) {
+        return 1;    
     }
     printf("Check success: cmd[0] & 0x03 == %d\n\r", cmd[0] & 0x03);
     /* 0x01 means its powering up, 0x02 is converting, we just generally want to know if it is free */
@@ -156,4 +144,3 @@ int Adc::debug() {
     printf("ADC FOUND\n\r");
     return 0;
 }
-

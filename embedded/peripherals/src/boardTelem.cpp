@@ -1,19 +1,35 @@
-#include "mbed.h"
 #include <math.h>
 #include "adc128.h"
+#include "i2c.h"
 #include "boardTelem.h"
 #include "data.h"
 #include <stdint.h>
 
 #define SCALAR (1.6) //(0.00097656/2) 
 
-extern I2C i2c;
+extern i2c_settings i2c;
 extern Data data;
 
-static Adc adc(&i2c, railADC7Addr);
+i2c_settings u2 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U2_ADDR,
+    .openMode = O_RDWR
+};
+
+i2c_settings u4 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U4_ADDR,
+    .openMode = O_RDWR
+};
+
+
+static Adc u2_adc(&u2, railADC7Addr);
+static Adc u4_adc(&u4, railADC7Addr);
 
 int initBoardTelem() {
-    return adc.init();
+    return (u2_adc.init() && u4_adc.init());
 }
 
 void harvestBoardTelem() {
