@@ -13,5 +13,5 @@ uint16_t readADC_Extra1();
 uint16_t readADC_Extra2();
 uint16_t readTelem_I_28V();
 
-uint16_t* debugTemps(void);
+uint16_t* harvestTemps(void);
 #endif

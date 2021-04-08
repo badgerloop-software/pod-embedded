@@ -7,14 +7,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
-i2c_settings adc0 = {
+i2c_settings adc0 = { // U4
     .fd = 0,
     .bus = 2,
     .deviceAddress = 0x1d,
     .openMode = O_RDWR
 };
 
-i2c_settings adc1 = {
+i2c_settings adc1 = { // U2
     .fd              =   0,
     .bus             =   2,
     .deviceAddress   =   0x2d,
@@ -26,7 +26,7 @@ i2c_settings* adcs[2];
 static int selectChannel(uint8_t devNum, uint8_t channel);
 static int readChannel(uint8_t devNum, uint8_t channel, uint16_t* data);
 
-int readPressureSensor(int sensor, uint8_t channel, uint16_t* data)
+int readADCLine(int sensor, uint8_t channel, uint16_t* data)
 {
     if (readChannel(sensor, channel, data) == -1) {
         fprintf(stderr, "-1 reading the pressure sensor: %d\n", sensor);
@@ -42,10 +42,12 @@ static int selectChannel(uint8_t devNum, uint8_t channel)
         return -1;
     }
 
-    uint8_t cmdByte = 0;
-    cmdByte = 0x20 + channel;
+    // uint8_t cmdByte = 0;
+    // cmdByte = (unsigned char*)(0x20 + channel);
+    char cmdByte = 0x20;
     printf("Selecting Channel 0x%x\n", cmdByte);
-    if (write_byte_i2c(adcs[devNum], cmdByte) != 0) {
+    printf("Trying address %x\n",adcs[devNum]->deviceAddress);
+    if (write_byte_i2c(adcs[devNum], (unsigned char*)cmdByte) != 0) {
         fprintf(stderr, "Failed to write channel select byte: %x\n", cmdByte);
         return -1;
     }
@@ -55,7 +57,10 @@ static int selectChannel(uint8_t devNum, uint8_t channel)
 
 static int readChannel(uint8_t devNum, uint8_t channel, uint16_t* data)
 {
-    selectChannel(devNum, channel);
+    if (selectChannel(devNum, channel) == -1) {
+        fprintf(stderr, "Failed to select channel %d on adc %d\n", channel, devNum);
+        return -1;
+    }
     if (read_i2c((i2c_settings*)adcs[devNum], data, 2) != 0) {
         fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
         return -1;
@@ -67,7 +72,6 @@ int initADC128(i2c_settings adc) {
     printf("ADV CONFIG REG\n");
     if (i2c_begin(&adc) != 0) {
         fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
-        return -1;
         return -1;
     }
     char reg[1] = {0x0B};
@@ -159,15 +163,16 @@ int initADC128(i2c_settings adc) {
     return 0;
 }
 
-int initPressureSensors()
+int initADCs()
 {
     if(initADC128(adc0) != 0) {
         fprintf(stderr, "Failed to init ADC0\n");
         return -1;
     }
-
-    if(initADC128(adc1) != 0) {
-        fprintf(stderr, "Failed to init ADC1\n");
-    }
+    printf("Sucessfully initted ADC0\n\n");
+    adcs[0] = &adc0;
+    // if(initADC128(adc1) != 0) {
+    //     fprintf(stderr, "Failed to init ADC1\n");
+    // }
     return 0;
 }

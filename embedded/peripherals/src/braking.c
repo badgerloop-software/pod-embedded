@@ -24,10 +24,10 @@ sem_t bigSem;
 int initPressureMonitor()
 {
     sem_init(&bigSem, 0, 1);
-    if (initPressureSensors() != 0) {
-        fprintf(stderr, "Failed to init ADCs\n");
-        return (-1);
-    }
+    // if (initPressureSensors() != 0) {
+    //     fprintf(stderr, "Failed to init ADCs\n");
+    //     return (-1);
+    // }
     if (pthread_create(&presMonThread, NULL, (void*)(pressureMonitor), NULL) != 0) {
         fprintf(stderr, "Failed to init pressure monitor\n");
         return (-1);
@@ -196,8 +196,8 @@ int brakeSecondaryVent()
 double readPrimaryTank()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_TANK, data) != 0)
-        return -1;
+    // if (readPressureSensor(ADC_0, PS_TANK, data) != 0)
+    //     return -1;
     return (VOLTAGE_2000_SCALING((double)data[0]));
 }
 
@@ -205,17 +205,17 @@ double readPrimaryTank()
 double readPrimaryLine()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_LINE, data) != 0)
-        return -1;
+    // if (readPressureSensor(ADC_0, PS_LINE, data) != 0)
+    //     return -1;
     return (CURRENT_500_SCALING((double)data[0]));
 }
 //Current
 double readPrimaryActuator()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PS_ACTUATE, data) != 0) {
-        return -1;
-    }
+    // if (readPressureSensor(ADC_0, PS_ACTUATE, data) != 0) {
+    //     return -1;
+    // }
     return (CURRENT_500_SCALING((double)data[0]));
 }
 
@@ -223,8 +223,8 @@ double readPrimaryActuator()
 double readSecTank()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, BS_TANK, data) != 0)
-        return -1;
+    // if (readPressureSensor(ADC_0, BS_TANK, data) != 0)
+    //     return -1;
     return (VOLTAGE_2000_SCALING((double)data[0]));
 }
 
@@ -232,8 +232,8 @@ double readSecTank()
 double readSecLine()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, BS_LINE, data) != 0)
-        return -1;
+    // if (readPressureSensor(ADC_0, BS_LINE, data) != 0)
+    //     return -1;
     return (CURRENT_500_SCALING((double)data[0]));
 }
 
@@ -241,9 +241,9 @@ double readSecLine()
 double readSecActuator()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, BS_ACTUATE, data) != 0) {
-        return -1;
-    }
+    // if (readPressureSensor(ADC_0, BS_ACTUATE, data) != 0) {
+    //     return -1;
+    // }
 
     return (CURRENT_500_SCALING((double)data[0]));
 }
@@ -252,18 +252,18 @@ double readSecActuator()
 double readPressureVessel()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, PRES_VESL, data) != 0) {
-        return -1;
-    }
+    // if (readPressureSensor(ADC_0, PRES_VESL, data) != 0) {
+    //     return -1;
+    // }
     return (CURRENT_50_SCALING((double)data[0]));
 }
 
 double readAmbientPressure()
 {
     uint8_t data[2];
-    if (readPressureSensor(ADC_0, CHANNEL_4, data) != 0) {
-        return -1;
-    }
+    // if (readPressureSensor(ADC_0, CHANNEL_4, data) != 0) {
+    //     return -1;
+    // }
     return (CURRENT_50_SCALING((double)data[0]));
 }
 

@@ -17,7 +17,7 @@ iox_rick ioxRick;
 int main()
 {
     initData();
-    initPressureSensors();
+    initADCs();
     SetupCANDevices();
     SetupTelemetry((char*)DASHBOARD_IP, DASHBOARD_PORT);
     pthread_join(CANThread, NULL);

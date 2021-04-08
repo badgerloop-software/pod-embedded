@@ -8,18 +8,32 @@ extern "C" {
 
 int main(int argc, char **argv) {
     printf("Initting Sensor\n");
-    initPressureSensors();
+    initADCs();
     uint16_t data;
     printf("Reading data\n");
-    int res = readPressureSensor(0, 0, &data);
+    int res = readADCLine(0, 0, &data);
 
     printf("Got %x\n", data);
 
     for(int i=0; i < 8; i++) {
         uint16_t buff;
-        int res = readPressureSensor(0, i, &buff);
+        int res = readADCLine(0, i, &buff);
         printf("Channel %d: %x\n", i, buff);
     }
+
+    // printf("\n\n\nWrapper Classes\n\n\n");
+
+    // uint16_t* telem = harvestBoardData();
+
+    // for(int i=0; i < 7; i++) {
+    //     printf("Reading Channel %d: %d\n", i, telem[i]);
+    // }
+
+    // uint16_t* temps = harvestTemps();
+
+    //     for(int i=0; i < 7; i++) {
+    //     printf("Reading Channel %d: %d\n", i, temps[i]);
+    // }
 
     return 0;
 }

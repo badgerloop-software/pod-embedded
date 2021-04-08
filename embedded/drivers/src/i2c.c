@@ -14,19 +14,19 @@ int i2c_begin(i2c_settings* i2c)
     if (i2c->fd < 0) {
         fprintf(stderr, "Error - Could not open file\n");
         // Commenting out the returns allows the tests to proceed on my laptop where I do not have an I2C driver
-        // return -1; // Uncomment this when doing Bone Dev - EU
+        return -1; // Uncomment this when doing Bone Dev - EU
     }
 
     if (ioctl(i2c->fd, I2C_SLAVE, i2c->deviceAddress) < 0) {
         fprintf(stderr, "Error - Could not set I2C Address\n");
-        // return -1; // Uncomment this when doing Bone Dev - EU
+        return -1; // Uncomment this when doing Bone Dev - EU
     }
     return 0;
 }
 
 int write_byte_i2c(i2c_settings* i2c, unsigned char* reg)
 {
-    // printf("[I2C] Writing %x\n", reg);
+    printf("[I2C] Writing %x\n", reg);
     int response = i2c_smbus_write_byte(i2c->fd, reg);
     if (response < 0) {
         fprintf(stderr, "I2C write byte error\n");
