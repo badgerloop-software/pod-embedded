@@ -10,23 +10,8 @@
 extern i2c_settings i2c;
 extern Data data;
 
-i2c_settings u2 = {
-    .fd = 0,
-    .bus = 2,
-    .deviceAddress = U2_ADDR,
-    .openMode = O_RDWR
-};
-
-i2c_settings u4 = {
-    .fd = 0,
-    .bus = 2,
-    .deviceAddress = U4_ADDR,
-    .openMode = O_RDWR
-};
-
-
-static Adc u2_adc(&u2, railADC7Addr);
-static Adc u4_adc(&u4, railADC7Addr);
+static Adc u2_adc(&u2, U2_ADDR);
+static Adc u4_adc(&u4, U4_ADDR);
 
 int initBoardTelem() {
     return (u2_adc.init() && u4_adc.init());
@@ -44,49 +29,49 @@ void harvestBoardTelem() {
 }
 
 uint16_t readTelem_V_24V() {
-    return adc.readChannel(CHAN_0);
+    return u2_adc.readChannel(CHAN_0);
 }
 
 uint16_t readTelem_I_24V() {
 /*    uint16_t ret = adc.readChannel(chan);// * SCALAR;*/
-    return adc.readChannel(CHAN_1);
+    return u2_adc.readChannel(CHAN_1);
 }
 
 uint16_t readTelem_I_5V() {
 /*    AdcChan chan = CHAN_2;*/
 /*    uint16_t ret = adc.readChannel(chan) * SCALAR;*/
-    return adc.readChannel(CHAN_2);
+    return u2_adc.readChannel(CHAN_2);
     
 }
 
 uint16_t readTelem_I_12V() {
 /*    AdcChan chan = CHAN_3;*/
 /*    uint16_t ret = adc.readChannel(chan) * SCALAR;*/
-    return adc.readChannel(CHAN_3);
+    return u2_adc.readChannel(CHAN_3);
 }
 
 uint16_t readTelem_V_12V() {
 /*    AdcChan chan = CHAN_4;*/
 /*    uint16_t ret = adc.readChannel(chan) * SCALAR;*/
-    return adc.readChannel(CHAN_4);
+    return u2_adc.readChannel(CHAN_4);
 }
 
 uint16_t readTelem_V_5V() {
 /*    AdcChan chan = CHAN_5;*/
 /*    uint16_t ret = adc.readChannel(chan) * SCALAR;*/
-    return adc.readChannel(CHAN_5);
+    return u2_adc.readChannel(CHAN_5);
 }
 
 uint16_t readTelem_Therm_3() {
 /*    AdcChan chan = CHAN_6;*/
 /*    uint16_t ret = adc.readChannel(chan);*/
 /*    ret = 1 / ((log(ret/4700) / 3500) + 0.04);*/
-    return adc.readChannel(CHAN_6);
+    return u2_adc.readChannel(CHAN_6);
 }
 
 uint16_t readTelem_Therm_2() {
 /*    AdcChan chan = CHAN_7;*/
 /*    uint16_t ret = adc.readChannel(chan);*/
 /*    ret = 1 / ((log(ret/4700) / 3500) + 0.04);*/
-    return adc.readChannel(CHAN_7);
+    return u2_adc.readChannel(CHAN_7);
 }

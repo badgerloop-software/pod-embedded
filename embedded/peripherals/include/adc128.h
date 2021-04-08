@@ -1,8 +1,8 @@
 #ifndef __ADC128_H__
 #define __ADC128_H__
 
-const int railADC7Addr = 0x1f;
-const int presADC7Addr = 0x1d;
+#define U2_ADDR 0x35h
+#define U4_ADDR 0x1Dh
 
 typedef enum AdcChan {
     CHAN_0 = 0x20,
