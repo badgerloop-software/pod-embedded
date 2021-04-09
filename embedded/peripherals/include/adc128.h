@@ -1,8 +1,8 @@
 #ifndef __ADC128_H__
 #define __ADC128_H__
 
-#define U2_ADDR 0x35h
-#define U4_ADDR 0x1Dh
+#define U2_ADDR 0x2D
+#define U4_ADDR 0x1D 
 
 typedef enum AdcChan {
     CHAN_0 = 0x20,
@@ -29,5 +29,7 @@ class Adc {
         int debug(void);
 };
 
+extern Adc u2_adc;
+extern Adc u4_adc;
 
 #endif

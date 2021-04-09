@@ -1,6 +1,24 @@
 #include "i2c.h"
 #include "adc128.h"
 
+i2c_settings u2 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U2_ADDR,
+    .openMode = O_RDWR
+};
+
+i2c_settings u4 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U4_ADDR,
+    .openMode = O_RDWR
+};
+
+u2_adc = new Adc(&u2, U2_ADDR);
+u4_adc = new Adc(&u4, U4_ADDR);
+
+
 Adc::Adc(i2c_settings *i2c, int addr7) {
     this->addr8 = addr7 << 1;
     this->i2c = i2c;
