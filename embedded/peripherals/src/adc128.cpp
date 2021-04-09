@@ -2,7 +2,7 @@
 #include "adc128.h"
 
 Adc::Adc(i2c_settings *i2c, int addr7) {
-    this->i2c = addr7 << 1;
+    this->addr8 = addr7 << 1;
     this->i2c = i2c;
     this->isInit = false;
 }
