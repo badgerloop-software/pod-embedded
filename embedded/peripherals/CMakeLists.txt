@@ -2,7 +2,8 @@ project(peripheralslib VERSION 1.0
                        DESCRIPTION "Peripherals"
                        LANGUAGES CXX)
 #Define sources for library
-add_library(peripherals src/batt.cpp
+add_library(peripherals src/batt.c
+                        src/batt.cpp
                         src/braking.c
                         src/hv_iox.c
                         src/lv_iox.c

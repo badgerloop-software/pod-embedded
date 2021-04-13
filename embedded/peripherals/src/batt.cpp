@@ -6,17 +6,17 @@
 int const VOLTAGE_SENSOR = CHANNEL_0;
 int const CURR_SENSOR  =  CHANNEL_7;
 
-double voltScale(double rawVolt);
-double currentScale(double rawCurr);
+double voltScale(int rawVolt);
+double currentScale(int rawCurr);
 double getLVBattVoltage();
 double getLVCurrent();
 
-double voltScale(double rawVolt) {
-    return (rawVolt/255.0) * 5.0 * 2.942;
+double voltScale(int rawVolt) {
+    return (static_cast<double>(rawVolt)/255.0) * 5.0 * 2.942;
 }
 
-double currentScale(double rawCurr){
-    return ((((rawCurr/255.0) * 5.0) -2.5 / 2.5) * 50);
+double currentScale(int rawCurr){
+    return ((((static_cast<double>(rawCurr)/255.0) * 5.0) -2.5 / 2.5) * 50);
 }
 
 
