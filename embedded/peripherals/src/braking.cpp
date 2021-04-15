@@ -47,7 +47,7 @@ int initComms()
     printf("READ: %s\n", buff);
 
     if(buff[2] != 'k') {
-        printf("wrtong char read\n");
+        printf("WRONG CHAR READ: should have read 'k' but read '%c'\n", buff[2]);
         return 1;
     }
     printf("comms init\n");
@@ -70,7 +70,10 @@ int brake()
     nucleo.writeCommand(&cmd_brake);
     nucleo.readString(buff, 3, UART_TIMEOUT_MS);
     printf("READ: %s\n", buff);
-    if (buff[2] != 'a') return 1;
+    if (buff[2] != 'a') {
+        printf("WRONG CHAR READ: should have read 'a' but read '%c'\n", buff[2]);
+        return 1;
+    }
     nucleo.flushReceiver();
     return 0;
 
@@ -93,7 +96,10 @@ int unbrake()
     nucleo.readString(buff, 3, UART_TIMEOUT_MS);
     
     printf("READ: %s\n", buff);
-    if (buff[2] != 'a') return 1;
+    if (buff[2] != 'a') {
+        printf("WRONG CHAR READ: should have read 'a' but read '%c'\n", buff[2]);
+        return 1;
+    }
     return 0;
 }
 
