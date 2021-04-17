@@ -155,10 +155,11 @@ char buart::writeChar(const char Byte)
   */
 char buart::writeString(const char *receivedString)
 {
-    // Lenght of the string
-    int Lenght=strlen(receivedString);
+    printf("Received String: '%s'\n",receivedString);
+    // Length of the string
+    int Length=strlen(receivedString);
     // Write the string
-    if (write(fd,receivedString,Lenght)!=Lenght) return -1;
+    if (write(fd,receivedString,Length)!=Length) return -1;
     // Write operation successfull
     return 1;
 }
@@ -167,6 +168,7 @@ char buart::writeString(const char *receivedString)
 // ::: Read/Write operation on commands :::
 
 char buart::writeCommand(BPacket *command){
+    printf("Command Payload: '%c'\n",command->getPayload()[2]);
     writeString(command->getPayload());
 }
 
@@ -205,6 +207,7 @@ char buart::writeBytes(const void *Buffer, const unsigned int NbBytes)
 char buart::readChar(char *pByte,unsigned int timeOut_ms)
 {
     // Timer used for timeout
+    printf("BUART readChar(): '%c'\n",*pByte);
     timeOut         timer;
     // Initialise the timer
     timer.initTimer();

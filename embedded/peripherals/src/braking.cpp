@@ -22,10 +22,10 @@ static double avgDouble(double* arr, int size);
 static pthread_t presMonThread;
 
 buart nucleo;
-BPacket cmd_ack = BPacket::ACK;
-BPacket cmd_ackack = BPacket::ACKACK;
-BPacket cmd_brake = BPacket::BRAKE;
-BPacket cmd_unbrake = BPacket::UNBRAKE;
+BPacket cmd_ack = BPacket(BPacket::ACK);
+BPacket cmd_ackack = BPacket(BPacket::ACKACK);
+BPacket cmd_brake = BPacket(BPacket::BRAKE);
+BPacket cmd_unbrake = BPacket(BPacket::UNBRAKE);
 
 
 
@@ -39,7 +39,7 @@ int initComms()
 
     printf("open device\n");
     nucleo.openDevice(5, BAUDRATE);
-    printf("write ack\n");
+    printf("write ack: '%c'\n",cmd_ack.getPayload()[2]);
     nucleo.writeCommand(&cmd_ack);
     printf("reading string\n");
     nucleo.readString(buff, 3, UART_TIMEOUT_MS);
