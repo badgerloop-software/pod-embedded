@@ -207,7 +207,6 @@ char buart::writeBytes(const void *Buffer, const unsigned int NbBytes)
 char buart::readChar(char *pByte,unsigned int timeOut_ms)
 {
     // Timer used for timeout
-    printf("BUART readChar(): '%c'\n",*pByte);
     timeOut         timer;
     // Initialise the timer
     timer.initTimer();
@@ -216,7 +215,8 @@ char buart::readChar(char *pByte,unsigned int timeOut_ms)
     {
         // Try to read a byte on the device
         switch (read(fd,pByte,1)) {
-        case 1  : return 1; // Read successfull
+        case 1  : printf("BUART readChar(): '%c'\n",*pByte);
+                  return 1; // Read successfull
         case -1 : return -2; // Error while reading
         }
     }
@@ -303,6 +303,7 @@ int buart::readString(char *receivedString,unsigned int maxNbBytes,unsigned int 
     // While the buffer is not full
     while (nbBytes<maxNbBytes)
     {
+        printf("\nBUFFER NOT EMPTY:\n");
         // Compute the TimeOut for the next call of ReadChar
         timeOutParam = timeOut_ms-timer.elapsedTime_ms();
 
@@ -316,10 +317,12 @@ int buart::readString(char *receivedString,unsigned int maxNbBytes,unsigned int 
             if (charRead==1)
             {
                 // Check if the character received is the final one
+                printf("Read another char: %s...\n",receivedString);
                 if (nbBytes==maxNbBytes)
                 {
                     // Final character: add the end character 0
                     receivedString  [++nbBytes]=0;
+                    printf("<== Finished, and set null character ==>\n");
                     // Return the number of bytes read
                     return nbBytes;
                 }
@@ -335,6 +338,7 @@ int buart::readString(char *receivedString,unsigned int maxNbBytes,unsigned int 
         {
             // Add the end caracter
             receivedString[nbBytes]=0;
+            printf("!!!! Timed out, so added null character and finished !!!!\n");
             // Return 0 (timeout reached)
             return 0;
         }
