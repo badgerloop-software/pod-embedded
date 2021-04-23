@@ -1,0 +1,996 @@
+[33m64d40e5[m[33m ([m[1;36mHEAD -> [m[1;32mADCRefactor[m[33m)[m Cosmetic changes
+[33m4e42b01[m Convert the adc drivers over
+[33m72f1d0a[m[33m ([m[1;31morigin/ADCRefactor[m[33m)[m Fix compilation errors and finish converting to our I2C driver
+[33m86b2422[m Merge branch 'ADCRefactor' of github.com:badgerloop-software/pod-embedded into ADCRefactor
+[33mf6e4dd6[m created temp_adc
+[33m48c4d90[m caught old find & replace error
+[33me6675a0[m removed data
+[33mea3a358[m renaming files
+[33meb77523[m completed methods for first adc
+[33mb3bedc7[m modified adc128 r/w and attempted telemetry
+[33m9b17ac3[m Copied over from nucleo w minor edits
+[33ma38093e[m forgot git add
+[33mcbd8820[m First attempt at a rough draft
+[33m8094d9e[m rough draft header file for ADC
+[33m804046e[m[33m ([m[1;31morigin/main_io_development[m[33m, [m[1;31morigin/IOXRefactor[m[33m, [m[1;32mmain_io_development[m[33m)[m replaced commented out hv_iox methods
+[33mee093cb[m Updating hviox references
+[33m69537ba[m Fixed hv_iox refrences so it builds
+[33mfca6e10[m Started integrating 2 new iox
+[33m8973dec[m Merge branch 'main_io_development' of github.com:badgerloop-software/pod-embedded into main_io_development
+[33m1e917d9[m removed .h file
+[33m67babdc[m data definition error and fixed rick and morty test
+[33md54a14d[m Merge branch 'main_io_development' of github.com:badgerloop-software/pod-embedded into main_io_development
+[33m5753b6f[m remove instances of the hviox
+[33m2c3b2b2[m Added argv for setting high or low
+[33m58396d4[m Add rick and morty to init
+[33m4b14e01[m add new iox
+[33mfa1ef0f[m Merged in HVIOX changes
+[33mc938c10[m State machine now boots
+[33m846f52a[m designing test for iox
+[33m96ecb46[m made iox an instance variable
+[33m12b6f82[m updated test
+[33m4ce6afe[m Testing Rick setup
+[33m4664b4c[m Merged to single test
+[33m4523953[m Prelim IOX Rick and Morty
+[33m671bf8d[m Added gpioIOXRickTest to executables
+[33mac3f5e0[m Fixed Methods
+[33m9736fb5[m Created Example File for rick
+[33m9673bf3[m Wrote Methods for iox_rick
+[33mb73ab56[m Wubbalubbadubdub!
+[33m4c25bbe[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m Update CI.yml
+[33m187c1d6[m[33m ([m[1;32mcodecov-patch[m[33m)[m Merge pull request #137 from badgerloop-software/EUdds-codecov-patch
+[33m43bc39c[m[33m ([m[1;32mEUdds-codecov-patch[m[33m)[m Moved import
+[33mcec275e[m Update CMakeLists.txt
+[33mde0bc95[m Merge pull request #130 from badgerloop-software/deploy-setup-script
+[33m69dffbd[m[33m ([m[1;31morigin/deploy-setup-script[m[33m)[m Merge branch 'master' into deploy-setup-script
+[33m89362a5[m[33m ([m[1;32mdeploy-setup-script[m[33m)[m move gtest setup out of build
+[33me7e3057[m Merge pull request #134 from badgerloop-software/gcov_implementation
+[33m2a91a70[m[33m ([m[1;31morigin/gcov_implementation[m[33m, [m[1;32mgcov_implementation[m[33m)[m codecov readme badge
+[33ma69a9c5[m Add readme note
+[33m38a13ea[m Specify x flag for xml
+[33m8fa6408[m More CI fixes
+[33m9166a08[m Add codecov support
+[33m1c36229[m Upload codecov reports
+[33ma3c150e[m Add codecov to the workflow
+[33m1165cab[m Moved gcovr stuff into "is not beaglebone" logic
+[33m7a3851d[m cmake cleanup
+[33ma548686[m deploy cleanups
+[33m06cebe0[m Created new arg for deploy.sh
+[33m9183d8b[m whoops
+[33mc50e7ce[m Added gcov and gcovr as test dependacies
+[33mc4e3ca9[m Rebuilds on each test to flush out old results
+[33m4febf15[m Added test script to deploy
+[33m6a40843[m Get codecoverage cmake module
+[33m5a3ef55[m[33m ([m[1;31morigin/hvIOX_refactor[m[33m)[m not needed my b
+[33md81371e[m forgot to remove isInit
+[33m9ec7bff[m added else statements and comments to test
+[33m06af7d0[m  Merged with master
+[33m9df7262[m return int for init method
+[33md28238e[m solved just needed to remove -x flag
+[33mb786037[m .gitignore not workingggg
+[33m27e9b5b[m Update gen_compile_commands
+[33m2256606[m added git clean cuz there were build errors ugh idk what I'm doing
+[33mb6a0a12[m added gtest-setup to ./deploy build
+[33m03a9e6d[m added python and clang-format to deploy.sh
+[33mf4fa450[m finished test methods for hv_iox
+[33mdb4524b[m added compile_comands.json to .gitignore
+[33m49f3cd3[m makes more sense
+[33m75f7e51[m messing w docker ignore
+[33m5820e14[m changed my directory because I made a new docker container
+[33m8d65e70[m hv_iox test methods
+[33me72e1e4[m added tests plz correct if wrong so I don't keep going
+[33mc1f5c96[m Files for nonVSCode autocomplete
+[33md88710d[m added #else for NOI2C
+[33mdec6856[m Fixed data references in tests
+[33mc3dd9cb[m added setMCULatch and isHVIndicatorEnabled testers with #ifdef NOI2C
+[33m5a9336a[m Gtest template
+[33m2f9ea43[m no clue what I'm doing
+[33m37d8766[m forgot git add
+[33m817b62b[m adding test methods
+[33me4b2349[m adding test methods
+[33mfcfff64[m created test file
+[33mcd6d25a[m adding test
+[33m7ded687[m[33m ([m[1;32mcodecov[m[33m)[m Merge pull request #127 from badgerloop-software/clang-format
+[33m6246429[m Merge pull request #126 from badgerloop-software/run_profiles
+[33m84db212[m Merge branch 'master' of https://github.com/badgerloop-software/pod-embedded into clang-format
+[33me1ce7e4[m more helper documentation
+[33m0174973[m Merge branch 'documentation-and-utilities' into run_profiles
+[33m850ba97[m Run format
+[33m79e48f1[m Fixed EVERY reference to the HV iox
+[33m2a58765[m Modify PR checklist
+[33m27ee165[m Add clang baseline
+[33m9497dfc[m Fix merge change
+[33m95c269e[m Fix bug modifying parameter ptr
+[33m6b9fe34[m Trying to fix broken CI
+[33mf73b28e[m Update code docs per standard
+[33mb5dbb9d[m Add test
+[33m0cad59b[m Changed to static mem allocation
+[33m32575b6[m Resolve merge conflict
+[33m5221601[m Link fix
+[33m09a8d7e[m Documentation
+[33mc44ce40[m Documentation
+[33m00b50ac[m Documentation
+[33m9e3df30[m Documentation
+[33m65c7e30[m Updating references
+[33mb0c84d6[m Merge branch 'master' of https://github.com/badgerloop-software/pod-embedded into hvIOX_refactor
+[33m685e1f6[m forgot to do git add states.cpp ooops
+[33m44cb5af[m messed up states.c
+[33m458c44e[m Add UTs
+[33ma91fb4b[m changing to cpp
+[33m960fc58[m Add validate run profile
+[33ma4e8be7[m changed syntax to write constructor method
+[33m082ed09[m Changed function to OO notation in autogenerator
+[33ma29bc27[m Fix bad filepath bug
+[33m16b6ffe[m added extern HVIox and syntax adjustments
+[33m2e88598[m Profiles working, base test
+[33m6b06c96[m Merge pull request #125 from badgerloop-software/gtest-impl
+[33md2c881e[m Documentation updates
+[33m3cc5d09[m Update README
+[33m7254d46[m Split up CI steps
+[33mc6ea1ae[m Fix typo
+[33mfc8877f[m Trying to fix CI
+[33m424a179[m Modify CI to run tests
+[33mc008baa[m Add run_all_tests to normal build
+[33m3766558[m Initial GTest Impl
+[33md5c8b86[m changed header file for hv_iox.cpp
+[33m0ed594a[m added semicolon to end of class definition
+[33me0a699f[m Merge branch 'hvIOX_refactor' of https://github.com/badgerloop-software/pod-embedded into hvIOX_refactor
+[33m48c86af[m Added boolean to replace return -1
+[33m8c0bbc1[m {first commit plz help}
+[33m27ea01d[m Added hviox.cpp to cmake
+[33m620cfdb[m[33m ([m[1;31morigin/documentation-and-utilities[m[33m)[m put a warning message for anyone trying to signallv
+[33m14072f0[m Working on transitioning to 1 BBB
+[33m6892eef[m Merge pull request #120 from badgerloop-software/coup-d'etat
+[33m141e589[m Transition of Power
+[33m589d0fd[m Merge pull request #119 from badgerloop-software/thread-safety
+[33m01c17cd[m Removed clock time messages from main loop in badgerloop.cpp.
+[33mcae3801[m Fix merge conflicts
+[33m4b9aff9[m Merge pull request #118 from badgerloop-software/cmake-cross
+[33m55d441e[m Remove badgerloop_LV, rename HV to badgerloop
+[33m66b75af[m Added CPU time tracking to HV controls loop
+[33m8aab812[m Reverted middleware CMakes file that was temporarially changed; Updated includes in LVTCPSocket to be in C.
+[33ma3ef5ef[m Changed all references to the main 'data' data structure outside data.c to use the accessors and mutators of data.c.
+[33mfe4086c[m Altered autocoding to work with data references
+[33mcee78e7[m Update README.md
+[33mb0ac54a[m Update README.md
+[33m36f2bf4[m updated deploy.sh to implement cross build setup and cross build functionalities
+[33mc189c72[m Fix Cmake to build on NUC
+[33m6dffdf4[m Add Cross-Compile CMake file, untested
+[33m44db37a[m Changed it (at least temporarially) so that auto-generated files are commited, but are marked as generated (so they won't) show up on diffs to showcase changes.
+[33m60f19e1[m Moved from semaphores to pthread mutexes.
+[33ma2d8f06[m Changed init.c to generate with setter methods, rather than direct references to the data. Added missing includes in Badgerloop_LV.cpp.
+[33md3fe9c6[m Got rid of the use of auto in getters and setters. Made it so that the arrays are accessed by index in the getters/setters, rather than by their entirety.
+[33mb420301[m The autocoder now generates semaphores for all of the structures in data.h, which are initialized in init.c. data.c is now auto-generated and has getters and setters which use semaphores for all of the fields.
+[33m005ea80[m Added autocoding for init.c, which will allow for easier semaphore integration.
+[33m0f3727b[m Merge pull request #116 from badgerloop-software/deploy_shell_script_dev
+[33m9f6de79[m Added build and clean instructions using deploy.sh inREADME.md
+[33m6b03abe[m added exit 1 to deploy.sh for bad arguments, updated the workflow to run the new build and clean command
+[33m3ca4754[m clean functionality added to deploy.sh with some more helpful argument checking
+[33mb4a8840[m formatted the if statements
+[33mef9b99a[m added if statement to detect the argument
+[33m6ea4a74[m added error message
+[33m73ce29c[m Merge pull request #114 from badgerloop-software/Autocoding-Networking-Dev
+[33m056741a[m[33m ([m[1;31morigin/Autocoding-Networking-Dev[m[33m)[m Made it so that the auto-coder is also run when CMake is run, not just when a target is built.
+[33m69fe750[m Update .gitignore to include autocode files, remove old data.h & telemetry loops
+[33md263bcb[m Fix merge conflicts
+[33m17a017c[m[33m ([m[1;33mtag: pod4.5[m[33m)[m Merge pull request #115 from badgerloop-software/steamfitters-updates
+[33m8426b74[m Remove debug print calls
+[33m149a9f3[m Update prop time to 30sec max
+[33m35428bf[m Remove unneeded commented code
+[33mc4032ce[m Remove prints
+[33m3501b67[m Fixed typo in README.md
+[33mdd8ea40[m Updated directory structure on README.md
+[33mb96c4bd[m Merge branch 'master' into steamfitters-updates
+[33m3a9d812[m HV Steamfitters Updates
+[33mbbd4e2c[m LV Steamfitters Updates
+[33mc46e979[m Added more comments to the auto-coder and fixed a erronous header definition.
+[33m25a3c2a[m Updated some documentation.
+[33m84cc0f6[m Merge branch 'master' into Autocoding-Networking-Dev
+[33m4c59fc6[m Added TelemetryLoopTest.cpp which works without the sensors needing to be connected. Removed residual PracticalSocket.h in middleware/include.
+[33m815bf93[m Swapped out boost/crc with CRCpp to avoid boost dependency hell.
+[33mf277bd4[m Renamed Boost folder to boost to stick to convention. Added boost dependencies to appease the CI.
+[33m5a0a9e1[m Updated middleware's README.md to reflect changes.
+[33mdb9b6c2[m Updated references to the old telemetry loops.
+[33me39ab75[m Added TelemetryLoop.h and updated TelemetryLoop.cpp's template to have more explicit includes.
+[33m56e1977[m Enabled the TelemetryLoop.cpp autocoder. Removed old references in the middleware CMakeLists.txt and added references to TelemetryLoop.cpp and the libraries.
+[33m8cde640[m Removed dynamic exception specifications from practical socket because their build warnings are really annoying and they don't do anything anyways and they are removed in the latest versions of c++. Got rid of obsolete test.
+[33mfb41f39[m Merge pull request #113 from badgerloop-software/cmake-updates
+[33md5b8f42[m Added Boost CRC library
+[33m556ed77[m Updated PracticalSocket and moved it to middleware/libs
+[33m0c13766[m Got rid of old telemetry loop and their associated tests/libraries
+[33mcc69086[m Updated TelemetryLoop.template.cpp to include previously missing non-data.h fields
+[33mc08aad6[m Update CI.yml
+[33mcd31c29[m Update gitignore, remove Makefile, update deploy script
+[33m1e34e6b[m Updated header on autogenerated files to reflect that they change when a target is built.
+[33mbcada65[m Enabled autocoding on data.h
+[33m586505a[m Made it so that building any of the targets calls the autocoder script.
+[33mad6d1fa[m Autocode will now generate output directories if they do not exist. Added previously ommited inline static methods to the template file for data.h.
+[33me6877ef[m Added in autocoding files from DanKouch/pod-autocoder, made file paths in autocoder.py relative to the autocoder directory, and updated .gitignore
+[33m4d53389[m Merge pull request #111 from macuser47/cmake-port
+[33ma8fd99f[m Add CMAKE_README
+[33mfb3be71[m Update README with new build instructions
+[33mf99a64a[m Move CMake output to out/ directory
+[33m2f789f5[m Update CI.yml for CMake
+[33m981154b[m Add basic CMake implementation
+[33m0aca334[m Actions Update PR #2 (#107)
+[33m1eeda71[m Merge pull request #106 from badgerloop-software/actions-ci
+[33m3b86a96[m Update and rename ccpp.yml to CI.yml
+[33ma1f7e39[m Merge pull request #105 from badgerloop-software/devel
+[33m872b305[m Cleaned up all warnings for main target!
+[33ma084b6e[m Update README.md
+[33m7d7eeb1[m[33m ([m[1;33mtag: pod4-final[m[33m)[m Merge pull request #104 from badgerloop-software/pod5_cleanup
+[33m0b25d9e[m Remove extra file
+[33m36840d8[m Pod5 Cleanup
+[33m3243756[m Stupidly large commit, added the semaphores that almost saved the pod. Alas, it was too late and all was lost
+[33m3779f3c[m Pushing for rohan
+[33m9a4fbfe[m Bout to pivot
+[33m8ae3ee7[m Got the motor to spin with the brakes not actuated
+[33m76709f9[m Working on getting the state machine finished
+[33md6d86b4[m Fixed conflict
+[33m3c071e6[m Working on being ready to do nav
+[33m713e7ef[m Add eBrake Function
+[33mc6afc07[m Made changes to the state machine, its been a late night, most data live
+[33m2abe65e[m Fixed BMS data, more changes to come
+[33md657b85[m whoops, committed an error, been resolved now
+[33m43f3bc8[m merged conflict
+[33m6a0bd50[m Added pressure data to the telem packet
+[33m546a289[m Moved braking from HV to LV
+[33m8fbeadf[m Added braking vent states and a safe brake move
+[33m24968b3[m Updated the state machine to better reflect the current state of affairs
+[33m63295c0[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m3e49ea4[m Added a super fun copy target and a state test
+[33m8cf5328[m Merge pull request #95 from badgerloop-software/Dash-Buttons
+[33me563d09[m Merge branch 'embedded-statemachine-dev' into Dash-Buttons
+[33macf9230[m Merge pull request #94 from badgerloop-software/crawl-timer
+[33m25ea0c3[m Merge pull request #93 from badgerloop-software/DashTest
+[33m6a110ae[m Merge branch 'crawl-timer' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m82c1d4d[m Inital Button fixing
+[33m9eada91[m Remove unfinished code
+[33m763df3c[m Add crawl timer, untested
+[33m6abf522[m Added standardized ip status file, and a function to keep track of connection status
+[33me9d19f4[m Cross compilation
+[33m0a6efd4[m There might be nothing more satisfying than seeing a single test noticably clean up bugs in the code base
+[33ma283aff[m Commented out stuff for local dev. Test works
+[33m8ef7f19[m Initial telemetry setup for navtest commiting saftey features from sat forgot to push
+[33m42bd7ce[m Adding tests and making existing tests work without I2C
+[33m41071b1[m Added more detailed comments and a semaphore
+[33m7641f80[m Update stateTest.c
+[33m790d275[m Adding the most crazee state machine testing to date
+[33m3c710fe[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m849b837[m Last shot at the IMU
+[33m6dde25e[m Merged
+[33maa9a88f[m Working on getting the motor working consistently
+[33mce56114[m fixed merge conflicts
+[33me215191[m Making sure the tests actually work
+[33mae4347c[m working on things here and there. The signalling mechanism likely works, havent been able to properly test
+[33m2ac552a[m Finished DashTest
+[33mc187592[m Inital dash test code
+[33md23ef61[m added a solenoid test.c
+[33m7c9c4d8[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m10354ac[m Assorted bug fixes
+[33m5ff68e1[m Added some more utility to the braking test.
+[33m618511c[m Update motorTest.c
+[33m4f46d1e[m Added a macro to make things more readable
+[33m672a890[m Couple more safety checks to make sure we don't go crazy with the motor
+[33m5794897[m Added a handler for ctrl-C
+[33mc71c6bb[m Adding a flag to data.h for forcing all modules to quit and added ifndef guard
+[33mefb31b1[m Changed the limit switches on the IOX to be correct
+[33m6705a8b[m Working on getting ready for testing pressure stuff
+[33m45563ad[m Merge pull request #92 from badgerloop-software/embedded-statemachine-dev
+[33mfcfdbdd[m We get weird ints on the GPIO lines, so this will block them until we come up with a more permanent fix
+[33mb3e0788[m Fixed 2 bugs, one with casting and truncating, the other with usec_to_sec conversion
+[33m50f7ab1[m fixing merge bugs
+[33mfbcdc84[m Merging in the pressure sensor code so that they dont diverge any further
+[33mb928d48[m More minor touchups to the state machine, and adding a way to disable hv from software
+[33ma5b6547[m Minor bug fixes that I missed earlier
+[33me8728f5[m Improvements to nav format and tests
+[33m1593590[m Working on filtering, not sure if it'll go anywhere but coud be useful
+[33m7360c70[m Working on navigation and filtering. Needed to rethink basic data collection a bit to do so
+[33m7059249[m Added more nav info, should update pos/vel/accel and also adjust drift on the IMU
+[33m9791f23[m Added pos to the imu code so that it can be used to check missed retro strips. Mostly nav related changes
+[33m3a1ae85[m just commented out some unused code
+[33m032766f[m Added an early init mostly for testing and maybe production
+[33m00995aa[m Forgot a crucial incrementor to make the ring work
+[33mde0669e[m made sure a function is defined
+[33ma46c10e[m Added a pressure reader test, and cleaned up a fair bit of code. Should all compile now
+[33m4a6db3f[m Finished a sensor read loop and debug code
+[33m208ccbc[m working on getting it compiling
+[33m21aaa42[m Adding a rolling avg for pressure data to help correct the reading
+[33m369d9ab[m Merged in SM branch to add some pressure info
+[33m08b0502[m Found the bug that caused the motor to not work, one line :(
+[33m24c6df1[m Modified Pressure sensor scaling
+[33m1656076[m Made some changes to the braking pressure sensors
+[33mc2178d9[m minor changes to scaling, its not right yet
+[33md75d80c[m Merge branch 'embedded-ncd9829-driver' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m99e95d0[m Added a braking API
+[33m551092a[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m8c324e0[m Added a test for steamfitters
+[33m5e3360c[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33ma989702[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33me5588db[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m35f5a0e[m Added a new test and fixed a broken address for the HV IOX
+[33m70d6ae1[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33madb60bb[m Merge pull request #89 from badgerloop-software/embedded-retro-dev
+[33m1569448[m Minor debug and pinout changes
+[33m542a75f[m Forgot one of the flags, and also updated the readme to reflect the updated make options
+[33mc3af890[m Added some useful debug defines that can be conditionally included at compile time. Also added rough voting, enough to test
+[33meb1dee5[m Changed mcp23017 code
+[33m59a2578[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-retro-dev
+[33mef39199[m Moved some files
+[33mb646c33[m Added some more safety checks to the statemachine and also removed some warnings
+[33m8b406ac[m MCU latch behavior added
+[33mf6c1a69[m Created an API for the GPIO expanders that should hide the internal workings and expose the actual purpose of each pin in a simple way
+[33m5a1843c[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33ma091e1a[m Added a lot (definitely too much for one commit) but the biggest thing is adding some transition logic
+[33me1fc581[m Merge pull request #87 from badgerloop-software/embedded-mcp23017
+[33m800a561[m Merge branch 'master' into embedded-mcp23017
+[33md8a3c93[m Merge pull request #88 from badgerloop-software/embedded-motor-dev
+[33m5eed12f[m Merge branch 'master' into embedded-motor-dev
+[33m8a3870b[m Merge pull request #86 from badgerloop-software/BMS_Profiles
+[33m4bdc86b[m Directly upload zip folder
+[33mfbbfb54[m Merge branch 'BMS_Profiles' of https://github.com/badgerloop-software/pod into BMS_Profiles
+[33md1ba58f[m Make zip file for BMS profiles
+[33m7f604a7[m Reverted to previous because can't find zip file
+[33m349b7a1[m make zip file for BMS
+[33m28e0c04[m Finished the header for the motor API
+[33m115dafa[m hot fix for a stupid issue on my part, it wouldnt save old state of the pins
+[33ma58398f[m added commenting and error checking for CAN calls
+[33m8e17f02[m Motor API should be good to go for state machine integration
+[33mc5c3f49[m Add BMS profiles and folder to repo
+[33m0f27952[m Creating an API for controlling the motor to hide the messyness of the RMS
+[33m52756fe[m Merge pull request #85 from badgerloop-software/util-rmsprog
+[33mfd0522f[m Not sure what is wrong with travis right now
+[33m8160dd2[m Messed up travis by accident
+[33m44bed04[m Added utilities to the make file
+[33ma8bb0e2[m accidently added a file twice!
+[33m9d1178d[m Created a specific folder for utility programs that are different from just one-off examples and tests
+[33m5af14bd[m added the init functions
+[33m7cb582c[m minor debug changes
+[33m3beae5f[m Added a utility that is meant to program the EEPROM Configuration params on the RMS, because the GUI sucks
+[33meac71c7[m Merge pull request #84 from badgerloop-software/embedded-retro-dev
+[33m7f97a50[m Fighting warnings and adding constants
+[33me1bb437[m Fixed unclosed comments on the readme
+[33m170dfa1[m Merge branch 'embedded-retro-dev' of https://github.com/badgerloop-software/pod into embedded-retro-dev
+[33ma1b8d33[m merged and fixed data dump
+[33m4bc25a8[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-retro-dev
+[33m7da4547[m Update .travis.yml
+[33m4a3f10f[m Update .travis.yml
+[33m41a9df1[m Update .travis.yml
+[33mf5c073b[m Update .travis.yml
+[33md53968a[m Update README.md
+[33mc3c5f93[m Update README.md
+[33m9d21a08[m Update README.md
+[33m930f03c[m Added to the READMEs because its good practice
+[33mc03c03b[m Reduced the amount of math that will have to be done in the delay function at runtime
+[33mb9fa454[m fixed an accidental bug
+[33m75eb8fa[m Changed how timestamps are done, now we have potential nano second accuracy but we're using uS
+[33ma1b681c[m Merge pull request #83 from badgerloop-software/data-dump
+[33mce7d002[m Added some better testing
+[33m590d8de[m Fixed the time stamp so it wouldnt keep rolling over. Retro delay was working with one retro
+[33m1622628[m Readd logs
+[33mf520e18[m Removed logfolder
+[33mc2a67f1[m Create logs folder
+[33mf57c53f[m split prints, move output dir
+[33m1e7721a[m Fix printf for lu
+[33me9d5d5c[m Fix warnings
+[33m6a9a70d[m Typo fix 2 + add to HV init
+[33m34362ac[m Typo fix 1
+[33mc591581[m Added a big ol fprintf
+[33m64f8f30[m Pointer debugging
+[33m37dac3c[m Bug fixing
+[33mdac7004[m Fix typo
+[33mb0f083c[m Change to c str
+[33m556c6a3[m Merge branch 'master' of https://github.com/badgerloop-software/pod into data-dump
+[33md7086f0[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m0b3cf68[m Fixed a merge conflict
+[33m2bab706[m Added a basic delay function
+[33m54ff94c[m Merge pull request #82 from badgerloop-software/embedded-statemachine-dev
+[33m9a41e76[m Fixed a goofy issue with not passing a pointer but it didn't give me any warnings
+[33m498fde1[m added some debug, but hardware has been verified for now
+[33m95195b9[m Start with data dump thread
+[33m689ba3b[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33mfedbc81[m Merge branch 'master' into embedded-statemachine-dev
+[33mb9d8533[m Remove warnings
+[33mc3cc8c5[m Add basic documentation
+[33m67cc558[m fix missing decl
+[33mf6794f2[m Add function declarations
+[33mc735436[m Tentative implementation through stopped
+[33mcdd564e[m Remove static
+[33m7243b08[m Fix include
+[33m3054f8a[m Continue adding and split into files
+[33m993701f[m fix silly typo
+[33m8781e48[m Another test
+[33m91a9c64[m Testing include fix
+[33m8ef8f18[m Add Braking logic
+[33m688083b[m More syntax fixes
+[33mb2981b2[m Syntax fixes
+[33m2dac135[m Tentative run state implementation
+[33m90daa6f[m Fix pressure checks
+[33m75c5b40[m add template run-RMS check and bug fixes
+[33mebbc73b[m RMS checks until prop
+[33mebf6d45[m Fix some state check bugs
+[33m4a1eb59[m add PreRun RMS function
+[33m71d7bc7[m Add limit data from spreadsheet
+[33m174c5a3[m Merge pull request #79 from badgerloop-software/ezraboley-travis-patch
+[33m46b07c4[m decreased test length to reduce the log length
+[33meb2d269[m Makes sure the test actually runs
+[33m735417e[m changed the permissions
+[33m6897dde[m Merge branch 'ezraboley-travis-patch' of https://github.com/badgerloop-software/pod into ezraboley-travis-patch
+[33m7711f16[m added a script for travis
+[33mbe42691[m Update .travis.yml
+[33mffa9ccf[m Update .travis.yml
+[33mb6d67eb[m Update .travis.yml
+[33mdbadc8d[m Update canUtil.py
+[33mc8823fb[m Update .travis.yml
+[33mcebaee0[m Update .travis.yml
+[33m1e5ee8d[m Update .travis.yml
+[33m815108e[m Update .travis.yml
+[33m767c13b[m Update .travis.yml
+[33m98985b9[m Update .travis.yml
+[33m30ebee1[m Update .travis.yml
+[33m67bfde8[m Update rms.py
+[33mffbf4f7[m Update can_test.c
+[33mc4599a0[m Update .travis.yml
+[33m893e083[m Update Makefile
+[33mc20aa58[m Update can.h
+[33m859296e[m Update .travis.yml
+[33m3fbf39c[m Update .travis.yml
+[33mca2170e[m Update .travis.yml
+[33m25c21c4[m Update .travis.yml
+[33m485831a[m Update .travis.yml
+[33md5397b2[m Update .travis.yml
+[33m968a184[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m1ef40e2[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m247b754[m Made it multithreaded, all we need to do is change the pin numbers to be valid, and change the NUM_RETROS to be three and then it should work with all retros
+[33m80334e3[m Got the delay working so that it wont read too many strips at one time.
+[33m1086567[m Minor changes to API and added initialization for pins in retro code
+[33m99479f1[m Created an API for the BB Gpio pins, should allow any program to interact with them via their sysfs interface
+[33mf5ccbcf[m interrupts on the falling edge, or at least a crude implementation, are working
+[33m0bf147c[m Started working on a way to read the interrupts from a retro reflective sensor (and eventually a greater API for BB GPIO pins)
+[33m91ebde8[m Merge pull request #78 from badgerloop-software/ezraboley-patch-1
+[33m0c3e941[m Update README.md
+[33m80b3d54[m Merge pull request #77 from badgerloop-software/util-makefile
+[33ma6a7084[m Fix MacOS compile issues
+[33m300ffda[m Remove scan from travis
+[33m1df1fd7[m I lied before, this actually works. It rebuilds only what is needed each time and seems to work with all targets
+[33mdc445ed[m Finished! About half as long and a little cleaner than the original. Should be pretty extensible too in case we end up adding new directories
+[33m1f2078f[m Making mods to the Makefile, almost works just the libraries. A lot is extra and can be deleted to scale it down too
+[33m90ab608[m Add includes
+[33m2644b61[m Re-add timestamp to packets
+[33m97991ab[m Merge branch 'embedded-ncd9830-driver' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33mfa28331[m Compiles and tested under no load, seems to work but we'll see if that holds up. All that is left is a code cleanup and API reorganization
+[33mebdfdc8[m Compiles and tested under no load, seems to work but we'll see if that holds up. All that is left is a code cleanup and API reorganization
+[33m37cff40[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m8bd9e72[m Add close sockets to TCP
+[33m4841c78[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m05a14c1[m Merge pull request #75 from badgerloop-software/ezraboley-patch-1
+[33mf6efc01[m Delete .gitmodules
+[33m7be4f37[m Merge pull request #74 from badgerloop-software/delete-submodule
+[33m6fb70aa[m Delete pod-dash
+[33m94dfca6[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m46ced6d[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33mdfdc6ca[m minor fixes
+[33m330c6b3[m Merge pull request #72 from badgerloop-software/telem-server-fix
+[33mc9be509[m Merge branch 'master' into telem-server-fix
+[33m20142af[m Hotfix
+[33m8085558[m Merge pull request #71 from badgerloop-software/embedded-mcp23017
+[33m2645b0f[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-mcp23017
+[33m7cfddbd[m Merge pull request #70 from badgerloop-software/embedded-statemachine-dev
+[33mecf28c3[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m88b26fc[m Added code to transition manually the right way
+[33m8d76310[m state machine is on the move, it initializes with no error and goes into IDLE
+[33mc63890f[m Fixed my own lil bug
+[33m3b7069c[m Merge pull request #69 from badgerloop-software/add-license-1
+[33me3a9f95[m Create LICENSE
+[33maba76e4[m forgot semicolons!
+[33m64ac673[m Code cleanup and marked sections for discussion
+[33m2b295d6[m Rolled this into the gpio utility
+[33m9da1760[m More thorough error checks
+[33m52482f3[m Update mcp23017.c
+[33m0f3157d[m Missed a tricky little equals sign
+[33mc119027[m Fixed bug with the B Bank not getting the right pins
+[33m165bee9[m Fix LV DataLoop test
+[33mc0e4258[m Removed another print
+[33mda19349[m Forgot a line
+[33mfda2528[m Comment out BMS prints
+[33m91950e5[m Implementing CAN Devices into main funcs
+[33m8b2b7dc[m Fix naming err
+[33m73e384d[m Add header include
+[33m761b903[m More fix
+[33m4f82d6a[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33mf770c22[m Add CAN pthread, untested
+[33m8c7a36b[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m96806df[m Actually fixed those nasty bugs this time, increased slowness in the process but optimization will have to come later
+[33m7ca43c3[m vcan0 -> can0
+[33m0794a88[m Fix merge err
+[33m9d5bed6[m Merge pull request #68 from badgerloop-software/embedded-can-dev
+[33mdbe8572[m Add HV test for data
+[33m2d702e2[m fixed a seg fault, gets to runStateMachine() and got rid of debug prints
+[33m4804a61[m added debug prints, running into a stupid seg fault in addTransition
+[33m7ef06c8[m now it really compiles, thanks C++
+[33maee7b10[m IT BUILDS, mostly
+[33md84e398[m fixed a curly brace
+[33m7ddd7c8[m Makefile fix
+[33ma4a176a[m Bug fixes 3
+[33m88f76df[m Bug fixes 2
+[33m301eb53[m stateMachines bug fixes 1
+[33me9c2736[m Bug fixing
+[33m7d6be64[m Initial fixes
+[33m6391465[m Makefile edit
+[33mc2fc638[m Add include
+[33m3846992[m Bug fixes cuz Im dum
+[33m2ec4517[m Override state machine functionality added, untested
+[33m967f215[m Remove wrong sensor inits
+[33m38a975b[m Made a command line utility for controlling any of the connected GPIO devices, compiles but is untested due to lack of available hardware
+[33m826a872[m Added some init calls to the main HV app, and the state machine
+[33m33f10c2[m Minor code cleanup and reorganization, compiles but still needs to be tested
+[33me6aec0c[m Minor updates to the state machine
+[33m5cb4aa7[m Made sure manual transitions also execute their appropriate actions
+[33mc86a138[m Started a BMS simulator
+[33m9336088[m Added all of the commands for the RMS and a test for CAN TX. Also modified the makefile to no longer spam deprecated warnings
+[33m5dfce66[m Simulation now has just about every CAN ID the RMS should be looking for. It seems as though it exposed either a mistake in our docs or a mistake in code.
+[33mfb5dedd[m Initially added this on the wrong branch, starting a simulated testing environment for CAN devices
+[33m614faf1[m modified mcp23017 and added a basic test
+[33m53f3166[m Merge pull request #67 from badgerloop-software/embedded-bms-dev
+[33m918818e[m Fix errs
+[33m3693068[m Remove unused functions
+[33m6b806b3[m Fix warnings and errors
+[33m0c9fdf9[m Fix name conflict issues
+[33m5a4a721[m Start with bugfixing
+[33mf47d931[m Add data init in test and prints
+[33m3213375[m Bug fixes
+[33mb735d39[m Fix merge conflicts
+[33m2868948[m initial commit
+[33m0b600b7[m Merge pull request #66 from badgerloop-software/embedded-statemachine-dev
+[33m539a02f[m Merge pull request #65 from badgerloop-software/embedded-rms-port
+[33mc31c841[m Added some tedious code that initializes everything
+[33mdbe2ae6[m Warning fixes + prints
+[33m0e2d7cf[m Bug fix part 20
+[33m2bf6d72[m Camel Case fix'
+[33mf0a50b9[m Bug fix
+[33mb0e31a9[m Error fix
+[33md02c577[m Add RMS to can_test, untested
+[33md7ce686[m Fix data name conflict
+[33m9041212[m Add stdint
+[33m5d20d0a[m Remove old RMS header code
+[33mb27d512[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-rms-port
+[33m0713f5b[m Implement data.h into rms
+[33me05980c[m Reorganized files
+[33mc81d5af[m Added pod 3
+[33m52a5d35[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-rms-port
+[33ma863c39[m adding more states to the new format
+[33mc451889[m Adding transition initialization (minus the functions for each) and having them added to their appropriate state
+[33m506557c[m Working on a general API for creating the state machine
+[33m8402323[m Merge pull request #64 from badgerloop-software/Add-Dashboard-Commands
+[33m027a811[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into Add-Dashboard-Commands
+[33m2af2513[m Fix naming
+[33m386b1cb[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into Add-Dashboard-Commands
+[33m21b27af[m Add fault data sending
+[33m65d82c3[m Adding commands for dashboard buttons, TODO: actually do something
+[33m04005f8[m Merge pull request #61 from badgerloop-software/embedded-tcp-heartbeat
+[33m50942f8[m Merge pull request #62 from badgerloop-software/travis-update
+[33m733fdf1[m Merge pull request #63 from badgerloop-software/pr-template
+[33mf1a65cd[m Add PR Template
+[33m696e8c2[m Add a space
+[33m2dc585c[m Add examples to travis scan
+[33med637ca[m Fix compile warning
+[33m294684a[m Fix heartbeat
+[33m0ece6aa[m Add heartbeat
+[33me30c957[m Update braking values and move to new file
+[33m2d1c4d6[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-ncd9830-driver
+[33m928ef2b[m Changed naming conventions in some places and added more conditional checks into the state machine
+[33m7788227[m Fixed up the BMS, not sure if it parses the values to be the right thing, but it does parsing. Added to RX_test in can test for BMS
+[33mbdfd826[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-bms-dev
+[33m042df37[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m87c062d[m Merge pull request #60 from badgerloop-software/ezraboley-patch-1
+[33mbffb7d0[m Added my own readme edits
+[33m242c944[m Ok for real this time, now it looks right. Forgot to preview before
+[33m75b144d[m Update README.md
+[33m3b6453b[m fixed a small issue in data.h
+[33m52f3e7f[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33mf7decc3[m Merge pull request #59 from badgerloop-software/embedded-travis
+[33mca0793d[m removed the formatting command as part of travis
+[33m12a5b7f[m tiny merge conflict
+[33md074ad9[m Merge branch 'embedded-statemachine-dev' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33ma7c6023[m Filling in the states actions, got the bottom few a little further
+[33mac7c187[m Removed unused file
+[33m891a5a9[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m7c24a19[m Merge pull request #58 from badgerloop-software/embedded-lv-implementation
+[33mecbce1a[m Root README edits
+[33mae0985b[m Removed unused readme
+[33m1d05155[m HV and LV compiles successfully
+[33m387e3b2[m Merge pull request #57 from badgerloop-software/middleware-lv2hv-readme
+[33m0377613[m Makefile is now 30% more butchered but can now build multiple final targets
+[33mfbded8f[m Removed orientation from imu example
+[33m798f0c2[m Makefile edits, renamed HV main
+[33mbf80d5b[m Fixed telem loop bugs
+[33m6a63481[m Updated README
+[33m7529dfe[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33macd47a2[m Merge pull request #55 from badgerloop-software/middleware-lv2hv
+[33m3ba7077[m Bug fixing
+[33m033b4da[m Data transfer works
+[33m7167230[m Add IMU startup
+[33meebe1dd[m Merge branch 'middleware-lv2hv' of https://github.com/badgerloop-software/pod into middleware-lv2hv
+[33m2e32a2d[m Makefile modifications to compile on bbb
+[33m09067cc[m Debugging, should now print received values
+[33m1fa9049[m Bug fixes, now compiles
+[33ma513a8d[m Added motion decoding, untested
+[33m0f9cfdb[m Malloc checks
+[33md99e9c8[m Removed pretty-json writing, replaced w one that optimizes space
+[33m037e15a[m Optimized packet workflow
+[33m0eeb7f7[m Initial HV UDP recv code, untested
+[33m3b3c641[m Merge pull request #54 from badgerloop-software/embedded-imu-clean
+[33m3ff316a[m Removed unused variables
+[33m6353ea4[m Removed orientation logic
+[33mf31846d[m Bug fixing
+[33m0a95a87[m Added data values into packet
+[33m551fc9e[m Added HV telemetry output for LV beaglebone
+[33m9476d2a[m Added initial state transitions
+[33md82a911[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m09716ed[m Break -> Brake
+[33m8c07a2c[m Update .travis.yml
+[33me8f15f3[m Update Makefile
+[33mbaa48e8[m Update .travis.yml
+[33m39e699a[m Update .travis.yml
+[33m36c7976[m Update .travis.yml
+[33m430684f[m Merge pull request #53 from badgerloop-software/middleware-hv-udpdata
+[33m8a5a09d[m Fixed format rule in the makefile, should be ready for CI
+[33m3edab66[m Update Makefile
+[33mf8322f9[m Update Makefile
+[33me8638e6[m Create .travis.yml
+[33me34386b[m Started updating data values
+[33me016a8a[m Moved things around main, removed extern func decls
+[33m4f6a025[m Merge pull request #51 from badgerloop-software/embedded-statemachine-dev
+[33m103d545[m Changed main.c to cpp, modified makefile, now compiles w/ c++ libs
+[33mf44f73e[m It compiles! not a lot of functionality and definitely a ton more testing is needed, but it would be good to get the data.h into master
+[33me2e6f1e[m Modified makefile, started debugging compile issues
+[33m397fea8[m Add int init values to 0
+[33m107f7d9[m Working on getting that bms ready
+[33me070349[m Added telemetry parsing
+[33macfaf96[m Added data malloc
+[33med6eff8[m Changed extern data to a ptr
+[33m0fc82e8[m A few more changes
+[33m45314aa[m Added includes, Telem setup, header conditionals
+[33m9f9e256[m Removed package lock file from root dir
+[33mce199ca[m Merge pull request #47 from SaketramDurbha/embedded-statemachine-dev
+[33m6ad10ce[m Fix missing semicolon in state_machine.h
+[33m50853f5[m Commenting for clarity
+[33m1a6b0c5[m minor additions
+[33m88d0955[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-statemachine-dev
+[33m8a2e335[m Needed for the state machine so that it can be developed on a common interface with the rest of our firmware
+[33m5be8a67[m Merge pull request #46 from badgerloop-software/middleware-restructure
+[33m1136b30[m adding some missing constants and encapsulating each part a little better
+[33mffeb92c[m Compile works, file edits and changed makefile to use gcc and g++
+[33m79ba4cf[m Moved Makefile to root, updated READMEs
+[33m386e8d5[m Edited file headers
+[33mb136e67[m Working on filling in the states and writing helpers
+[33m9a5bc19[m Updated README
+[33m69c835e[m Initial restructure commit
+[33m0ce3449[m Merge pull request #23 from badgerloop-software/embedded-restructure
+[33m32ca92e[m Merge pull request #43 from badgerloop-software/dashboard-subrepo
+[33m46e4840[m Simple readme
+[33mf6f7e69[m Makefile works, version 1
+[33m7555759[m Makefile updates, examples make if you run make examples twice
+[33m9f8de49[m Caught up Dashboard and test if I can do subrepos correctly
+[33mc2d7118[m Makefile updates, almost works
+[33mb871355[m Updated includes, makefile progress
+[33ma516d0a[m Now Tracking Master rather than specific commit
+[33mdbb1e2f[m File restructure
+[33m19331d8[m Renamed folder
+[33m6afa0d8[m Initial submodule support
+[33m6f52bb8[m Restructured, added test Makefile
+[33m2c71758[m Forgot to readd readmes
+[33m50ef689[m Changed some names
+[33m568da6b[m makefile updates
+[33m9f0a46b[m Moved stuff around a little more, changed our names, and added the option to a new makefile to look into our directories for .h files
+[33m312e7ef[m Merge pull request #24 from badgerloop-software/dashboard-code-cleanup
+[33m2e8554f[m I don't know how to style lol
+[33md9cb1fa[m Merge branch 'master' into dashboard-code-cleanup
+[33m9da1724[m Set default class to disconnected for all subsystems
+[33m94ecf87[m Merge pull request #25 from badgerloop-software/dashboard-start-button-and-link-redesign
+[33ma0476d6[m Set default connection indicator to disconnected
+[33mdc68bce[m added start button and re-design of link status div
+[33mf0a02c0[m Deleted gitIgnore and assets folder
+[33md0ae52a[m Fixed PR discussions
+[33mf74dbb8[m added even more comments
+[33me31586b[m initial commenting to chartHandling.js
+[33m231df6d[m Commenting on handler.js
+[33m2831d4a[m More Cleanup
+[33m7504d3d[m Wrote most of a driver for the ADC used to read the pressure sensors
+[33m669699a[m Forgot to put the folders in! Here they are
+[33m713fec9[m Created a heirarchical structure that hopefully wont get too messy as the repo expands
+[33ma4658af[m cleaning up code
+[33m1a23495[m More condensing and rebranding
+[33m796bc60[m Condensed Dropdown
+[33m9bf4eaa[m Condensed filterFunction
+[33mc7ee346[m Deleted getData.js
+[33m9d29261[m Inital Cleanup
+[33ma75061b[m Adding helper functions that will be used in most states and added some checks on sys calls
+[33m06f563f[m Merge pull request #21 from badgerloop-software/dashboard-tpc-handling
+[33md1264e8[m Merge pull request #22 from badgerloop-software/command-receiving
+[33mdf5950b[m Finished inital tcp handling
+[33ma4df91a[m Added ping for LV loop
+[33m927062f[m Removed unused var
+[33m74960ec[m Fixed a warning
+[33mccc5bf9[m Added example, untested
+[33m681ecc8[m Fixed UDP Client Readme typo
+[33m49a23e2[m Updated readme
+[33mfb8d342[m Documentation
+[33m606b520[m Initial commit, loosely working
+[33m60ebab1[m Changed tcp port
+[33m9c74cea[m TCP Sender implemented
+[33md60aae1[m created a data types folder
+[33m0cca5b6[m Stopping point
+[33m822431b[m Added structure
+[33m65c4508[m Merge branch 'embedded-rms-port' of https://github.com/badgerloop-software/pod into embedded-rms-port
+[33m4d57abb[m Added some comments
+[33me165149[m Direct copy and paste from pod3 repo
+[33me66bea2[m Starting RMS port on new branch
+[33me0cc90a[m Initial TCP commit
+[33me3a81fa[m Merge pull request #19 from badgerloop-software/dashboard-internal-counter
+[33mc7ed864[m Word choice fixing
+[33m46d1959[m Set default ip to 0.0.0.0
+[33m2c6beae[m Fixed error: renamed DS 'comms' to 'coms'
+[33m2e206f0[m Inital debugging
+[33m4b38f96[m Added some comments
+[33me3dee2a[m Direct copy and paste from pod3 repo
+[33m8f3d069[m Starting RMS port on new branch
+[33m2cbce25[m Adding more comments/questions
+[33m8af1b6c[m Update README.md
+[33m1799450[m Continued work and comments on state machine structure
+[33m8e68e9b[m Merge branch 'master' into dashboard-internal-counter
+[33mdad34fe[m Finished Internal Counter
+[33m2da4a88[m stopping point
+[33m5848cc3[m Started working on the state machine. Mostly a framework at this point and not meant to be quite functional. Just a start
+[33m16eae9f[m Merge branch 'master' of https://github.com/badgerloop-software/pod
+[33m94ff7ab[m Dashboard Styling Search Fix and Packet Reform
+[33me8a42d1[m Cleanup
+[33m6eb800f[m Merge pull request #17 from badgerloop-software/dashboard-settings-modal
+[33mc55167f[m Inital counter commit
+[33m95a6118[m fixed plotly charts by modifying line 412
+[33m922d32a[m Merge pull request #16 from badgerloop-software/udp-packet-sending
+[33md2e2cab[m Updated readme
+[33m5f18bb1[m Modified HV Telem Loop
+[33m6565c82[m Fixes 3
+[33m7f086c0[m Fixes 2
+[33mceab9e4[m Fixes 1
+[33ma373fd8[m Made IP and port args
+[33m07a2251[m small form styling changes
+[33mf3f2fb7[m Deleted depreciated slider code
+[33m15adbf4[m Added feedback to form
+[33m54a35c6[m Reverted slider to text input
+[33m45da7e7[m form styling fixes
+[33mac20c10[m more stylingh
+[33m4eda6d6[m work on styling
+[33m26c3c0c[m Added type field, untested
+[33mcff464f[m Merge branch 'dashboard-settings-modal' of https://github.com/badgerloop-software/pod into dashboard-settings-modal
+[33m15dba20[m Settings Modal now changes constants
+[33mefe1d46[m Merge branch 'Dashboard-Testing' into Dashboard-Styling
+[33m8660521[m fixed search in dropdowns
+[33m5da8e54[m reducing size
+[33m2cc013b[m converting it to proper C for loops
+[33m14bfbf6[m Merge pull request #14 from badgerloop-software/asset-removal
+[33m73c85e2[m Removed assets and moved them to the dashboard-assets repository
+[33md6289f4[m Merge pull request #13 from badgerloop-software/embedded-can-restructure
+[33m04e8c08[m Merge pull request #12 from badgerloop-software/gitignore-add
+[33m5ad9b13[m small fixes for compilation on Linux with GCC version 5.4.0
+[33mce220dc[m Fixed example typo
+[33m781e058[m Fix readme
+[33m8ff8610[m Folder rename
+[33m85ead1b[m Fixed README
+[33mcd847b0[m Missed one
+[33m3e0db21[m Fixed example
+[33m9472982[m Removed DS
+[33m01cdc6b[m Added split for HV/LV
+[33me5f1f98[m Moved code
+[33mbed098f[m Updated README
+[33md62f295[m Edited Readme
+[33m0b4eaf0[m Add gitignore
+[33mf59d6d4[m Removed DS
+[33m9e5e39b[m Potential CAN restructure
+[33m242e444[m Added to readme
+[33m0a2478e[m Merge pull request #10 from badgerloop-software/embedded-can-dev
+[33mff3e41d[m Implemented Settings Form
+[33m9caa798[m added settings modal
+[33m8fc35e5[m Merge pull request #11 from badgerloop-software/Dashboard-Styling
+[33md7e9392[m Added README
+[33mdf969a4[m Removed DS Store
+[33m54cf727[m Merge branch 'embedded-can-dev' of https://github.com/badgerloop-software/pod into udp-packet-sending
+[33mef1e00d[m Added XSens IMU Lib
+[33m0e6d756[m Initial JSON implementation using rapidjson, untested
+[33mb574979[m Initial commit - Able to communicate with server
+[33m627575e[m Added a CAN specific readme, a little bit sloppy but the gist is there
+[33m7b4ee87[m modified testing structure, hopefully itll stick!
+[33mdab9ff1[m added tx functionality. Should be able to send CAN messages and the API is set up. Maybe a little rough around the edges but overall clean, minimal, and functioning
+[33m1b6933a[m made CAN code more of a library structure, this way it can be used in our main control code
+[33m910fe70[m finished the CAN read function. Should work on a configurable fixed interval timer
+[33m23bb899[m Changed important comments
+[33m39f48be[m More Cleanup
+[33me27a267[m charts autoscale from zero
+[33m47c5151[m layout changes, added estop
+[33m306f4a2[m Removed Connected Indicator and cleaned up how UDP packets are recieved
+[33me9eee13[m Implemented 150 Channel Test
+[33m90ac029[m condensed dynamic styling
+[33m0f0ee5c[m highlight red when less than min value
+[33me5f6306[m updated readme
+[33m943ea9e[m fixed dynamic styling
+[33mc57ecb2[m Merge pull request #9 from badgerloop-software/master
+[33m5b32984[m removing changes for merge
+[33m7d7d0ff[m removed temp test
+[33mbece7b7[m Commits should show up as me now
+[33me8d5d5f[m Testing that I now show up as Eric
+[33m5253a34[m Testing that my commits show up as me and not ryan
+[33me78e7cc[m testing
+[33m2ac01eb[m added comments and updated status code
+[33m4c2dc2a[m removed file
+[33me3a34f8[m dropdown locations fixed
+[33m20f74da[m fixed errors
+[33mf5facca[m Hotfixes from master PR
+[33m8ab711d[m fixed dynamic stylinh
+[33m84a9fae[m Catch up to master
+[33m6953b71[m Merge pull request #8 from badgerloop-software/Dashboard-FrontBackEndMerge
+[33m99652cc[m Typo
+[33m456d14d[m Merge commit
+[33mcf7396d[m Fixed Root Readme
+[33m0936098[m Update Readme
+[33m7cd90d8[m Set some more variables
+[33m12c750e[m Merge pull request #7 from badgerloop-software/Dashboard-Styling
+[33mebd4180[m Fixed responsive width
+[33m43e577b[m Fixed labeling of correct button
+[33mac2ca18[m changed 'clear' to 'clear charts'
+[33m6ac6472[m fixed issue with chart generation after clear
+[33m015d354[m fixed typo that prevented second trace generation
+[33m8e92662[m Made charts responsive, changed how dropdowns close
+[33m67a3e7f[m Fix dropdowns not dissapearing, autofocus text box when button clicked
+[33m5f1ea5a[m second trace removal has some errors
+[33m3db9faa[m rough added second chart generation and removal
+[33m26e7ad1[m second chart generation and removal working for two traces
+[33m040d4cb[m Removed setting random numbers from the front end
+[33m2d3abc0[m removed random again
+[33md302c8c[m turned off plotly bar (too small to use in top divs anyway, will reneable for larger charts)
+[33m106808c[m fixed tables
+[33m8d4ddfe[m remove traces allows for adding new ones, tied with generateBlankChart
+[33mf3a83cd[m added data id to generate line chart 1 in index.html
+[33m1808da3[m clear button working for 1 chart
+[33me1a2e05[m add chart 1 generation buttons to index.html
+[33m6bda1e7[m add multiple titles function
+[33m54bab77[m changed chart dimensions to fit div
+[33mddd1cb6[m blank line chart function added to dashboard
+[33mc7a14d9[m Index Fix
+[33m6b77556[m CSS fix
+[33mebccb51[m Initial Merge
+[33mdbabf72[m added variable for data rate
+[33m6ebecd3[m Update README.md
+[33m352c431[m added remove all traces function
+[33m433fb47[m Merge pull request #6 from badgerloop-software/Dashboard-Tables
+[33m3145880[m Fixed rendering
+[33m247ad3b[m Merge branch 'Dashboard-Tables' of https://github.com/badgerloop-software/podiv into Dashboard-Tables
+[33m407eddb[m added comments to the dyanmicStyling.js file to make more clear
+[33m31909d2[m Merge branch 'Dashboard-Tables' of https://github.com/badgerloop-software/podiv into Dashboard-Tables
+[33m6c837c2[m Updated renders
+[33m1b5fa26[m fixed errors
+[33m7fc4812[m Fixed some rendering issues
+[33m7431421[m Fixed imports, and renamed files
+[33m1038807[m Merge branch 'Dashboard-Tables' of https://github.com/badgerloop-software/podiv into Dashboard-Tables
+[33m8fa08c1[m adds second trace with synchronized x-axis
+[33mb92c886[m fixed chart not loading
+[33m9c9b304[m Removed Luke's stupid apple logo
+[33m94ec0a7[m removed npm.debug.log
+[33m1f35573[m added packet time and connection status
+[33m241e172[m rough add trace function created
+[33mc2788d9[m updating merge
+[33mec5f5a2[m Sent packets display on new tables
+[33mf250d13[m ReImplemented Archive button
+[33m7fa02d9[m Initial Merge
+[33m8f7d52a[m Inital Merges and Back-end datahandling
+[33m89b027a[m readme
+[33m8d6ce32[m added preliminary state machine
+[33m95d10dc[m Inital Comit
+[33m8c4e9e1[m Last minute changes
+[33mfeae295[m 
+[33mff1ec81[m removed not needed file
+[33m44df191[m added file
+[33m94e344a[m made font local and split up css/js into seperate files
+[33me3e68e0[m general fixes
+[33m48df1d1[m rough structure of chart state, newChart() function created
+[33m48cf5b6[m Merge branch 'Dashboard-Testing' of https://github.com/badgerloop-software/podiv into Dashboard-Testing
+[33m0d37fb9[m Added archive button
+[33m6cfbc0d[m Added archive button
+[33m92f8444[m styling fixes
+[33mb7bf7fd[m styling fixes,  added place holders for focus charts
+[33me4bce15[m added clone function correctly
+[33m89673ac[m fixes
+[33mf6865ef[m added plotly js file back
+[33m367a387[m brought up to current with styling
+[33m882f41e[m changed line chart to autoscale, chaged color, and matched refresh rate of chart to random generator to remove plateous in chart
+[33m9c8dce2[m Merge branch 'Dashboard-Styling' of https://github.com/badgerloop-software/pod into Dashboard-Styling
+[33m1770881[m added status indicator, fixed and simplified functions
+[33md729f4f[m Inital Mongo setup
+[33m93b7ef7[m Merge branch 'Dashboard-Styling' of https://github.com/badgerloop-software/pod into Dashboard-Styling
+[33m2fac98f[m fixed image
+[33m138c058[m blank chart appears on startup
+[33m5607655[m chart gets data from table
+[33m02a38fe[m rough integration of chart with dashboard
+[33m3ae0d91[m Added more comments
+[33m0d1bd69[m Merged chart demo with table code
+[33mf837c16[m Merge branch 'Dashboard-Tables' into Dashboard-Styling
+[33mce1208c[m Merged README.md
+[33m5227379[m Added aging of data in ms
+[33mfa62c7c[m added electron
+[33mfcdee81[m Merge pull request #3 from badgerloop-software/EUdds-patch-1
+[33mbe7c40c[m general fixes
+[33mb0fd0c7[m merge
+[33m60c663e[m cleaned folder
+[33mc3aac79[m added test plotly.js chart in pop-up modal (click on stopping distance label in table 1 to trigger for now)
+[33mb9d6583[m clean code
+[33m5bf3548[m added modal
+[33m7be396b[m titlew
+[33m94e7aaa[m cleaned code
+[33m36ab005[m Working on getting the bare-metal required for CAN
+[33m0267fa5[m Merge branch 'embedded-can-dev' of https://github.com/badgerloop-software/pod into embedded-can-dev
+[33m270dc5b[m fixed dropdown image
+[33m0638f8f[m added dropdown arrow
+[33m5a06fe6[m fixed overlap of banner
+[33mf8bb136[m z-index
+[33m766cc06[m fixed grid right padding
+[33ma149bbe[m added banner
+[33m359ee22[m fixed error
+[33m58db27a[m cleaner code
+[33m38a4004[m added comments
+[33m0739289[m updated readme
+[33m1bc9279[m updated readme
+[33me9363ea[m intial tables commit
+[33m6960d89[m first commit
+[33mbbc82a4[m Trying to merge master in
+[33mbcca874[m moved files to can subdirectory
+[33me0646d8[m Cleaned up directory sturcture and also added syscall checks
+[33m07a2bcb[m initial CAN work
+[33mab4edca[m Merge branch 'Dashboard-Styling' of https://github.com/badgerloop-software/pod into Dashboard-Styling
+[33mac438ac[m Added plotly demo to proto.html
+[33md5e8c01[m Delete generateLineChart.js
+[33m3076e46[m Merge branch 'master' of https://github.com/badgerloop-software/pod into embedded-can-dev
+[33m64270bf[m moved files to can subdirectory
+[33mefff2b5[m Cleaned up directory sturcture and also added syscall checks
+[33m42fec12[m initial CAN work
+[33mc30ea3c[m Merge pull request #4 from badgerloop-software/xsens-driver
+[33mac58ec5[m Moved i++ to end of loop
+[33mb1915c0[m Fixed typo
+[33m74f9eeb[m More feedback changes
+[33m4658751[m Initial feedback changes
+[33m31c1efb[m Rename quat getters
+[33m769d59a[m Rename lib > src
+[33m1349c05[m Refactored files
+[33m7c5d268[m Edited readme
+[33m465967b[m Added README
+[33me636e16[m Removed compile errs
+[33m6e4899e[m Added option to get all data values at once
+[33me32eedd[m Added semaphores for data setting + return
+[33m66a3937[m Changed data size type
+[33m243caba[m Removed globals from i2c lib
+[33mccb720f[m Replace a bunch of data access typos
+[33md2d669c[m More formatting
+[33m65c0e26[m Cleaned up code
+[33m485927a[m Added orientation getter functions
+[33m10fba10[m Init all data values to zero
+[33m714579b[m Added quaternion parsing + checking, untested
+[33m6d1e814[m Renaming + add size check
+[33m39959c8[m Add rohan as a developer
+[33mf84cdda[m Restructured to use pthreads
+[33m223ad71[m Cleaned code a lil
+[33mb5a1930[m Prints acceleration
+[33m2c32ec0[m Parses velocity increment, not sure on units yet
+[33m912eba5[m Reads data, does not parse yet
+[33m9811919[m Added age of packet to sent data
+[33mdeb55a4[m Update README.md
+[33m095bf4a[m Preliminary line chart generation code
+[33m32d9e21[m Update ReadMe.md
+[33mb155620[m Cleaned up FS and Package.json
+[33mf1c3a36[m Update README.md
+[33mb05aff6[m Added some structure
+[33md71a22e[m Added coloring for table cells, removed some prints
+[33m6624653[m Imported last years terminal changed system for importing numbers from pod
+[33m529405c[m Update README.md
+[33m1c7806a[m Created System to send and store data, deleted some unnecessary files
+[33m3f25943[m Fixed Package Issues
+[33m7c067ed[m Added dashboard test code
+[33mc1f3798[m Initial commit

@@ -1,14 +1,14 @@
-#include <math.h>
-#include "adc128.h"
-#include "i2c.h"
-#include "temp_adc.h"
-#include "data.h"
-#include <stdint.h>
-#include "NCD9830DBR2G.h"
+// #include <math.h>
+// #include "adc128.h"
+// #include "i2c.h"
+// #include "temp_adc.h"
+// #include "data.h"
+// #include <stdint.h>
+// #include "NCD9830DBR2G.h"
 
-// int initTempSensors() {
-//     return (u2_adc.init() && u4_adc.init());
-// }
+// // int initTempSensors() {
+// //     return (u2_adc.init() && u4_adc.init());
+// // }
 
 // uint16_t readTelem_Therm_0() {
 //     uint16_t data;

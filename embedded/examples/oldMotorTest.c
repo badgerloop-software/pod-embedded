@@ -1,6 +1,7 @@
 /*   */
 
 #include "can.h"
+#include "can_devices.h"
 #include "connStat.h"
 #include "data.h"
 #include "rms.h"
@@ -51,10 +52,13 @@ void quitHandler()
 void testLoop()
 {
     //	usleepm,(100);
+    printf("ENABLE HEARTBEAT\n");
     rmsEnHeartbeat();
     //  usleep(1000);
+    printf("CLEARING FAULTS\n");
     rmsClrFaults();
     //	usleep(1000);
+    printf("RMSINVDIS\n");
     rmsInvDis();
     sleep(3);
 
@@ -64,8 +68,11 @@ void testLoop()
     usleep(100);
     //	rmsEepromMsg(143, 0, RD_EEPROM);
     usleep(100);
-    while (1)
-        ;
+    // while (1)
+    //     ;
+    printf("RMSINVENNOTORQUE\n");
+    rmsInvEn();
+    printf("Done\n");
     //	while (getRmsVSMCode() != 5) {
     //		sleep(1);
     //printf("setRmsVSMCode() == %d\n", getRmsVSMCode());
@@ -102,9 +109,10 @@ int main()
     printf("initData\n");
     //	SetupDataDump();
     initCan();
+    // SetupCANDevices();
     printf("canINit\n");
-    /*	SetupCANDevices();*/
-    //	rmsConfig();
+    SetupCANDevices();
+    // rmsConfig();
     struct sigaction sig;
     sig.sa_sigaction = quitHandler;
     printf("SIGACTION %d\n", sigaction(SIGINT, &sig, NULL));

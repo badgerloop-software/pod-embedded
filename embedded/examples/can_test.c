@@ -7,7 +7,7 @@
 #include "rms.h"
 
 #define NUM_BYTES 4
-#define TEST_LEN 10
+#define TEST_LEN 2
 int msgRecv = 0;
 
 void rx_test(struct can_frame* can_mesg)
@@ -32,24 +32,25 @@ void rx_test(struct can_frame* can_mesg)
     }
 }
 
-void txTest()
-{
-    rmsEnHeartbeat();
-    rmsClrFaults();
-    rmsInvDis();
-    rmsInvEn();
-    rmsInvForward20();
-    rmsInvForward30();
-    rmsCmdNoTorque();
-    rmsDischarge();
-}
+// void txTest()
+// {
+//     rmsEnHeartbeat();
+//     rmsClrFaults();
+//     rmsInvDis();
+//     rmsInvEn();
+//     rmsInvForward20();
+//     rmsInvForward30();
+//     rmsCmdNoTorque();
+//     rmsDischarge();
+// }
 
 int main(int argc, char* argv[])
 {
     initData();
     initCan();
     struct can_frame can_mesg;
-    txTest(); // test RMS Commands
+    // txTest(); // test RMS Commands
+    bmsClearFaults();
     printf("---Begin %d second CAN test---\n", TEST_LEN);
     unsigned long currTime = (unsigned long)time(NULL);
     int timeout = TEST_LEN + currTime;
@@ -59,6 +60,7 @@ int main(int argc, char* argv[])
         currTime = (unsigned long)time(NULL);
     }
     printf("---End CAN Test---\n");
+    bmsDump();
     if (msgRecv != 1)
         exit(-1);
     return 0;

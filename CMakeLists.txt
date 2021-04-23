@@ -5,9 +5,11 @@ project(PodEmbedded VERSION 1.0
 
 # Setup coverage flags
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
-    include(CodeCoverage)
-    append_coverage_compiler_flags()
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeFiles/modules)
+        include(CodeCoverage)
+        append_coverage_compiler_flags()
+    endif()
 endif()
 
 # Run Autocoder when CMake is run

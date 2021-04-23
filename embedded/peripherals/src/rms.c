@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 /* Uncomment define for additional prints in the parser */
-/*#define DEBUG_RMS*/
+#define DEBUG_RMS
 
 #define TORQUE_SCALE_LWR(x) (((x)&0xFF) * 10.0) /* Converts Nm to the value the RMS wants */
 #define TORQUE_SCALE_UPR(x) (((x) >> 8) * 10.0)
@@ -22,9 +22,13 @@
 /* 1 */
 int rmsEnHeartbeat()
 {
+    printf("MAKING PAYLOAD\n");
     uint8_t payload[] = { 0x92, 0x0, 0x1, 0x0, 0x1, 0x0, 0x0, 0x0 };
+    printf("Waiting\n");
     sem_wait(&canSem);
+    printf("SEND\n");
     int ret = canSend(RMS_HB_ID, payload, 8);
+    printf("Post sem\n");
     sem_post(&canSem);
     return ret;
 }
@@ -257,16 +261,16 @@ int rms_parser(uint32_t id, uint8_t* rmsData, uint32_t filter)
         setRmsCanCode1((rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0]);
         setRmsCanCode2((rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4]);
 #ifdef DEBUG_RMS
-        printf("CAN Code 1: %lld\r\n", (long long int)getRmsCanCode() 1);
-        printf("CAN Code 2: %lld\r\n", (long long int)getRmsCanCode() 2);
+        // printf("CAN Code 1: %lld\r\n", (long long int)getRmsCanCode(1) );
+        // printf("CAN Code 2: %lld\r\n", (long long int)getRmsCanCode(2));
 #endif
         break;
     case (0xab):
         setRmsFaultCode1((rmsData[3] << 24) | (rmsData[2] << 16) | (rmsData[1] << 8) | rmsData[0]);
         setRmsFaultCode2((rmsData[7] << 24) | (rmsData[6] << 16) | (rmsData[5] << 8) | rmsData[4]);
 #ifdef DEBUG_RMS
-        printf("Fault Code 1: %lld\r\n", (long long int)getRmsFaultCode() 1);
-        printf("Fault Code 2: %lld\r\n", (long long int)getRmsFaultCode() 2);
+        // printf("Fault Code 1: %lld\r\n", (long long int)getRmsFaultCode(1));
+        // printf("Fault Code 2: %lld\r\n", (long long int)getRmsFaultCode(2));
 #endif
         break;
     case (0xac):
@@ -274,7 +278,7 @@ int rms_parser(uint32_t id, uint8_t* rmsData, uint32_t filter)
         setRmsCommandedTorque(getRmsCommandedTorque() / 10);
         setRmsActualTorque((rmsData[2] | (rmsData[3] << 8))); // / 10;
         setRmsActualTorque(getRmsActualTorque() / 10);
-#ifdef DEBUG_RMSi
+#ifdef DEBUG_RMS
         printf("Commanded Torque: %d\r\n", getRmsCommandedTorque());
         printf("Actual Torque: %d\r\n", getRmsActualTorque());
 #endif

@@ -23,5 +23,6 @@
 
 int readADCLine(int sensor, uint8_t channel, uint16_t* data);
 int initADCs(void);
+int readMfgId(void);
 
 #endif

@@ -10,14 +10,19 @@ int main(int argc, char **argv) {
     printf("Initting Sensor\n");
     initADCs();
     uint16_t data;
+
+    int id = readMfgId();
+
+    printf("MFG ID %x\n", id);
+    
     printf("Reading data\n");
     int res = readADCLine(0, 0, &data);
-
     printf("Got %x\n", data);
 
     for(int i=0; i < 8; i++) {
         uint16_t buff;
         int res = readADCLine(0, i, &buff);
+        
         printf("Channel %d: %x\n", i, buff);
     }
 

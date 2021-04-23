@@ -1,14 +1,12 @@
 // #include <math.h>
 // #include "adc128.h"
-// #include "i2c.h"
 // #include "voltage_adc.h"
-// #include "data.h"
 // #include <stdint.h>
 // #include "NCD9830DBR2G.h"
 
-// int initVoltageSensors() {
-//     return (u2_adc.init() && u4_adc.init());
-// }
+// // int initVoltageSensors() {
+// //     return (u2_adc.init() && u4_adc.init());
+// // }
 
 // uint16_t readTelem_V_24V() {
 //     uint16_t data;

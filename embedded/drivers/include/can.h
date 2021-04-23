@@ -14,7 +14,7 @@
 #ifdef USE_VCAN
 #define CAN_INTF "vcan0"
 #else
-#define CAN_INTF "can0"
+#define CAN_INTF "can1"
 #endif
 
 extern volatile bool NEW_CAN_MESSAGE;

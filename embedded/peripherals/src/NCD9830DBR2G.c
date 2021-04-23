@@ -24,14 +24,16 @@ i2c_settings adc1 = { // U2
 i2c_settings* adcs[2];
 
 static int selectChannel(uint8_t devNum, uint8_t channel);
-static int readChannel(uint8_t devNum, uint8_t channel, uint16_t* data);
+static int readChannel(uint8_t devNum, uint8_t channel, char* data);
 
 int readADCLine(int sensor, uint8_t channel, uint16_t* data)
 {
-    if (readChannel(sensor, channel, data) == -1) {
+    char buff[2];
+    if (readChannel(sensor, channel, buff) == -1) {
         fprintf(stderr, "-1 reading the pressure sensor: %d\n", sensor);
         return -1;
     }
+    *data = (buff[0] << 4) | (buff[1] >> 4);
     return 0;
 }
 
@@ -44,18 +46,18 @@ static int selectChannel(uint8_t devNum, uint8_t channel)
 
     // uint8_t cmdByte = 0;
     // cmdByte = (unsigned char*)(0x20 + channel);
-    char cmdByte = 0x20;
-    printf("Selecting Channel 0x%x\n", cmdByte);
+    char cmdByte[1] = {0x20};
+    printf("Selecting Channel 0x%x\n", cmdByte[0]);
     printf("Trying address %x\n",adcs[devNum]->deviceAddress);
-    if (write_byte_i2c(adcs[devNum], (unsigned char*)cmdByte) != 0) {
-        fprintf(stderr, "Failed to write channel select byte: %x\n", cmdByte);
+    if (write_byte_i2c(&adc0, cmdByte[0]) != 0) {
+        fprintf(stderr, "Failed to write channel select byte: %x\n", cmdByte[0]);
         return -1;
     }
 
     return 0;
 }
 
-static int readChannel(uint8_t devNum, uint8_t channel, uint16_t* data)
+static int readChannel(uint8_t devNum, uint8_t channel, char* data)
 {
     if (selectChannel(devNum, channel) == -1) {
         fprintf(stderr, "Failed to select channel %d on adc %d\n", channel, devNum);
@@ -65,7 +67,31 @@ static int readChannel(uint8_t devNum, uint8_t channel, uint16_t* data)
         fprintf(stderr, "Failed to read data from ADC %d.\n", devNum);
         return -1;
     }
+    uint16_t rawReturn = (data[0] << 4) | (data[1] >> 4);
+    printf("Raw Return  0x%X\n", rawReturn);
     return 0;
+}
+
+int readMfgId(void) {
+    if (i2c_begin(&adc0) != 0) {
+        fprintf(stderr, "Failed to open i2c bus for pressure sensor 1.\n");
+        return -1;
+    }
+    char reg[1] = {0x3E};
+    if (write_byte_i2c(&adc0, reg[0]) != 0) {
+        fprintf(stderr, "Failed to read mfg register\n");
+        return -1;
+    }
+
+    char data[1];
+
+    if (read_i2c(&adc0, data, 1) != 0) {
+        fprintf(stderr, "Failed to read mfg id\n");
+        return -1;
+    }
+
+    return (int)data[0];
+
 }
 
 int initADC128(i2c_settings adc) {
@@ -75,7 +101,7 @@ int initADC128(i2c_settings adc) {
         return -1;
     }
     char reg[1] = {0x0B};
-    if(write_byte_i2c(&adc, reg) != 0) {
+    if(write_byte_i2c(&adc, reg[0]) != 0) {
         fprintf(stderr, "Couldn't write to %x\n", reg[0]);
         return -1;
     }
@@ -94,14 +120,14 @@ int initADC128(i2c_settings adc) {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_byte_i2c(&adc, cmd) != 0) {
+    if (write_data_i2c(&adc,cmd[0], cmd[1]) != 0) {
         fprintf(stderr, "Failed to write to %x", cmd);
         return -1;
     }
 
     reg[0] = 0x07;
     printf("CONV RATE REG\n");
-    if(write_byte_i2c(&adc, reg) != 0) {
+    if(write_byte_i2c(&adc, reg[0]) != 0) {
         fprintf(stderr, "Failed to write to %x", reg);
         return -1;
     }
@@ -117,7 +143,7 @@ int initADC128(i2c_settings adc) {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_byte_i2c(&adc, cmd) != 0) {
+    if (write_data_i2c(&adc,cmd[0], cmd[1]) != 0) {
         fprintf(stderr, "Failed to write to %x\n", cmd);
         return -1;
     }
@@ -125,7 +151,7 @@ int initADC128(i2c_settings adc) {
     usleep(10000);
 
     reg[0] = 0x00;
-    if (write_byte_i2c(&adc, reg) != 0) {
+    if (write_byte_i2c(&adc, reg[0]) != 0) {
         fprintf(stderr, "Failed to write to %x", reg);
         return -1;
     }
@@ -143,14 +169,14 @@ int initADC128(i2c_settings adc) {
     cmd[0] = reg[0];
     cmd[1] = data[0];
 
-    if (write_byte_i2c(&adc, cmd) != 0) {
+    if (write_data_i2c(&adc,cmd[0], cmd[1]) != 0) {
         fprintf(stderr, "Failed to write to %x", cmd);
         return -1;
     }
     
     usleep(10000);
 
-    if (write_byte_i2c(&adc, reg) != 0) {
+    if (write_byte_i2c(&adc, reg[0]) != 0) {
         fprintf(stderr, "failed to write to %x\n", reg);
         return -1;
     }

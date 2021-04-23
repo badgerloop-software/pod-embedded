@@ -35,8 +35,9 @@ int confirmInput(uint16_t addr, int val)
 {
     printf("You are about to write (in decimal) value: %d to address: %d\n", val, addr);
     printf("Is this what you intended? (y/n)\n");
-    char c = getchar();
-    return c == 'y';
+    char buf[1];
+    scanf("%c", buf);
+    return buf[1] == 'y';
 }
 
 static bool writeEeprom = false;
@@ -93,7 +94,8 @@ int main(int argc, char* argv[])
         }
         uint16_t val = safeConvert(argv[3]);
 
-        if (confirmInput(addr, (int)val))
+        // if (confirmInput(addr, (int)val))
+        if (true)
             rmsWriteEeprom(addr, val);
         else {
             printf("Aborting...\n");
