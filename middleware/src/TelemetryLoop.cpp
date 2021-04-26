@@ -104,16 +104,16 @@ void* TelemetryLoop(void* arg)
 
             // Write 4 byte primary brake
             int32_t primBrake = 0;
-#ifndef TELEMETRY_LOOP_TEST
-            primBrake = limSwitchGet(PRIM_LIM_SWITCH);
-#endif
+// #ifndef TELEMETRY_LOOP_TEST
+//             primBrake = limSwitchGet(PRIM_LIM_SWITCH);
+// #endif
             addToBuffer(&buffer, &primBrake);
 
             // Write 4 byte secondary brake
             int32_t secBrake = 0;
-#ifndef TELEMETRY_LOOP_TEST
-            secBrake = limSwitchGet(SEC_LIM_SWITCH);
-#endif
+// #ifndef TELEMETRY_LOOP_TEST
+//             secBrake = limSwitchGet(SEC_LIM_SWITCH);
+// #endif
             addToBuffer(&buffer, &secBrake);
 
             

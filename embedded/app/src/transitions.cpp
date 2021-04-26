@@ -84,7 +84,6 @@ int genBraking()
     }
     ioxRick.setMCUHvEn(false);
 
-    brakeHV();
     stateMachine.start = getuSTimestamp();
     return 0;
 }
@@ -162,7 +161,6 @@ int genRunFault()
 
     ioxRick.setMCUHvEn(0);
     printf("Entering here4\n");
-    brakeHV();
     printf("Entering here\n");
     return 0;
 }

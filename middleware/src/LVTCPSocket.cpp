@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include <braking.h>
 #include "LVTCPSocket.h"
 
 #define DASH 0
@@ -15,7 +16,6 @@ extern "C" {
 extern void resetNav();
 #include "connStat.h"
 #include "data.h"
-#include <braking.h>
 }
 
 pthread_t LVTCPThread, lvTcpConT, lvTcpConT2;

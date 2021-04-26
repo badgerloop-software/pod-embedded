@@ -2,7 +2,6 @@
 add_executable(bmsDisplay bmsDisplay.cpp)
 add_executable(dashTest dashTest.cpp)
 add_executable(navTest navTest.cpp)
-add_executable(solenoidTest solenoidTest.c)
 add_executable(brakingTest brakingTest.cpp)
 add_executable(gpioIOXRickMortyTest gpioIOXRickMortyTest.cpp)
 add_executable(oldMotorTest oldMotorTest.c)
@@ -19,7 +18,6 @@ target_link_libraries(can_test PRIVATE drivers peripherals data)
 target_link_libraries(stateTest PRIVATE peripherals data app)
 target_link_libraries(retroTest PRIVATE drivers peripherals data)
 target_link_libraries(oldMotorTest PRIVATE drivers middleware peripherals data)
-target_link_libraries(presTest PRIVATE middleware peripherals data)
 target_link_libraries(dashTest PRIVATE middleware peripherals data app)
 target_link_libraries(navTest PRIVATE middleware peripherals data app)
 target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
@@ -34,7 +32,6 @@ add_dependencies(can_test autocoder)
 add_dependencies(stateTest autocoder)
 add_dependencies(retroTest autocoder)
 add_dependencies(oldMotorTest autocoder)
-add_dependencies(presTest autocoder)
 add_dependencies(dashTest autocoder)
 add_dependencies(navTest autocoder)
 add_dependencies(brakingTest autocoder)
@@ -48,7 +45,6 @@ add_dependencies(adcTest autocoder)
 set_target_properties(bmsDisplay
                       dashTest
                       navTest
-                      solenoidTest
                       brakingTest
                       gpioIOXRickMortyTest 
                       adcTest
@@ -57,6 +53,5 @@ set_target_properties(bmsDisplay
                       stateTest
                       can_test
                       imu_test
-                      presTest
                       PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/out/tests)
