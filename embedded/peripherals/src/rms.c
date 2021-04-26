@@ -75,7 +75,7 @@ int rmsInvEnNoTorque()
 /* 5 */
 int rmsInvForward20()
 {
-    uint8_t payload[] = { TORQUE_SCALE_LWR(1), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0 };
+    uint8_t payload[] = { TORQUE_SCALE_LWR(2), 0x0, 0x0, 0x0, 0x1, 0x1, 0x0, 0x0 };
     sem_wait(&canSem);
     int ret = canSend(RMS_INV_FW_20_ID, payload, 8);
     sem_post(&canSem);

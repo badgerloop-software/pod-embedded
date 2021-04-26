@@ -24,7 +24,7 @@ void motorHbs()
 {
     while (1) {
         if (motorIsEnabled) {
-            rmsInvEn();
+            rmsInvForward20();
         } else if (noTorqueMode) {
             rmsInvEnNoTorque();
         } else {
@@ -64,14 +64,16 @@ void testLoop()
 
     //    rmsEepromMsg(143, 0, WR_EEPROM);
     motorIsEnabled = true;
-    noTorqueMode = true;
+    noTorqueMode = false;
     usleep(100);
     //	rmsEepromMsg(143, 0, RD_EEPROM);
     usleep(100);
+
+    usleep(5e6);
     // while (1)
     //     ;
     printf("RMSINVENNOTORQUE\n");
-    rmsInvEn();
+    // rmsInvEnNoTorque();
     printf("Done\n");
     //	while (getRmsVSMCode() != 5) {
     //		sleep(1);
@@ -90,6 +92,7 @@ void testLoop()
 	   rmsdischarge();
 	   sleep(1);
 	   rmsinvdis(); */
+
 }
 
 void spinMotor()
@@ -101,6 +104,7 @@ void spinMotor()
     //	pthread_join(motorThreads[2], NULL);
     //   pthread_join(motorThreads[0], NULL);
     pthread_join(motorThreads[1], NULL);
+    quitHandler();
 }
 
 int main()
