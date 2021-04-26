@@ -49,4 +49,4 @@ int brake(void);
 
 int unbrake(void);
 
-void brakeHV(void);
+int initComms(void);

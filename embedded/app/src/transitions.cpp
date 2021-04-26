@@ -5,10 +5,10 @@
 #include <transitions.h>
 #include <unistd.h>
 #include <iox_rick.h>
+#include <braking.h>
 extern "C" {
 #include <data.h>
 #include <rms.h>
-#include <braking.h>
 
 }
 
@@ -123,7 +123,7 @@ int genPostRun()
         usleep(1000);
     }
     ioxRick.setMCUHvEn(0);
-    brakeHV();
+    brake();
 
     return 0;
 }

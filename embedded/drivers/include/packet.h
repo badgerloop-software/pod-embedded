@@ -11,6 +11,7 @@ class BPacket {
         static const int MIN_DATA_PACKET_SIZE = 32;
         const int OFFSET = 2;
         char *data;
+        int size;
         char *payload;
         char header;
         

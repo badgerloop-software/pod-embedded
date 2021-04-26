@@ -9,7 +9,6 @@ add_executable(retroTest retroTest.c)
 add_executable(stateTest stateTest.cpp)
 add_executable(can_test can_test.c)
 add_executable(imu_test imu_test.c)
-add_executable(presTest presTest.c)
 add_executable(adcTest adcTest.cpp)
 
 #Link library dependencies for each example
@@ -23,7 +22,6 @@ target_link_libraries(navTest PRIVATE middleware peripherals data app)
 target_link_libraries(brakingTest PRIVATE drivers middleware peripherals data)
 target_link_libraries(bmsDisplay PRIVATE middleware peripherals data)
 target_link_libraries(gpioIOXRickMortyTest PRIVATE drivers peripherals data)
-target_link_libraries(solenoidTest PRIVATE drivers peripherals data)
 target_link_libraries(adcTest PRIVATE drivers peripherals data)
 
 # Run Autocoder
@@ -37,7 +35,6 @@ add_dependencies(navTest autocoder)
 add_dependencies(brakingTest autocoder)
 add_dependencies(bmsDisplay autocoder)
 add_dependencies(gpioIOXRickMortyTest autocoder)
-add_dependencies(solenoidTest autocoder)
 add_dependencies(adcTest autocoder)
 
 
