@@ -22,13 +22,26 @@ typedef enum AdcChan {
     CHAN_7 = 0x27,
 } AdcChan;
 
-class Adc {
+i2c_settings u2 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U2_ADDR,
+    .openMode = O_RDWR
+};
+
+i2c_settings u4 = {
+    .fd = 0,
+    .bus = 2,
+    .deviceAddress = U4_ADDR,
+    .openMode = O_RDWR
+};
+
+template<i2c_settings *i2c>
+struct adc {
     private:
-        int addr8;
-        i2c_settings *i2c;
-        bool isInit;
+        int addr8 = i2c->deviceAddress << 1;
+        bool isInit = false;
     public:
-        Adc(i2c_settings *i2c, int addr7);
         int init(void);
         uint16_t readChannel(AdcChan chan);
         int initPressureSensors(void);
@@ -38,7 +51,7 @@ class Adc {
         int debug(void);
 };
 
-extern Adc u2_adc;
-extern Adc u4_adc;
+inline struct adc<&u2> u2_adc;
+inline struct adc<&u4> u4_adc;
 
 #endif
