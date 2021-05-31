@@ -31,6 +31,10 @@ iox_rick::iox_rick()
 
 int iox_rick::init(bool hardStart)
 {
+#ifdef NOI2C
+    return 1;
+#endif
+
     if (setupMCP(&iox, IOX_RICK_ADDR) != 0)
         return -1;
     else if (hardStart) {
@@ -44,6 +48,9 @@ int iox_rick::init(bool hardStart)
 
 int iox_rick::setupIox()
 {
+#ifdef NOI2C
+    return 1;
+#endif
     // static int setupIox() moved into constructor:
     setDir(&iox, MCU_LATCH, MCP_DIR_OUT);
     setDir(&iox, MSTR_SW_FDBK, MCP_DIR_IN);

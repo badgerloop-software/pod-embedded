@@ -27,7 +27,12 @@ export(TARGETS tests FILE TestsConfig.cmake)
                 
 
 # Locate Requirements
-find_package(GTest REQUIRED)
+set(GTest_ROOT /usr/src/googletest/googletest)
+set(GTEST_INCLUDE_DIRS ${GTest_ROOT}/include/gtest)
+add_subdirectory(${GTest_ROOT}
+    "${CMAKE_CURRENT_BINARY_DIR}/googletest" EXCLUDE_FROM_ALL) 
+
+# find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
@@ -39,6 +44,7 @@ add_dependencies(tests autocoder)
 # Add executable
 add_executable(run_all_tests run_all_tests.cpp ${dependencies})
 
+message(STATUS "***********IMPORTANT RIGHT HERE***************"${GTEST_LIBRARIES})
 target_link_libraries(run_all_tests ${GTEST_LIBRARIES} pthread ${libraries})
 target_include_directories(app PUBLIC include)
 
