@@ -29,6 +29,7 @@ export(TARGETS tests FILE TestsConfig.cmake)
 # Locate Requirements
 set(GTest_ROOT /usr/src/googletest/googletest)
 set(GTEST_INCLUDE_DIRS ${GTest_ROOT}/include/gtest)
+set(GTEST_LIBRARIES ${GTest_ROOT}/libgtest.a)
 add_subdirectory(${GTest_ROOT}
     "${CMAKE_CURRENT_BINARY_DIR}/googletest" EXCLUDE_FROM_ALL) 
 
