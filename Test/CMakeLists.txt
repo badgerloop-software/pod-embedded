@@ -6,7 +6,8 @@ project(testlib VERSION 1.0
 set(dependencies example/Test_GTest.cpp
                  example/Test_GTest.cpp
                  run_profiles/Test_load_software_parameters.cpp
-                 components/HV_Iox/Test_HV_Iox.cpp)
+                 components/HV_Iox/Test_HV_Iox.cpp
+                 dev/LogPrinter.cpp)
 
 set(libraries app
               middleware 
