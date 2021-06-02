@@ -3,10 +3,10 @@ project(testlib VERSION 1.0
                 LANGUAGES CXX)
 
 # Define sources
-set(dependencies example/Test_GTest.cpp)
-set(dependencies components/HV_Iox/Test_HV_Iox.cpp)
 set(dependencies example/Test_GTest.cpp
-                 run_profiles/Test_load_software_parameters.cpp)
+		 example/Test_GTest.cpp
+                 run_profiles/Test_load_software_parameters.cpp
+		 components/HV_Iox/Test_HV_Iox.cpp)
 
 set(libraries app
               middleware 
