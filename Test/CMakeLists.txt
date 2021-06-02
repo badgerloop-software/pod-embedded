@@ -4,9 +4,9 @@ project(testlib VERSION 1.0
 
 # Define sources
 set(dependencies example/Test_GTest.cpp
-		 example/Test_GTest.cpp
+                 example/Test_GTest.cpp
                  run_profiles/Test_load_software_parameters.cpp
-		 components/HV_Iox/Test_HV_Iox.cpp)
+                 components/HV_Iox/Test_HV_Iox.cpp)
 
 set(libraries app
               middleware 
@@ -29,7 +29,7 @@ export(TARGETS tests FILE TestsConfig.cmake)
 # Locate Requirements
 set(GTest_ROOT /usr/src/googletest/googletest)
 set(GTEST_INCLUDE_DIRS ${GTest_ROOT}/include)
-set(GTEST_LIBRARIES /usr/src/googletest/build/googlemock/gtest/libgtest.a)
+set(GTEST_LIBRARIES ${GTest_ROOT}/lib/libgtest.a)
 add_subdirectory(${GTest_ROOT}
     "${CMAKE_CURRENT_BINARY_DIR}/googletest" EXCLUDE_FROM_ALL) 
 
@@ -45,7 +45,6 @@ add_dependencies(tests autocoder)
 # Add executable
 add_executable(run_all_tests run_all_tests.cpp ${dependencies})
 
-message(STATUS "***********IMPORTANT RIGHT HERE***************"${GTEST_LIBRARIES})
 target_link_libraries(run_all_tests ${GTEST_LIBRARIES} pthread ${libraries})
 target_include_directories(app PUBLIC include)
 
