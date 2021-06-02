@@ -71,7 +71,12 @@ elif [ "$1" == "gtest-setup" ]; then
 	cd /usr/src/gtest
 	sudo cmake CMakeLists.txt
 	sudo make
-	sudo cp *.a /usr/lib
+
+    cd /usr/src/googletest
+    sudo mkdir ARM
+    sudo cmake -DCMAKE_TOOLCHAIN_FILE=./toolchains/beaglebone.cmake . -B build/
+    cd build
+    sudo make
 	
 	echo "GTest Install Complete"
 
