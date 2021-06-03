@@ -62,21 +62,23 @@ elif [ "$1" == "cross" ]; then
 
 elif [ "$1" == "gtest-setup" ]; then
 	echo "Installing Dependencies (Assumes Debian based System) - Sudo access required"
+    export BB_TOOLCHAIN=$PWD/toolchains/beaglebone.cmake
 	sudo apt-get update
 	sudo apt-get install -y build-essential
 	sudo apt-get install -y cmake libgtest-dev
 	sudo apt-get install -y gcovr	
 	
 	echo "Building GTest"
+    sudo mkdir /usr/src/googletest/ARM
+    cd /usr/src/googletest
+    sudo cmake -DCMAKE_TOOLCHAIN_FILE=$BB_TOOLCHAIN . -B ARM/
+    cd ARM
+    sudo make
+    
 	cd /usr/src/gtest
 	sudo cmake CMakeLists.txt
 	sudo make
 
-    cd /usr/src/googletest
-    sudo mkdir ARM
-    sudo cmake -DCMAKE_TOOLCHAIN_FILE=./toolchains/beaglebone.cmake . -B build/
-    cd build
-    sudo make
 	
 	echo "GTest Install Complete"
 
